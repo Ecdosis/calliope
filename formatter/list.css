@@ -1,0 +1,4 @@
+span.description { font-style: italic }
+select.list { -hrit-name: name; -hrit-id: id; -hrit-function: onclick }
+option.version-short { -hrit-description: title; -hrit-version1: id; -hrit-selected: selected }
+optgroup.group {}

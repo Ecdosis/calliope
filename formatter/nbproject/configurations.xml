@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="80">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="HRIT" projectFiles="true">
+        <itemPath>include/HRIT/HRIT.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="STIL" projectFiles="true">
+        <itemPath>include/STIL/STIL.h</itemPath>
+        <itemPath>include/STIL/cJSON.h</itemPath>
+        <itemPath>include/STIL/memory.h</itemPath>
+      </logicalFolder>
+      <itemPath>include/amigaconfig.h</itemPath>
+      <itemPath>include/annotation.h</itemPath>
+      <itemPath>include/ascii.h</itemPath>
+      <itemPath>include/asciitab.h</itemPath>
+      <itemPath>include/attribute.h</itemPath>
+      <itemPath>include/css_parse.h</itemPath>
+      <itemPath>include/css_property.h</itemPath>
+      <itemPath>include/css_rule.h</itemPath>
+      <itemPath>include/css_selector.h</itemPath>
+      <itemPath>include/dom.h</itemPath>
+      <itemPath>include/error.h</itemPath>
+      <itemPath>include/expat.h</itemPath>
+      <itemPath>include/expat_config.h</itemPath>
+      <itemPath>include/expat_external.h</itemPath>
+      <itemPath>include/file_list.h</itemPath>
+      <itemPath>include/formatter.h</itemPath>
+      <itemPath>include/hashmap.h</itemPath>
+      <itemPath>include/hashset.h</itemPath>
+      <itemPath>include/hritserver_HritFormatter.h</itemPath>
+      <itemPath>include/iasciitab.h</itemPath>
+      <itemPath>include/internal.h</itemPath>
+      <itemPath>include/latin1tab.h</itemPath>
+      <itemPath>include/macconfig.h</itemPath>
+      <itemPath>include/master.h</itemPath>
+      <itemPath>include/matrix.h</itemPath>
+      <itemPath>include/matrix_queue.h</itemPath>
+      <itemPath>include/memwatch.h</itemPath>
+      <itemPath>include/nametab.h</itemPath>
+      <itemPath>include/node.h</itemPath>
+      <itemPath>include/plain_text.h</itemPath>
+      <itemPath>include/queue.h</itemPath>
+      <itemPath>include/range.h</itemPath>
+      <itemPath>include/range_array.h</itemPath>
+      <itemPath>include/ruleset.h</itemPath>
+      <itemPath>include/text_buf.h</itemPath>
+      <itemPath>include/utf8tab.h</itemPath>
+      <itemPath>include/winconfig.h</itemPath>
+      <itemPath>include/xmlrole.h</itemPath>
+      <itemPath>include/xmltok.h</itemPath>
+      <itemPath>include/xmltok_impl.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="HRIT" projectFiles="true">
+        <itemPath>src/HRIT/HRIT.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="STIL" projectFiles="true">
+        <itemPath>src/STIL/STIL.c</itemPath>
+        <itemPath>src/STIL/cJSON.c</itemPath>
+        <itemPath>src/STIL/memory.c</itemPath>
+      </logicalFolder>
+      <itemPath>src/HTML.c</itemPath>
+      <itemPath>src/annotation.c</itemPath>
+      <itemPath>src/attribute.c</itemPath>
+      <itemPath>src/css_parse.c</itemPath>
+      <itemPath>src/css_property.c</itemPath>
+      <itemPath>src/css_rule.c</itemPath>
+      <itemPath>src/css_selector.c</itemPath>
+      <itemPath>src/dom.c</itemPath>
+      <itemPath>src/error.c</itemPath>
+      <itemPath>src/file_list.c</itemPath>
+      <itemPath>src/formatter.c</itemPath>
+      <itemPath>src/hashmap.c</itemPath>
+      <itemPath>src/hashset.c</itemPath>
+      <itemPath>src/jni.c</itemPath>
+      <itemPath>src/main.c</itemPath>
+      <itemPath>src/master.c</itemPath>
+      <itemPath>src/matrix.c</itemPath>
+      <itemPath>src/matrix_queue.c</itemPath>
+      <itemPath>src/memwatch.c</itemPath>
+      <itemPath>src/node.c</itemPath>
+      <itemPath>src/queue.c</itemPath>
+      <itemPath>src/range.c</itemPath>
+      <itemPath>src/range_array.c</itemPath>
+      <itemPath>src/text_buf.c</itemPath>
+      <itemPath>src/xmlparse.c</itemPath>
+      <itemPath>src/xmlrole.c</itemPath>
+      <itemPath>src/xmltok.c</itemPath>
+      <itemPath>src/xmltok_impl.c</itemPath>
+      <itemPath>src/xmltok_ns.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>GNU|GNU</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>include</pElem>
+            <pElem>include/STIL</pElem>
+            <pElem>include/HRIT</pElem>
+            <pElem>/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>COMMANDLINE</Elem>
+            <Elem>HAVE_EXPAT_CONFIG_H</Elem>
+            <Elem>HAVE_MEMMOVE</Elem>
+            <Elem>MEMWATCH</Elem>
+            <Elem>MEMWATCH_STDIO</Elem>
+          </preprocessorList>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>/media/iota/NetBeansProjects/standoff/formatter/include</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>COMMANDLINE</Elem>
+            <Elem>DEBUG_MEMORY</Elem>
+          </preprocessorList>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibStdlibItem>Mathematics</linkerLibStdlibItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>GNU|GNU</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>

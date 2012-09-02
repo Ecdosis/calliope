@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<recipe type="stripper">
+<removal name="teiHeader"/>
+<rule xml_name="hi" prop_name="italics">
+<attribute name="rend" value="italic"/>
+</rule>
+<rule xml_name="head" prop_name="head-italic">
+<attribute name="rend" value="italic"/>
+</rule>
+<rule xml_name="stage" prop_name="stage-italic">
+<attribute name="rend" value="italic"/>
+</rule>
+</recipe>
+

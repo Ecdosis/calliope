@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvdguide>
+<description>Tagore poem</description>
+<groups>
+    <group name="Base" parent="0"/>
+</groups>
+<versions>
+    <version group="1" longname="Version A" shortname="A">can_1316_01.txt</version>
+<version group="1" longname="Version B" shortname="B">can_1332_01.txt</version>
+<version group="1" longname="Version C" shortname="C">kgb_1303_01.txt</version>
+<version group="1" longname="Version D" shortname="D">kgr_3_1322_01.txt</version>
+<version group="1" longname="Version E" shortname="E">sad_1300_01.txt</version>
+<version group="1" longname="Version F" shortname="F">san_1338_01.txt</version>
+<version group="1" longname="Version G" shortname="G">san_1340_01.txt</version>
+<version group="1" longname="Version H" shortname="H">san_1344_01.txt</version>
+<version group="1" longname="Version I" shortname="I">san_1395_01.txt</version>
+<version group="1" longname="Version J" shortname="J">sot_1300_01.txt</version>
+<version group="1" longname="Version K" shortname="K">VBr_3_1347_01.txt</version>
+</versions>
+</mvdguide>

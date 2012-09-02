@@ -1,0 +1,217 @@
+{
+  "style": "poetry/english/harpur",
+  "ranges": [
+  {
+    "name": "TEI",
+    "reloff": 0,
+    "len": 920
+  }
+,
+  {
+    "name": "body",
+    "reloff": 0,
+    "len": 920
+  }
+,
+  {
+    "name": "text",
+    "reloff": 0,
+    "len": 920
+  }
+,
+  {
+    "name": "div",
+    "reloff": 0,
+    "len": 920,
+    "annotations": [ { "type": "Hversion" },{ "xml:id": "H184d" } ]
+  }
+,
+  {
+    "name": "div",
+    "reloff": 0,
+    "len": 45,
+    "annotations": [ { "type": "source" } ]
+  }
+,
+  {
+    "name": "p",
+    "reloff": 0,
+    "len": 45
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 46,
+    "len": 0,
+    "annotations": [ { "facs": "A88/00000110.jpg" },{ "n": "110" } ]
+  }
+,
+  {
+    "name": "note",
+    "reloff": 0,
+    "len": 22
+  }
+,
+  {
+    "name": "div",
+    "reloff": 23,
+    "len": 7,
+    "annotations": [ { "type": "series" } ]
+  }
+,
+  {
+    "name": "head",
+    "reloff": 0,
+    "len": 7
+  }
+,
+  {
+    "name": "div",
+    "reloff": 8,
+    "len": 830,
+    "annotations": [ { "type": "poem" } ]
+  }
+,
+  {
+    "name": "head",
+    "reloff": 0,
+    "len": 26,
+    "annotations": [ { "type": "title" } ]
+  }
+,
+  {
+    "name": "lg",
+    "reloff": 27,
+    "len": 197
+  }
+,
+  {
+    "name": "l",
+    "reloff": 0,
+    "len": 47,
+    "annotations": [ { "n": "1" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 48,
+    "len": 49
+  }
+,
+  {
+    "name": "l",
+    "reloff": 50,
+    "len": 49
+  }
+,
+  {
+    "name": "l",
+    "reloff": 50,
+    "len": 49
+  }
+,
+  {
+    "name": "lg",
+    "reloff": 50,
+    "len": 211
+  }
+,
+  {
+    "name": "l",
+    "reloff": 0,
+    "len": 52
+  }
+,
+  {
+    "name": "l",
+    "reloff": 53,
+    "len": 56
+  }
+,
+  {
+    "name": "l",
+    "reloff": 57,
+    "len": 51
+  }
+,
+  {
+    "name": "l",
+    "reloff": 52,
+    "len": 49
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 50,
+    "len": 0,
+    "annotations": [ { "facs": "A88/00000111.jpg" },{ "n": "111" } ]
+  }
+,
+  {
+    "name": "lg",
+    "reloff": 0,
+    "len": 200
+  }
+,
+  {
+    "name": "l",
+    "reloff": 0,
+    "len": 52
+  }
+,
+  {
+    "name": "l",
+    "reloff": 53,
+    "len": 49
+  }
+,
+  {
+    "name": "l",
+    "reloff": 50,
+    "len": 45
+  }
+,
+  {
+    "name": "l",
+    "reloff": 46,
+    "len": 51
+  }
+,
+  {
+    "name": "lg",
+    "reloff": 52,
+    "len": 192
+  }
+,
+  {
+    "name": "l",
+    "reloff": 0,
+    "len": 41
+  }
+,
+  {
+    "name": "l",
+    "reloff": 42,
+    "len": 47
+  }
+,
+  {
+    "name": "l",
+    "reloff": 48,
+    "len": 53
+  }
+,
+  {
+    "name": "l",
+    "reloff": 54,
+    "len": 48
+  }
+,
+  {
+    "name": "note",
+    "reloff": 49,
+    "len": 11
+  }
+
+  ]
+}

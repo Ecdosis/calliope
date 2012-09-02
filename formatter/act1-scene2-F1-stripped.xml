@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hrit-markup style="TEI">
+<range name="TEI" reloff="0" len="8069"/>
+<range name="teiHeader" reloff="0" len="0" removed="true"/>
+<range name="fileDesc" reloff="0" len="0" removed="true"/>
+<range name="titleStmt" reloff="0" len="0" removed="true"/>
+<range name="title" reloff="0" len="0" removed="true">
+<content>The Tragedy of King Lear</content>
+</range>
+<range name="publicationStmt" reloff="0" len="0" removed="true"/>
+<range name="publisher" reloff="0" len="0" removed="true">
+<content>Desmond Schmidt</content>
+</range>
+<range name="date" reloff="0" len="0" removed="true">
+<content>2009</content>
+</range>
+<range name="availability" reloff="0" len="0" removed="true">
+<content>GNU Free Documentation License 1.3</content>
+</range>
+<range name="sourceDesc" reloff="0" len="0" removed="true"/>
+<range name="bibl" reloff="0" len="0" removed="true">
+<content>.</content>
+</range>
+<range name="title" reloff="0" len="0" removed="true">
+<content>Mr. Willaim Shakespeares Comedies, Histories, &amp; Tragedies. Published according to the True Originall Copies.</content>
+</range>
+<range name="author" reloff="0" len="0" removed="true">
+<content>William Shakespeare</content>
+</range>
+<range name="publisher" reloff="0" len="0" removed="true">
+<content>Isaac Jaggard and Ed. Blount, London</content>
+</range>
+<range name="date" reloff="0" len="0" removed="true">
+<content>1623</content>
+</range>
+<range name="text" reloff="0" len="8069"/>
+<range name="body" reloff="0" len="8069"/>
+<range name="head-italic" reloff="0" len="14"/>
+<range name="stage-italic" reloff="15" len="14"/>
+<range name="sp" reloff="15" len="940"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="l" reloff="6" len="39"/>
+<range name="l" reloff="40" len="41"/>
+<range name="l" reloff="42" len="42"/>
+<range name="l" reloff="43" len="40"/>
+<range name="l" reloff="41" len="50"/>
+<range name="l" reloff="51" len="46"/>
+<range name="l" reloff="47" len="39"/>
+<range name="l" reloff="40" len="42"/>
+<range name="l" reloff="43" len="41"/>
+<range name="l" reloff="42" len="46"/>
+<range name="l" reloff="47" len="41"/>
+<range name="l" reloff="42" len="38"/>
+<range name="l" reloff="39" len="39"/>
+<range name="l" reloff="40" len="41"/>
+<range name="l" reloff="42" len="42"/>
+<range name="l" reloff="43" len="40"/>
+<range name="italics" reloff="11" len="5"/>
+<range name="l" reloff="30" len="43"/>
+<range name="italics" reloff="36" len="6"/>
+<range name="l" reloff="8" len="44"/>
+<range name="pb" reloff="45" len="0">
+<annotation name="n" value="286"/>
+<annotation name="ed" value="F1"/>
+</range>
+<range name="pb" reloff="0" len="0">
+<annotation name="n" value="306"/>
+<annotation name="ed" value="F2"/>
+</range>
+<range name="l" reloff="1" len="43"/>
+<range name="l" reloff="44" len="40"/>
+<range name="italics" reloff="25" len="6"/>
+<range name="l" reloff="16" len="43"/>
+<range name="l" reloff="44" len="32"/>
+<range name="stage-italic" reloff="33" len="17"/>
+<range name="sp" reloff="18" len="185"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="italics" reloff="157" len="6"/>
+<range name="sp" reloff="29" len="36"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="37" len="52"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="53" len="31"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="32" len="34"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="35" len="22"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="23" len="203"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="204" len="176"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="177" len="30"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="31" len="111"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="112" len="27"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="28" len="98"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="99" len="677"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="stage-italic" reloff="6" len="6"/>
+<range name="italics" reloff="6" len="459"/>
+<range name="italics" reloff="554" len="5"/>
+<range name="sp" reloff="112" len="118"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="119" len="49"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="50" len="123"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="124" len="16"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="17" len="75"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="76" len="53"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="54" len="198"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="199" len="214"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="215" len="497"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="choice" reloff="28" len="6"/>
+<range name="abbr" reloff="0" len="2"/>
+<range name="expan" reloff="2" len="4"/>
+<range name="sp" reloff="468" len="20"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="21" len="210"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="211" len="189"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="italics" reloff="36" len="6"/>
+<range name="sp" reloff="154" len="111"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="112" len="799"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="italics" reloff="662" len="6"/>
+<range name="stage-italic" reloff="138" len="4"/>
+<range name="sp" reloff="5" len="1014"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="italics" reloff="650" len="10"/>
+<range name="stage-italic" reloff="163" len="12"/>
+<range name="italics" reloff="119" len="3"/>
+<range name="sp" reloff="83" len="69"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="italics" reloff="21" len="6"/>
+<range name="sp" reloff="49" len="101"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="102" len="39"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="40" len="95"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="96" len="23"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="24" len="25"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="26" len="28"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="29" len="93"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="sp" reloff="94" len="17"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="18" len="279"/>
+<range name="speaker" reloff="0" len="5"/>
+<range name="pb" reloff="232" len="0">
+<annotation name="ed" value="F1"/>
+<annotation name="n" value="287"/>
+</range>
+<range name="pb" reloff="0" len="0">
+<annotation name="ed" value="F2"/>
+<annotation name="n" value="307"/>
+</range>
+<range name="pb" reloff="0" len="0">
+<annotation name="ed" value="F3"/>
+<annotation name="n" value="765"/>
+</range>
+<range name="sp" reloff="48" len="38"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="39" len="270"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="271" len="20"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="21" len="215"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="sp" reloff="216" len="33"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="stage-italic" reloff="34" len="5"/>
+<range name="sp" reloff="6" len="307"/>
+<range name="speaker" reloff="0" len="4"/>
+<range name="stage-italic" reloff="308" len="5"/>
+</hrit-markup>

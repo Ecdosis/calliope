@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvdguide>
+<description>King Lear</description>
+<groups>
+    <group name="Base" parent="0"/>
+</groups>
+<versions>
+    <version group="1" longname="Version F1" shortname="F1">firstfolio.txt</version>
+<version group="1" longname="Version F2" shortname="F2">secondfolio.txt</version>
+<version group="1" longname="Version F3" shortname="F3">thirdfolio.txt</version>
+<version group="1" longname="Version F4" shortname="F4">fourthfolio.txt</version>
+<version group="1" longname="Version Q1" shortname="Q1">firstquarto.txt</version>
+<version group="1" longname="Version Q2" shortname="Q2">secondquarto.txt</version>
+</versions>
+</mvdguide>

@@ -1,0 +1,9 @@
+Resolving overlap:
+1. reduce the properties to those that have corresponding HTML tag names.
+2. look at each property in turn but disregard those without HTML tags
+3. if a property overlaps with another property determine which of the two is iside the other:
+	a) if the HTML tag of property1 is inside that of property 2 but not vice versa then split property1
+	b) if test a) was inconclusive then compute the liklihood that property1 is inside property2 and vice versa. Choose the liklier situation and split the inside property
+Do a) via a fixed lookup table.
+Do b) lazily. Do nothing if a) works in all overlap cases or there is no overlap. If there is then read through the ranges, recording which properties are inside others using a hashmap called "inside". The keys are the names of all the properties. The values are another hashmap: the keys being the names of the outside property and the values the frequency that this occurs. Then lookup each overlapping property in "inside" and see if it occurs inside the overlapping property. Note the frequency. Then do the reverse lookup. Whichever has the greater value wins.
+Once the overlap has been resolved for those two properties continue until ALL properties are non-overlapping.

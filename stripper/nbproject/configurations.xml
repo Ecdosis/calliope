@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="80">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>include/HRIT.h</itemPath>
+      <itemPath>include/STIL.h</itemPath>
+      <itemPath>include/amigaconfig.h</itemPath>
+      <itemPath>include/ascii.h</itemPath>
+      <itemPath>include/asciitab.h</itemPath>
+      <itemPath>include/attribute.h</itemPath>
+      <itemPath>../formatter/include/STIL/cJSON.h</itemPath>
+      <itemPath>include/dest_file.h</itemPath>
+      <itemPath>include/error.h</itemPath>
+      <itemPath>include/expat.h</itemPath>
+      <itemPath>include/expat_config.h</itemPath>
+      <itemPath>include/expat_external.h</itemPath>
+      <itemPath>include/format.h</itemPath>
+      <itemPath>include/hashmap.h</itemPath>
+      <itemPath>include/hashset.h</itemPath>
+      <itemPath>include/hritserver_HritStripper.h</itemPath>
+      <itemPath>include/iasciitab.h</itemPath>
+      <itemPath>include/internal.h</itemPath>
+      <itemPath>include/latin1tab.h</itemPath>
+      <itemPath>include/layer.h</itemPath>
+      <itemPath>include/log.h</itemPath>
+      <itemPath>include/macconfig.h</itemPath>
+      <itemPath>include/milestone.h</itemPath>
+      <itemPath>include/nametab.h</itemPath>
+      <itemPath>include/ramfile.h</itemPath>
+      <itemPath>include/range.h</itemPath>
+      <itemPath>include/recipe.h</itemPath>
+      <itemPath>include/simplification.h</itemPath>
+      <itemPath>include/stack.h</itemPath>
+      <itemPath>include/utf8tab.h</itemPath>
+      <itemPath>include/winconfig.h</itemPath>
+      <itemPath>include/xmlrole.h</itemPath>
+      <itemPath>include/xmltok.h</itemPath>
+      <itemPath>include/xmltok_impl.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>src/HRIT.c</itemPath>
+      <itemPath>src/STIL.c</itemPath>
+      <itemPath>src/attribute.c</itemPath>
+      <itemPath>../formatter/src/STIL/cJSON.c</itemPath>
+      <itemPath>src/dest_file.c</itemPath>
+      <itemPath>src/error.c</itemPath>
+      <itemPath>src/hashmap.c</itemPath>
+      <itemPath>src/hashset.c</itemPath>
+      <itemPath>src/layer.c</itemPath>
+      <itemPath>src/log.c</itemPath>
+      <itemPath>../formatter/src/memwatch.c</itemPath>
+      <itemPath>src/milestone.c</itemPath>
+      <itemPath>src/ramfile.c</itemPath>
+      <itemPath>src/range.c</itemPath>
+      <itemPath>src/recipe.c</itemPath>
+      <itemPath>src/simplification.c</itemPath>
+      <itemPath>src/stack.c</itemPath>
+      <itemPath>src/stripper.c</itemPath>
+      <itemPath>src/xmlparse.c</itemPath>
+      <itemPath>src/xmlrole.c</itemPath>
+      <itemPath>src/xmltok.c</itemPath>
+      <itemPath>src/xmltok_impl.c</itemPath>
+      <itemPath>src/xmltok_ns.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>GNU|GNU</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>include</pElem>
+            <pElem>/usr/lib/jvm/java-6-openjdk/include</pElem>
+            <pElem>../formatter/include/STIL</pElem>
+            <pElem>../formatter/include</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>COMMANDLINE</Elem>
+            <Elem>HAVE_EXPAT_CONFIG_H</Elem>
+            <Elem>HAVE_MEMMOVE</Elem>
+            <Elem>MEMWATCH</Elem>
+          </preprocessorList>
+        </cTool>
+      </compileType>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>GNU|GNU</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>

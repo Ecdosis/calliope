@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="80">
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>4</platform>
+      </toolsSet>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m corcode.json -f STIL -t cortex.txt -c capuana.css capuana.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m base.json -f STIL -t base.txt -c capuana.css capuana.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m base-stil.json -f STIL -t base.txt -c capuana.css capuana.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m capuana.json -f STIL -t capuana.txt -c capuana.css capuana.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m add0.json -f STIL -t add0.txt -c capuana.css capuana.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m add0-stil.json -f STIL -t add0.txt -c capuana.css capuana.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m add0-stil.json -f STIL -t add0.txt -c add0.css capuana.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m list-stil.json -f STIL -t list.txt -c list.css list.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m add0-stil.json -f STIL -t add0.txt -c add0.css add0.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -m corcode.json -f STIL -t cortex.txt -c corform.css output.html</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}" -m corcode.json -f STIL -t cortex.txt -c corform.css output.html</runcommand>
+        <rundir></rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir></rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>
