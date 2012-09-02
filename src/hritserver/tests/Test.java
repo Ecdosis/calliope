@@ -131,7 +131,9 @@ public abstract class Test extends HritHandler
                 String json = new String( data, "UTF-8" );
                 JSONDocument jdoc = JSONDocument.internalise( json );
                 if ( jdoc == null )
-                    throw new HritException("Failed to internalise all docs");
+                    throw new HritException(
+                        "Failed to internalise all docs. data length="
+                        +data.length);
                 ArrayList docs = (ArrayList) jdoc.get( JSONKeys.ROWS );
                 if ( docs.size()>0 )
                 {

@@ -18,7 +18,6 @@ import hritserver.json.JSONDocument;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.Iterator;
 import java.util.Arrays;
 import hritserver.constants.HTMLNames;
 import hritserver.constants.JSONKeys;

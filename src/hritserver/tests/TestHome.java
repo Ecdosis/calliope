@@ -126,31 +126,33 @@ public class TestHome extends Test
     +"ng'); }";
     static String CATALOG_SCRIPT = 
     "function setPath( link )\n{\n\tvar elem = document.getElement"
-    +"ById(\"DOC_ID\");\n\telem.value=link;\n}\nfunction toggle(node"
-    +")\n{\n\tvar open = node.className.match(/(^| )collapsibleLis"
-    +"tClosed( |$)/);\n\tvar uls = node.getElementsByTagName('ul')"
-    +";\n\tfor (var index = 0; index < uls.length; index ++)\n\t{\n"
-    +"\t\tvar li = uls[index];\n\t\twhile (li.nodeName != 'LI') l"
-    +"i = li.parentNode;\n\t\tif (li == node) \n\t\t\tuls[index].s"
-    +"tyle.display = (open ? 'block' : 'none');\n\t}\n\tnode.class"
-    +"Name =\n\tnode.className.replace(\n\t\t/(^| )collapsibleList"
-    +"(Open|Closed)( |$)/, '');\n\tif (uls.length > 0)\n\t{\n\t\tn"
-    +"ode.className += ' collapsibleList' + (open ? 'Open' : 'Clos"
-    +"ed');\n\t}\n}\nfunction reopenList(path)\n{\n\tCollapsibleLi"
-    +"sts.apply();\n\tif ( path.length>0 )\n\t{\n\t\tvar seek = \""
-    +"javascript:setPath('\"+path+\"')\";\n\t\tvar stack = new Arr"
-    +"ay();\n\t\tfor ( var i=0;i<document.links.length;i++ )\n\t\t"
-    +"{\n\t\t\tif ( document.links[i].href==seek )\n\t\t\t{\n\t\t\t"
-    +"\tvar parent = document.links[i].parentNode;\n\t\t\t\twhile"
-    +" ( parent.parentNode != null &&parent.parentNode.className!="
-    +"\"treeView\" )\n\t\t\t\t{\n\t\t\t\t\tif ( parent!=document.l"
-    +"inks[i].parentNode\n\t\t\t\t\t\t&&parent.nodeType==1\n\t\t\t"
-    +"\t\t\t&&parent.nodeName==\"LI\"\n\t\t\t\t\t\t&&parent.classN"
-    +"ame != null )\n\t\t\t\t\t{\n\t\t\t\t\t\tstack.push(parent);\n"
-    +"\t\t\t\t\t}\n\t\t\t\t\tparent = parent.parentNode;\n\t\t\t\t"
-    +"}\n\t\t\t}\n\t\t}\n\t\twhile ( stack.length > 0 )\n\t\t{\n\t"
-    +"\t\tvar li = stack.pop();\n\t\t\ttoggle( li );\n\t\t}\n\t\t"
-    +"setPath( path );\n\t}\n}";
+    +"ById(\"DOC_ID\");\n\telem.value=link;\n\tdocument.forms.defa"
+    +"ult.setAttribute('action','/tests/html');\n\tdocument.forms."
+    +"default.submit();\n}\nfunction toggle(node)\n{\n\tvar open ="
+    +" node.className.match(/(^| )collapsibleListClosed( |$)/);\n\t"
+    +"var uls = node.getElementsByTagName('ul');\n\tfor (var inde"
+    +"x = 0; index < uls.length; index ++)\n\t{\n\t\tvar li = uls["
+    +"index];\n\t\twhile (li.nodeName != 'LI') li = li.parentNode;"
+    +"\n\t\tif (li == node) \n\t\t\tuls[index].style.display = (op"
+    +"en ? 'block' : 'none');\n\t}\n\tnode.className =\n\tnode.cla"
+    +"ssName.replace(\n\t\t/(^| )collapsibleList(Open|Closed)( |$)"
+    +"/, '');\n\tif (uls.length > 0)\n\t{\n\t\tnode.className += '"
+    +" collapsibleList' + (open ? 'Open' : 'Closed');\n\t}\n}\nfun"
+    +"ction reopenList(path)\n{\n\tCollapsibleLists.apply();\n\tif"
+    +" ( path.length>0 )\n\t{\n\t\tvar seek = \"javascript:setPath"
+    +"('\"+path+\"')\";\n\t\tvar stack = new Array();\n\t\tfor ( v"
+    +"ar i=0;i<document.links.length;i++ )\n\t\t{\n\t\t\tif ( docu"
+    +"ment.links[i].href==seek )\n\t\t\t{\n\t\t\t\tvar parent = do"
+    +"cument.links[i].parentNode;\n\t\t\t\twhile ( parent.parentNo"
+    +"de != null &&parent.parentNode.className!=\"treeView\" )\n\t"
+    +"\t\t\t{\n\t\t\t\t\tif ( parent!=document.links[i].parentNode"
+    +"\n\t\t\t\t\t\t&&parent.nodeType==1\n\t\t\t\t\t\t&&parent.nod"
+    +"eName==\"LI\"\n\t\t\t\t\t\t&&parent.className != null )\n\t\t"
+    +"\t\t\t{\n\t\t\t\t\t\tstack.push(parent);\n\t\t\t\t\t}\n\t\t"
+    +"\t\t\tparent = parent.parentNode;\n\t\t\t\t}\n\t\t\t}\n\t\t}"
+    +"\n\t\twhile ( stack.length > 0 )\n\t\t{\n\t\t\tvar li = stac"
+    +"k.pop();\n\t\t\ttoggle( li );\n\t\t}\n\t\tsetPath( path );\n"
+    +"\t}\n}";
     public TestHome()
     {
         description = "Index to the document database";
@@ -205,16 +207,16 @@ public class TestHome extends Test
             form.addAttribute(HTMLNames.METHOD,HTMLNames.POST);
             form.addAttribute(HTMLNames.NAME,HTMLNames.DEFAULT);
             form.addAttribute(HTMLNames.ID,HTMLNames.DEFAULT);
-            Element p = new Element(HTMLNames.P);
-            p.addText("Doc ID: ");
+            /*Element p = new Element(HTMLNames.P);
+            p.addText("Doc ID: ");*/
             Element input = new Element( HTMLNames.INPUT );
-            input.addAttribute(HTMLNames.TYPE,"text");
+            input.addAttribute(HTMLNames.TYPE,HTMLNames.HIDDEN);
             input.addAttribute(HTMLNames.ID,Params.DOC_ID);
             input.addAttribute(HTMLNames.NAME,Params.DOC_ID);
             input.addAttribute(HTMLNames.VALUE, docID );
-            input.addAttribute(HTMLNames.STYLE,"width: 200px");
-            p.addChild( input );
-            form.addChild( p );
+            //input.addAttribute(HTMLNames.STYLE,"width: 200px");
+            /*p.addChild( input );*/
+            form.addChild( input );
             HTMLCatalog cata = new HTMLCatalog();
             int count = 5;
             boolean result = false;
