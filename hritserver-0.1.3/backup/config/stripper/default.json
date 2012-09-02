@@ -1,0 +1,23 @@
+{
+	"type":"stripper",
+	"removals": [ "teiHeader" ],
+    "rules": 
+	[
+		{
+			"xml_name": "hi",
+			"prop_name": "italics",
+			"attribute": { "rend": "italic" } 
+		},
+		{
+			"xml_name": "head",
+			"prop_name": "head-italic",
+			"attribute": { "rend": "italic" } 
+		},
+		{
+			"xml_name": "stage",
+			"prop_name": "stage-italic",
+			"attribute": { "rend": "italic" } 
+		}
+	]
+}
+
