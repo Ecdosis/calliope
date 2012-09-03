@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ -z "$PASSWORD" ]; then
+  read -p "Password:" PASSWORD
+fi
 contains()
 {
 	echo `echo $1 | grep -c $2`
@@ -18,7 +21,7 @@ upload()
 		REVEXPR="?rev=$3"
 	fi
 	local FILENAME=`filename $f`
-	local RESPONSE=`curl -s -X PUT http://admin:jabberw0cky@localhost:5984/corpix/$1/$FILENAME$REVEXPR --data-binary @$2 -H "Content-Type: image/png"`
+	local RESPONSE=`curl -s -X PUT http://admin:$PASSWORD@localhost:5984/corpix/$1/$FILENAME$REVEXPR --data-binary @$2 -H "Content-Type: image/png"`
 	echo `echo $RESPONSE | awk '{split($1,a,"\"");print a[10]}'`
 }
 descend()

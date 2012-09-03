@@ -23,3 +23,20 @@ images for the catalog list view. The .json files contain samples texts
 from King Lear and perhaps in future other examples.
 
 For uploading material in bulk use the mmpupload tool.
+
+RUNNING IN AN IDE
+To run in an IDE either use the supplied nbproject for Netbeans, or if 
+you want to use another IDE make sure you run java LibPath to 
+determine your machine's library path, and add /usr/local/lib to it.
+This is because when the install.sh script is run it places two C libraries
+there. These need to be found by the java runtime, and that is ONLY
+possible if you tell it when you invoke it with options similar to these:
+-Djava.library.path=.:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:/usr/local/lib  -Xcheck:jni -Xmx1024m
+The stuff before "/usr/local/lib" is what is output by java LibPath.
+
+UPLOADING SAMPLE DATA
+Once you have got an instance of couchdb running you need to do three things:
+1) Set the password. Using curl this can be done thus:
+curl -X PUT http://localhost:5984/_config/admins/admin -d '"secret"'
+2) Run upload-all.sh in the backup directory to upload all the basic stuff.
+3) [optional] Run mmpupload with the directory of your choice to add more stuff
