@@ -23048,3 +23048,4 @@ Apache CouchDB has started. Time to relax.
 [info] [<0.3299.100>] 127.0.0.1 - - 'PUT' /corpix/list/list-item-open.png 409
 [info] [<0.3300.100>] 127.0.0.1 - - 'PUT' /corpix/list/list-item-root.png 409
 [info] [<0.3301.100>] 127.0.0.1 - - 'PUT' /corpix/list/list-item.png 409
+[info] [<0.17954.101>] 127.0.0.1 - - 'PUT' /_config/admins/admin 401
