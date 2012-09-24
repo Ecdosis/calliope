@@ -56,6 +56,9 @@ node *node_create( char *name, char *html_name, int offset, int len,
     node *n = calloc( 1, sizeof(node) );
 	if ( n != NULL )
     {
+        //unsigned long u = 0x10019ecf0;
+        //if ( (unsigned long) n == u )
+        //    printf("0x10019ecf0\n");
         n->name = strdup( name );
         n->html_name = (html_name==NULL)?NULL:strdup( html_name );
         n->offset = offset;

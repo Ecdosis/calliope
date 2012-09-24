@@ -81,8 +81,6 @@ void stil_parse( cJSON *root, struct userdata_struct *u )
                 {
                     if ( strcmp(field->string,"name")==0 )
                     {
-                        if ( strcmp(field->valuestring,"dedication-div")==0)
-                            printf("gotcha!\n");
                         range_set_name( u->current, field->valuestring );
                     }
                     else if ( strcmp(field->string,"len")==0 )

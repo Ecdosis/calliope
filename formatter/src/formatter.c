@@ -295,7 +295,9 @@ static int formatter_add_root_range( formatter *f, int tlen )
         res = 0;
     }
     else
+    {
         range_array_insert( f->ranges, 0, root );
+    }
     return res;
 }
 /**

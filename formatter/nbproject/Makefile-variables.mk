@@ -15,13 +15,13 @@ CND_PACKAGE_DIR_Debug=dist/Debug/GNU-MacOSX/package
 CND_PACKAGE_NAME_Debug=formatter.tar
 CND_PACKAGE_PATH_Debug=dist/Debug/GNU-MacOSX/package/formatter.tar
 # Release configuration
-CND_PLATFORM_Release=GNU-Linux-x86
-CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
+CND_PLATFORM_Release=GNU-MacOSX
+CND_ARTIFACT_DIR_Release=dist/Release/GNU-MacOSX
 CND_ARTIFACT_NAME_Release=formatter
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/formatter
-CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-MacOSX/formatter
+CND_PACKAGE_DIR_Release=dist/Release/GNU-MacOSX/package
 CND_PACKAGE_NAME_Release=formatter.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/formatter.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-MacOSX/package/formatter.tar
 #
 # include compiler specific variables
 #

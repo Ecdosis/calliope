@@ -24,7 +24,6 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -r recipe.xml -s TEI-Lite act1-scene2-F1.xml</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -f STIL -r recipe.xml -s TEI-Lite act1-scene2-F1.xml</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -f STIL -r recipe.json -s TEI-Lite act1-scene2-F1.xml</runcommandpicklistitem>
@@ -34,8 +33,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -f STIL -r harpur.json -s TEI A88.xml</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -f STIL -r harpur.conf -s TEI A88.xml</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -f STIL -r strip.json -s english/poetry/harpur add0.xml</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -f STIL -r stripConfig.json -s english/poetry/harpur add0.xml</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -f STIL -r strip.json -s english/poetry/harpur add0.xml</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -f STIL -r stripConfig.json -s english/poetry/harpur add0.xml</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

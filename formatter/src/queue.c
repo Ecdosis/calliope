@@ -47,7 +47,7 @@ queue *queue_create()
     return q;
 }
 /**
- * Dispose of the memory in the queue
+ * Dispose of the memory in the queue. Ranges are probably freed elsewhere.
  * @param q the queue to dispose
  */
 void queue_dispose( queue *q )

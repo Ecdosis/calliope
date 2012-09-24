@@ -8,7 +8,8 @@ if [ $USER = "root" ]; then
   fi
   gcc -c -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DJNI -I$JDKINC -Iinclude -Iinclude/STIL -Iinclude/HRIT -O0 -Wall -g3 -fPIC src/*.c src/HRIT/*.c src/STIL/*.c 
   gcc *.o -shared -o libHritFormatter.$LIBSUFFIX
-  cp libHritFormatter.$LIBSUFFIX /usr/local/lib
+  mv libHritFormatter.$LIBSUFFIX /usr/local/lib/
+  rm *.o
 else
 	echo "Need to be root. Did you use sudo?"
 fi
