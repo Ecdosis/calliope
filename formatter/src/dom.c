@@ -765,7 +765,7 @@ static void dom_add_node( dom *d, node *n, node *r )
     {
         dom_node_equals( d, n, r );
     }
-    dom_check_tree( d );
+    //dom_check_tree( d );
 }
 /**
  * Debug routine: check output to see if well-formed
