@@ -581,6 +581,13 @@ static void dom_drop_notify( dom *d, node *r, node *n )
     warning("dom: dropping %s at %d:%d - %s and %s incompatible\n",
         node_name(r),node_offset(r),
         node_end(r),node_html_name(r),node_html_name(n));
+    attribute *id = node_get_attribute( r, "id" );
+    if ( id != NULL )
+    {
+        char *value = attribute_get_value( id );
+        if ( value[strlen(value)-1]=='b' )
+            printf( "aha! dropping id %s\n",value );
+    }
     node_dispose( r );
 }
 /**

@@ -57,11 +57,12 @@ annotation *annotation_create_simple( char *name, char *value )
 /**
  * Create a new annotation
  * @param atts a NULL-terminated list of a single name-value pair
- * @return an annotation object or NULL
+ * @return a list of annotation object or NULL
  */
 annotation *annotation_create( const char **atts )
 {
-    annotation *a = calloc( 1, sizeof(annotation) );
+    annotation *head = calloc( 1, sizeof(annotation) );
+    annotation *a = head;
     if ( a != NULL )
     {
         int i = 0;
@@ -73,6 +74,8 @@ annotation *annotation_create( const char **atts )
                 if ( a->name == NULL )
                 {
                     annotation_dispose( a );
+                    if ( head == a )
+                        head = NULL;
                     a = NULL;
                     break;
                 }
@@ -83,16 +86,20 @@ annotation *annotation_create( const char **atts )
                 if ( a->value == NULL )
                 {
                     annotation_dispose( a );
+                    if ( head == a )
+                        head = NULL;
                     a = NULL;
                     break;
                 }
             }
             i += 2;
+            if ( head != a )
+                annotation_append(head,a);
         }
     }
     else
         warning("annotation: failed to allocate annotation\n");
-    return a;
+    return head;
 }
 /**
  * Clone an annotation
@@ -202,7 +209,7 @@ attribute *annotation_to_attribute( annotation *a, char *xml_name,
         {
             char *html_name = css_property_get_html_name( prop );
             //warning("annotation: creating attribute %s:%s\n",html_name,a->value);
-            return attribute_create( html_name, a->value );
+            return attribute_create( html_name, annotation_get_name(a), a->value );
         }
         else
             warning("annotation: failed to find property for %s:%s:%s\n",

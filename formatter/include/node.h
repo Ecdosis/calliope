@@ -37,6 +37,7 @@ void node_split( node *n, int pos );
 int node_end( node *n );
 node *node_parent( node *n );
 int node_has_next_sibling( node *n );
+attribute *node_get_attribute( node *n, char *name );
 node *node_next_sibling( node *n );
 node *node_prec_sibling( node *n );
 node *node_split_off_left( node *n, int rhs_start );

@@ -71,7 +71,7 @@ static unsigned int matrix[107][4] = {
 /*bdo*/PHRASING,
 /*blockquote*/FLOW,
 /*body*/FLOW,
-/*br*/VOID,
+/*br*/PHRASING, /*fudged: otherwise "lines" may not contain anything*/
 /*button*/PHRASING,
 /*canvas*/PHRASING_PLUS_FLOW,
 /*caption*/FLOW,
