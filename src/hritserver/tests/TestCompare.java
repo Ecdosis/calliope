@@ -35,6 +35,7 @@ import org.htmlparser.util.ParserException;
 import hritserver.tests.html.Element;
 import hritserver.tests.html.HTMLLiteral;
 import hritserver.constants.HTMLNames;
+import hritserver.URLEncoder;
 import hritserver.tests.html.HTML;
 /**
  *
@@ -90,7 +91,7 @@ public class TestCompare extends Test
     +"nd: #c0c0c0;\n}";
     static String html1="<form name=\"default\" id=\"default\" method=\"post\">\n<inpu"
     +"t type=\"hidden\" name=\"DOC_ID\" id=\"DOC_ID\" value=\"/eng"
-    +"lish/harpur/ A-D/A DREAM OF THE ORIENT\"></input>\n<!-- wrapper f"
+    +"lish/harpur/ AB-AU/A DREAM OF THE ORIENT\"></input>\n<!-- wrapper f"
     +"or twin columns -->\n<div id=\"twinCentreColumn\">\n<script "
     +"type=\"text/javascript\">\nvar leftScrollPos,rightScrollPos;"
     +"\nvar scrolledDiff;\nvar scrolledSpan;\nfunction getOffsetTo"
@@ -1869,3 +1870,4 @@ public class TestCompare extends Test
         }
     }
 }
+

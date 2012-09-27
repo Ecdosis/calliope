@@ -22,59 +22,65 @@ package hritserver.constants;
 public class Params 
 {
     /** passed-in form param base name for corcodes */
-    public static String CORCODE = "CORCODE";
+    public final static String CORCODE = "CORCODE";
     /** passed-in form param base name for styles */
-    public static String STYLE = "STYLE";
+    public final static String STYLE = "STYLE";
     /** passed-in form param base name for formats */
-    public static String FORMAT = "FORMAT";
+    public final static String FORMAT = "FORMAT";
     /** the contents of an XML recipe file */
-    public static String RECIPE = "RECIPE";
+    public final static String RECIPE = "RECIPE";
     /** an XML file uploaded for stripping/importing */
-    public static String XML = "XML";
+    public final static String XML = "XML";
     /** an extra short name (for compare) */
-    public static String SHORTNAME = "SHORTNAME";
+    public final static String SHORTNAME = "SHORTNAME";
     /** an extra groups path for compare */
-    public static String GROUPS = "GROUPS";
+    public final static String GROUPS = "GROUPS";
     /** name of list dropdowns etc */
-    public static String NAME = "NAME";
+    public final static String NAME = "NAME";
     /** calling name of javascript function */
-    public static String FUNCTION = "FUNCTION";
+    public final static String FUNCTION = "FUNCTION";
     /** ID for currently chosen document */
-    public static String DOC_ID = "DOC_ID";
+    public final static String DOC_ID = "DOC_ID";
     /** language for uploads */
-    public static String LANGUAGE = "LANGUAGE";
+    public final static String LANGUAGE = "LANGUAGE";
     /** author for uploads */
-    public static String AUTHOR = "AUTHOR";
+    public final static String AUTHOR = "AUTHOR";
     /** work for uploads */
-    public static String WORK = "WORK";
+    public final static String WORK = "WORK";
     /** section for uploads */
-    public static String SECTION = "SECTION";
+    public final static String SECTION = "SECTION";
      /** subsection for uploads */
-    public static String SUBSECTION = "SUBSECTION";
+    public final static String SUBSECTION = "SUBSECTION";
     /** mvd version+groups for version 1 */
-    public static String VERSION1 = "version1";
+    public final static String VERSION1 = "version1";
+    /** mvd version+groups for version 1 */
+    public final static String VERSION2 = "version2";
     /** chosen plain text filter  */
-    public static String FILTER = "FILTER";
+    public final static String FILTER = "FILTER";
     /** chosen splitter config  */
-    public static String SPLITTER = "splitter";
+    public final static String SPLITTER = "splitter";
     /** chosen stripper config  */
-    public static String STRIPPER = "stripper";
+    public final static String STRIPPER = "stripper";
     /** chosen plain text filter config  */
-    public static String TEXT = "text";
+    public final static String TEXT = "text";
     /** offset into a version */
-    public static String OFFSET = "OFFSET";
+    public final static String OFFSET = "OFFSET";
     /** length of a range in the given version */
-    public static String LENGTH = "LENGTH";
+    public final static String LENGTH = "LENGTH";
     /** hide merged versions in a table */
-    public static String HIDE_MERGED = "HIDE_MERGED";
+    public final static String HIDE_MERGED = "HIDE_MERGED";
     /** compact versions where possible in a table */
-    public static String COMPACT = "COMPACT";
+    public final static String COMPACT = "COMPACT";
     /** expand differences to whole words in table */
-    public static String WHOLE_WORDS = "WHOLE_WORDS";
+    public final static String WHOLE_WORDS = "WHOLE_WORDS";
     /** choose only some versions for comparison */
-    public static String SOME_VERSIONS = "SOME_VERSIONS";
+    public final static String SOME_VERSIONS = "SOME_VERSIONS";
     /** set of selected versions if not ALL */
-    public static String SELECTED_VERSIONS = "SELECTED_VERSIONS";
+    public final static String SELECTED_VERSIONS = "SELECTED_VERSIONS";
     /** prefix for short version (value=long version name)*/
-    public static String SHORT_VERSION = "VERSION_";
+    public final static String SHORT_VERSION = "VERSION_";
+    /** ID of long name string (to facilitate dynamic replacement */
+    public final static String LONG_NAME_ID = "LONG_NAME_ID";
+    /** kind of differences to generate */
+    public final static String DIFF_KIND = "diff_kind";
 }

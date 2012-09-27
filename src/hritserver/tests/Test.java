@@ -16,6 +16,7 @@
 
 package hritserver.tests;
 import hritserver.HritServer;
+import hritserver.Utils;
 import hritserver.handler.HritHandler;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,9 @@ import java.util.ArrayList;
 public abstract class Test extends HritHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Html Import Table";
+    public static String tabs = "Home Compare Comparenew Html Import Table";
+    private static String KING_LEAR = 
+        "english/shakespeare/kinglear/act1/scene1";
     /** contains a leading slash */
     protected String version1;
     protected String description;
@@ -53,25 +56,30 @@ public abstract class Test extends HritHandler
     +"CCC; }.TabbedPanelsTabSelected { background-color: #EEE; bor"
     +"der-bottom: 1px solid #EEE;}\n.TabbedPanelsTab a { color: bl"
     +"ack; text-decoration: none; }\n.TabbedPanelsContentGroup { c"
-    +"lear: both; border-left: solid 1px #CCC;border-bottom: solid"
-    +" 1px #CCC; border-top: solid 1px #999;border-right: solid 1p"
-    +"x #999; background-color: #EEE; }\n.TabbedPanelsContent { pa"
-    +"dding: 4px; }\n.VTabbedPanels .TabbedPanelsTabGroup { float:"
-    +" left; width: 10em;height: 20em; background-color: #EEE; pos"
-    +"ition: relative;border-top: solid 1px #999; border-right: so"
-    +"lid 1px #999;border-left: solid 1px #CCC; border-bottom: sol"
-    +"id 1px #CCC;}\n.VTabbedPanels .TabbedPanelsTab { float: none"
-    +"; margin: 0px;border-top: none; border-left: none; border-ri"
-    +"ght: none; }\n.VTabbedPanels .TabbedPanelsTabSelected { back"
-    +"ground-color: #EEE;border-bottom: solid 1px #999;}\n.VTabbed"
-    +"Panels .TabbedPanelsContentGroup { clear: none; float: left;"
-    +"padding: 0px; width: 30em; height: 20em;}"
-    /*    +"\nh1 {color:darkgrey;font-variant: small-caps}"*/;
+    +"lear: both; border-left: solid 1px #CCC;border-bottom: 0px; "
+    +"border-top: solid 1px #999;border-right: solid 1px #999; bac"
+    +"kground-color: #EEE; }\n.TabbedPanelsContent { padding: 0px;"
+    +" }\n.VTabbedPanels .TabbedPanelsTabGroup { float: left; widt"
+    +"h: 10em;height: 20em; background-color: #EEE; position: rela"
+    +"tive;border-top: solid 1px #999; border-right: solid 1px #99"
+    +"9;border-left: solid 1px #CCC; border-bottom: 0px;}\n.VTabbe"
+    +"dPanels .TabbedPanelsTab { float: none; margin: 0px;border-t"
+    +"op: none; border-left: none; border-right: none; }\n.VTabbed"
+    +"Panels .TabbedPanelsTabSelected { background-color: #EEE;bor"
+    +"der-bottom: solid 1px #999;}\n.VTabbedPanels .TabbedPanelsCo"
+    +"ntentGroup { clear: none; float: left;padding: 0px; width: 3"
+    +"0em; height: 20em;}\nh1 {color:darkgrey;font-variant: small-"
+    +"caps}";
     public Test()
     {
         // set default docID
-        docID = "english/shakespeare/kinglear/act1/scene1";
+        docID = KING_LEAR;
     }
+    /**
+     * Get the correct tab name from the first part of the urn
+     * @param urn the urn to examine
+     * @return the tab name
+     */
     private String extractTabName( String urn )
     {
         int pos = tabs.indexOf(" ");
@@ -125,26 +133,32 @@ public abstract class Test extends HritHandler
     {
         try
         {
-            byte[] data = HritServer.getFromDb("/cortex/_all_docs/");
+            byte[] data = HritServer.getFromDb("/cortex/"+Utils.escape(KING_LEAR) );
             if ( data != null )
+                return KING_LEAR;
+            else
             {
-                String json = new String( data, "UTF-8" );
-                JSONDocument jdoc = JSONDocument.internalise( json );
-                if ( jdoc == null )
-                    throw new HritException(
-                        "Failed to internalise all docs. data length="
-                        +data.length);
-                ArrayList docs = (ArrayList) jdoc.get( JSONKeys.ROWS );
-                if ( docs.size()>0 )
+                data = HritServer.getFromDb("/cortex/_all_docs/");
+                if ( data != null )
                 {
-                    JSONDocument d = (JSONDocument)docs.get(0);
-                    return (String) d.get( JSONKeys.KEY );
+                    String json = new String( data, "UTF-8" );
+                    JSONDocument jdoc = JSONDocument.internalise( json );
+                    if ( jdoc == null )
+                        throw new HritException(
+                            "Failed to internalise all docs. data length="
+                            +data.length);
+                    ArrayList docs = (ArrayList) jdoc.get( JSONKeys.ROWS );
+                    if ( docs.size()>0 )
+                    {
+                        JSONDocument d = (JSONDocument)docs.get(0);
+                        return (String) d.get( JSONKeys.KEY );
+                    }
+                    else
+                        throw new HritException("document list is empty");
                 }
-                else
-                    throw new HritException("document list is empty");
+                else 
+                    throw new HritException("no docs in database");
             }
-            else 
-                throw new HritException("no docs in database");
         }
         catch ( Exception e )
         {
@@ -196,16 +210,35 @@ public abstract class Test extends HritHandler
      */
     void setDocID( HttpServletRequest request ) throws HritException
     {
-        String prevDocID = docID;
+        //String prevDocID = docID;
         if ( request.getParameter(Params.DOC_ID) != null )
             docID = request.getParameter(Params.DOC_ID);
         else
             docID = getDefaultDocID();
-        if ( request.getParameter(Params.VERSION1) != null 
-            && prevDocID!=null && docID.equals(prevDocID) )
-            version1 = request.getParameter(Params.VERSION1);
+        String paramValue = request.getParameter(Params.VERSION1);
+        if ( paramValue != null )
+            //&& prevDocID!=null && docID.equals(prevDocID) )
+            version1 = paramValue;
         else
             version1 = getDefaultVersion1();
+    }
+    /**
+     * Scan the body returned by the formatter for the relevant CSS
+     * @param body the body returned by a call to formatter
+     */
+    protected void addCSSFromBody( String body )
+    {
+        String css = null;
+        int pos1 = body.indexOf("<!--");
+        int pos2 = body.indexOf("-->");
+        if ( pos1 >= 0 && pos2 > 0 && pos1 < pos2 )
+        {
+            // skip "<!--"
+            css = body.substring( 4, pos2 );
+            // header must NOT already be committed
+            doc.getHeader().addCSS( css );
+            body = body.substring( pos2+3 );
+        }
     }
     /**
      * Display the test GUI, selecting the default Home tab

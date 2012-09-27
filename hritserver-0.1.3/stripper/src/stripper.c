@@ -72,10 +72,10 @@ struct UserData
 
 struct UserData user_data;
 /** array of available formats - add more here */
-format formats[]={{"HRIT",HRIT_write_header,HRIT_write_tail,
-	HRIT_write_range,".txt",".xml","-hrit"},
-{"STIL",STIL_write_header,STIL_write_tail,
-	STIL_write_range,".txt",".json","-stil"}};
+format formats[]={{"STIL",STIL_write_header,STIL_write_tail,
+	STIL_write_range,".txt",".json","-stil"},
+    {"HRIT",HRIT_write_header,HRIT_write_tail,
+	HRIT_write_range,".txt",".xml","-hrit"}};
 /** size of formats array */
 int num_formats = sizeof(formats)/sizeof(format);
 /** source file */

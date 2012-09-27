@@ -37,7 +37,7 @@ public class HritDescriptionHandler extends HritGetHandler
         throws HritException
     {
         Path path = new Path( urn );
-        HritMVD mvd = loadMVD( path.getResource(true) );
+        HritMVD mvd = loadMVD( path.getResource() );
         if ( mvd != null )
         {
             try

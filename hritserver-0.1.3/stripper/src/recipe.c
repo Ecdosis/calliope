@@ -579,8 +579,11 @@ simplification *recipe_has_rule( recipe *r, const char *name,
 int recipe_num_layers( recipe *r )
 {
     int i = 0;
-    while ( r->layers[i] != NULL )
-        i++;
+    if ( r->layers != NULL )
+    {
+        while ( r->layers[i] != NULL )
+            i++;
+    }
     return i;
 }       
 /**

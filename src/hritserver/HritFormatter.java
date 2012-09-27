@@ -19,8 +19,18 @@ import hritserver.json.JSONResponse;
 
 public class HritFormatter
 {
+    /**
+     * Call the C formatting code
+     * @param text the text as a string of bytes
+     * @param markup an array of CorCodes
+     * @param css an array of CSS formats
+     * @param format and array of format names, e.g. STIL
+     * @param html html object to contain output
+     * @return 1 if it worked else 0
+     */
 	public native int format( byte[] text, String[] markup, String[] css, 
 		String[] format, JSONResponse html );
+    // ensure library is loaded
 	static 
 	{
         System.loadLibrary("HritFormatter");

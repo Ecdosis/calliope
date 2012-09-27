@@ -22,12 +22,8 @@ import hritserver.tests.html.HTMLLiteral;
 import hritserver.tests.html.Text;
 import hritserver.tests.html.HTML;
 import hritserver.constants.*;
-import hritserver.json.JSONDocument;
-import hritserver.HritServer;
-import java.net.URL;
-import java.net.URLConnection;
-import java.io.InputStream;
-import java.io.ByteArrayOutputStream;
+import hritserver.Utils;
+import hritserver.URLEncoder;
 /**
  * Test that the conversion of CorTex+CorCode into HTML works
  * @author desmond
@@ -67,30 +63,13 @@ public class TestHtml extends Test
     {
         try
         {
-            URL url = new URL("http://localhost:8080/html/"
-                +docIDCanonise(docID)+"/"+version1 );
-            URLConnection conn = url.openConnection();
-            InputStream is = conn.getInputStream();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream( 
-                is.available() );
-            while ( is.available() != 0 )
-            {
-                byte[] data = new byte[is.available()];
-                is.read( data );
-                bos.write( data, 0, data.length );
-            }
-            String body = bos.toString("UTF-8");
-            String css = null;
-            int pos1 = body.indexOf("<!--");
-            int pos2 = body.indexOf("-->");
-            if ( pos1 >= 0 && pos2 > 0 && pos1 < pos2 )
-            {
-                // skip "<!--"
-                css = body.substring( 4, pos2 );
-                // header must NOT already be committed
-                doc.getHeader().addCSS( css );
-                body = body.substring( pos2+3 );
-            }
+            String url = "http://localhost:8080/html";
+            String urn = Utils.escape( docID );
+            url = URLEncoder.append( url, urn );
+            url = URLEncoder.addGetParam(url,Params.VERSION1,
+                Utils.escape(version1));
+            String body = URLEncoder.getResponseForUrl(url).trim();
+            addCSSFromBody( body );
             // it's always safe to return the body as is
             return new HTMLLiteral( body );
         }
@@ -114,22 +93,12 @@ public class TestHtml extends Test
             rawUrl.addParam( Params.NAME, Params.VERSION1 );
             rawUrl.addParam( Params.VERSION1, version1 );
             rawUrl.addParam( Params.FUNCTION, "do_popup1()" );
-            URL url = new URL( rawUrl.toString() );
-            URLConnection conn = url.openConnection();
-            InputStream is = conn.getInputStream();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(
-                is.available());
-            while ( is.available() != 0 )
-            {
-                byte[] data = new byte[is.available()];
-                is.read( data );
-                bos.write( data, 0, data.length );
-            }
+            String html = URLEncoder.getResponseForUrl( rawUrl.toString() );
             Element form = new Element(HTMLNames.FORM);
             form.addAttribute(HTMLNames.ACTION, "/tests/Html");
             form.addAttribute(HTMLNames.METHOD, HTMLNames.POST );
             form.addAttribute(HTMLNames.NAME, HTMLNames.DEFAULT );
-            Element content = new HTMLLiteral( bos.toString() );
+            Element content = new HTMLLiteral( html );
             form.addChild( content );
             if ( version1 != null )
                 rememberParam( form, Params.VERSION1, version1 );

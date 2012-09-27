@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Arrays;
+import hritserver.Utils;
 import hritserver.constants.HTMLNames;
 import hritserver.constants.JSONKeys;
 
@@ -121,7 +122,7 @@ public class HTMLCatalog extends Element
             Element li = new Element( HTMLNames.LI );
             if ( i==keys.length-1 )
                 li.addAttribute( HTMLNames.CLASS, "lastChild" );
-            String docId = path+"/"+keys[i];
+            String docId = Utils.canonisePath(path,keys[i]);
             HashMap subMap = (HashMap)map.get(keys[i]);
             if ( subMap != null )
             {

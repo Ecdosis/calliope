@@ -17,6 +17,8 @@ package hritserver.handler.get;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import hritserver.exception.HritException;
+import hritserver.constants.Services;
+import hritserver.path.Path;
 
 /**
  * Handle a call to get a specific cortex (whole)
@@ -29,6 +31,10 @@ public class HritGetCorTexHandler extends HritGetHandler
         HttpServletResponse response, String urn )
         throws HritException
     {
-        throw new HritException("unimplemented");
+        String prefix = Path.first( urn );
+        if ( prefix != null && prefix.equals(Services.VERSION2) )
+            new HritNextVersionHandler().handle(request,response,urn);
+        else
+            throw new HritException("unimplemented");
     }
 }

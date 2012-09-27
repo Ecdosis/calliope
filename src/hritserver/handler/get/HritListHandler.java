@@ -48,14 +48,13 @@ public class HritListHandler extends HritGetHandler
      * Make a slash-delimited version id
      * @param shortName the short name of the version
      * @param groupPath an array of group names in order
-     * @param first index of the first element of groupPath
      * @return a slash-delimited string containing all starting with "/"
      */
-    String makeVersionId( String shortName, ArrayList<String> groupPath, int first )
+    String makeVersionId( String shortName, ArrayList<String> groupPath )
     {
         StringBuilder sb = new StringBuilder();
         sb.append("/" );
-        for ( int i=first;i<groupPath.size();i++ )
+        for ( int i=0;i<groupPath.size();i++ )
         {
             sb.append( groupPath.get(i) );
             sb.append("/");
@@ -82,8 +81,16 @@ public class HritListHandler extends HritGetHandler
         }
         return nTopGroups;
     }
-    String markupVersionTable( String table, String listName, String function ) 
-        throws HritException
+    /**
+     * Annotate a raw text table with standoff properties suitable for a list
+     * @param table the raw text table returned by nmerge
+     * @param listName the NAME of the list in HTML
+     * @param function the function to be invoked onchange
+     * @return the markup of the list
+     * @throws HritException 
+     */
+    String markupVersionTable( String table, String listName, String function, 
+        String longNameId ) throws HritException
     {
         STILDocument doc = new STILDocument( Formats.DEFAULT );
         String[] lines = table.split("\n");
@@ -93,6 +100,8 @@ public class HritListHandler extends HritGetHandler
             ArrayList<String> groupPath = new ArrayList<String>();
             int offset = lines[0].length()+1;
             Range r = new Range( JSONKeys.DESCRIPTION, 0, lines[0].length() );
+            if ( longNameId != null && longNameId.length()>0 )
+                r.addAnnotation( JSONKeys.ID, longNameId );
             doc.add( r );
             JSONDocument group = null;
             int groupEnd = 0;
@@ -146,7 +155,7 @@ public class HritListHandler extends HritGetHandler
                         offset += cols[j].length()+1;
                     }
                     String versionId = makeVersionId(cols[cols.length-2],
-                        groupPath,(numTopGroups>1)?0:1);
+                        groupPath);
                     Range shortName = new Range( JSONKeys.VERSION_SHORT, 
                         offset, cols[cols.length-2].length() );
                     if ( version1 != null && versionId.equals(version1) )
@@ -192,20 +201,22 @@ public class HritListHandler extends HritGetHandler
         String[] styles = (String[])map.get( Params.STYLE );
         if ( styles == null )
         {
-            styles= new String[1];
+            styles = new String[1];
             styles[0] = "/list/default";
         }
         version1 = request.getParameter( Params.VERSION1 );
         path.setName( Database.CORTEX );
         try
         {
-            HritMVD mvd = loadMVD( path.getResource(true) );
+            HritMVD mvd = loadMVD( path.getResource() );
             String table = mvd.mvd.getVersionTable();
             String listName = request.getParameter( Params.NAME );
             if ( listName == null )
                 listName = "versions";
             String function = request.getParameter( Params.FUNCTION );
-            String markup = markupVersionTable( table, listName, function );
+            String longNameId = request.getParameter( Params.LONG_NAME_ID );
+            String markup = markupVersionTable( table, listName, function, 
+                longNameId );
             String[] corcodes = new String[1];
             corcodes[0] = markup;
             String[] formats = new String[1];

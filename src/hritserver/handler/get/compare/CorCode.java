@@ -200,10 +200,9 @@ public class CorCode extends JSONDocument implements RangeComplete
      * Create a new Range
      * @param p the pair it was gleaned from
      * @param name its name
-     * @param data the bytes forming its content
      * @return the new Range
      */
-    Range newCurrent( Pair p, String name, byte[] data )
+    Range newCurrent( Pair p, String name )
     {
         Range r = new Range( name );
         if ( p.isParent() )
@@ -217,7 +216,7 @@ public class CorCode extends JSONDocument implements RangeComplete
             r.addAnnotation(JSONKeys.PARENTID, parentId(id) );
         }
         r.offset = offset;
-        addRange( r );
+        r.len = p.length();
         return r;
     }
     /**
@@ -245,7 +244,9 @@ public class CorCode extends JSONDocument implements RangeComplete
             int start = Math.max(offset,runs[j].offset);
             int end = Math.min(pEnd, runs[j].end() );
             if ( current != null )
+            {
                 current.len += end-start;
+            }
             else
             {
                 current = new Range( ChunkState.MERGED, start, 
@@ -282,27 +283,34 @@ public class CorCode extends JSONDocument implements RangeComplete
             for ( int i=0;i<pairs.size();i++ )
             {
                 Pair p = pairs.get( i );
-                boolean hasv1 = p.versions.nextSetBit(v1)==v1;
-                if ( hasv1 )
+                if ( p.length()> 0 )
                 {
-                    boolean hasv2 = p.versions.nextSetBit(v2)==v2;
-                    byte[] data = p.getData();
-                    if ( !hasv2 )
+                    boolean hasv1 = p.versions.nextSetBit(v1)==v1;
+                    if ( hasv1 )
                     {
-                        String name = getState(p,state);
-                        if ( current != null && !name.equals(current.getName()) )
-                            current = addRange( current );
-                        if ( current == null )
-                            current = newCurrent( p, name, data );
+                        boolean hasv2 = p.versions.nextSetBit(v2)==v2;
+                        if ( !hasv2 )
+                        {
+                            String name = getState(p,state);
+                            // save or extend current range
+                            if ( current != null && !name.equals(current.getName()) )
+                                current = addRange( current );
+                            // else create new range
+                            if ( current == null )
+                                current = newCurrent( p, name );
+                            else
+                                current.len += p.length();
+                        }
                         else
-                            current.len += p.length();
+                        {
+                            if ( current != null 
+                                && !current.name.equals(ChunkState.MERGED) )
+                                current = addRange( current );
+                            j = doMergedPair( p, runs, j, state.charAt(0) );
+                        }
+                        offset += p.length();
                     }
-                    else
-                    {
-                        j = doMergedPair( p, runs, j, state.charAt(0) );
-                    }
-                    offset += p.length();
-                }   
+                }
             }
         }
         catch ( Exception e )

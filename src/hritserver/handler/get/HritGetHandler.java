@@ -15,6 +15,7 @@
  */
 package hritserver.handler.get;
 import hritserver.path.*;
+import hritserver.Utils;
 import hritserver.tests.Test;
 import hritserver.HritServer;
 import hritserver.handler.HritHandler;
@@ -23,6 +24,7 @@ import hritserver.handler.HritMVD;
 import hritserver.json.JSONDocument;
 import hritserver.exception.*;
 import hritserver.constants.*;
+import hritserver.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import edu.luc.nmerge.mvd.MVD;
@@ -69,7 +71,8 @@ public class HritGetHandler extends HritHandler
                 }
             }
             else if ( prefix.equals(Database.CORTEX) )
-                new HritGetCorTexHandler().handle( request, response, urn );
+                new HritGetCorTexHandler().handle( request, response, 
+                    Path.removePrefix(urn) );
             else if ( prefix.equals(Database.CORCODE) )
                 new HritGetCorCodeHandler().handle( request, response, urn );
             else if ( prefix.equals(Database.CORFORM) )
@@ -112,6 +115,33 @@ public class HritGetHandler extends HritHandler
         }
     }
     /**
+     * Fetch a single style text
+     * @param style the path to the style in the corform database
+     * @return the text of the style
+     */
+    protected String fetchStyle( String style ) throws HritException
+    {
+        String prefix = "/"+Database.CORFORM+"/";
+        Path path = new Path( prefix+style );
+        // 1. try to get each literal style name
+        String actual = getDocumentBody(path.getResource());
+        while ( actual == null )
+        {
+            // 2. add "default" to the end
+            actual = getDocumentBody( 
+                URLEncoder.append(path.getResource(),Formats.DEFAULT) );
+            if ( actual == null )
+            {
+                // 3. pop off last path component and try again
+                if ( !path.isEmpty() )
+                    path.chomp();
+                else
+                    throw new HritException("no suitable format");
+            }
+        }
+        return actual;
+    }
+    /**
      * Get the actual styles from the database. Make sure we fetch something
      * @param styles an array of style ids
      * @return an array of database contents for those ids
@@ -120,47 +150,30 @@ public class HritGetHandler extends HritHandler
     protected String[] fetchStyles( String[] styles ) throws HritException
     {
         String[] actual = new String[styles.length];
-        String prefix = "/"+Database.CORFORM+"/";
         for ( int i=0;i<styles.length;i++ )
         {
-            Path path = new Path( prefix+styles[i] );
-            // 1. try to get each literal style name
-            actual[i] = getDocumentBody(path.getResource(true));
-            while ( actual[i] == null )
-            {
-                // 2. add "default" to the end
-                actual[i] = getDocumentBody( 
-                    path.getResource(true,Formats.DEFAULT) );
-                if ( actual[i] == null )
-                {
-                    // 3. pop off last path component and try again
-                    if ( !path.isEmpty() )
-                        path.chomp();
-                    else
-                        throw new HritException("no suitable format");
-                }
-            }
+            actual[i] = fetchStyle( styles[i] );
         }
         return actual;
     }
     /**
      * Try to retrieve the CorTex/CorCode version specified by the path
      * @param path the already parsed URN with a valid db name
-     * @param suffix append this to the resource path
+     * @param vId the groups/version to get
      * @return the CorTex/CorCode version contents or null if not found
      * @throws HritException if the resource couldn't be found for some reason
      */
-    protected HritVersion doGetMVDVersion( VersionPath path, String suffix )
+    protected HritVersion doGetMVDVersion( Path path, String vPath )
         throws HritException
     {
         HritVersion version = new HritVersion();
         JSONDocument doc = null;
         byte[] data = null;
         String res = null;
+        //System.out.println("fetching version "+vPath );
         try
         {
-            res = new String(HritServer.getFromDb( 
-                path.getResource(true,suffix) ), "UTF-8");
+            res = new String(HritServer.getFromDb(path.getResource()), "UTF-8");
         }
         catch ( Exception e )
         {
@@ -172,8 +185,10 @@ public class HritGetHandler extends HritHandler
         {
             MVD mvd = MVDFile.internalise( (String)doc.get(
                 JSONKeys.BODY) );
-            int vId = mvd.getVersionByNameAndGroup(path.getShortName(),
-                path.getGroups());
+            if ( vPath == null )
+                vPath = (String)doc.get( JSONKeys.VERSION1 );
+            int vId = mvd.getVersionByNameAndGroup(Utils.getShortName(vPath),
+                Utils.getGroupName(vPath) );
             version.setFormat((String)doc.get(JSONKeys.FORMAT));
             version.setStyle((String)doc.get(JSONKeys.STYLE));
             if ( vId != 0 )
@@ -191,14 +206,11 @@ public class HritGetHandler extends HritHandler
                     }
                 }
                 else
-                    throw new HritException("Version "
-                        +path.getGroups()+path.getShortName()
-                        +" not found");
+                    throw new HritException("Version "+vPath+" not found");
             }
             else
             {
-                throw new HritException("Version "
-                    +path.getGroups()+path.getShortName()+" not found");
+                throw new HritException("Version "+vPath+" not found");
             }
         }
         return version;
@@ -212,8 +224,7 @@ public class HritGetHandler extends HritHandler
      * @throws a HritParamException if a parameter was wrongly specified
      */
     protected String[] getEnumeratedParams( String prefix, Map map, 
-        boolean addDefault ) 
-        throws HritException
+        boolean addDefault ) throws HritException
     {
         ArrayList<String> array = new ArrayList<String>();
         Set keys = map.keySet();
@@ -277,21 +288,12 @@ public class HritGetHandler extends HritHandler
     {
         try
         {
-            HritMVD hMvd = new HritMVD();
             String data = new String(HritServer.getFromDb(path),"UTF-8");
             if ( data.length() > 0 )
             {
                 JSONDocument doc = JSONDocument.internalise(data);
                 if ( doc != null )
-                {
-                    String body = (String)doc.get(JSONKeys.BODY);
-                    if ( body != null )
-                    {
-                        hMvd.mvd = MVDFile.internalise( body );
-                        hMvd.format = (String)doc.get(JSONKeys.FORMAT);
-                        return hMvd;
-                    }
-                }
+                    return new HritMVD( doc );
             }
             throw new HritException( "MVD not found "+path );
         }

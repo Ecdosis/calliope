@@ -15,13 +15,34 @@
  */
 package hritserver.handler;
 import edu.luc.nmerge.mvd.MVD;
-
+import edu.luc.nmerge.mvd.MVDFile;
+import hritserver.constants.JSONKeys;
+import hritserver.json.JSONDocument;
 /**
- *
+ * Loaded representation of the JSON document representing an MVD
  * @author desmond
  */
 public class HritMVD 
 {
     public String format;
     public MVD mvd;
+    public String style;
+    public String description;
+    public String title;
+    public String author;
+    /**
+     * Initialise a HritMVD object
+     * @param doc the JSON document from the database
+     */
+    public HritMVD( JSONDocument doc )
+    {
+        String body = (String)doc.get(JSONKeys.BODY);
+        if ( body != null )
+            this.mvd = MVDFile.internalise( body );
+        this.format = (String)doc.get(JSONKeys.FORMAT);
+        this.author = (String)doc.get(JSONKeys.AUTHOR);
+        this.description = (String)doc.get(JSONKeys.DESCRIPTION);
+        this.style = (String)doc.get(JSONKeys.STYLE);
+        this.title = (String)doc.get(JSONKeys.TITLE);
+    }
 }

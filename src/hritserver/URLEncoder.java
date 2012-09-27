@@ -88,16 +88,25 @@ public class URLEncoder
     public static String getResponseForUrl( String rawUrl ) throws Exception
     {
         URL url = new URL( rawUrl );
+        long smallTimeout = 50;// milliseconds
         URLConnection conn = url.openConnection();
         InputStream is = conn.getInputStream();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        while ( is.available() != 0 )
+        long timeTaken=0,start = System.currentTimeMillis();
+        while ( is.available()>0 ||timeTaken<smallTimeout )
         {
-            byte[] data = new byte[is.available()];
-            is.read( data );
-            bos.write( data );
-            // do more here like check the syntax of the output
+            if ( is.available()>0 )
+            {
+                byte[] data = new byte[is.available()];
+                is.read( data );
+                bos.write( data );
+                // restart timeout
+                timeTaken = 0;
+            }
+            else
+                timeTaken = System.currentTimeMillis()-start;
         }
+        is.close();
         return bos.toString();
     }
 }

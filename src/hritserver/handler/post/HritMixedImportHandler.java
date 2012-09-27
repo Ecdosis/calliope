@@ -75,9 +75,9 @@ public class HritMixedImportHandler extends HritImportHandler
                     }
                     log.append( stage3Text.process(cortex,corcode) );
                     // now get the json docs and add them at the right docid
-                    HritServer.putToDb( "/cortex/"+docID.get(false), cortex.toMVD("cortex") );
+                    //HritServer.putToDb( "/cortex/"+docID.get(false), cortex.toMVD("cortex") );
                     log.append( cortex.getLog() );
-                    HritServer.putToDb( "/corcode/"+docID.get(false), corcode.toMVD("corcode") );
+                    //HritServer.putToDb( "/corcode/"+docID.get(false), corcode.toMVD("corcode") );
                     log.append( corcode.getLog() );
                 }
                 response.setContentType("text/html;charset=UTF-8");

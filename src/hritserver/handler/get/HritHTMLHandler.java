@@ -19,14 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import hritserver.HritFormatter;
 import hritserver.json.JSONResponse;
-import hritserver.json.JSONDocument;
-import hritserver.xml.HritDocument;
+import hritserver.Utils;
 import hritserver.constants.*;
 import hritserver.exception.*;
 import hritserver.path.*;
 import hritserver.handler.HritVersion;
 import hritserver.tests.html.HTMLComment;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashSet;
 /**
@@ -35,33 +33,6 @@ import java.util.HashSet;
  */
 public class HritHTMLHandler extends HritGetHandler
 {
-    /**
-     * Get the style field in a CorCode JSON document
-     * @param corCode the CorCode doc
-     * @param format the MIME format
-     * @return the style name or "default"
-     */
-    String getCorCodeStyle( String corCode, String format )
-    {
-        if ( format.equals(Formats.STIL) )
-        {
-            JSONDocument doc = JSONDocument.internalise( corCode );
-            if ( doc != null )
-                return (String)doc.get(JSONKeys.STYLE);
-            else
-                return Formats.DEFAULT;
-        }
-        else if ( format.equals(Formats.HRIT) )
-        {
-            JSONDocument doc = HritDocument.internalise( corCode );
-            if ( doc != null )
-                return (String)doc.get(JSONKeys.STYLE);
-            else
-                return Formats.DEFAULT;
-        }
-        else
-            return Formats.DEFAULT;
-    }
     /**
      * Get the HTML for the given path
      * @param request the request to read from
@@ -107,28 +78,32 @@ public class HritHTMLHandler extends HritGetHandler
      * @return the converted HTML
      * @throws HritException 
      */
-    private void handleGetVersion( HttpServletRequest request, 
+    protected void handleGetVersion( HttpServletRequest request, 
         HttpServletResponse response, String urn )
         throws HritException
     {
-        VersionPath servicePath = new VersionPath( urn );
-        VersionPath dbPath = new VersionPath("/"+Database.CORTEX
-            +"/"+servicePath.getResourcePath(true));
-        HritVersion corTex = doGetMVDVersion( dbPath, "" );
+        Path path = new Path( urn );
+        String version1 = request.getParameter( Params.VERSION1 );
+        System.out.println("version1="+version1);
+        path.setName( Database.CORTEX );
+        HritVersion corTex = doGetMVDVersion( path, version1 );
         // 1. get corcodes and styles
         Map map = request.getParameterMap();
         String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
         String[] styles = getEnumeratedParams( Params.STYLE, map, false );
-        dbPath.setName( Database.CORCODE );
+        path.setName( Database.CORCODE );
         String[] formats = new String[corCodes.length];
         HashSet<String> styleSet = new HashSet<String>();
         for ( int i=0;i<styles.length;i++ )
             styleSet.add( styles[i] );
         try
         {
+            String resource = path.getResource();
             for ( int i=0;i<corCodes.length;i++ )
             {
-                HritVersion hv = doGetMVDVersion( dbPath, corCodes[i] );
+                String ccResource = Utils.canonisePath(resource,corCodes[i]);
+                Path ccPath = new Path( ccResource );
+                HritVersion hv = doGetMVDVersion( ccPath, version1 );
                 styleSet.add( hv.getStyle() );
                 corCodes[i] = new String(hv.getVersion(),"UTF-8");
                 formats[i] = hv.getFormat();

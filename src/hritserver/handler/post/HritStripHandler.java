@@ -121,7 +121,7 @@ public class HritStripHandler extends HritHandler
         HttpServletResponse response, String urn ) throws HritException
     {
         Path servicePath = new Path( urn );
-        String service = servicePath.getResourcePath();
+        String service = servicePath.getResourcePath(false);
         try
         {
             if ( service != null && service.equals(Commands.LIST) )

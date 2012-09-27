@@ -17,31 +17,90 @@
 package hritserver.handler.get.compare;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import hritserver.HritServer;
+import hritserver.HritFormatter;
 import hritserver.exception.*;
 import hritserver.constants.Params;
-import hritserver.constants.ChunkState;
-import hritserver.constants.MIMETypes;
-import hritserver.constants.MMP;
+import hritserver.constants.Formats;
 import hritserver.path.*;
-import hritserver.mime.Multipart;
-import hritserver.HritFormatter;
 import hritserver.handler.HritMVD;
 import hritserver.json.JSONResponse;
-import java.util.Map;
 import hritserver.constants.Database;
-import hritserver.constants.Formats;
-import hritserver.handler.get.HritGetHandler;
-
+import hritserver.handler.get.HritHTMLHandler;
+import hritserver.Utils;
+import hritserver.constants.ChunkState;
+import hritserver.handler.HritVersion;
+import hritserver.tests.html.HTMLComment;
+import java.util.ArrayList;
 
 /**
  * Handle comparison between two versions of a document
  * @author desmond
  */
-public class HritComparisonHandler extends HritGetHandler
+public class HritComparisonHandler extends HritHTMLHandler
 {
     /**
-     * Get the HTML of two versions, comparing both the corcode and the 
-     * cortex for differences
+     * Concatenate a path with its docid
+     * @param urn the docid minus the version group and name
+     * @param path the version-group and short name
+     * @return 
+     */
+    String canonisePath( String urn, String path )
+    {
+        if ( !urn.endsWith("/")&&!path.endsWith("/") )
+            return urn+"/"+path;
+        else
+            return urn+path;
+    }
+    /**
+     * Get an array of CorCodes, and their styles and formats too
+     * @param resPath the database+docID for the resource
+     * @param version1 the group-path+version name
+     * @param userCC an array of specified CorCode names for this docID
+     * @param diffCC the CorCode of the diffs
+     * @param styleNamess an array of predefined style-names
+     * @param styles an empty arraylist of style names to be filled
+     * @param formats an empty array of CorCode formats to be filled
+     * @return a simple array of CorCode texts in their corresponding formats
+     */
+    String[] getCorCodes( String resPath, String version1, String[] userCC, 
+        CorCode diffCC, String[] styleNames, ArrayList<String> styles, 
+        ArrayList<String> formats ) throws HritException
+    {
+        String[] ccTexts = new String[userCC.length+1];
+        // add diffCC entries to corcodes and formats but not styles
+        ccTexts[0] = diffCC.toString();
+        formats.add( Formats.STIL );
+        // load user-defined styles
+        if ( styleNames.length>0 )
+        {
+            String[] styleTexts = fetchStyles( styleNames );
+            for ( int i=0;i<styleTexts.length;i++ )
+                styles.add( styleTexts[i] );
+        }
+        for ( int i=0;i<userCC.length;i++ )
+        {
+            String ccResource = Utils.canonisePath(resPath,userCC[i]);
+            Path ccPath = new Path( ccResource );
+            HritVersion hv = doGetMVDVersion( ccPath, version1 );
+            try
+            {
+                byte[] versionText = hv.getVersion();
+                if ( versionText == null )
+                    throw new HritException("version not found");
+                ccTexts[i+1] = new String(versionText,"UTF-8");
+                styles.add( fetchStyle(hv.getStyle()) );
+            }
+            catch ( Exception e )
+            {
+                throw new HritException( e );
+            }
+            formats.add( hv.getFormat() );
+        }
+        return ccTexts;
+    }
+    /**
+     * Get the HTML of one version compared to another
      * @param request the request to read from
      * @param path the parsed URN
      * @return a formatted html String
@@ -50,93 +109,83 @@ public class HritComparisonHandler extends HritGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws HritException
     {
-        VersionPath path = new VersionPath( urn );
-        Map map = request.getParameterMap();
-        String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
-        String[] styles = getEnumeratedParams( Params.STYLE, map, true );
-        String[] withName = (String[])map.get( Params.SHORTNAME ); 
-        if ( withName == null || withName.length == 0 || withName[0].length()==0 )
-            throw new ParamException("must specify a version to compare");
-        String[] withGroups = (String[])map.get( Params.GROUPS );
-        try
+        // the version we will return, with added markup
+        String version1 = request.getParameter( Params.VERSION1 );
+        // the version to compare WITH
+        String version2 = request.getParameter( Params.VERSION2 );
+        // the name for the differences with version2 that we generate
+        String diffKind = request.getParameter( Params.DIFF_KIND );
+        if ( version1 != null && version2 != null )
         {
-            CorCode leftCC = new CorCode( ChunkState.DELETED );
-            CorCode rightCC = new CorCode( ChunkState.ADDED );
-            // two extra corcodes for diffs in text and markup
-            String[] lCorCodes = new String[corCodes.length+2];
-            String[] rCorCodes = new String[corCodes.length+2]; 
-            String[] formats = new String[corCodes.length+2];
-            String groups = (withGroups==null||withGroups.length==0
-                ||withGroups[0].length()==0)?"":withGroups[0];
-            path.setName( Database.CORCODE );
-            RunSet leftRuns = new RunSet();
-            RunSet rightRuns = new RunSet();
-            for ( int i=0;i<corCodes.length;i++ )
+            if ( diffKind == null )
             {
-                HritMVD cc = loadMVD( path.getResource(true,corCodes[i]) );
-                int v1 = cc.mvd.getVersionByNameAndGroup(path.getShortName(), 
-                    path.getGroups() );
-                int v2 = cc.mvd.getVersionByNameAndGroup( withName[0], groups );
-                if ( v1 == -1 )
-                    throw new ParamException("version "+path.getShortName()
-                        +" not found");
-                if ( v2 == -1 )
-                    throw new ParamException("version "+withName[0]+" not found");
-                formats[i] = cc.format;
-                lCorCodes[i] = new String(cc.mvd.getVersion(v1),
-                    cc.mvd.getEncoding());
-                leftRuns.add( lCorCodes[i], true );
-                rCorCodes[i] = new String(cc.mvd.getVersion(v2),
-                    cc.mvd.getEncoding());
-                rightRuns.add( rCorCodes[i], true );
-                leftCC.compareCode( cc.mvd, v1, v2, ChunkState.DELETED );
-                rightCC.compareCode( cc.mvd, v2, v1, ChunkState.ADDED );
+                diffKind = ChunkState.DELETED;
+                System.out.println("Missing parameter "
+                    +Params.DIFF_KIND+" assuming "+ChunkState.DELETED );
             }
-            // erase alignment runs where the corcode doesn't match
-            leftRuns.add( leftCC, false );
-            rightRuns.add( rightCC, false );
-            // now compare the text versions
-            CorCode leftText = new CorCode( ChunkState.DELETED );
-            CorCode rightText = new CorCode( ChunkState.ADDED );
+            CorCode cc = new CorCode( diffKind );
+            Path path = new Path( urn );
             path.setName( Database.CORTEX );
-            HritMVD text = loadMVD(path.getResource(true));
-            int v1 = text.mvd.getVersionByNameAndGroup(path.getShortName(), 
-                path.getGroups() );
+            HritMVD text = loadMVD( path.getResource() );
+            int v1 = text.mvd.getVersionByNameAndGroup(
+                Utils.getShortName(version1),Utils.getGroupName(version1));
             if ( v1 == -1 )
-                throw new ParamException("version "+path.getShortName()
-                    +" not found");
-            int v2 = text.mvd.getVersionByNameAndGroup( withName[0], groups );
+                throw new HritException(version1+" not found");
+            int v2 = text.mvd.getVersionByNameAndGroup(
+                Utils.getShortName(version2),
+                Utils.getGroupName(version2) );
             if ( v2 == -1 )
-                throw new ParamException("version "+withName[0]+" not found");
-            leftText.compareText( text.mvd, v1, v2, ChunkState.DELETED, 
-                leftRuns.toArray() );
-            rightText.compareText( text.mvd, v2, v1, ChunkState.ADDED, 
-                leftRuns.toArray() );
-            // store the computed corcodes in the left & right cc arrays
-            lCorCodes[lCorCodes.length-2] = leftCC.toString();
-            rCorCodes[rCorCodes.length-2] = rightCC.toString();
-            lCorCodes[lCorCodes.length-1] = leftText.toString();
-            rCorCodes[rCorCodes.length-1] = rightText.toString();
-            formats[formats.length-1] = Formats.STIL;
-            formats[formats.length-2] = Formats.STIL;
-            String[] actualStyles = fetchStyles( styles );
-            // now format the text with the corcodes
-            JSONResponse lResponse = new JSONResponse();
-            JSONResponse rResponse = new JSONResponse();
-            new HritFormatter().format( text.mvd.getVersion(v1), lCorCodes, 
-                actualStyles, formats, lResponse );
-            new HritFormatter().format( text.mvd.getVersion(v2), rCorCodes, 
-                actualStyles, formats, rResponse );
-            // compose response
-            Multipart mmp = new Multipart();
-            mmp.putTextParam( MMP.LHS, lResponse.getBody(), MIMETypes.HTML ); 
-            mmp.putTextParam( MMP.RHS, rResponse.getBody(), MIMETypes.HTML );
-            response.setContentType(MIMETypes.MULTIPART);
-            response.getWriter().println(mmp.toString());
+                throw new HritException(version2+" not found");
+            int[] lengths = text.mvd.getVersionLengths();
+            if ( lengths==null || lengths.length<v1 || lengths.length<v2  )
+                throw new HritException( "lengths array is empty" );
+            Run[] runs = new Run[1];
+            runs[0] = new Run( 0, lengths[v1-1] );
+            cc.compareText( text.mvd, v1, v2, diffKind, runs );
+            // get corCodes
+            String[] corCodes = getEnumeratedParams( Params.CORCODE, 
+                request.getParameterMap(), true );
+            String[] styles = getEnumeratedParams( Params.STYLE, 
+                request.getParameterMap(), false );
+            path.setName( Database.CORCODE );
+            ArrayList<String> styleNames = new ArrayList<String>();
+            ArrayList<String> formats = new ArrayList<String>();
+            String[] ccTexts = getCorCodes( path.getResourcePath(true), 
+                version1, corCodes, cc, styles, styleNames, formats );
+            String[] styleTexts = new String[styleNames.size()];
+            styleNames.toArray( styleTexts );
+            String[] formatTexts = new String[formats.size()];
+            formats.toArray( formatTexts );
+            // call the native library
+            JSONResponse html = new JSONResponse();
+            int res = new HritFormatter().format( text.mvd.getVersion(v1), 
+                ccTexts, styleTexts, formatTexts, html );
+            if ( res == 0 )
+                throw new NativeException("formatting failed");
+            else
+            {
+                response.setContentType("text/html;charset=UTF-8");
+                try
+                {
+                    HTMLComment comment = new HTMLComment();
+                    for ( int i=0;i<styleTexts.length;i++ )
+                        comment.addText( styleTexts[i] );
+                    //System.out.println(html.getBody());
+                    response.getWriter().println( comment.toString() );
+                    response.getWriter().println(html.getBody());   
+                }
+                catch ( Exception e )
+                {
+                    throw new HritException( e );
+                }
+            }       
         }
-        catch ( Exception e )
+        else if ( version1 != null )
         {
-            throw new HritException( e );
+            // just get the version
+            handleGetVersion( request, response, urn );
         }
+        else
+            throw new HritException("versions unspecified");
     }
 }

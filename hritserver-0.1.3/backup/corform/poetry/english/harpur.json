@@ -1,13 +1,5 @@
 {
-	"format": "CSS",
-	"title": "harpur",
-	"body": "div.source { font-style: italic }
-    p.p {}
-    h3.head {}
-    h4.title {}
-    div.lg { padding-bottom: 10px }
-    p.l { line-height: 110%; padding: 0px; margin: 0px }
-    p.final-line { text-indent: 50px; line-height: 100% }
-    p.note { font-style: italic }
-    "
+    "format": "CSS",
+    "title": "harpur",
+    "body": "div.source { font-style: italic }\n\t p.p {}\n\t h3.head {} h4.title {}    div.lg { padding-bottom: 10px }    p.l, p.final-line { line-height: 110%; padding: 0px; margin: 0px }    p.final-line { text-indent: 50px }    p.note { font-style: italic }"
 }

@@ -45,9 +45,9 @@ public class HritServer extends AbstractHandler
     public static int dbPort;
     public static int wsPort;
     /** time to wait after read for any data at start */
-    static long bigTimeout = 1000;// milliseconds
+    static long bigTimeout = 2000;// milliseconds
     /** time to wait after read for any more data */
-    static long smallTimeout = 30;// milliseconds
+    static long smallTimeout = 50;// milliseconds
     static String DEFAULT_STYLE = "TEI";
     HritServer()
     {
@@ -56,7 +56,7 @@ public class HritServer extends AbstractHandler
     /**
      * Fetch a resource from the server, or try to.
      * @param path the path to the reputed resource
-     * @return the response as a string
+     * @return the response as a string or null if not found
      */
     public static byte[] getFromDb( String path )
     {

@@ -24,7 +24,7 @@ import hritserver.constants.Params;
 import java.util.ArrayList;
 
 /**
- *
+ * Bare bones text list of versions (not HTML)
  * @author desmond
  */
 public class HritTextListHandler extends HritGetHandler
@@ -101,7 +101,7 @@ public class HritTextListHandler extends HritGetHandler
         path.setName( Database.CORTEX );
         try
         {
-            HritMVD mvd = loadMVD( path.getResource(true) );
+            HritMVD mvd = loadMVD( path.getResource() );
             String table = mvd.mvd.getVersionTable();
             response.setContentType("text/plain;charset=UTF-8");
             String list = formatTable( table );

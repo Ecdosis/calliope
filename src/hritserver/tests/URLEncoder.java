@@ -15,6 +15,11 @@
  */
 package hritserver.tests;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 /**
  *
  * @author desmond
@@ -37,9 +42,26 @@ public class URLEncoder
      */
  	public static String addGetParam( String url, String key, String value )
 	{
-		String sep = (url.lastIndexOf('&')==-1)?"?":"&";
+		String sep = (url.lastIndexOf('?')==-1)?"?":"&";
 		return url+sep+encodeParam(key)+"="+encodeParam(value);
 	}
+    public static String append( String url, String component )
+    {
+        StringBuilder baseURL = new StringBuilder( url );
+        if ( baseURL.length()>0&&component.length()!=0 )
+        {
+            char last = baseURL.charAt(baseURL.length()-1);
+            char first = component.charAt(0);
+            if ( last !='/' && first !='/')
+                baseURL.append( "/" );
+            else if ( last=='/'&&first=='/' )
+                component = component.substring(1);
+            baseURL.append( component.replace(" ","%20") );
+        }
+        else 
+            baseURL.append( component );
+        return baseURL.toString();
+    }
     private static String encodeParam( String arg ) 
 	{
         StringBuilder url = new StringBuilder(); // Encoded URL
@@ -58,5 +80,25 @@ public class URLEncoder
             }
         }
         return url.toString();
+    }
+    /**
+     * Get an internal response to a crafted URL
+     * @param rawUrl the raw url with encoded GET params
+     */
+    public static String getResponseForUrl( String rawUrl ) throws Exception
+    {
+        URL url = new URL( rawUrl );
+        URLConnection conn = url.openConnection();
+        InputStream is = conn.getInputStream();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        
+        while ( is.available() != 0 )
+        {
+            byte[] data = new byte[is.available()];
+            is.read( data );
+            bos.write( data );
+            // do more here like check the syntax of the output
+        }
+        return bos.toString();
     }
 }

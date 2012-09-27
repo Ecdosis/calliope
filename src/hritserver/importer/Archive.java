@@ -155,7 +155,9 @@ public class Archive extends HashMap<String,byte[]>
                 if ( version1 == null )
                     version1 = "/"+groups+"/"+shortKey;
                 byte[] data = get( key );
-                vId = (short)mvd.newVersion( shortKey, "Version "+shortKey, 
+                String longName = (groups.length()>0)?shortKey+" of "
+                    +groups:shortKey;
+                vId = (short)mvd.newVersion( shortKey, "Version "+longName, 
                     groups, Version.NO_BACKUP, false );
                 mvd.update( vId, data, true );
             }

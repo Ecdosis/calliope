@@ -133,7 +133,7 @@ public class HritTableHandler extends HritGetHandler
         path.setName( Database.CORTEX );
         try
         {
-            HritMVD mvd = loadMVD( path.getResource(true) );
+            HritMVD mvd = loadMVD( path.getResource() );
             this.base = (short)mvd.mvd.getVersionByNameAndGroup( shortName, groups );
             if ( base == 0 )
             {

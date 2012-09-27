@@ -86,36 +86,24 @@ public class Path implements Test
     }
     /**
      * Just get the resource minus the database/service name
+     * @param withName prepend the dbname
      * @return the resource as a path
      */
-    public String getResourcePath()
+    public String getResourcePath( boolean withName )
     {
-        return path;
+        if ( withName )
+            return name+"/"+path;
+        else
+            return path;
     }
     /**
      * Get the already once fetched resource or null
      * @param withPrefix if true prepend the db or service name
      * @return a String
      */
-    public String getResource( boolean withPrefix )
+    public String getResource()
     {
-        return (withPrefix)?"/"+name+"/"+resource:resource;
-    }
-    /**
-     * Get the already once fetched resource 
-     * @param withPrefix prepend db or service name
-     * @param suffix append this to the resource path
-     * @return a String
-     */
-    public String getResource( boolean withPrefix, String suffix )
-    {
-        StringBuilder sb = new StringBuilder( resource );
-        if ( suffix.length()>0 )
-        {
-            sb.append( ESC_SLASH );
-            sb.append( suffix );
-        }
-        return (withPrefix)?"/"+name+"/"+sb.toString():sb.toString();
+        return "/"+name+"/"+resource;
     }
     /**
      * Does this path as it stands, support versions?
@@ -188,6 +176,14 @@ public class Path implements Test
             return this.name;
         else
             return Database.CORTEX;
+    }
+    /**
+     * Set the database name for this path
+     * @return a String being a database name
+     */
+    public void setDbName( String name )
+    {
+        this.name = name;
     }
     /**
 	 * Chop off the first component of a urn
