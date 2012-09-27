@@ -252,7 +252,7 @@ public class CorCode extends JSONDocument implements RangeComplete
                 current = new Range( ChunkState.MERGED, start, 
                     end-start );
                 current.addAnnotation( "mergeid", prefix
-                    +new Integer(Range.nextID()).toString() );
+                    +new Integer(idGen.next()).toString() );
             }
             if ( runs[j].end() <= pEnd )
             {
