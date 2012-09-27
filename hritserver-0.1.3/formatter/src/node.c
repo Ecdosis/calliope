@@ -39,7 +39,6 @@ struct node_struct
 	node *children;
     attribute *attrs;
 };
-
 /**
  * Create a node instance
  * @param name the name of the node
@@ -56,6 +55,9 @@ node *node_create( char *name, char *html_name, int offset, int len,
     node *n = calloc( 1, sizeof(node) );
 	if ( n != NULL )
     {
+        //unsigned long u = 0x10019ecf0;
+        //if ( (unsigned long) n == u )
+        //    printf("0x10019ecf0\n");
         n->name = strdup( name );
         n->html_name = (html_name==NULL)?NULL:strdup( html_name );
         n->offset = offset;
@@ -102,6 +104,24 @@ void node_dispose( node *n )
 int node_has_parent( node *n )
 {
     return n->parent != NULL;
+}
+/**
+ * Get the named attribute
+ * @param n the node to get the attribute from
+ * @param name the name of the attribute
+ * @return NULL if not found or the attribute
+ */
+attribute *node_get_attribute( node *n, char *name )
+{
+    attribute *a = n->attrs;
+    while ( a != NULL )
+    {
+        if ( strcmp(attribute_get_name(a),name)==0 )
+            return a;
+        else
+            a = attribute_get_next( a );
+    }
+    return NULL;
 }
 /**
  * Get the first sibling in a list
@@ -179,6 +199,10 @@ void node_add_sibling( node *n, node *r )
     // debug check
     node_debug_check_siblings( node_first(orig) );
 }
+/**
+ * Check that an individual node is sane
+ * @param n the node to check
+ */
 void node_check( node *n )
 {
     int left = n->offset;
@@ -325,9 +349,16 @@ void node_split( node *n, int pos )
     attribute *attr = n->attrs;
     while ( attr != NULL )
     {
-        node_add_attribute( next, attribute_clone(attr) );
-        attr = attribute_get_next( attr );
+        attribute *clone = attribute_clone(attr);
+        if ( clone != NULL )
+        {
+            node_add_attribute( next, clone );
+            attr = attribute_get_next( attr );
+        }
+        else
+            fprintf(stderr,"node: failed to clone attribute\n");
     }
+    // insert next into the sibling list
     n->len = pos-n->offset;
     next->next = n->next;
     n->next = next;
@@ -491,6 +522,16 @@ range *node_to_range( node *n )
     range *r = range_create( node_name(n), node_html_name(n), node_offset(n), 
         node_len(n) ); 
     range_set_rightmost( r, n->rightmost );
+    attribute *attr = n->attrs;
+    while ( attr != NULL )
+    {
+        annotation *a = annotation_create_simple( 
+            attribute_prop_name(attr),
+            attribute_get_value(attr) );
+        if ( a != NULL )
+            range_add_annotation( r, a );
+        attr = attribute_get_next( attr );
+    }
     return r;
 }
 /**

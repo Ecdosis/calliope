@@ -17,6 +17,8 @@
  */
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <ctype.h>
 #include "attribute.h"
 #include "error.h"
 #include "memwatch.h"
@@ -24,19 +26,24 @@ struct attribute_struct
 {
     char *name;
     char *value;
+    // needed to convert back to annotation
+    char *prop_name;
     attribute *next;
 };
 /**
  * Create an attribute
  * @param name its name
+ * @param prop_name its original property name
  * @param value its value
- * @return  the finished attribute or NULL
+ * @return the finished attribute or NULL
  */
-attribute *attribute_create( char *name, char *value )
+attribute *attribute_create( char *name, char *prop_name, char *value )
 {
     attribute *attr = calloc( 1, sizeof(attribute) );
     if ( attr != NULL )
     {
+        // don't duplicate or dispose of this
+        attr->prop_name = prop_name;
         attr->name = strdup( name );
         if ( attr->name == NULL )
         {
@@ -60,13 +67,148 @@ attribute *attribute_create( char *name, char *value )
     return attr;
 }
 /**
+ * Get the xml (property name)
+ * @param attr the attribute
+ * @return its property (xml) name
+ */
+char *attribute_prop_name( attribute *attr )
+{
+    return attr->prop_name;
+}
+/**
+ * Add a suffix to an attribute value
+ * @param attr the attribute
+ * @param suffix the suffix
+ * @return 1 if it worked else 0
+ */
+int attribute_append_value( attribute *attr, char *suffix )
+{
+    int vlen = strlen(attr->value);
+    char *val1 = malloc( vlen+2 );
+    if ( val1 != NULL )
+    {
+        strcpy( val1, attr->value );
+        strcat( val1, suffix );
+        free( attr->value );
+        attr->value = val1;
+        return 1;
+    }
+    else
+    {
+        fprintf(stderr,"attribute: failed to copy attr\n");
+        return 0;
+    }
+}
+/**
+ * Convert a base 24 string to an int
+ * @param str the string
+ * @return its value
+ */
+static int from_base_24( char *str )
+{
+    int value = 0;
+    int i,len = strlen( str );
+    for ( i=0;i<len;i++ )
+    {
+        value *= 24;
+        value += str[i] - 'a';
+    }
+    return value;
+}
+/**
+ * Compute the length of a=the string representing a base 24 number (a=0,aa=24)
+ * @param value the int value
+ * @return its string length
+ */
+static int base_24_len( int value )
+{
+    int len = 0;
+    do
+    {
+        value = value/24;
+        len++;
+    }
+    while ( value > 0 );
+    return len;
+}
+/**
+ * Convert a number to a base-24 string
+ * @param value the number
+ * @param dst the location for the string (must be large enough)
+ */
+static void to_base_24( int value, char *dst )
+{
+	int len = base_24_len(value);
+    int i = len-1;
+    do
+    {
+        dst[i--] = value%24+'a';
+        value /= 24;
+    }
+    while ( value > 0 && i >= 0 );
+	dst[len] = 0;
+}
+/**
+ * Increment a value by incrementing an *existing* suffix
+ * @param attr the attribute in question
+ * @return its value allocated (to be freed) with a new suffix
+ */
+char *attribute_inc_value( attribute *attr )
+{
+    int i=strlen(attr->value)-1;
+    while ( i>0 )
+    {
+        if ( attr->value[i-1]>='a'&&attr->value[i-1]<='z' )
+            i--;
+        else
+            break;
+    }
+    // so we're pointing to the first suffix char
+    char *suffix = &attr->value[i];
+    int base_len = strlen(attr->value)-strlen(suffix);
+    int old = from_base_24( suffix );
+    int new_suffix_len = base_24_len( old+1 );
+    char *new_value = malloc( base_len+new_suffix_len+1 );
+    strncpy( new_value, attr->value, base_len );
+    to_base_24( old+1, &new_value[base_len] );
+    new_value[base_len+new_suffix_len] = 0;
+    return new_value;
+}
+/**
  * Clone an existing attribute
  * @param attr the attribute to clone
  * @return the attribute or NULL
  */
 attribute *attribute_clone( attribute *attr )
 {
-    return attribute_create( attr->name, attr->value );
+    attribute *new_attr = NULL;
+    if ( strcmp(attr->name,"id")==0 )
+    {
+        // inc suffix
+        int vlen = strlen(attr->value);
+        int i = vlen-1;
+        while ( i > 0 && isalpha(attr->value[i]) )
+            i--;
+        int res = 1;
+        if ( i == vlen-1 )
+            res = attribute_append_value( attr, "a" );
+        if ( res )
+        {
+            char *value = attribute_inc_value( attr );
+            if ( value != NULL )
+            {
+                new_attr = attribute_create( attr->name, attr->prop_name, value );
+                free( value );
+            }
+            else
+                fprintf(stderr,"attribute: failed to inc value\n");
+        }
+        else
+            fprintf(stderr,"attribute: failed to append value\n");
+    }
+    else
+        new_attr = attribute_create( attr->name, attr->prop_name, attr->value );
+    return new_attr;
 }
 /**
  * Dispose of an attribute

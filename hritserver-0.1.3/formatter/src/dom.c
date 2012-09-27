@@ -109,6 +109,19 @@ static int array_to_props( int *p_size, char **array, hashmap *rules,
         return 0;
     }
 }
+/**
+ * Store a range on the queue and a copy in the range array
+ * @param d the dom object
+ * @param r the range to add
+ * @return 1 if successful
+ */
+static int dom_store_range( dom *d, range *r )
+{
+    int res = queue_push( d->q, r );
+    if ( res )
+        res = range_array_add( d->ranges,r );
+    return res;
+}
 static int dom_filter_ranges( dom *d, range_array *ranges )
 {
     // first range must be root
@@ -137,8 +150,7 @@ static int dom_filter_ranges( dom *d, range_array *ranges )
                         {
                             // this should duplicate the range
                             range *r_dup = range_copy( r );
-                            if ( r_dup == NULL || !queue_push(d->q,r_dup)
-                                ||!range_array_add(d->ranges,r_dup) )
+                            if ( r_dup == NULL || !dom_store_range(d,r_dup) )
                             {
                                 warning("dom: failed to push onto queue\n");
                                 return 0;
@@ -321,7 +333,8 @@ void dom_build( dom *d )
 {
     while ( !queue_empty(d->q) )
     {
-        node *r = dom_range_to_node( d, queue_pop(d->q) );
+        range *rx = queue_pop( d->q );
+        node *r = dom_range_to_node( d, rx );
         if ( r != NULL )
             dom_add_node( d, d->root, r );
     }
@@ -460,7 +473,7 @@ static int dom_mostly_nests( dom *d, char *n_name, char *r_name )
 {
     int nInR = matrix_inside( d->pm, n_name, r_name );
     int rInN = matrix_inside( d->pm, r_name, n_name );
-    return rInN >= nInR;
+    return nInR >= rInN;
 }
 /**
  * May one property nest inside another at all?
@@ -517,6 +530,14 @@ static void dom_make_parent( dom *d, node *n, node *r )
             {
                 node_detach_sibling( n, prev );
                 node_add_child( r, n );
+                if ( node_overlaps_on_right(parent,r) )
+                {
+                    node_split( r, node_end(parent) );
+                    node *r2 = node_next_sibling( r );
+                    node_detach_sibling( r, NULL );
+                    dom_store_range( d, node_to_range(r2) );
+                    node_dispose( r2 );
+                }
             }
             else if ( node_overlaps_on_left(n,r) )
             {
@@ -536,7 +557,8 @@ static void dom_make_parent( dom *d, node *n, node *r )
             node_split( r, node_offset(n) );
             r2 = node_next_sibling( r );
             node_detach_sibling( r, NULL );
-            queue_push( d->q, node_to_range(r2) );
+            dom_store_range( d, node_to_range(r2) );
+            //queue_push( d->q, node_to_range(r2) );
             node_dispose( r2 );
             break;
         }
@@ -559,6 +581,13 @@ static void dom_drop_notify( dom *d, node *r, node *n )
     warning("dom: dropping %s at %d:%d - %s and %s incompatible\n",
         node_name(r),node_offset(r),
         node_end(r),node_html_name(r),node_html_name(n));
+    attribute *id = node_get_attribute( r, "id" );
+    if ( id != NULL )
+    {
+        char *value = attribute_get_value( id );
+        if ( value[strlen(value)-1]=='b' )
+            printf( "aha! dropping id %s\n",value );
+    }
     node_dispose( r );
 }
 /**
@@ -610,18 +639,20 @@ static void dom_breakup_range( dom *d, node *n, node *r )
         node_split( r, node_offset(n) );
         r2 = node_next_sibling( r );
         node_detach_sibling( r, NULL );
-        queue_push( d->q, node_to_range(r) );
+        dom_store_range( d, node_to_range(r) );
+        //queue_push( d->q, node_to_range(r) );
         node_dispose( r );
     }
     else
         r2 = r;
-    if ( node_end(n)>node_end(r2) )
+    if ( node_end(r2)>node_end(n) )
     {
         node *r3;
         node_split( r2, node_end(n) );
         r3 = node_next_sibling(r2);
         node_detach_sibling(r3,r2);
-        queue_push( d->q, node_to_range(r3) );
+        dom_store_range( d, node_to_range(r3) );
+        //queue_push( d->q, node_to_range(r3) );
         node_dispose(r3);
     }
     dom_node_equals( d, n, r2 );
@@ -675,8 +706,10 @@ static void dom_range_overlaps_left( dom *d, node *n, node *r )
         node_split( r, node_offset(n) );
         r2 = node_next_sibling(r);
         node_detach_sibling( r2, r );
-        queue_push( d->q, node_to_range(r) );
+        dom_store_range( d, node_to_range(r) );
+        //queue_push( d->q, node_to_range(r) );
         node_dispose( r );
+        dom_add_node( d, n, r2 );
     }
     else
         dom_drop_notify( d, r, n );
@@ -700,7 +733,8 @@ static void dom_range_overlaps_right( dom *d, node *n, node *r )
         node_split( r, node_end(n) );
         r2 = node_next_sibling(r);
         node_detach_sibling( r, NULL );
-        queue_push( d->q, node_to_range(r2) );
+        dom_store_range( d, node_to_range(r2) );
+        //queue_push( d->q, node_to_range(r2) );
         node_dispose( r2 );
         dom_add_node( d, n, r );
     }
@@ -738,6 +772,7 @@ static void dom_add_node( dom *d, node *n, node *r )
     {
         dom_node_equals( d, n, r );
     }
+    //dom_check_tree( d );
 }
 /**
  * Debug routine: check output to see if well-formed
