@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public abstract class Test extends HritHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Comparenew Html Import Table";
+    public static String tabs = "Home Compare Comparenew Html Image Import Table";
     private static String KING_LEAR = 
         "english/shakespeare/kinglear/act1/scene1";
     /** contains a leading slash */

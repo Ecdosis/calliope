@@ -222,48 +222,34 @@ public class CorCode extends JSONDocument implements RangeComplete
     /**
      * Process a merged pair. Successive calls may work within the same run.
      * @param p a merged pair
-     * @param runs and array of runs to subdivide the ranges
-     * @param j current index into runs array
      * @param prefix prefix this to all generated IDs
-     * @return updated index into runs
+     * @param split split this merged pair from the previous if any
      */
-    int doMergedPair( Pair p, Run[] runs, int j, char prefix )
+    void doMergedPair( Pair p, char prefix, boolean split )
     {
-        // point to first overlapping run
-        while ( j<runs.length && runs[j].end()<= offset )
+        if ( split )
         {
-            // if the run breaks current, add it
             if ( current != null )
                 current = addRange( current );
-            j++;
+            current = new Range( ChunkState.MERGED, offset, 
+                offset+p.length() );
+            current.addAnnotation( "mergeid", prefix
+                +new Integer(idGen.next()).toString() );
         }
-        // while it overlaps, inc j
-        int pEnd = offset+p.length();
-        while ( j<runs.length && runs[j].offset < pEnd )
+        else
         {
-            int start = Math.max(offset,runs[j].offset);
-            int end = Math.min(pEnd, runs[j].end() );
             if ( current != null )
             {
-                current.len += end-start;
+                current.len += p.length();
             }
             else
             {
-                current = new Range( ChunkState.MERGED, start, 
-                    end-start );
+                current = new Range( ChunkState.MERGED, offset, 
+                    p.length() );
                 current.addAnnotation( "mergeid", prefix
                     +new Integer(idGen.next()).toString() );
             }
-            if ( runs[j].end() <= pEnd )
-            {
-                j++;
-                if ( current != null )
-                    current = addRange( current );
-            }
-            else
-                break;
         }
-        return j;
     }
     /**
      * Compare two versions of an MVD and store the result in this corcode
@@ -286,9 +272,11 @@ public class CorCode extends JSONDocument implements RangeComplete
                 if ( p.length()> 0 )
                 {
                     boolean hasv1 = p.versions.nextSetBit(v1)==v1;
+                    boolean split = false;
                     if ( hasv1 )
                     {
                         boolean hasv2 = p.versions.nextSetBit(v2)==v2;
+                        split = split||(hasv1&&!hasv2)||(hasv2&&!hasv1);
                         if ( !hasv2 )
                         {
                             String name = getState(p,state);
@@ -306,7 +294,8 @@ public class CorCode extends JSONDocument implements RangeComplete
                             if ( current != null 
                                 && !current.name.equals(ChunkState.MERGED) )
                                 current = addRange( current );
-                            j = doMergedPair( p, runs, j, state.charAt(0) );
+                            doMergedPair( p, state.charAt(0), split );
+                            split = false;
                         }
                         offset += p.length();
                     }
