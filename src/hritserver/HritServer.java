@@ -232,6 +232,7 @@ public class HritServer extends AbstractHandler
             response.setStatus(HttpServletResponse.SC_OK);
             String method = request.getMethod();
             baseRequest.setHandled( true );
+            //System.out.println(target);
             if ( method.equals("GET") )
                 new HritGetHandler().handle( request, response, target );
             else if ( method.equals("PUT") )

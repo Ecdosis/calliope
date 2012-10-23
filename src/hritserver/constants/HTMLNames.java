@@ -58,4 +58,7 @@ public class HTMLNames {
  public static String UL = "ul";
  public static String LI = "li";
  public static String A = "a";
+ public static String NOSCRIPT = "noscript";
+ public static String SCRIPT = "script";
+ public static String SRC = "src";
 }
