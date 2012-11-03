@@ -266,17 +266,17 @@ public class CorCode extends JSONDocument implements RangeComplete
         {
             int j = 0;
             ArrayList<Pair> pairs = text.getPairs();
+            boolean split = false;
             for ( int i=0;i<pairs.size();i++ )
             {
                 Pair p = pairs.get( i );
+                boolean hasv1 = p.versions.nextSetBit(v1)==v1;
+                boolean hasv2 = p.versions.nextSetBit(v2)==v2;
+                split = split||(hasv1&&!hasv2)||(hasv2&&!hasv1);
                 if ( p.length()> 0 )
                 {
-                    boolean hasv1 = p.versions.nextSetBit(v1)==v1;
-                    boolean split = false;
                     if ( hasv1 )
                     {
-                        boolean hasv2 = p.versions.nextSetBit(v2)==v2;
-                        split = split||(hasv1&&!hasv2)||(hasv2&&!hasv1);
                         if ( !hasv2 )
                         {
                             String name = getState(p,state);
@@ -289,7 +289,7 @@ public class CorCode extends JSONDocument implements RangeComplete
                             else
                                 current.len += p.length();
                         }
-                        else
+                        else    // hasv1 && hasv2
                         {
                             if ( current != null 
                                 && !current.name.equals(ChunkState.MERGED) )

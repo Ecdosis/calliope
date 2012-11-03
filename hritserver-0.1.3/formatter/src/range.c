@@ -154,7 +154,7 @@ range *range_create( char *name, char *html_name, int start, int len )
     }
     else
         warning("range creation failed\n");
-	return r;
+    return r;
 }
 /**
  * Dispose of a single range

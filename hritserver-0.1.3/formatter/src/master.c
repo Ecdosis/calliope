@@ -75,13 +75,13 @@ void master_dispose( master *hf )
  */
 static int master_lookup_format( const char *fmt_name )
 {
-	int i;
-	for ( i=0;i<num_formats;i++ )
-	{
-		if ( strcmp(formats[i].name,fmt_name)==0 )
-			return i;
-	}
-	return 0;
+    int i;
+    for ( i=0;i<num_formats;i++ )
+    {
+        if ( strcmp(formats[i].name,fmt_name)==0 )
+            return i;
+    }
+    return 0;
 }
 /**
  * Load the markup file (possibly one of several)

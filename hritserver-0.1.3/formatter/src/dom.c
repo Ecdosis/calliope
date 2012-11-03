@@ -329,16 +329,29 @@ void dom_dispose( dom *d )
  * Build the dom
  * @param d the dom object to build
  */
-void dom_build( dom *d )
+int dom_build( dom *d )
 {
+    int res = 1;
     while ( !queue_empty(d->q) )
     {
         range *rx = queue_pop( d->q );
         node *r = dom_range_to_node( d, rx );
         if ( r != NULL )
-            dom_add_node( d, d->root, r );
+        {
+            if ( node_end(r) <= d->text_len )
+                dom_add_node( d, d->root, r );
+            else
+            {
+                fprintf(stderr,"node range %d:%d > text length (%d)\n",
+                    node_offset(r),node_end(r), d->text_len );
+                node_dispose( r );
+                res = 0;
+                break;
+            }
+        }
     }
     //matrix_dump( d->pm );
+    return res;
 }
 /**
  * Concatenate a formatted string onto the buffer for printing
@@ -511,13 +524,15 @@ static int range_equals_node( node *n, node *r )
 /**
  * Try to make the new node into a parent of the tree-node n. The problem 
  * here is that we must include any siblings of n in r if they fit.
- * @param n the node before which to add the parent
+ * @param n the node above which to add the parent
  * @param r the new unattached node 
  */
 static void dom_make_parent( dom *d, node *n, node *r )
 {
     node *parent = node_parent(n);
     node *prev = node_prec_sibling( n );
+    if ( parent==NULL )
+        printf("parent is NULL\n");
     //fprintf( stderr,"n: %s %d:%d; r %s %d:%d\n",node_name(n),node_offset(n),
     //    node_end(n),node_name(r),node_offset(r),node_end(r));
     //node_debug_check_siblings( node_first_child(parent) );

@@ -163,8 +163,7 @@ int formatter_make_html( formatter *f, const char *text, int len )
     f->tree = dom_create( text, len, f->ranges, f->css_rules, f->properties );
     if ( f->tree != NULL )
     {
-        dom_build( f->tree );
-        res = 1;
+        res = dom_build( f->tree );
     }
     return res;
 }
@@ -295,7 +294,9 @@ static int formatter_add_root_range( formatter *f, int tlen )
         res = 0;
     }
     else
+    {
         range_array_insert( f->ranges, 0, root );
+    }
     return res;
 }
 /**

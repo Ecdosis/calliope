@@ -24,7 +24,7 @@ typedef struct dom_struct dom;
 dom *dom_create( const char *text, int len, range_array *ranges,  
     hashmap *rules, hashset *properties );
 void dom_dispose( dom *d );
-void dom_build( dom *d );
+int dom_build( dom *d );
 void dom_print( dom *d );
 void dom_check_output( dom *d );
 text_buf *dom_get_text_buf( dom *d );

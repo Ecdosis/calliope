@@ -17,7 +17,6 @@
 package hritserver.handler.get.compare;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import hritserver.HritServer;
 import hritserver.HritFormatter;
 import hritserver.exception.*;
 import hritserver.constants.Params;

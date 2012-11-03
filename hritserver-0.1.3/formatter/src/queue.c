@@ -47,15 +47,17 @@ queue *queue_create()
     return q;
 }
 /**
- * Dispose of the memory in the queue
+ * Dispose of the memory in the queue. Ranges are probably freed elsewhere.
  * @param q the queue to dispose
  */
 void queue_dispose( queue *q )
 {
     struct queue_element *qe = q->head;
+    int count = 0;
     while ( qe != NULL )
     {
         struct queue_element *next = qe->next;
+        count++;
         free( qe );
         qe = next;
     }
@@ -104,6 +106,8 @@ range *queue_pop( queue *q )
         r = qe->r;
         if ( qe->prev == NULL )
             q->head = q->tail = NULL;
+        if ( qe->prev != NULL )
+            qe->prev->next = NULL;
         free( qe );
         qe = NULL;
     }
