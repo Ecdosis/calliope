@@ -163,8 +163,7 @@ int formatter_make_html( formatter *f, const char *text, int len )
     f->tree = dom_create( text, len, f->ranges, f->css_rules, f->properties );
     if ( f->tree != NULL )
     {
-        dom_build( f->tree );
-        res = 1;
+        res = dom_build( f->tree );
     }
     return res;
 }

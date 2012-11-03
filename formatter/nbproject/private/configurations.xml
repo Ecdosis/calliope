@@ -27,8 +27,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c drama.css</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c drama.css -m deleted.json:formats.json -t F1.txt F1.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c kinglear.css -m f1vf2.stil:f1.stil -t F1.txt F1.html</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -c drama.css -m deleted.json:formats.json -t F1.txt F1.html</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -c kinglear.css -m f1vf2.stil:f1.stil -t F1.txt F1.html</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
