@@ -231,8 +231,7 @@ public class CorCode extends JSONDocument implements RangeComplete
         {
             if ( current != null )
                 current = addRange( current );
-            current = new Range( ChunkState.MERGED, offset, 
-                offset+p.length() );
+            current = new Range( ChunkState.MERGED, offset, p.length() );
             current.addAnnotation( "mergeid", prefix
                 +new Integer(idGen.next()).toString() );
         }
@@ -244,8 +243,7 @@ public class CorCode extends JSONDocument implements RangeComplete
             }
             else
             {
-                current = new Range( ChunkState.MERGED, offset, 
-                    p.length() );
+                current = new Range( ChunkState.MERGED, offset, p.length() );
                 current.addAnnotation( "mergeid", prefix
                     +new Integer(idGen.next()).toString() );
             }
