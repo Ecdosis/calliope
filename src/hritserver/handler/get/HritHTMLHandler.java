@@ -84,7 +84,7 @@ public class HritHTMLHandler extends HritGetHandler
     {
         Path path = new Path( urn );
         String version1 = request.getParameter( Params.VERSION1 );
-        System.out.println("version1="+version1);
+        //System.out.println("version1="+version1);
         path.setName( Database.CORTEX );
         HritVersion corTex = doGetMVDVersion( path, version1 );
         // 1. get corcodes and styles

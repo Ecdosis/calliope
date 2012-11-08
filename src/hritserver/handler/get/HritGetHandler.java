@@ -81,6 +81,8 @@ public class HritGetHandler extends HritHandler
                 new HritGetCorPixHandler().handle( request, response, urn );
             else if ( prefix.equals(Services.LIST) )
                 new HritTextListHandler().handle( request, response, urn );
+            else if ( prefix.equals(Services.JSON) )
+                new HritJSONHandler().handle( request, response, urn );
             else 
                 throw new HritException("invalid urn: "+urn );
         }

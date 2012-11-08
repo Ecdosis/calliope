@@ -5,6 +5,7 @@
 package hritserver.tests;
 
 import hritserver.constants.HTMLNames;
+import hritserver.constants.Params;
 import hritserver.exception.HritException;
 import hritserver.tests.html.Element;
 import hritserver.tests.html.HTML;
@@ -62,10 +63,8 @@ public class TestTilt extends Test
     @Override
     public Element getContent()
     {
-        Element form = new Element(HTMLNames.FORM);
-        form.addAttribute(HTMLNames.ACTION, "/tests/Tilt");
-        form.addAttribute(HTMLNames.METHOD, HTMLNames.POST );
-        form.addAttribute(HTMLNames.NAME, HTMLNames.DEFAULT );
+        Element form = formElement( "/tests/tilt" );
+        form.addChild( docIDHidden(docID) );
         Element outer = new Element( "div" );
         outer.addAttribute( HTMLNames.ID, "centre" );
         Element noScript = new Element(HTMLNames.NOSCRIPT);

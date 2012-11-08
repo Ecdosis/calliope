@@ -203,20 +203,8 @@ public class TestHome extends Test
         try
         {
             byte[] data = pollServer();
-            Element form = new Element(HTMLNames.FORM);
-            form.addAttribute(HTMLNames.METHOD,HTMLNames.POST);
-            form.addAttribute(HTMLNames.NAME,HTMLNames.DEFAULT);
-            form.addAttribute(HTMLNames.ID,HTMLNames.DEFAULT);
-            /*Element p = new Element(HTMLNames.P);
-            p.addText("Doc ID: ");*/
-            Element input = new Element( HTMLNames.INPUT );
-            input.addAttribute(HTMLNames.TYPE,HTMLNames.HIDDEN);
-            input.addAttribute(HTMLNames.ID,Params.DOC_ID);
-            input.addAttribute(HTMLNames.NAME,Params.DOC_ID);
-            input.addAttribute(HTMLNames.VALUE, docID );
-            //input.addAttribute(HTMLNames.STYLE,"width: 200px");
-            /*p.addChild( input );*/
-            form.addChild( input );
+            Element form = formElement( "/tests/home" );
+            form.addChild( docIDHidden(docID) );
             HTMLCatalog cata = new HTMLCatalog();
             int count = 5;
             boolean result = false;

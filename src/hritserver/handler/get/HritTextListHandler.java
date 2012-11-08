@@ -71,7 +71,7 @@ public class HritTextListHandler extends HritGetHandler
             throw new HritException("wrong number of columns: "+cols.length);
     }
     /**
-     * Format the raw table form the database into plain text: each version 
+     * Format the raw table from the database into plain text: each version 
      * separated by a comma and preceded by its group path if it is not at 
      * the top level
      * @param rawTable the raw table tabbed and with CRs
@@ -101,15 +101,20 @@ public class HritTextListHandler extends HritGetHandler
         path.setName( Database.CORTEX );
         try
         {
-            HritMVD mvd = loadMVD( path.getResource() );
-            String table = mvd.mvd.getVersionTable();
-            response.setContentType("text/plain;charset=UTF-8");
-            String list = formatTable( table );
-            response.getWriter().println( list );
+            if ( !path.isEmpty() )
+            {
+                HritMVD mvd = loadMVD( path.getResource() );
+                String table = mvd.mvd.getVersionTable();
+                response.setContentType("text/plain;charset=UTF-8");
+                String list = formatTable( table );
+                response.getWriter().println( list );
+            }
+            else
+                throw new HritException("Invalid path "+path.getResource());
         }
         catch ( Exception e )
         {
-            e.printStackTrace( System.out );
+            throw new HritException(e);
         }
     }
 

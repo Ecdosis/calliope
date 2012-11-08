@@ -241,6 +241,48 @@ public abstract class Test extends HritHandler
         }
     }
     /**
+     * Generate a default DOC_ID input element 
+     * @return the Element object for easy adding to the test page
+     */
+    protected Element defaultDocIDElem()
+    {
+        Element docIDElem = new Element( HTMLNames.INPUT );
+        docIDElem.addAttribute( HTMLNames.TYPE, HTMLNames.HIDDEN );
+        docIDElem.addAttribute( HTMLNames.ID, Params.DOC_ID );
+        docIDElem.addAttribute( HTMLNames.NAME, Params.DOC_ID );
+        docIDElem.addAttribute( HTMLNames.VALUE, 
+            "english/shakespeare/kinglear/act1/scene1" );
+        return docIDElem;
+    }
+    /**
+     * Create the DOCID element
+     * @param docID the docid value to be used
+     * @return a hidden element
+     */
+    protected Element docIDHidden( String docID )
+    {
+        Element input = new Element(HTMLNames.INPUT);
+        input.addAttribute( HTMLNames.TYPE, HTMLNames.HIDDEN);
+        input.addAttribute( HTMLNames.NAME, Params.DOC_ID );
+        input.addAttribute( HTMLNames.ID, Params.DOC_ID );
+        input.addAttribute( HTMLNames.VALUE, docID );
+        return input;
+    }
+    /**
+     * Generate the default form element for the test
+     * @param url the URL to link to this page
+     * @return a form Element
+     */
+    protected Element formElement( String url )
+    {
+        Element form = new Element( HTMLNames.FORM );
+        form.addAttribute( HTMLNames.NAME, HTMLNames.DEFAULT );
+        form.addAttribute( HTMLNames.ID, HTMLNames.DEFAULT );
+        form.addAttribute( HTMLNames.METHOD, HTMLNames.POST );
+        form.addAttribute( HTMLNames.ACTION, url );
+        return form;
+    }
+    /**
      * Display the test GUI, selecting the default Home tab
      * @param request the request to read from
      * @param urn the original URN - ignored

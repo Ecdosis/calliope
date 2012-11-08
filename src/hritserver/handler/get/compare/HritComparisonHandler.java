@@ -149,15 +149,20 @@ public class HritComparisonHandler extends HritHTMLHandler
             path.setName( Database.CORCODE );
             ArrayList<String> styleNames = new ArrayList<String>();
             ArrayList<String> formats = new ArrayList<String>();
+            // add diff styles
+            String[] newStyles = new String[styles.length+1];
+            System.arraycopy( styles, 0, newStyles, 0, styles.length );
+            newStyles[styles.length] = "diffs/default";
             String[] ccTexts = getCorCodes( path.getResourcePath(true), 
-                version1, corCodes, cc, styles, styleNames, formats );
+                version1, corCodes, cc, newStyles, styleNames, formats );
             String[] styleTexts = new String[styleNames.size()];
             styleNames.toArray( styleTexts );
             String[] formatTexts = new String[formats.size()];
             formats.toArray( formatTexts );
             // call the native library
             JSONResponse html = new JSONResponse();
-            int res = new HritFormatter().format( text.mvd.getVersion(v1), 
+            byte[] mvdVersionText = text.mvd.getVersion(v1);
+            int res = new HritFormatter().format( mvdVersionText, 
                 ccTexts, styleTexts, formatTexts, html );
             if ( res == 0 )
                 throw new NativeException("formatting failed");

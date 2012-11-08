@@ -378,10 +378,7 @@ public class TestTable extends Test
             }
             div.addChild(new HTMLLiteral(sb.toString()) );
             Element panel = new Element(HTMLNames.DIV);
-            Element form = new Element(HTMLNames.FORM);
-            form.addAttribute(HTMLNames.METHOD,HTMLNames.POST);
-            form.addAttribute(HTMLNames.NAME,HTMLNames.DEFAULT);
-            form.addAttribute(HTMLNames.ACTION, "/tests/table/" );
+            Element form = formElement( "/tests/table/" );
             Element p1 = new Element(HTMLNames.P);
             form.addChild( p1 );
             addCheckBox( p1, hideMerged, "hide merged", Params.HIDE_MERGED, 

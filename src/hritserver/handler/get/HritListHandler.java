@@ -86,6 +86,7 @@ public class HritListHandler extends HritGetHandler
      * @param table the raw text table returned by nmerge
      * @param listName the NAME of the list in HTML
      * @param function the function to be invoked onchange
+     * @param longNameId
      * @return the markup of the list
      * @throws HritException 
      */

@@ -72,11 +72,8 @@ public class TestImage extends Test
     @Override
     public Element getContent()
     {
-        Element form = new Element( HTMLNames.FORM );
-        form.addAttribute( HTMLNames.NAME, HTMLNames.DEFAULT );
-        form.addAttribute( HTMLNames.ID, HTMLNames.DEFAULT );
-        form.addAttribute( HTMLNames.METHOD, HTMLNames.POST );
-        form.addAttribute( HTMLNames.ACTION, "/tests/image" );
+        Element form = formElement( "/tests/image" );
+        form.addChild( docIDHidden(docID) );
         Element divCentre = new Element( HTMLNames.DIV );
         form.addChild( divCentre );
         divCentre.addAttribute( HTMLNames.ID, "twinCentreColumn" );

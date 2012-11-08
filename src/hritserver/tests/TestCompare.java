@@ -34,7 +34,6 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import hritserver.tests.html.Element;
 import hritserver.tests.html.HTMLLiteral;
-import hritserver.constants.HTMLNames;
 import hritserver.URLEncoder;
 import hritserver.tests.html.HTML;
 /**

@@ -94,10 +94,7 @@ public class TestHtml extends Test
             rawUrl.addParam( Params.VERSION1, version1 );
             rawUrl.addParam( Params.FUNCTION, "do_popup1()" );
             String html = URLEncoder.getResponseForUrl( rawUrl.toString() );
-            Element form = new Element(HTMLNames.FORM);
-            form.addAttribute(HTMLNames.ACTION, "/tests/Html");
-            form.addAttribute(HTMLNames.METHOD, HTMLNames.POST );
-            form.addAttribute(HTMLNames.NAME, HTMLNames.DEFAULT );
+            Element form = formElement("/tests/html" );
             Element content = new HTMLLiteral( html );
             form.addChild( content );
             if ( version1 != null )

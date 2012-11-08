@@ -109,7 +109,7 @@ public class HritServer extends AbstractHandler
     /**
      * Get a document's revid
      * @param path the path of the document including its database
-     * @return a string or nul to indicate it isn't there
+     * @return a string or null to indicate it isn't there
      */
     public static String getRevId( String path ) throws HritException
     {

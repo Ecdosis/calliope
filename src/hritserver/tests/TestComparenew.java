@@ -266,17 +266,8 @@ public class TestComparenew extends Test
     {
         try
         {
-            Element form = new Element( HTMLNames.FORM );
-            form.addAttribute( HTMLNames.NAME, HTMLNames.DEFAULT );
-            form.addAttribute( HTMLNames.ID, HTMLNames.DEFAULT );
-            form.addAttribute( HTMLNames.METHOD, HTMLNames.POST );
-            form.addAttribute( HTMLNames.ACTION, "/tests/comparenew" );
-            Element input = new Element(HTMLNames.INPUT);
-            input.addAttribute( HTMLNames.TYPE, HTMLNames.HIDDEN);
-            input.addAttribute( HTMLNames.NAME, Params.DOC_ID );
-            input.addAttribute( HTMLNames.ID, Params.DOC_ID );
-            input.addAttribute( HTMLNames.VALUE, docID );
-            form.addChild( input );
+            Element form = formElement( "/tests/comparenew" );
+            form.addChild( docIDHidden(docID) );
             Element divCentre = new Element( HTMLNames.DIV );
             divCentre.addAttribute( HTMLNames.ID, "twinCentreColumn" );
             Element divLeft = new Element( HTMLNames.DIV );
@@ -312,7 +303,7 @@ public class TestComparenew extends Test
             divLeft.addChild( lhs );
             // get content for rhs
             body = getTextVersion(version2,version1,ChunkState.ADDED);
-            System.out.println(body);
+            //System.out.println(body);
             Element rhs = new HTMLLiteral( body );
             divRight.addChild( rhs );
             // now assemble all the parts

@@ -41,6 +41,8 @@ public class Services
     public static String XML = "xml";
     /** text import service */
     public static String TEXT = "text";
+    /** json list versions service */
+    public static String JSON = "json";
     /** mvd import service */
     public static String MVD = "mvd";
     /** get the second versions given the first */
