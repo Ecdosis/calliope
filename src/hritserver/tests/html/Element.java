@@ -16,6 +16,7 @@
 package hritserver.tests.html;
 import java.util.ArrayList;
 import hritserver.constants.HTMLNames;
+import hritserver.exception.HritException;
 /**
  *
  * @author desmond
@@ -45,6 +46,21 @@ public class Element
     {
         Attribute attr = new Attribute( key, value);
         addAttribute( attr );
+    }
+    /**
+     * Get a named attribute
+     * @param name the name to get
+     * @return the attribute value or null if not found
+     */
+    public String getAttribute( String name )
+    {
+        for ( int i=0;i<attrs.size();i++ )
+        {
+            Attribute a = attrs.get(i);
+            if ( a.key.equals(name) )
+                return a.value;
+        }
+        return null;
     }
     /**
      * Add another value to the end of an existing attribute
@@ -82,6 +98,30 @@ public class Element
         if ( children == null )
             children = new ArrayList<Element>();
         children.add( child );
+    }
+    /**
+     * Count the number of child elements including text
+     * @return a count 
+     */
+    public int numChildren()
+    {
+        if ( children == null )
+            return 0;
+        else
+            return children.size();
+    }
+    /**
+     * get a particular child
+     * @param i index of the desired child element
+     * @return the child
+     * @throws HritException if the index was out of bounds
+     */
+    public Element getChild( int i ) throws HritException
+    {
+        if ( i < children.size() )
+            return children.get( i );
+        else
+            throw new HritException("invalid child index "+i);
     }
     /**
      * Convert this element to a String

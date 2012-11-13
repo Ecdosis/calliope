@@ -59,7 +59,9 @@ public class HritTextListHandler extends HritGetHandler
             while ( groupPath.size() > cols.length-2 )
                 groupPath.remove( groupPath.size()-1 );
             // build full string
-            for ( int i=1;i<groupPath.size();i++ )
+            if ( groupPath.size()>0 )
+                sb.append("/");
+            for ( int i=0;i<groupPath.size();i++ )
             {
                 sb.append(groupPath.get(i));
                 sb.append("/");

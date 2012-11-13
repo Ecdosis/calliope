@@ -19,6 +19,7 @@ import java.net.URLConnection;
 import java.io.InputStream;
 import java.util.Stack;
 import java.util.HashSet;
+import java.util.Arrays;
 import hritserver.tests.html.*;
 import hritserver.exception.*;
 import hritserver.constants.*;
@@ -189,19 +190,24 @@ public class TestTable extends Test
         +".nextSibling;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tchild = child."
         +"nextSibling;\n\t}\n}\nfunction checkmark( select )\n{\n\tvar"
         +" pos = select.options[select.selectedIndex].text.lastIndexOf"
-        +"(\" ?\");\n\tif ( pos != -1 )\n\t{\n\t\tvar len = select.opt"
+        +"(\" ×\");\n\tif ( pos != -1 )\n\t{\n\t\tvar len = select.opt"
         +"ions[select.selectedIndex].text.length;\n\t\tvar copy = sele"
         +"ct.options[select.selectedIndex].text;\n\t\tselect.options[s"
         +"elect.selectedIndex].text = copy.substring(0,pos);\n\t}\n\te"
         +"lse\n\t{\n\t\tselect.options[select.selectedIndex].text += \""
-        +" ?\";\n\t}\n}\nfunction presubmit()\n{\n\tvar s = document."
+        +" ×\";\n\t}\n}\nfunction presubmit()\n{\n\tvar s = document."
         +"getElementById(\"selector\");\n\tvar value = \"\";\n\tfor ( "
         +"var i=0;i<s.options.length;i++ )\n\t{\n\t\tif ( s.options[i]"
-        +".text.lastIndexOf(\" ?\")!=-1 )\n\t\t{\n\t\t\tif ( value.len"
+        +".text.lastIndexOf(\" ×\")!=-1 )\n\t\t{\n\t\t\tif ( value.len"
         +"gth>0 )\n\t\t\t\tvalue+=\",\";\n\t\t\tvalue += s.options[i]."
         +"value;\n\t\t}\n\t}\n\tvar versions = document.getElementById"
-        +"(\"versions\");\n\tversions.value = value;\n}\nwindow.onload"
-        +" = alignTables;\n";
+        +"(\"versions\");\n\tversions.value = value;\n}\nfunction togg"
+        +"leVersionSelector( check )\n{\n\tvar s = document.getElement"
+        +"ById(\"selector\");\n\tif ( check.value==\"on\" )\n\t{\n\t\t"
+        +"var disabled = s.getAttribute(\"disabled\");\n\t\tif ( disab"
+        +"led != null )\n\t\t\ts.removeAttribute(\"disabled\");\n\t}\n"
+        +"\telse\n\t{\n\t\ts.setAttribute(\"disabled\",\"disabled\");\n"
+        +"\t}\n}\nwindow.onload = alignTables;";
     public TestTable()
     {
         description = "Produces a variant table from sections of an MVD";
@@ -286,15 +292,52 @@ public class TestTable extends Test
         return sb.toString();
     }
     /**
+     * Truncate an array by popping off the leading element
+     * @param array an array with at least 2 elements
+     * @return a shortened array of length array.length-1
+     */
+    private String[] popArray( String[] array )
+    {
+        String[] newCols = new String[array.length-1];
+        System.arraycopy( array, 1, newCols, 0, newCols.length );
+        return newCols;
+    }
+    /**
+     * See if the dropdown already has a group of that name, else create it
+     * @param select the select element
+     * @param name the name of the group
+     * @return the optgroup or null
+     */
+    HTMLOptGroup getGroup( Element select, String name )
+    {
+        for ( int i=0;i<select.numChildren();i++ )
+        {
+            try
+            {
+                Element e = select.getChild(i);
+                if ( e instanceof HTMLOptGroup )
+                {
+                    String label = e.getAttribute( HTMLNames.LABEL );
+                    if ( label != null && label.equals(name) )
+                        return (HTMLOptGroup)e;
+                }
+            }
+            catch ( HritException he )
+            {
+                System.out.println(he.getMessage() );
+            }
+        }
+        return null;
+    }
+    /**
      * Add a dropdown menu containing all the nested versions and groups
-     * @param parent
+     * @param parent the parent element to attach it to
      * @throws Exception 
      */
     void addVersionDropdown( Element parent ) throws Exception
     {
         Element select = new Element(HTMLNames.SELECT);
         String versions = getVersions();
-        Stack<Element> stack = new Stack<Element>();
         String[] opts = versions.split(",");
         // remove trailing LF-
         HashSet<String> selected = new HashSet<String>();
@@ -305,25 +348,34 @@ public class TestTable extends Test
                 selected.add( shortNames[i] );
         }
         opts[opts.length-1] = opts[opts.length-1].trim();
-        stack.push( select );
         for ( int i=0;i<opts.length;i++ )
         {
             String[] cols = opts[i].split("/");
-            while ( cols.length > stack.size() )
+            if ( cols.length > 0 && cols[0].length()==0 )
+                cols = popArray( cols );
+            if ( cols.length > 1 )
             {
-                Element group = new Element(HTMLNames.OPTGROUP); 
-                stack.push( group );
+                HTMLOptGroup group = getGroup(select,cols[0]);
+                if ( selected.contains(opts[i]) )
+                    cols[cols.length-1] += " ×";
+                if ( group == null )
+                {
+                    group = new HTMLOptGroup( cols[0] );
+                    select.addChild( group );
+                }
+                group.add( opts[i], popArray(cols) );
+
             }
-            while ( cols.length < stack.size() )
-                stack.pop();
-            Element option = new Element(HTMLNames.OPTION);
-            stack.peek().addChild( option );
-            String content = cols[cols.length-1];
-            // restore chosen versions
-            if ( selected.contains(content) )
-                content += " \327";
-            option.addText( content );
-            option.addAttribute( HTMLNames.VALUE, opts[i] );
+            else if ( cols.length == 1 )
+            {
+                Element option = new Element(HTMLNames.OPTION);
+                select.addChild( option );
+                String content = cols[cols.length-1];
+                if ( selected.contains(opts[i]) )
+                    content += " \327";
+                option.addText( content );
+                option.addAttribute( HTMLNames.VALUE, opts[i] );
+            }              
         }
         parent.addChild( select );
         if ( !someVersions )

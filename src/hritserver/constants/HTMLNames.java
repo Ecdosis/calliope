@@ -61,4 +61,5 @@ public class HTMLNames {
  public static String NOSCRIPT = "noscript";
  public static String SCRIPT = "script";
  public static String SRC = "src";
+ public static String LABEL = "label";
 }

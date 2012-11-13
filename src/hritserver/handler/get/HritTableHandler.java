@@ -126,7 +126,7 @@ public class HritTableHandler extends HritGetHandler
                 shortName = version1;
             else
             {
-                shortName = version1.substring(rPos);
+                shortName = version1.substring(rPos+1);
                 groups = version1.substring( 0,rPos );
             }
         }
