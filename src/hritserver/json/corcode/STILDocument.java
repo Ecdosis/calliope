@@ -33,7 +33,7 @@ public class STILDocument extends JSONDocument
     ArrayList<Range> rangeArray;
     int lastOffset;
     
-    public STILDocument( String style )
+    public STILDocument()
     {
         super();
         put( JSONKeys.STYLE, Formats.DEFAULT );
@@ -78,7 +78,7 @@ public class STILDocument extends JSONDocument
     public static STILDocument internalise( File src ) throws Exception
     {
         JSONDocument doc = JSONDocument.internalise( src, "UTF-8" );
-        STILDocument stil = new STILDocument( (String)doc.get(JSONKeys.STYLE) );
+        STILDocument stil = new STILDocument();
         stil.rangeArray = new ArrayList<Range>();
         ArrayList list = (ArrayList)doc.get( JSONKeys.RANGES );
         int currentOffset = 0;

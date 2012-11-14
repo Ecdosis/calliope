@@ -18,6 +18,8 @@ import hritserver.handler.get.compare.HritComparisonHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import hritserver.HritFormatter;
+import hritserver.json.corcode.STILDocument;
+import hritserver.json.corcode.Range;
 import hritserver.json.JSONResponse;
 import hritserver.Utils;
 import hritserver.constants.*;
@@ -25,8 +27,12 @@ import hritserver.exception.*;
 import hritserver.path.*;
 import hritserver.handler.HritVersion;
 import hritserver.tests.html.HTMLComment;
+import edu.luc.nmerge.mvd.MVD;
+import edu.luc.nmerge.mvd.Pair;
 import java.util.Map;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.BitSet;
 /**
  *
  * @author desmond
@@ -72,6 +78,99 @@ public class HritHTMLHandler extends HritGetHandler
             handleGetVersion( request, response, urn );
     }
     /**
+     * Does one set of versions entirely contain another
+     * @param container the putative container
+     * @param contained the containee
+     * @return true if all the bits of contained are in container
+     */
+    boolean containsVersions( BitSet container, BitSet contained )
+    {
+        for (int i=contained.nextSetBit(0);i>=0;i=contained.nextSetBit(i+1)) 
+        {
+            if ( container.nextSetBit(i)!= i )
+                return false;
+        }
+        return true;
+    }
+    /**
+     * Compute the IDs of spans of text in a set of versions
+     * @param corCodes the existing corCodes array
+     * @param mvd the MVD to use
+     * @param version1 versionID of the base version
+     * @param spec a comma-separated list of versionIDs 
+     * @return an updated corCodes array
+     */
+    String[] addMergeIds( String[] corCodes, MVD mvd, String version1, 
+        String spec )
+    {
+        STILDocument doc = new STILDocument();
+        int base = mvd.getVersionByNameAndGroup(
+            Utils.getShortName(version1),
+            Utils.getGroupName(version1));
+        ArrayList<Pair> pairs = mvd.getPairs();
+        BitSet merged = mvd.convertVersions( spec );
+        int start = -1;
+        int len = 0;
+        int pos = 0;
+        int id = 1;
+        for ( int i=0;i<pairs.size();i++ )
+        {
+            Pair p = pairs.get( i );
+            if ( p.versions.nextSetBit(base)==base )
+            {
+                if ( containsVersions(p.versions,merged) )
+                {
+                    if ( start == -1 )
+                        start = pos;
+                    len += p.length();
+                }
+                else if ( start != -1 )
+                {
+                    // add range with annotation to doc
+                    try
+                    {
+                        // see diffs/default corform
+                        Range r = new Range("merged", start, len );
+                        r.addAnnotation( "mergeid", "v"+id );
+                        id++;
+                        doc.add( r );
+                        start = -1;
+                        len = 0;
+                    }
+                    catch ( Exception e )
+                    {
+                        // ignore it: we just failed to add that range
+                        start = -1;
+                        len = 0;
+                    }
+                }
+                // the position within base
+                pos += p.length();
+            }
+        }
+        // coda: in case we have a part-fulfilled range
+        if ( start != -1 )
+        {
+            try
+            {
+                Range r = new Range("merged", start, len );
+                r.addAnnotation( "mergeid", "v"+id );
+                id++;
+                doc.add( r );
+            }
+            catch ( Exception e )
+            {
+                // ignore it: we just failed to add that range
+            }
+        }
+        // add new CorCode to the set
+        String[] newCCs = new String[corCodes.length+1];
+        newCCs[newCCs.length-1] = doc.toString();
+        for ( int i=0;i<corCodes.length;i++ )
+            newCCs[i] = corCodes[i];
+        return newCCs;
+    }
+    /**
      * Format the requested URN version as HTML
      * @param request the original http request
      * @param urn the original request urn
@@ -84,6 +183,7 @@ public class HritHTMLHandler extends HritGetHandler
     {
         Path path = new Path( urn );
         String version1 = request.getParameter( Params.VERSION1 );
+        String selectedVersions = request.getParameter( Params.SELECTED_VERSIONS );
         //System.out.println("version1="+version1);
         path.setName( Database.CORTEX );
         HritVersion corTex = doGetMVDVersion( path, version1 );
@@ -114,12 +214,23 @@ public class HritHTMLHandler extends HritGetHandler
             // this won't ever happen because UTF-8 is always supported
             throw new HritException( e );
         }
-        // 2. recompute styles array (docids)
+        // 2. add mergeids if needed
+        if ( selectedVersions != null && selectedVersions.length()>0 )
+        {
+            corCodes = addMergeIds( corCodes, corTex.getMVD(), version1, 
+                selectedVersions );
+            styleSet.add( "diffs/default" );
+            String[] newFormats = new String[formats.length+1];
+            System.arraycopy( formats, 0, newFormats, 0, formats.length );
+            newFormats[formats.length] = "STIL";
+            formats = newFormats;
+        }
+        // 3. recompute styles array (docids)
         styles = new String[styleSet.size()];
         styleSet.toArray( styles );
-        // 3. convert style names to actual corforms
+        // 4. convert style names to actual corforms
         styles = fetchStyles( styles );
-        // 4. call the native library
+        // 5. call the native library to format it
         JSONResponse html = new JSONResponse();
         byte[] text = corTex.getVersion();
 //        // debug

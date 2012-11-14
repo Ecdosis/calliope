@@ -83,4 +83,6 @@ public class Params
     public final static String LONG_NAME_ID = "LONG_NAME_ID";
     /** kind of differences to generate */
     public final static String DIFF_KIND = "diff_kind";
+    /** first merge id for table alignment */
+    public final static String FIRSTID = "FIRSTID";
 }

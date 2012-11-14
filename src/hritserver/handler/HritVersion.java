@@ -14,6 +14,7 @@
  *  along with hritserver.  If not, see <http://www.gnu.org/licenses/>.
  */
 package hritserver.handler;
+import edu.luc.nmerge.mvd.MVD;
 
 /**
  * Represent a version returned from an MVD
@@ -27,6 +28,8 @@ public class HritVersion
     byte[] version;
     /** if CorCode the default style */
     String defaultStyle;
+    /** the original mvd data */
+    MVD mvd;
     /**
      * Set the format of this version
      * @param format the format to set
@@ -51,17 +54,33 @@ public class HritVersion
     {
         this.version = version;
     }
+    /**
+     * Remember the MVD used to get the version
+     * @param mvd 
+     */
+    public void setMVD( MVD mvd )
+    {
+        this.mvd = mvd;
+    }
      /**
      * Set the format of this version
-     * @param format the format to set
+     * @return the name of the format 
      */
     public String getFormat()
     {
         return format;
     }
+     /**
+     * Set the mvd used to fetch this version
+     * @return the original MVD
+     */
+    public MVD getMVD()
+    {
+        return mvd;
+    }
     /**
      * Set the version data of this version
-     * @param format the version contents to set
+     * @return the version contents 
      */
     public byte[] getVersion()
     {

@@ -93,7 +93,7 @@ public class HritListHandler extends HritGetHandler
     String markupVersionTable( String table, String listName, String function, 
         String longNameId ) throws HritException
     {
-        STILDocument doc = new STILDocument( Formats.DEFAULT );
+        STILDocument doc = new STILDocument();
         String[] lines = table.split("\n");
         if ( lines.length > 0 )
         {

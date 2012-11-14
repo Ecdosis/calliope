@@ -193,6 +193,7 @@ public class HritGetHandler extends HritHandler
                 Utils.getGroupName(vPath) );
             version.setFormat((String)doc.get(JSONKeys.FORMAT));
             version.setStyle((String)doc.get(JSONKeys.STYLE));
+            version.setMVD(mvd);
             if ( vId != 0 )
             {
                 data = mvd.getVersion( vId );

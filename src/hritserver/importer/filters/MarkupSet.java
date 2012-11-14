@@ -132,7 +132,7 @@ public class MarkupSet extends ArrayList<Range>
      */
     JSONDocument toSTILDocument()
     {
-        STILDocument doc = new STILDocument("");
+        STILDocument doc = new STILDocument();
         // ensure we are sorted
         try
         {

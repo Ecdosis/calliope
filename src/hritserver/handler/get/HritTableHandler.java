@@ -46,6 +46,8 @@ public class HritTableHandler extends HritGetHandler
     boolean someVersions;
     /** comma-separated string of all selected versions */
     String selectedVersions;
+    /** first ID of aligned table cell (default 0 )*/
+    int firstID;
     int getIntegerOption( Map map, String key, int defaultValue )
     {
         String[] values = (String[])map.get( key );
@@ -106,6 +108,7 @@ public class HritTableHandler extends HritGetHandler
         compact = getBooleanOption( map, Params.COMPACT, false );
         hideMerged = getBooleanOption( map, Params.HIDE_MERGED, false );
         someVersions = getBooleanOption( map, Params.SOME_VERSIONS, false );
+        firstID = getIntegerOption( map, Params.FIRSTID, 0 );
         if ( someVersions )
             selectedVersions = getStringOption(map, Params.SELECTED_VERSIONS,ALL );
         else
@@ -142,7 +145,7 @@ public class HritTableHandler extends HritGetHandler
                 base = 1;
             }
             String table = mvd.mvd.getTableView( base,offset,length,
-                compact,hideMerged,wholeWords,selectedVersions );
+                compact,hideMerged,wholeWords,selectedVersions,firstID );
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().println( table );
         }
