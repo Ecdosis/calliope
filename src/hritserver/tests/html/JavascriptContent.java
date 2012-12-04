@@ -36,10 +36,11 @@ public class JavascriptContent extends Text
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
+        sb.append( "\n" );
         for ( int i=0;i<scripts.size();i++ )
         {
             sb.append( scripts.get(i) );
-            //sb.append( "\n" );
+            sb.append( "\n" );
         }
         return sb.toString();
     }

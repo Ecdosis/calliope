@@ -176,4 +176,12 @@ public class HTML extends Element
         }
         return root;
     }
+    /**
+     * Override the standard toString method to include the DOCTYPE
+     * @return a String being the start and end with the doctype at the start
+     */
+    public String toString()
+    {
+        return "<!DOCTYPE html>\n"+super.toString();
+    }
 }

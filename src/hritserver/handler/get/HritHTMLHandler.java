@@ -183,80 +183,98 @@ public class HritHTMLHandler extends HritGetHandler
     {
         Path path = new Path( urn );
         String version1 = request.getParameter( Params.VERSION1 );
-        String selectedVersions = request.getParameter( Params.SELECTED_VERSIONS );
-        //System.out.println("version1="+version1);
-        path.setName( Database.CORTEX );
-        HritVersion corTex = doGetMVDVersion( path, version1 );
-        // 1. get corcodes and styles
-        Map map = request.getParameterMap();
-        String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
-        String[] styles = getEnumeratedParams( Params.STYLE, map, false );
-        path.setName( Database.CORCODE );
-        String[] formats = new String[corCodes.length];
-        HashSet<String> styleSet = new HashSet<String>();
-        for ( int i=0;i<styles.length;i++ )
-            styleSet.add( styles[i] );
-        try
+        if ( version1 == null )
         {
-            String resource = path.getResource();
-            for ( int i=0;i<corCodes.length;i++ )
-            {
-                String ccResource = Utils.canonisePath(resource,corCodes[i]);
-                Path ccPath = new Path( ccResource );
-                HritVersion hv = doGetMVDVersion( ccPath, version1 );
-                styleSet.add( hv.getStyle() );
-                corCodes[i] = new String(hv.getVersion(),"UTF-8");
-                formats[i] = hv.getFormat();
-            }
-        }
-        catch ( Exception e )
-        {
-            // this won't ever happen because UTF-8 is always supported
-            throw new HritException( e );
-        }
-        // 2. add mergeids if needed
-        if ( selectedVersions != null && selectedVersions.length()>0 )
-        {
-            corCodes = addMergeIds( corCodes, corTex.getMVD(), version1, 
-                selectedVersions );
-            styleSet.add( "diffs/default" );
-            String[] newFormats = new String[formats.length+1];
-            System.arraycopy( formats, 0, newFormats, 0, formats.length );
-            newFormats[formats.length] = "STIL";
-            formats = newFormats;
-        }
-        // 3. recompute styles array (docids)
-        styles = new String[styleSet.size()];
-        styleSet.toArray( styles );
-        // 4. convert style names to actual corforms
-        styles = fetchStyles( styles );
-        // 5. call the native library to format it
-        JSONResponse html = new JSONResponse();
-        byte[] text = corTex.getVersion();
-//        // debug
-//        try{
-//            String textString = new String(text,"UTF-8");
-//            System.out.println(textString);
-//        }catch(Exception e){}
-        // end
-        int res = new HritFormatter().format( 
-            text, corCodes, styles, formats, html );
-        if ( res == 0 )
-            throw new NativeException("formatting failed");
-        else
-        {
-            response.setContentType("text/html;charset=UTF-8");
             try
             {
-                HTMLComment comment = new HTMLComment();
-                for ( int i=0;i<styles.length;i++ )
-                    comment.addText( styles[i] );
-                response.getWriter().println( comment.toString() );
-                response.getWriter().println(html.getBody());   
+                response.getWriter().println(
+                    "<p>version1 parameter required</p>");
             }
             catch ( Exception e )
             {
                 throw new HritException( e );
+            }
+        }
+        else
+        {
+            String selectedVersions = request.getParameter( Params.SELECTED_VERSIONS );
+            //System.out.println("version1="+version1);
+            path.setName( Database.CORTEX );
+            HritVersion corTex = doGetMVDVersion( path, version1 );
+            // 1. get corcodes and styles
+            Map map = request.getParameterMap();
+            String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
+            String[] styles = getEnumeratedParams( Params.STYLE, map, false );
+            path.setName( Database.CORCODE );
+            String[] formats = new String[corCodes.length];
+            HashSet<String> styleSet = new HashSet<String>();
+            for ( int i=0;i<styles.length;i++ )
+                styleSet.add( styles[i] );
+            try
+            {
+                String resource = path.getResource();
+                for ( int i=0;i<corCodes.length;i++ )
+                {
+                    String ccResource = Utils.canonisePath(resource,corCodes[i]);
+                    Path ccPath = new Path( ccResource );
+                    HritVersion hv = doGetMVDVersion( ccPath, version1 );
+                    HTMLComment comment = new HTMLComment();
+                    comment.addText( "version-length: "+hv.getVersionLength() );
+                    response.getWriter().println( comment.toString() );
+                    styleSet.add( hv.getStyle() );
+                    corCodes[i] = new String(hv.getVersion(),"UTF-8");
+                    formats[i] = hv.getFormat();
+                }
+            }
+            catch ( Exception e )
+            {
+                // this won't ever happen because UTF-8 is always supported
+                throw new HritException( e );
+            }
+            // 2. add mergeids if needed
+            if ( selectedVersions != null && selectedVersions.length()>0 )
+            {
+                corCodes = addMergeIds( corCodes, corTex.getMVD(), version1, 
+                    selectedVersions );
+                styleSet.add( "diffs/default" );
+                String[] newFormats = new String[formats.length+1];
+                System.arraycopy( formats, 0, newFormats, 0, formats.length );
+                newFormats[formats.length] = "STIL";
+                formats = newFormats;
+            }
+            // 3. recompute styles array (docids)
+            styles = new String[styleSet.size()];
+            styleSet.toArray( styles );
+            // 4. convert style names to actual corforms
+            styles = fetchStyles( styles );
+            // 5. call the native library to format it
+            JSONResponse html = new JSONResponse();
+            byte[] text = corTex.getVersion();
+    //        // debug
+    //        try{
+    //            String textString = new String(text,"UTF-8");
+    //            System.out.println(textString);
+    //        }catch(Exception e){}
+            // end
+            int res = new HritFormatter().format( 
+                text, corCodes, styles, formats, html );
+            if ( res == 0 )
+                throw new NativeException("formatting failed");
+            else
+            {
+                response.setContentType("text/html;charset=UTF-8");
+                try
+                {
+                    HTMLComment comment = new HTMLComment();
+                    for ( int i=0;i<styles.length;i++ )
+                        comment.addText( styles[i] );
+                    response.getWriter().println( comment.toString() );
+                    response.getWriter().println(html.getBody());   
+                }
+                catch ( Exception e )
+                {
+                    throw new HritException( e );
+                }
             }
         }
     }

@@ -87,11 +87,34 @@ public class HritVersion
         return version;
     }
     /**
+     * Get the MVD version as a String
+     * @return the string or an "invalid encoding" message
+     */
+    public String getVersionString()
+    {
+        try
+        {
+            return new String( version, mvd.getEncoding());
+        }
+        catch ( Exception e )
+        {
+            return "invalid encoding "+mvd.getEncoding();
+        }
+    }
+    /**
      * Get the default style of this version
      * @return the default style if any
      */
     public String getStyle()
     {
         return this.defaultStyle;
+    }
+    /**
+     * Get the length of the data version
+     * @return the version's length
+     */
+    public int getVersionLength()
+    {
+        return version.length;
     }
 }

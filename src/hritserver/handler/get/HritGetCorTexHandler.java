@@ -18,7 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import hritserver.exception.HritException;
 import hritserver.constants.Services;
+import hritserver.handler.HritVersion;
+import hritserver.constants.Params;
 import hritserver.path.Path;
+import hritserver.Utils;
+import hritserver.constants.Database;
 
 /**
  * Handle a call to get a specific cortex (whole)
@@ -35,6 +39,18 @@ public class HritGetCorTexHandler extends HritGetHandler
         if ( prefix != null && prefix.equals(Services.VERSION2) )
             new HritNextVersionHandler().handle(request,response,urn);
         else
-            throw new HritException("unimplemented");
+        {
+            try
+            {
+                String version1 = request.getParameter(Params.VERSION1 );
+                Path path = new Path( Utils.canonisePath(Database.CORTEX,urn) );
+                HritVersion hv = doGetMVDVersion( path, version1 );
+                response.getWriter().println(hv.getVersionString()); 
+            }
+            catch ( Exception e )
+            {
+                throw new HritException( e );
+            }
+        }
     }
 }

@@ -47,7 +47,7 @@ public class HritServer extends AbstractHandler
     /** time to wait after read for any data at start */
     static long bigTimeout = 2000;// milliseconds
     /** time to wait after read for any more data */
-    static long smallTimeout = 50;// milliseconds
+    static long smallTimeout = 200;// milliseconds
     static String DEFAULT_STYLE = "TEI";
     HritServer()
     {
@@ -155,6 +155,42 @@ public class HritServer extends AbstractHandler
         return sb.toString();
     }
     /**
+     * Read the response of the server
+     * @param conn an open connection
+     * @return the server's response or the empty string
+     * @throws IOException 
+     */
+    private static String readResponse( HttpURLConnection conn, long delay ) throws Exception
+    {
+        if ( delay < 50 )
+        {
+            try
+            {
+                InputStream is = conn.getInputStream();
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                String line;
+                StringBuilder response = new StringBuilder(); 
+                while ((line = rd.readLine()) != null) 
+                {
+                    response.append(line);
+                    response.append('\r');
+                }
+                is.close();
+                rd.close();
+                conn.disconnect(); 
+                conn = null;
+                return response.toString();
+            }
+            catch ( Exception e )
+            {
+                Thread.currentThread().sleep( 10 );
+                return readResponse( conn, delay+10 );
+            }
+        }
+        else
+            return "";
+    }
+    /**
      * PUT a json file to the database
      * @param path the full path of the resource including database
      * @param json the json to put there
@@ -188,20 +224,7 @@ public class HritServer extends AbstractHandler
             wr.flush ();
             wr.close ();
             //Get Response	
-            InputStream is = conn.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuilder response = new StringBuilder(); 
-            while ((line = rd.readLine()) != null) 
-            {
-                response.append(line);
-                response.append('\r');
-            }
-            is.close();
-            rd.close();
-            conn.disconnect(); 
-            conn = null;
-            return response.toString();
+            return readResponse( conn, 0L );
         } 
         catch (Exception e) 
         {

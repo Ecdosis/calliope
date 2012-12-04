@@ -22,10 +22,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import hritserver.constants.Params;
 import hritserver.constants.HTMLNames;
+import hritserver.constants.Database;
 import hritserver.constants.JSONKeys;
 import hritserver.exception.*;
 import hritserver.json.JSONDocument;
 import hritserver.tests.html.*;
+import hritserver.path.Path;
 import java.util.ArrayList;
 /**
  *
@@ -34,12 +36,13 @@ import java.util.ArrayList;
 public abstract class Test extends HritHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Comparenew Html Image Import Table Tilt";
+    public static String tabs = "Home Compare Comparenew Edition Image Import Tilt";
     private static String KING_LEAR = 
         "english/shakespeare/kinglear/act1/scene1";
     /** contains a leading slash */
     protected String version1;
     protected String description;
+    private static String VLEN_KEY="<!--version-length:";
     protected HTML doc;
     /** ID of the document to test with */
     protected String docID;
@@ -241,6 +244,34 @@ public abstract class Test extends HritHandler
         }
     }
     /**
+     * Scan the body returned by the formatter for the relevant CSS
+     * @param body the body returned by a call to formatter
+     */
+    protected int getLengthFromBody( String body, int dflt )
+    {
+        int length = dflt;
+        int pos1 = body.indexOf(VLEN_KEY);
+        if ( pos1 != -1 )
+        {
+            String value = body.substring(pos1+VLEN_KEY.length());
+            int pos2 = value.indexOf("-->");
+            if ( pos2 > 0 )
+            {
+                // skip "<!--"
+                String len = value.substring( 0, pos2 );
+                try
+                {
+                    length = Integer.parseInt( len.trim() );
+                }
+                catch ( Exception e )
+                {
+                    length = dflt;
+                }
+            }
+        }
+        return length;
+    }
+    /**
      * Generate a default DOC_ID input element 
      * @return the Element object for easy adding to the test page
      */
@@ -347,6 +378,27 @@ public abstract class Test extends HritHandler
     public Element getContent()
     {
         return new Text(description);
+    }
+    /**
+     * Get the contents of a corform
+     * @param corformId the path to the corform
+     * @return a String or "" if not found
+     */
+    protected String getCorForm( String corformId )
+    {
+        try
+        {
+            String fullPath = Utils.canonisePath(Database.CORFORM,corformId);
+            Path path = new Path(fullPath);
+            byte[] data = HritServer.getFromDb( path.getResource() );
+            JSONDocument doc = JSONDocument.internalise( 
+                new String(data,"UTF-8") );
+            return doc.get(JSONKeys.BODY).toString();
+        }
+        catch (Exception e )
+        {
+            return "";
+        }
     }
     /**
      * Get the description string

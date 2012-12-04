@@ -56,4 +56,12 @@ public class Header extends Element
         }
         scripts.add( script );
     }
+    /**
+     * Add a Javascript source to the header
+     * @param src a javascript source
+     */
+    public void addScriptSrc( String src )
+    {
+        addChild( new Javascript(src) );
+    }
 }

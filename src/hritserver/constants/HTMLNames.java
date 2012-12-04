@@ -62,4 +62,5 @@ public class HTMLNames {
  public static String SCRIPT = "script";
  public static String SRC = "src";
  public static String LABEL = "label";
+ public static String BUTTON = "button";
 }

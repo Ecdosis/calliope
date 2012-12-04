@@ -145,7 +145,8 @@ public class HritTableHandler extends HritGetHandler
                 base = 1;
             }
             String table = mvd.mvd.getTableView( base,offset,length,
-                compact,hideMerged,wholeWords,selectedVersions,firstID );
+                compact,hideMerged,wholeWords,selectedVersions,firstID,
+                "apparatus" );
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().println( table );
         }
