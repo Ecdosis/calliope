@@ -71,7 +71,7 @@ public class TestHtml extends Test
             url = URLEncoder.addGetParam(url,Params.SELECTED_VERSIONS,
                 "/Base/F1,/Base/Q1,/Base/Q2" );
             String body = URLEncoder.getResponseForUrl(url).trim();
-            addCSSFromBody( body );
+            body = extractCSSFromBody( body );
             // it's always safe to return the body as is
             return new HTMLLiteral( body );
         }

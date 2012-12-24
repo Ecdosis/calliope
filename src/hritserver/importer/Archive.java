@@ -51,6 +51,7 @@ public class Archive extends HashMap<String,byte[]>
         this.title = work.replace("%20"," ");
         this.author = author;
         this.log = new StringBuilder();
+        this.style = "default";
         this.nameMap = new HashMap<String,String>();
         StringBuilder sb = new StringBuilder();
         String[] parts = work.split("%2F");

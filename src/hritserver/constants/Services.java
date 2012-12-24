@@ -49,4 +49,6 @@ public class Services
     public static String VERSION2 = "version2";
     /** get the description of a CorTex/CorCode */
     public static String DESCRIPTION = "description";
+    /** mixed import service */
+    public static String MIXED = "mixed";
 }

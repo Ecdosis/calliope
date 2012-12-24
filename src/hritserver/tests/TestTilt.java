@@ -5,7 +5,7 @@
 package hritserver.tests;
 
 import hritserver.constants.HTMLNames;
-import hritserver.constants.Params;
+import hritserver.constants.Globals;
 import hritserver.exception.HritException;
 import hritserver.tests.html.Element;
 import hritserver.tests.html.HTML;
@@ -48,7 +48,7 @@ public class TestTilt extends Test
         doc = new HTML();
         Element script = new Element(HTMLNames.SCRIPT );
         script.addAttribute(HTMLNames.SRC, 
-            "http://code.jquery.com/jquery-1.8.2.min.js" );
+            "http://"+Globals.JQUERY_SITE+"/jquery-latest.js" );
         script.addAttribute( HTMLNames.TYPE, "text/javascript" );
         doc.getHeader().addChild( script );
         doc.getHeader().addScript( TILT_JS );

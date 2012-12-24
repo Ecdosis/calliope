@@ -29,6 +29,13 @@ public class Header extends Element
         super("head");
     }
     /**
+     * Add an encoding statement
+     * @param encoding 
+     */
+    public void addEncoding( String encoding )
+    {
+    }
+    /**
      * Add some css to the header
      * @param the CSS content
      */

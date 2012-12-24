@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public abstract class Test extends HritHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Comparenew Edition Image Import Tilt";
+    public static String tabs = "Home Compare Comparenew Edition Image Import Table Tilt";
     private static String KING_LEAR = 
         "english/shakespeare/kinglear/act1/scene1";
     /** contains a leading slash */
@@ -228,37 +228,42 @@ public abstract class Test extends HritHandler
     /**
      * Scan the body returned by the formatter for the relevant CSS
      * @param body the body returned by a call to formatter
+     * @return the doctored body
      */
-    protected void addCSSFromBody( String body )
+    protected String extractCSSFromBody( String body )
     {
         String css = null;
-        int pos1 = body.indexOf("<!--");
-        int pos2 = body.indexOf("-->");
+        int pos1 = body.indexOf("<!--styles: ");
+        int pos2 = body.indexOf("-->",pos1+12);
         if ( pos1 >= 0 && pos2 > 0 && pos1 < pos2 )
         {
-            // skip "<!--"
-            css = body.substring( 4, pos2 );
+            // skip "<!--styles: "
+            css = body.substring( 12+pos1, pos2 );
             // header must NOT already be committed
             doc.getHeader().addCSS( css );
-            body = body.substring( pos2+3 );
+            String p1 = body.substring( 0, pos1 );
+            String p2 = body.substring( pos2+3 );
+            body = p1+p2;
         }
+        return body;
     }
     /**
      * Scan the body returned by the formatter for the relevant CSS
      * @param body the body returned by a call to formatter
+     * @return the version length (leave body as is)
      */
     protected int getLengthFromBody( String body, int dflt )
     {
         int length = dflt;
-        int pos1 = body.indexOf(VLEN_KEY);
+        int keylen = 4+VLEN_KEY.length();
+        int pos1 = body.indexOf("<!--"+VLEN_KEY);
         if ( pos1 != -1 )
         {
-            String value = body.substring(pos1+VLEN_KEY.length());
-            int pos2 = value.indexOf("-->");
+            int pos2 = body.indexOf("-->",pos1+keylen);
             if ( pos2 > 0 )
             {
                 // skip "<!--"
-                String len = value.substring( 0, pos2 );
+                String len = body.substring( pos1+keylen, pos2 );
                 try
                 {
                     length = Integer.parseInt( len.trim() );

@@ -42,6 +42,7 @@ public abstract class HritImportHandler extends HritPostHandler
     String database;
     String splitterName;
     String stripperName;
+    boolean demo;
     /** text filter config */
     String textName;
     HashMap<String,String> nameMap;
@@ -50,9 +51,9 @@ public abstract class HritImportHandler extends HritPostHandler
     {
         nameMap = new HashMap<String,String>(); 
         filterName = Filters.EMPTY;
-        stripperName = "default.json";
-        splitterName = "default.json";
-        textName = "default.json";
+        stripperName = "default";
+        splitterName = "default";
+        textName = "default";
         files = new ArrayList<File>();
         log = new StringBuilder();
     }
@@ -98,6 +99,8 @@ public abstract class HritImportHandler extends HritPostHandler
                                 item.getString());
                         else if ( fieldName.equals(Params.STYLE) )
                             style = contents;
+                        else if ( fieldName.equals(Params.DEMO) )
+                            demo = true;
                         else if ( fieldName.equals(Params.FILTER) )
                             filterName = contents.toLowerCase();
                         else if ( fieldName.equals(Params.SPLITTER) )

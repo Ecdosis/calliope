@@ -77,7 +77,8 @@ public class StageThreeText extends Stage
         for ( int i=0;i<files.size();i++ )
         {
             String input = files.get(i).toString();
-            log.append( filter.convert(input,cortex,corcode) );
+            log.append( filter.convert(input,files.get(i).simpleName(),
+                cortex,corcode) );
         }
         return log.toString();
     }

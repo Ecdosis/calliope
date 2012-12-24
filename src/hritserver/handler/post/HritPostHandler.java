@@ -68,6 +68,8 @@ public void handle( HttpServletRequest request,
                         new HritXMLImportHandler().handle(request,response,urn);
                     else if ( second.equals(Services.TEXT) )
                         new HritTextImportHandler().handle(request,response,urn);
+                    else if ( second.equals(Services.MIXED) )
+                        new HritMixedImportHandler().handle(request,response,urn);
                     else
                         throw new HritException("Unknown service "+second);
                 }

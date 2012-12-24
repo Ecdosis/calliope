@@ -298,7 +298,7 @@ public class TestComparenew extends Test
             divTop.addChild( row );
             // get content for left hand side
             String body = getTextVersion(version1,version2,ChunkState.DELETED);
-            addCSSFromBody( body );
+            body = extractCSSFromBody( body );
             Element lhs = new HTMLLiteral( body );
             divLeft.addChild( lhs );
             // get content for rhs

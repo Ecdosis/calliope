@@ -91,7 +91,7 @@ public class HritTableHandler extends HritGetHandler
     String getStringOption( Map map, String key, String defaultValue )
     {
         String[] values = (String[])map.get( key );
-        if ( values == null )
+        if ( values == null || values[0].length()==0 )
             return defaultValue;
         else
             return values[0];
@@ -113,31 +113,34 @@ public class HritTableHandler extends HritGetHandler
             selectedVersions = getStringOption(map, Params.SELECTED_VERSIONS,ALL );
         else
             selectedVersions = ALL;
-        String version1 = request.getParameter( Params.VERSION1 );
-        if ( version1==null && !selectedVersions.equals(ALL) )
-        {
-            String[] parts = selectedVersions.split(",");
-            if ( parts.length>=1 )
-                version1 = parts[0];
-        }
-        String shortName="";
-        String groups = "";
-        if ( version1 != null )
-        {
-            int rPos = version1.lastIndexOf("/");
-            if ( rPos == -1 )
-                shortName = version1;
-            else
-            {
-                shortName = version1.substring(rPos+1);
-                groups = version1.substring( 0,rPos );
-            }
-        }
         path.setName( Database.CORTEX );
         try
         {
+            String shortName="";
+            String groups = "";
+            String baseVersion=null;
             HritMVD mvd = loadMVD( path.getResource() );
-            this.base = (short)mvd.mvd.getVersionByNameAndGroup( shortName, groups );
+            if ( selectedVersions.equals(ALL) )
+                baseVersion = mvd.version1;  
+            else
+            {
+                String[] parts = selectedVersions.split(",");
+                if ( parts.length>=1 )
+                    baseVersion = parts[0];
+            }
+            if ( baseVersion != null )
+            {
+                int pos = baseVersion.lastIndexOf("/");
+                if ( pos != -1 )
+                {
+                    shortName = baseVersion.substring(pos+1);
+                    groups = baseVersion.substring(0,pos);
+                }
+                else
+                    shortName = baseVersion;
+            }
+            this.base = (short)mvd.mvd.getVersionByNameAndGroup( shortName, 
+                groups );
             if ( base == 0 )
             {
                 System.out.println("version "+shortName+" in group "

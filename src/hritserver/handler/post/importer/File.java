@@ -45,6 +45,18 @@ public class File
         return token == UTF8_BOM;
     }
     /**
+     * Get the name of the file minus extension
+     * @return the simple file name
+     */
+    public String simpleName()
+    {
+        int dotPos = name.lastIndexOf(".");
+        if ( dotPos != -1 )
+            return name.substring( 0,dotPos );
+        else
+            return name;
+    }
+    /**
      * Is this an XML file?
      * @return true if it is
      */

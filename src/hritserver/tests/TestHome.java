@@ -22,8 +22,6 @@ import hritserver.tests.html.HTMLCatalog;
 import hritserver.tests.html.Text;
 import hritserver.exception.*;
 import hritserver.HritServer;
-import hritserver.constants.HTMLNames;
-import hritserver.constants.Params;
 /*
  * This class implements a twist-down hierarchical list
  */

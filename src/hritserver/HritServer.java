@@ -60,6 +60,7 @@ public class HritServer extends AbstractHandler
      */
     public static byte[] getFromDb( String path )
     {
+        //long startTime = System.currentTimeMillis();
         try
         {
             String login = (HritServer.user==null)?"":user+":"+password+"@";
@@ -86,7 +87,7 @@ public class HritServer extends AbstractHandler
             is.close();
             if ( bh.isEmpty() )
                 System.out.println("failed to fetch resource "+path);
-            //System.out.println("time taken to fetch from couch: "+timeTaken );
+            //System.out.println("time taken to fetch from couch: "+(System.currentTimeMillis()-startTime) );
             return bh.getData();
         }
         catch ( Exception e )

@@ -52,10 +52,11 @@ public abstract class Filter
     /**
      * Subclasses should override this
      * @param input the input text for conversion
+     * @param name the name of the new version
      * @param cortex the cortex archive to save split text in
      * @param corcode the corcode archive to save split markup in
      * @return the log output
      */
-    public abstract String convert( String input, Archive cortex, 
+    public abstract String convert( String input, String name, Archive cortex, 
         Archive corcode ) throws ImportException;
 }

@@ -1,5 +1,8 @@
 #!/bin/bash
-read -p "Password:" PASSWORD
+echo "uploading corform"
+if [ -z $PASSWORD ]; then
+    read -p "Password:" PASSWORD
+fi
 # delete database
 curl -X DELETE http://admin:$PASSWORD@localhost:5984/corform
 # create database
@@ -14,4 +17,4 @@ curl -s -X PUT http://admin:$PASSWORD@localhost:5984/corform/list%2Ftwin-list --
 curl -s -X PUT http://admin:$PASSWORD@localhost:5984/corform/play%2Fitalian%2Fcapuana --data-binary @corform/play/italian/capuana.json
 curl -s -X PUT http://admin:$PASSWORD@localhost:5984/corform/play%2Fitalian%2Fcapuana%2Faristofanunculos --data-binary @corform/play/italian/capuana/aristofanunculos.json
 curl -s -X PUT http://admin:$PASSWORD@localhost:5984/corform/poetry%2Fenglish%2Fharpur --data-binary @corform/poetry/english/harpur.json
-
+curl -s -X PUT http://admin:$PASSWORD@localhost:5984/corform/table%2Fdefault --data-binary @corform/table/default.json

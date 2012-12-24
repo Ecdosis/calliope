@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package hritserver.tests.html;
+import hritserver.Utils;
 import hritserver.constants.HTMLNames;
 
 /**
@@ -13,12 +14,12 @@ public class HTMLOptGroup extends Element
 {
     /**
      * Create an empty optgroup
-     * @param name its name
+     * @param path full path to this option
      */
-    public HTMLOptGroup( String name )
+    public HTMLOptGroup( String path )
     {
         super( HTMLNames.OPTGROUP );
-        addAttribute( HTMLNames.LABEL, name );
+        addAttribute( HTMLNames.LABEL, path );
     }
     /**
      * Get a group 
@@ -27,15 +28,18 @@ public class HTMLOptGroup extends Element
      */
     private HTMLOptGroup get( String name )
     {
-        for ( int i=0;i<children.size();i++ )
+        if ( children != null )
         {
-            Element e = children.get( i );
-            if ( e instanceof HTMLOptGroup )
+            for ( int i=0;i<children.size();i++ )
             {
-                HTMLOptGroup g = (HTMLOptGroup)e;
-                String label = g.getAttribute(HTMLNames.LABEL);
-                if ( label != null && label.equals(name) )
-                    return g;
+                Element e = children.get( i );
+                if ( e instanceof HTMLOptGroup )
+                {
+                    HTMLOptGroup g = (HTMLOptGroup)e;
+                    String label = g.getAttribute(HTMLNames.LABEL);
+                    if ( label != null && label.equals(name) )
+                        return g;
+                }
             }
         }
         return null;
@@ -49,19 +53,19 @@ public class HTMLOptGroup extends Element
     {
         if ( child.length == 1 )
         {
-            Element option = new Element( HTMLNames.OPTION );
-            option.addText( child[0] );
-            option.addAttribute( HTMLNames.VALUE, path );
-            addChild( option );
+            HTMLOption opt = new HTMLOption( 
+                path, child[0] );
+            addChild( opt );
         }
-        else
+        else if ( child.length > 1 )
         {
+            String fullPath = Utils.canonisePath(path,child[0]);
             HTMLOptGroup group = this.get(child[0]);
             if ( group == null )
-                group = new HTMLOptGroup( child[0] );
+                group = new HTMLOptGroup( Utils.canonisePath(path,child[0]) );
             String[] sub = new String[child.length-1];
             System.arraycopy( child, 1, sub, 0, child.length-1 );
-            group.add( path, sub );
+            group.add( fullPath, sub );
             addChild( group );
         }
     }

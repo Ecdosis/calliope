@@ -30,6 +30,7 @@ public class HritMVD
     public String description;
     public String title;
     public String author;
+    public String version1;
     /**
      * Initialise a HritMVD object
      * @param doc the JSON document from the database
@@ -44,5 +45,6 @@ public class HritMVD
         this.description = (String)doc.get(JSONKeys.DESCRIPTION);
         this.style = (String)doc.get(JSONKeys.STYLE);
         this.title = (String)doc.get(JSONKeys.TITLE);
+        this.version1 = (String)doc.get(JSONKeys.VERSION1);
     }
 }

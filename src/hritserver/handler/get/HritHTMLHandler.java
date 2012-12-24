@@ -220,6 +220,7 @@ public class HritHTMLHandler extends HritGetHandler
                     HritVersion hv = doGetMVDVersion( ccPath, version1 );
                     HTMLComment comment = new HTMLComment();
                     comment.addText( "version-length: "+hv.getVersionLength() );
+                    response.setCharacterEncoding("UTF-8");
                     response.getWriter().println( comment.toString() );
                     styleSet.add( hv.getStyle() );
                     corCodes[i] = new String(hv.getVersion(),"UTF-8");
@@ -266,6 +267,7 @@ public class HritHTMLHandler extends HritGetHandler
                 try
                 {
                     HTMLComment comment = new HTMLComment();
+                    comment.addText( "styles: ");
                     for ( int i=0;i<styles.length;i++ )
                         comment.addText( styles[i] );
                     response.getWriter().println( comment.toString() );

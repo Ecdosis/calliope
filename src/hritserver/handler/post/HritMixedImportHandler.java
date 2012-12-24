@@ -51,37 +51,76 @@ public class HritMixedImportHandler extends HritImportHandler
             if (ServletFileUpload.isMultipartContent(request) )
             {
                 parseImportParams( request );
-                Archive cortex = new Archive(docID.getWork(), docID.getAuthor());
-                Archive corcode = new Archive(docID.getWork(), docID.getAuthor());
-                StageOne stage1 = new StageOne( files );
-                log.append( stage1.process(cortex,corcode) );
-                if ( stage1.hasFiles() )
+                if ( !demo )
                 {
-                    StageTwo stage2 = new StageTwo( stage1, true );
-                    log.append( stage2.process(cortex,corcode) );
-                    StageThreeXML stage3Xml = new StageThreeXML( stage2, style );
-                    stage3Xml.setStripConfig( getConfig(Config.STRIPPER,stripperName) );
-                    stage3Xml.setSplitConfig( getConfig(Config.SPLITTER,splitterName) );
-                    log.append( stage3Xml.process(cortex,corcode) );
-                    // process the text filers
-                    StageThreeText stage3Text = new StageThreeText( filterName );
-                    stage3Text.setConfig( getConfig(Config.TEXT,textName) );
-                    ArrayList<File> stage2Files = stage2.getFiles();
-                    for ( int i=0;i<stage2Files.size();i++ )
+                    Archive cortex = new Archive(docID.getWork(), 
+                        docID.getAuthor());
+                    cortex.setStyle( style );
+                    Archive corcode = new Archive(docID.getWork(), 
+                        docID.getAuthor());
+                    corcode.setStyle( style );
+                    StageOne stage1 = new StageOne( files );
+                    log.append( stage1.process(cortex,corcode) );
+                    if ( stage1.hasFiles() )
                     {
-                        File f = stage2Files.get(i);
-                        if ( !stage3Xml.containsFile(f) )
-                            stage3Text.add( f );
+                        // it's safer to do this in a try-catch handler
+                        try
+                        {
+                            StageTwo stage2 = new StageTwo( stage1, true );
+                            log.append( stage2.process(cortex,corcode) );
+                            StageThreeXML stage3Xml = new StageThreeXML( stage2, 
+                                style );
+                            stage3Xml.setStripConfig( getConfig(Config.STRIPPER,
+                                stripperName) );
+                            stage3Xml.setSplitConfig( getConfig(Config.SPLITTER,
+                                splitterName) );
+                            log.append( stage3Xml.process(cortex,corcode) );
+                            // process the text filers
+                            StageThreeText stage3Text = new StageThreeText( 
+                                filterName );
+                            stage3Text.setConfig( getConfig(Config.TEXT,
+                                filterName+"%2F"+textName) );
+                            ArrayList<File> stage2Files = stage2.getFiles();
+                            for ( int i=0;i<stage2Files.size();i++ )
+                            {
+                                File f = stage2Files.get(i);
+                                if ( !stage3Xml.containsFile(f) )
+                                    stage3Text.add( f );
+                            }
+                            log.append( stage3Text.process(cortex,corcode) );
+                            // now get the json docs and add them at the right docid
+                            if ( !cortex.isEmpty() )
+                            {
+                                HritServer.putToDb( "/cortex/"+docID.get(false), 
+                                    cortex.toMVD("cortex") );
+                                log.append( cortex.getLog() );
+                            }
+                            else
+                                log.append("No cortex created\n");
+                            if ( !corcode.isEmpty() )
+                            {
+                                HritServer.putToDb( "/corcode/"+docID.get(false)
+                                    +"%2Fdefault", corcode.toMVD("corcode") );
+                                log.append( corcode.getLog() );
+                            }
+                            else
+                                log.append("No corcode created\n");
+                        }
+                        catch ( Exception e )
+                        {
+                            log.append( e.getMessage() );
+                        }
                     }
-                    log.append( stage3Text.process(cortex,corcode) );
-                    // now get the json docs and add them at the right docid
-                    //HritServer.putToDb( "/cortex/"+docID.get(false), cortex.toMVD("cortex") );
-                    log.append( cortex.getLog() );
-                    //HritServer.putToDb( "/corcode/"+docID.get(false), corcode.toMVD("corcode") );
-                    log.append( corcode.getLog() );
+                    else
+                        log.append("No cortex/corcode created\n");
+                    response.setContentType("text/html;charset=UTF-8");
+                    response.getWriter().println( wrapLog() );
                 }
-                response.setContentType("text/html;charset=UTF-8");
-                response.getWriter().println( wrapLog() );
+                else
+                {
+                    response.setContentType("text/html;charset=UTF-8");
+                    response.getWriter().println( "<p>Not enabled on public server</p>" );
+                }
             }
         }
         catch ( Exception e )

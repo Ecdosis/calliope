@@ -68,4 +68,27 @@ public class Utils
         }
         return sb.toString();
     }
+    /**
+     * Look for and get the html contained in the body element
+     * @return if found, the HTML body else the original html 
+     */
+    public static String getHTMLBody( String html )
+    {
+        // find start of text after "<body>"
+        int pos = html.indexOf("<body");
+        if ( pos == -1 )
+            pos = html.indexOf("<BODY");
+        if ( pos != -1 )
+            pos = html.indexOf(">",pos);
+        if ( pos != -1 )
+        {
+            pos++;
+            int rpos = html.indexOf("</body>");
+            if ( rpos == -1 )
+                rpos = html.indexOf("</BODY>");
+            if ( rpos != -1 )
+                return html.substring(pos,rpos);
+        }
+        return html;
+    }
 }

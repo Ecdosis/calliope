@@ -99,6 +99,7 @@ public class URLEncoder
             {
                 byte[] data = new byte[is.available()];
                 is.read( data );
+                //System.out.println(new String(data));
                 bos.write( data );
                 // restart timeout
                 timeTaken = 0;

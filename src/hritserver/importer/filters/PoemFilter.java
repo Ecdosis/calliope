@@ -45,13 +45,14 @@ public class PoemFilter extends Filter
     /**
      * Convert to standoff properties
      * @param input the raw text input string
+     * @param name the name of the new version
      * @param cortext a cortext mvd archive
      * @param corcode a corcode mvd archive
      * @return log output
      */
     @Override
-    public String convert( String input, Archive cortex, Archive corcode ) 
-        throws ImportException
+    public String convert( String input, String name, Archive cortex, 
+        Archive corcode ) throws ImportException
     {
         StringBuilder xml = new StringBuilder();
         String[] lines = input.split("\n");

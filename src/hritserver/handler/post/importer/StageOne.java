@@ -18,17 +18,32 @@ package hritserver.handler.post.importer;
 import java.util.ArrayList;
 import hritserver.importer.Archive;
 /**
- * A stage to eliminate over-size files
+ * A stage to eliminate over-size and non-text or non-XML files
  * @author desmond
  */
 public class StageOne extends Stage
 {
     static int MAX_LEN = 102400;
+    static String XML = "xml";
+    static String TEXT = "txt";
     public StageOne( ArrayList<File> files )
     {
         super();
         this.files = files;
     }
+    /**
+     * Extract the suffix if any from a file name
+     * @param fileName the file name
+     * @return the suffix or the empty string
+     */
+    private String suffix( String fileName )
+    {
+        int dotPos = fileName.lastIndexOf(".");
+        if ( dotPos == -1 )
+            return "";
+        else
+            return fileName.substring(dotPos+1).toLowerCase();
+    }   
     /**
      * Eliminate files that are too big
      * @param cortex a MVD archive for the plain text
@@ -42,18 +57,28 @@ public class StageOne extends Stage
         for ( int i=0;i<files.size();i++ )
         {
             File item = files.get(i);
+            String suffix = suffix(item.name);
             if ( item.data.length()>MAX_LEN )
             {
                 log.append("File ");
                 log.append( item.name );
-                log.append( " is too long (" );
+                log.append( " rejected because it is too long (" );
                 log.append( item.data.length() );
                 log.append( "). Maximum is " );
                 log.append( MAX_LEN );
-                log.append( ". Skipping...\n" );
+                log.append( ".\n" );
             }
-            else
+            else if ( suffix.length() == 0 || suffix.equals(XML)
+                || suffix.equals(TEXT) )
                 newFiles.add( item );
+            else
+            {
+                log.append( "File " );
+                log.append( item.name );
+                log.append( " rejected because suffix is .");
+                log.append(suffix);
+                log.append( " not .xml or .txt or empty\n");
+            }
         }
         files = newFiles;
         return log.toString();

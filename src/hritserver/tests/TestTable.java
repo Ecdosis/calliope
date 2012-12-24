@@ -17,9 +17,7 @@ package hritserver.tests;
 import java.net.URL;
 import java.net.URLConnection;
 import java.io.InputStream;
-import java.util.Stack;
 import java.util.HashSet;
-import java.util.Arrays;
 import hritserver.tests.html.*;
 import hritserver.exception.*;
 import hritserver.constants.*;
@@ -476,8 +474,8 @@ public class TestTable extends Test
         HttpServletResponse response, String urn ) throws HritException
     {
         doc = new HTML();
-        doc.getHeader().addScript(JQuery.JQUERY1_JS);
-        doc.getHeader().addScript(JQuery.JQUERY2_JS);
+        doc.getHeader().addScriptSrc( "http://"+Globals.JQUERY_SITE
+            +"/jquery-latest.js" );
         doc.getHeader().addScript(TABLE_JS);
         doc.getHeader().addCSS( TABLE_CSS );
         String hMerged = request.getParameter(Params.HIDE_MERGED);

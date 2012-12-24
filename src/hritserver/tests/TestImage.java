@@ -5,6 +5,7 @@
 package hritserver.tests;
 
 import hritserver.constants.HTMLNames;
+import hritserver.constants.Globals;
 import hritserver.constants.Params;
 import hritserver.exception.HritException;
 import hritserver.tests.html.Element;
@@ -39,7 +40,7 @@ public class TestImage extends Test
         Element script1 = new Element("script");
         script1.addAttribute(HTMLNames.TYPE, "text/javascript");
         script1.addAttribute( "src", 
-            "http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js");
+            "http://"+Globals.JQUERY_SITE+"/jquery-latest.js");
         Element script2 = new Element("script");
         script2.addAttribute(HTMLNames.TYPE, "text/javascript");
         script2.addText( TestImageStrings.SCALE_IMAGE_SCRIPT );

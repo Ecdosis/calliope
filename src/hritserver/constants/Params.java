@@ -23,6 +23,8 @@ public class Params
 {
     /** passed-in form param base name for corcodes */
     public final static String CORCODE = "CORCODE";
+    /** passed-in form param base name for corforms */
+    public final static String CORFORM = "CORFORM";
     /** passed-in form param base name for styles */
     public final static String STYLE = "STYLE";
     /** passed-in form param base name for formats */
@@ -85,4 +87,10 @@ public class Params
     public final static String DIFF_KIND = "diff_kind";
     /** first merge id for table alignment */
     public final static String FIRSTID = "FIRSTID";
+    /** colour of highlighting in edition view */
+    public final static String COLOUR = "colour";
+    /** indicate that this is just for demo purposes */
+    public final static String DEMO = "demo";
+    /** uploading */
+    public final static String UPLOAD = "UPLOAD";
 }

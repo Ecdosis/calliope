@@ -75,7 +75,7 @@ public class PlayFilter extends Filter
         return "General play filter";
     }
     /**
-     * Remove non-letter and hyphen charas from the string
+     * Remove non-letter and hyphen chars from the string
      * @param input the raw punctuated word
      * @return a punctuation-free word (but with hyphens)
      */
@@ -502,8 +502,8 @@ public class PlayFilter extends Filter
      * @return log output
      */
     @Override
-    public String convert( String input, Archive cortex, Archive corcode ) 
-        throws ImportException
+    public String convert( String input, String name, Archive cortex, 
+        Archive corcode ) throws ImportException
     {
         if ( vowels==null )
             throw new ImportException("configure required before convert");
