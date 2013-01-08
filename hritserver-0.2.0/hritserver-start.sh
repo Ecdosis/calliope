@@ -16,7 +16,7 @@ then
   LIBPATH=$LIBPATH:/usr/local/lib
 fi
 if [ `uname` = "Darwin" ]; then
-  pgrep(){ ps -x -o pid,command | grep "$@" | grep -v 'grep' | awk '{print $1;}'; }
+  pgrep(){ ps -ax -o pid,command | grep "$@" | grep -v 'grep' | awk '{print $1;}'; }
   HPID=`pgrep hritserver.jar`
   if [ -n "$HPID" ]; then
     kill $HPID
