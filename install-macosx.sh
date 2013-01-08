@@ -58,6 +58,7 @@ if [ -z $CPID ]; then
     echo "couchdb daemon failed to launch. exiting..."
     exit
 fi
+# check that admin user exists
 res=`curl -s -X GET http://admin:jabberw0cky@localhost:5984/_users/_all_docs|grep _design/_auth`
 if [ -z $res ]; then
     echo "creating admin user..."
@@ -65,16 +66,11 @@ if [ -z $res ]; then
 else
     echo "admin user found"
 fi
-# install git
-GIT_LOC=`which git`
-if [ -z $GIT_LOC ]; then
-    brew install git
-else
-    echo "git already installed"
-fi
+# upload sample data
 RUNFOLDER=`ls -d hritserver-*`
 echo "uploading sample data to database..."
 cd $RUNFOLDER/backup
+# avoid prompt for password
 export PASSWORD="jabberw0cky"
 ./upload-all.sh
 echo "installing formatter and stripper libraries"
