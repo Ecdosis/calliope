@@ -6,9 +6,15 @@ pgrep(){ ps -ax -o pid,command | grep "$@" | grep -v 'grep' | awk '{print $1;}';
 BREW_LOC=`which brew`
 if [ -z $BREW_LOC ]; then
     echo "installing homebrew ..."
-    ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+    su - $SUDO_USER -c "ruby -e \"$(curl -fsSkL raw.github.com/mxcl/homebrew/go)\""
+    BREW_LOC=`which brew`
 else
     echo "homebrew was already installed"
+fi
+# check that homebrew was installed
+if [ -z $BREW_LOC ]; then
+    echo "homebrew not installed. exiting..."
+    exit
 fi
 # install gcc
 GCC_LOC=`which gcc`
