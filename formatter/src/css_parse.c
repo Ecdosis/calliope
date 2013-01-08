@@ -156,8 +156,9 @@ static css_rule *get_css_rule( const char *data, int *offset )
         *offset = pos;
         if ( css_rule_valid(rule) )
             return rule;
-        else
-            return NULL;
+        else if ( rule != NULL )
+            css_rule_dispose( rule );
+        return NULL;
 	}
 }
 /**

@@ -1,3 +1,4 @@
+The Tragedy of King Lear Desmond Schmidt 2009 GNU Free Documentation License 1.3 Mr. Willaim Shakespeares Comedies, Histories, &amp; Tragedies. Published according to the True Originall Copies. William Shakespeare Isaac Jaggard and Ed. Blount, London 1623.
 Scena Secunda.
 Enter Bastard.
 Bast. Thou Nature art my Goddesse, to thy Law
@@ -18,7 +19,6 @@ Got 'tweene a sleepe, and wake? Well then,
 Legitimate Edgar, I must haue your land,
 Our Fathers loue, is to the Bastard Edmond,
 As to th' legitimate: fine word: Legitimate.
-
 Well, my Legittimate, if this Letter speed,
 And my inuention thriue, Edmond the base
 Shall to'th' Legitimate: I grow, I prosper:
@@ -152,7 +152,6 @@ Bast. Bethink your selfe wherein you may haue offen-
 ded him: and at my entreaty forbeare his presence, vuntill
 some little time hath qualified the heat of his displeasure,
 which at this instant so rageth in him, that with the mis-
-
 chiefe of your person, it would scarsely alay.
 Edg. Some Villaine hath done me wrong.
 Edm. That's my feare, I pray you haue a continent

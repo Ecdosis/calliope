@@ -211,9 +211,10 @@ attribute *annotation_to_attribute( annotation *a, char *xml_name,
             //warning("annotation: creating attribute %s:%s\n",html_name,a->value);
             return attribute_create( html_name, annotation_get_name(a), a->value );
         }
-        else
-            warning("annotation: failed to find property for %s:%s:%s\n",
-                xml_name,a->name,a->value);
+        // ignore this
+        //else
+        //    warning("annotation: failed to find property for %s:%s:%s\n",
+        //        xml_name,a->name,a->value);
     }
     else
         warning("annotation: failed to find css rule %s\n",xml_name);

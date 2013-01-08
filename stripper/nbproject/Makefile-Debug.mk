@@ -22,6 +22,7 @@ AS=as
 
 # Macros
 CND_PLATFORM=GNU-MacOSX
+CND_DLIB_EXT=dylib
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -34,12 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/xmltok_impl.o \
 	${OBJECTDIR}/src/recipe.o \
 	${OBJECTDIR}/src/range.o \
-	${OBJECTDIR}/_ext/1078767344/memwatch.o \
 	${OBJECTDIR}/src/layer.o \
 	${OBJECTDIR}/src/stack.o \
+	${OBJECTDIR}/_ext/1078767344/memwatch.o \
 	${OBJECTDIR}/src/dest_file.o \
 	${OBJECTDIR}/src/log.o \
 	${OBJECTDIR}/src/STIL.o \
@@ -48,14 +48,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/simplification.o \
 	${OBJECTDIR}/src/hashmap.o \
 	${OBJECTDIR}/src/error.o \
-	${OBJECTDIR}/src/xmlparse.o \
-	${OBJECTDIR}/src/xmltok.o \
 	${OBJECTDIR}/src/ramfile.o \
 	${OBJECTDIR}/_ext/1858218211/cJSON.o \
-	${OBJECTDIR}/src/attribute.o \
-	${OBJECTDIR}/src/xmlrole.o \
 	${OBJECTDIR}/src/hashset.o \
-	${OBJECTDIR}/src/xmltok_ns.o \
+	${OBJECTDIR}/src/attr1bute.o \
 	${OBJECTDIR}/src/milestone.o
 
 
@@ -73,7 +69,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-lxml2
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -82,11 +78,6 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stripper: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stripper ${OBJECTFILES} ${LDLIBSOPTIONS} 
-
-${OBJECTDIR}/src/xmltok_impl.o: src/xmltok_impl.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/xmltok_impl.o src/xmltok_impl.c
 
 ${OBJECTDIR}/src/recipe.o: src/recipe.c 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -98,11 +89,6 @@ ${OBJECTDIR}/src/range.o: src/range.c
 	${RM} $@.d
 	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/range.o src/range.c
 
-${OBJECTDIR}/_ext/1078767344/memwatch.o: ../formatter/src/memwatch.c 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1078767344
-	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1078767344/memwatch.o ../formatter/src/memwatch.c
-
 ${OBJECTDIR}/src/layer.o: src/layer.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
@@ -112,6 +98,11 @@ ${OBJECTDIR}/src/stack.o: src/stack.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stack.o src/stack.c
+
+${OBJECTDIR}/_ext/1078767344/memwatch.o: ../formatter/src/memwatch.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1078767344
+	${RM} $@.d
+	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1078767344/memwatch.o ../formatter/src/memwatch.c
 
 ${OBJECTDIR}/src/dest_file.o: src/dest_file.c 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -153,16 +144,6 @@ ${OBJECTDIR}/src/error.o: src/error.c
 	${RM} $@.d
 	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/error.o src/error.c
 
-${OBJECTDIR}/src/xmlparse.o: src/xmlparse.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/xmlparse.o src/xmlparse.c
-
-${OBJECTDIR}/src/xmltok.o: src/xmltok.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/xmltok.o src/xmltok.c
-
 ${OBJECTDIR}/src/ramfile.o: src/ramfile.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
@@ -173,25 +154,15 @@ ${OBJECTDIR}/_ext/1858218211/cJSON.o: ../formatter/src/STIL/cJSON.c
 	${RM} $@.d
 	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1858218211/cJSON.o ../formatter/src/STIL/cJSON.c
 
-${OBJECTDIR}/src/attribute.o: src/attribute.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/attribute.o src/attribute.c
-
-${OBJECTDIR}/src/xmlrole.o: src/xmlrole.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/xmlrole.o src/xmlrole.c
-
 ${OBJECTDIR}/src/hashset.o: src/hashset.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashset.o src/hashset.c
 
-${OBJECTDIR}/src/xmltok_ns.o: src/xmltok_ns.c 
+${OBJECTDIR}/src/attr1bute.o: src/attr1bute.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/xmltok_ns.o src/xmltok_ns.c
+	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I/usr/lib/jvm/java-6-openjdk/include -I../formatter/include/STIL -I../formatter/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/attr1bute.o src/attr1bute.c
 
 ${OBJECTDIR}/src/milestone.o: src/milestone.c 
 	${MKDIR} -p ${OBJECTDIR}/src

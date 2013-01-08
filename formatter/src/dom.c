@@ -62,6 +62,7 @@ struct dom_struct
     node *root;
 };
 static void dom_add_node( dom *d, node *n, node *r );
+static void dom_range_inside_node( dom *d, node *n, node *r );
 
 /**
  * Convert a raw array of properties to a real array of interleaved property 
@@ -673,6 +674,34 @@ static void dom_breakup_range( dom *d, node *n, node *r )
     dom_node_equals( d, n, r2 );
 }
 /**
+ * If a range is inside a node's child call dom_range_inside_node again
+ * @param dom the dom object
+ * @param n the node already in the tree and possibly with child
+ * @param r the range inside n but also maybe inside n's child
+ * @return 1 if this was the case
+ */
+int dom_range_inside_node_child( dom *d, node *n, node *r )
+{
+    node *child = node_first_child(n);
+    while ( child != NULL )
+    {
+        if ( node_encloses_range(child,r) )
+        {
+            dom_range_inside_node(d,child,r);
+            return 1;
+        }
+        else if ( range_equals_node(child,r)
+            && !dom_nests(d,node_name(r),node_name(n))
+            && dom_nests(d,node_name(r),node_name(child)) )
+        {
+            dom_range_inside_node(d,child,r);
+            return 1;
+        }
+        child = node_next_sibling(child);
+    }
+    return 0;
+}
+/**
  * Handle the case when the range is enclosed by the node
  * @param d the dom in question
  * @param n the node in question
@@ -680,12 +709,15 @@ static void dom_breakup_range( dom *d, node *n, node *r )
  */
 static void dom_range_inside_node( dom *d, node *n, node *r )
 {
-    if ( dom_nests(d, node_name(r),node_name(n)) )
-        dom_make_child( d, n, r );
-    else if ( dom_nests(d,node_name(n),node_name(r)) )
-        dom_breakup_node( d, n, r );
-    else    // neither fits inside the other
-        dom_drop_notify( d, r, n);
+    if ( !dom_range_inside_node_child(d,n,r) )
+    {
+        if ( dom_nests(d, node_name(r),node_name(n)) )
+            dom_make_child( d, n, r );
+        else if ( dom_nests(d,node_name(n),node_name(r)) )
+            dom_breakup_node( d, n, r );
+        else    // neither fits inside the other
+            dom_drop_notify( d, r, n);
+    }
 }
 /**
  * Handle the case where the node is properly inside the range

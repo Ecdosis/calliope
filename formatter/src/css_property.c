@@ -125,6 +125,27 @@ char *css_property_get_html_value( css_property *p )
     return p->html_value;
 }
 /**
+ * Remove all instances of the given char from the string in situ
+ * @param str the string to remove it from
+ * @param c the char to remove
+ */
+static void strip_char( char *str, char c )
+{
+    int i = 0;
+    int j = 0;
+    while ( str[i] != 0 )
+    {
+        if ( str[i] != c )
+        {
+            if ( i > j )
+                str[j] = str[i];
+            j++;
+        }
+        i++;
+    }
+    str[j] = 0;
+}
+/**
  * Parse a single property from the raw CSS data. Ignore any property
  * not beginning with "-hrit-". Such properties specify
  * the xml attribute name and its corresponding html name. The attribute
@@ -140,7 +161,9 @@ css_property *css_property_parse( const char *data, int len )
     // copy the attribute value over from the xml unchanged (not here)
 	int i,start=0, end=len;
     css_property *prop_temp = NULL;
-	while ( start<end && isspace(data[start]) )
+    // the property name had an escaped ":"
+	int escaped = 0;
+    while ( start<end && isspace(data[start]) )
     {
 		start++;
         end--;
@@ -151,7 +174,12 @@ css_property *css_property_parse( const char *data, int len )
         i = start;
         while ( i < end )
         {
-            if ( data[i] == ':' )
+            if ( data[i]=='\\' )
+            {
+                escaped = 1;
+                i+=2;
+            }
+            else if ( data[i] == ':' )
             {
                 // parse left hand side
                 prop_temp = calloc( 1, sizeof(css_property) );
@@ -162,6 +190,8 @@ css_property *css_property_parse( const char *data, int len )
                     if ( prop_temp->xml_name != NULL )
                     {
                         strncpy( prop_temp->xml_name, &data[start], lhs_len );
+                        if ( escaped )
+                            strip_char(prop_temp->xml_name,'\\');
                         // parse right hand side
                         i++;
                         while ( i<end && isspace(data[i]) )

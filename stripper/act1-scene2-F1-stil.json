@@ -1,147 +1,126 @@
 {
-  "style": "TEI-Lite",
+  "style": "TEI",
   "ranges": [
   {
     "name": "TEI",
     "reloff": 0,
-    "len": 8069
+    "len": 8324
   }
 ,
   {
     "name": "teiHeader",
     "reloff": 0,
-    "len": 0,
-    "removed": true
+    "len": 257
   }
 ,
   {
     "name": "fileDesc",
     "reloff": 0,
-    "len": 0,
-    "removed": true
+    "len": 257
   }
 ,
   {
     "name": "titleStmt",
     "reloff": 0,
-    "len": 0,
-    "removed": true
+    "len": 25
   }
 ,
   {
     "name": "title",
     "reloff": 0,
-    "len": 0,
-    "content": "The Tragedy of King Lear",
-    "removed": true
+    "len": 24
   }
 ,
   {
     "name": "publicationStmt",
-    "reloff": 0,
-    "len": 0,
-    "removed": true
+    "reloff": 25,
+    "len": 56
   }
 ,
   {
     "name": "publisher",
     "reloff": 0,
-    "len": 0,
-    "content": "Desmond Schmidt",
-    "removed": true
+    "len": 15
   }
 ,
   {
     "name": "date",
-    "reloff": 0,
-    "len": 0,
-    "content": "2009",
-    "removed": true
+    "reloff": 16,
+    "len": 4
   }
 ,
   {
     "name": "availability",
-    "reloff": 0,
-    "len": 0,
-    "content": "GNU Free Documentation License 1.3",
-    "removed": true
+    "reloff": 5,
+    "len": 34
   }
 ,
   {
     "name": "sourceDesc",
-    "reloff": 0,
-    "len": 0,
-    "removed": true
+    "reloff": 35,
+    "len": 176
   }
 ,
   {
     "name": "bibl",
     "reloff": 0,
-    "len": 0,
-    "content": ".",
-    "removed": true
+    "len": 176
   }
 ,
   {
     "name": "title",
     "reloff": 0,
-    "len": 0,
-    "content": "Mr. Willaim Shakespeares Comedies, Histories, &amp; Tragedies. Published according to the True Originall Copies.",
-    "removed": true
+    "len": 112
   }
 ,
   {
     "name": "author",
-    "reloff": 0,
-    "len": 0,
-    "content": "William Shakespeare",
-    "removed": true
+    "reloff": 113,
+    "len": 19
   }
 ,
   {
     "name": "publisher",
-    "reloff": 0,
-    "len": 0,
-    "content": "Isaac Jaggard and Ed. Blount, London",
-    "removed": true
+    "reloff": 20,
+    "len": 36
   }
 ,
   {
     "name": "date",
-    "reloff": 0,
-    "len": 0,
-    "content": "1623",
-    "removed": true
+    "reloff": 37,
+    "len": 4
   }
 ,
   {
     "name": "text",
-    "reloff": 0,
-    "len": 8069
+    "reloff": 6,
+    "len": 8067
   }
 ,
   {
     "name": "body",
     "reloff": 0,
-    "len": 8069
+    "len": 8067
   }
 ,
   {
-    "name": "head-italic",
+    "name": "head",
     "reloff": 0,
-    "len": 14
+    "len": 14,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
-    "name": "stage-italic",
+    "name": "stage",
     "reloff": 15,
-    "len": 14
+    "len": 14,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
     "name": "sp",
     "reloff": 15,
-    "len": 940
+    "len": 939
   }
 ,
   {
@@ -247,9 +226,10 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 11,
-    "len": 5
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -259,9 +239,10 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 36,
-    "len": 6
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -286,7 +267,7 @@
 ,
   {
     "name": "l",
-    "reloff": 1,
+    "reloff": 0,
     "len": 43
   }
 ,
@@ -297,9 +278,10 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 25,
-    "len": 6
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -315,9 +297,10 @@
   }
 ,
   {
-    "name": "stage-italic",
+    "name": "stage",
     "reloff": 33,
-    "len": 17
+    "len": 17,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -333,9 +316,10 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 157,
-    "len": 6
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -483,21 +467,24 @@
   }
 ,
   {
-    "name": "stage-italic",
+    "name": "stage",
     "reloff": 6,
-    "len": 6
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 6,
-    "len": 459
+    "len": 459,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 554,
-    "len": 5
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -663,9 +650,10 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 36,
-    "len": 6
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -693,15 +681,17 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 662,
-    "len": 6
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
-    "name": "stage-italic",
+    "name": "stage",
     "reloff": 138,
-    "len": 4
+    "len": 4,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -717,21 +707,24 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 650,
-    "len": 10
+    "len": 10,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
-    "name": "stage-italic",
+    "name": "stage",
     "reloff": 163,
-    "len": 12
+    "len": 12,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 119,
-    "len": 3
+    "len": 3,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -747,9 +740,10 @@
   }
 ,
   {
-    "name": "italics",
+    "name": "hi",
     "reloff": 21,
-    "len": 6
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -851,7 +845,7 @@
   {
     "name": "sp",
     "reloff": 18,
-    "len": 279
+    "len": 278
   }
 ,
   {
@@ -883,7 +877,7 @@
 ,
   {
     "name": "sp",
-    "reloff": 48,
+    "reloff": 47,
     "len": 38
   }
 ,
@@ -942,9 +936,10 @@
   }
 ,
   {
-    "name": "stage-italic",
+    "name": "stage",
     "reloff": 34,
-    "len": 5
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
   }
 ,
   {
@@ -960,10 +955,10 @@
   }
 ,
   {
-    "name": "stage-italic",
+    "name": "stage",
     "reloff": 308,
-    "len": 5
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
   }
-
   ]
 }
