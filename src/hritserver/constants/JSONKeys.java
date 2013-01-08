@@ -29,6 +29,8 @@ public class JSONKeys
     public static String NAME = "name";
     /** JSON document key for name */
     public static String RELOFF = "reloff";
+    /** revision id key for updates and deletes */
+    public static String REV = "_rev";
     /** JSON document key for format */
     public static String FORMAT = "format";
     /** JSON document key for length */

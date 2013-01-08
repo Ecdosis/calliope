@@ -38,6 +38,7 @@ public class Archive extends HashMap<String,byte[]>
     StringBuilder log;
     String style;
     String version1;
+    String revid;
     HashMap<String,String> nameMap;
     /**
      * Create an archive
@@ -73,6 +74,14 @@ public class Archive extends HashMap<String,byte[]>
         if ( author.length()>1 )
             sb.append( author.substring(1) );
         description = sb.toString();
+    }
+    /**
+     * Set the revision ID for the JSON document generated from this
+     * @param revid the revid for this resource
+     */
+    public void setRevId( String revid )
+    {
+        this.revid = revid;
     }
     /**
      * Add a long name to our map for later use
@@ -174,6 +183,8 @@ public class Archive extends HashMap<String,byte[]>
             if ( body.length() == 0 )
                 throw new HritException("failed to create MVD");
             doc.add( JSONKeys.TITLE, title, false );
+            if ( revid != null )
+                doc.add( JSONKeys.REV, revid, false );
             doc.add( JSONKeys.VERSION1, version1, false );
             doc.add( JSONKeys.DESCRIPTION, description, false );
             doc.add( JSONKeys.AUTHOR, author, false );

@@ -33,6 +33,8 @@ public class Params
     public final static String RECIPE = "RECIPE";
     /** an XML file uploaded for stripping/importing */
     public final static String XML = "XML";
+    /** an XSLT docid for pre-transforming an uploaded XML file */
+    public final static String XSLT = "XSLT";
     /** an extra short name (for compare) */
     public final static String SHORTNAME = "SHORTNAME";
     /** an extra groups path for compare */
@@ -93,4 +95,6 @@ public class Params
     public final static String DEMO = "demo";
     /** uploading */
     public final static String UPLOAD = "UPLOAD";
+    /** default xslt stylesheet */
+    public final static String XSLT_DEFAULT = "default";
 }

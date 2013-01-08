@@ -129,6 +129,8 @@ public class HritServer extends AbstractHandler
             conn.connect();
             //Get Response	
             String revid = conn.getHeaderField("ETag");
+            if ( revid != null )
+                revid = revid.replaceAll("\"","");
             conn.disconnect(); 
             return revid;
         } 
@@ -151,7 +153,7 @@ public class HritServer extends AbstractHandler
         int pos = sb.indexOf( "{" );
         if ( pos != -1 )
         {
-            sb.insert(pos+1,"\n\t\"_rev\": "+revid+",");
+            sb.insert(pos+1,"\n\t\"_rev\": \""+revid+"\",");
         }
         return sb.toString();
     }
@@ -190,6 +192,39 @@ public class HritServer extends AbstractHandler
         }
         else
             return "";
+    }
+    /**
+     * Remove a document from the database
+     * @param path the full path of the resource including database
+     * @param json the json to put there
+     * @return the server response
+     */
+    public static String removeFromDb( String path ) throws HritException
+    {
+        HttpURLConnection conn = null;
+        try
+        {
+            path = path.replace(" ","%20");
+            String login = (HritServer.user==null)?"":user+":"+password+"@";
+            String revid = getRevId( path );
+            if ( revid != null && revid.length()> 0 )
+            {
+                String url = "http://"+login+host+":"+dbPort+path+"?rev="+revid;
+                URL u = new URL(url);
+                conn = (HttpURLConnection)u.openConnection();
+                conn.setRequestMethod("DELETE");
+                conn.setUseCaches (false);
+                conn.setDoOutput(true);
+                //Get Response	
+                return readResponse( conn, 0L );
+            }
+            else // it's not there, so do nothing
+                return "";
+         }
+         catch ( Exception e )
+         {
+             throw new HritException( e );
+         }
     }
     /**
      * PUT a json file to the database

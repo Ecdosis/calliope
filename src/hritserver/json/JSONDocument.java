@@ -15,7 +15,6 @@
  */
 package hritserver.json;
 import hritserver.exception.JSONException;
-import hritserver.json.JSONDocument;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -34,7 +33,7 @@ public class JSONDocument extends HashMap<String,Object>
     /**
      * Parse a string and return it
      * @param data the document
-     * @param offse the ofset to start paring from
+     * @param offse the offset to start paring from
      * @return a string
      */
     private static JSONValue parseString( String data, int offset )

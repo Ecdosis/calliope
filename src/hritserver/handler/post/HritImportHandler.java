@@ -20,6 +20,7 @@ import hritserver.HritServer;
 import hritserver.constants.*;
 import hritserver.exception.HritException;
 import hritserver.handler.post.importer.*;
+import hritserver.importer.Archive;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,8 @@ public abstract class HritImportHandler extends HritPostHandler
     String database;
     String splitterName;
     String stripperName;
+    /** uploaded xslt file contents */
+    String xslt;
     boolean demo;
     /** text filter config */
     String textName;
@@ -56,6 +59,35 @@ public abstract class HritImportHandler extends HritPostHandler
         textName = "default";
         files = new ArrayList<File>();
         log = new StringBuilder();
+    }
+    /**
+     * Add the archive to the database
+     * @param archive the archive
+     * @param type its type: cortex or corcode
+     * @param suffix the suffix to append
+     * @throws HritException 
+     */
+    protected void addToDBase( Archive archive, String type, String suffix ) 
+        throws HritException
+    {
+        // now get the json docs and add them at the right docid
+        if ( !archive.isEmpty() )
+        {
+            String path;
+            if ( suffix.length()>0 )
+                path = "/"+type+"/"+docID.get(false)+"%2F"+suffix;
+            else
+                path = "/"+type+"/"+docID.get(false);
+            if ( type.equals("corcode") )
+                path += "%2Fdefault";
+            String revid = HritServer.getRevId( path );
+            if ( revid != null && revid.length()>0 )
+                archive.setRevId( revid );
+            HritServer.putToDb( path, archive.toMVD(type) );
+            log.append( archive.getLog() );
+        }
+        else
+            log.append("No "+type+" created (empty)\n");
     }
     /**
      * Parse the import params from the request
@@ -109,6 +141,8 @@ public abstract class HritImportHandler extends HritPostHandler
                             stripperName = contents.toLowerCase().replace("/","%2F");
                         else if ( fieldName.equals(Params.TEXT) )
                             textName = contents.toLowerCase();
+                        else if ( fieldName.equals(Params.XSLT) )
+                            xslt = getConfig(Config.xslt,contents);
                     }
                 }
                 else if ( item.getName().length()>0 )
@@ -151,17 +185,17 @@ public abstract class HritImportHandler extends HritPostHandler
     /**
      * Fetch the specified config from the database. If not there, check 
      * for default configs progressively higher up.
-     * @param kind the config kind: text or xml
+     * @param kind the config kind: text, xslt or xml
      * @param path the path to the config
      * @return the loaded config document
      * @throws HritException 
      */
-    String getConfig( String kind, String path ) throws HritException
+    String getConfig( Config kind, String path ) throws HritException
     {
         try
         {
             String doc = null;
-            String configDocId = "/"+Database.CONFIG+"/"+kind+"%2F"+path;
+            String configDocId = "/"+Database.CONFIG+"/"+kind.toString()+"%2F"+path;
             while ( doc == null )
             {
                 byte[] data = HritServer.getFromDb( configDocId.toLowerCase() );

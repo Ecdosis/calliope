@@ -15,14 +15,16 @@
  */
 
 package hritserver.handler.post;
-import hritserver.HritServer;
 import hritserver.constants.Formats;
 import hritserver.importer.Archive;
 import hritserver.handler.post.importer.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import hritserver.exception.HritException;
-import hritserver.importer.filters.Config;
+import hritserver.constants.Config;
+import hritserver.constants.Params;
+import hritserver.constants.JSONKeys;
+import hritserver.json.JSONDocument;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import java.util.ArrayList;
 /**
@@ -70,15 +72,40 @@ public class HritMixedImportHandler extends HritImportHandler
                             log.append( stage2.process(cortex,corcode) );
                             StageThreeXML stage3Xml = new StageThreeXML( stage2, 
                                 style );
-                            stage3Xml.setStripConfig( getConfig(Config.STRIPPER,
+                            stage3Xml.setStripConfig( getConfig(Config.stripper,
                                 stripperName) );
-                            stage3Xml.setSplitConfig( getConfig(Config.SPLITTER,
+                            stage3Xml.setSplitConfig( getConfig(Config.splitter,
                                 splitterName) );
+                            if ( stage3Xml.hasTEI() )
+                            {
+                                ArrayList<File> notes = stage3Xml.getNotes();
+                                if ( notes.size()> 0 )
+                                {
+                                    Archive nCorTex = new Archive(docID.getWork(), 
+                                        docID.getAuthor());
+                                    cortex.setStyle( style );
+                                    Archive nCorCode = new Archive(docID.getWork(), 
+                                        docID.getAuthor());
+                                    StageThreeXML s3notes = new StageThreeXML();
+                                    for ( int j=0;j<notes.size();j++ )
+                                        s3notes.add(notes.get(j));
+                                    log.append( s3notes.process(nCorTex,nCorCode) );
+                                    addToDBase(nCorTex, "cortex", "notes" );
+                                    addToDBase( nCorCode, "corcode", "notes" );
+                                }
+                                if ( xslt == null )
+                                    xslt = Params.XSLT_DEFAULT;
+                                String transform = getConfig(Config.xslt,xslt);
+                                JSONDocument jDoc = JSONDocument.internalise( 
+                                    transform );      
+                                stage3Xml.setTransform( (String)
+                                    jDoc.get(JSONKeys.BODY) );
+                            }
                             log.append( stage3Xml.process(cortex,corcode) );
                             // process the text filers
                             StageThreeText stage3Text = new StageThreeText( 
                                 filterName );
-                            stage3Text.setConfig( getConfig(Config.TEXT,
+                            stage3Text.setConfig( getConfig(Config.text,
                                 filterName+"%2F"+textName) );
                             ArrayList<File> stage2Files = stage2.getFiles();
                             for ( int i=0;i<stage2Files.size();i++ )
@@ -88,23 +115,8 @@ public class HritMixedImportHandler extends HritImportHandler
                                     stage3Text.add( f );
                             }
                             log.append( stage3Text.process(cortex,corcode) );
-                            // now get the json docs and add them at the right docid
-                            if ( !cortex.isEmpty() )
-                            {
-                                HritServer.putToDb( "/cortex/"+docID.get(false), 
-                                    cortex.toMVD("cortex") );
-                                log.append( cortex.getLog() );
-                            }
-                            else
-                                log.append("No cortex created\n");
-                            if ( !corcode.isEmpty() )
-                            {
-                                HritServer.putToDb( "/corcode/"+docID.get(false)
-                                    +"%2Fdefault", corcode.toMVD("corcode") );
-                                log.append( corcode.getLog() );
-                            }
-                            else
-                                log.append("No corcode created\n");
+                            addToDBase( cortex, "cortex", "" );
+                            addToDBase( corcode, "corcode", "" );
                         }
                         catch ( Exception e )
                         {

@@ -21,7 +21,7 @@ import hritserver.exception.HritException;
 import hritserver.handler.post.importer.*;
 import hritserver.constants.Formats;
 import hritserver.importer.Archive;
-import hritserver.importer.filters.Config;
+import hritserver.constants.Config;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -54,9 +54,9 @@ public class HritXMLImportHandler extends HritImportHandler
                     log.append( stage2.process(cortex,corcode) );
                     StageThreeXML stage3Xml = new StageThreeXML( stage2, 
                         style );
-                    stage3Xml.setStripConfig( getConfig(Config.STRIPPER,
+                    stage3Xml.setStripConfig( getConfig(Config.stripper,
                         stripperName) );
-                    stage3Xml.setSplitConfig( getConfig(Config.SPLITTER,
+                    stage3Xml.setSplitConfig( getConfig(Config.splitter,
                         splitterName) );
                     log.append( stage3Xml.process(cortex,corcode) );
                     // now get the json docs and add them at the right docid

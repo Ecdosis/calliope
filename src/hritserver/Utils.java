@@ -3,7 +3,11 @@
  * and open the template in the editor.
  */
 package hritserver;
-
+import org.w3c.dom.Document;
+import java.io.StringWriter;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 /**
  * Things accessible form everywhere
  * @author desmond
@@ -90,5 +94,93 @@ public class Utils
                 return html.substring(pos,rpos);
         }
         return html;
+    }
+    /**
+     * Print a single element node
+     * @param elem the element in question
+     * @param versions the set of versions to write to
+     * @param map the map of versions to buffers
+     */
+    static void printElementBody( Element elem, StringWriter sw )
+    {
+        // recurse into its children
+        Node child = elem.getFirstChild();
+        while ( child != null )
+        {
+            printNode( child, sw );
+            child = child.getNextSibling();
+        }
+    }
+    /**
+     * Print an element's end-code to the current buffer
+     * @param elem the element in question
+     */
+    static void printElementEnd( Element elem, StringWriter sw )
+    {
+        if ( elem.getFirstChild()!=null )
+        {
+            sw.write( "</" );
+            sw.write(elem.getNodeName() );
+            sw.write( ">" );
+        }
+    }
+    /**
+     * Print a single element node to the current buffer
+     * @param elem the element in question
+     */
+    static void printElementStart( Element elem, StringWriter sw )
+    {
+        sw.write("<");
+        sw.write(elem.getNodeName());
+        NamedNodeMap attrs = elem.getAttributes();
+        for ( int j=0;j<attrs.getLength();j++ )
+        {
+            Node attr = attrs.item( j );
+            sw.write( " ");
+            sw.write( attr.getNodeName() );
+            sw.write( "=\"" );
+            sw.write( attr.getNodeValue() );
+            sw.write( "\"" );
+        }
+        if ( elem.getFirstChild()==null )
+            sw.write("/>");
+        else
+            sw.write(">");
+    }
+    /**
+     * Write a node to the current output buffer
+     * @param node the node to start from
+     */
+    static void printNode( Node node, StringWriter sw )
+    {
+        if ( node.getNodeType()==Node.TEXT_NODE )
+        {
+            String content = node.getTextContent();
+            sw.write( content );
+        }
+        else if ( node.getNodeType()==Node.ELEMENT_NODE )
+        {
+            printElementStart( (Element)node,sw );
+            printElementBody( (Element)node,sw );
+            printElementEnd( (Element)node, sw );
+        }
+        else if ( node.getNodeType()==Node.COMMENT_NODE )
+        {
+            sw.write("<!--");
+            sw.write(node.getTextContent());
+            sw.write("-->");
+        }
+    }
+	
+    /**
+     * Convert a loaded DOM document to a String
+     * @param doc the DOM document
+     * @return a String being its content
+     */
+    public static String docToString( Document doc )
+    {
+        StringWriter sw = new StringWriter();
+        printNode( doc.getDocumentElement(),sw );
+        return sw.toString();
     }
 }

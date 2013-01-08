@@ -19,7 +19,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.StringReader;
 import org.xml.sax.InputSource;
+import hritserver.exception.HritException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 /**
  * Represent a loaded file
  * @author desmond
@@ -28,6 +30,7 @@ public class File
 {
     public String data;
     public String name;
+    boolean TEI;
     private char UTF8_BOM = 65279;
     public File( String name, String data )
     {
@@ -35,6 +38,14 @@ public class File
         this.data = data;
         if ( data.length()>0&&data.charAt(0)==UTF8_BOM )
             this.data = data.substring(1);
+    }
+    /**
+     * Reset the data content
+     * @param data the new data
+     */
+    public void setData( String data )
+    {
+        this.data = data;
     }
     public boolean isJSON()
     {
@@ -74,6 +85,7 @@ public class File
             }
         }
         // Hmmm. Looks like XML, smells like XML. Let's check to be sure...
+        // and also check if it is TEI-XML...
         if ( isXML )
         {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -83,6 +95,13 @@ public class File
                 StringReader sr = new StringReader( data );
                 InputSource is = new InputSource( sr );
                 Document dom = db.parse( is );
+                Element root = dom.getDocumentElement();
+                if ( root == null )
+                    throw new HritException("No root element");
+                String name = root.getNodeName();
+                if ( name != null 
+                    && (name.equals("TEI")||name.equals("TEI.2")) )
+                    TEI = true;
             }
             catch ( Exception e ) 
             {
@@ -90,6 +109,14 @@ public class File
             }
         }
         return isXML;
+    }
+    /**
+     * Is this XML file in TEI format? (should be preceded by isXML call)
+     * @return true if it is 
+     */
+    public boolean isTEI()
+    {
+        return TEI;
     }
     @Override
     public String toString()

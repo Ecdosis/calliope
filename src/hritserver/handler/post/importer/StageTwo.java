@@ -53,9 +53,9 @@ public class StageTwo extends Stage
      * Is a file similar enough to be merged?
      * @param file1 the first file in the set
      * @param file2 the new file to compare to
-     * @return true if it is similar enough
+     * @return the percentage of similarity
      */
-    private boolean similar( File file1, File file2 )
+    private float similar( File file1, File file2 )
     {
         try
         {
@@ -68,26 +68,25 @@ public class StageTwo extends Stage
             {
                 diffLen += diffs[j].newLength();
             }
-            if ( (totalLen-diffLen)/totalLen < CUTOFF )
+            float fraction = (totalLen-diffLen)/totalLen;
+            if ( fraction < CUTOFF )
             {
                 log.append("Rejecting " );
                 log.append( file2.name );
                 log.append( ": not similar enough (");
                 log.append( (totalLen-diffLen)/totalLen );
                 log.append(")\n");
-                return false;
+                return fraction*100.0f;
             }
             else
             {
-                accept( file2.name, ((totalLen-diffLen)/totalLen)*100.0f );
-                return true;
+                return fraction*100.0f;
             }
         }
         catch ( Exception e )
         {
-            return false;
+            return 0.0f;
         }
-
     }
     /**
      * Process the files
@@ -121,10 +120,11 @@ public class StageTwo extends Stage
                     log.append( ") too different\n");
                     continue;
                 }
-                if ( !checkSimilarity || similar(first,files.get(i)) )
+                float percent = similar(first,files.get(i));
+                if ( !checkSimilarity || percent/100.0f>CUTOFF )
                 {
                     newFiles.add( files.get(i) );
-                    accept( files.get(i).name, 0.0f );
+                    accept( files.get(i).name, percent );
                 }
             }
             files = newFiles;

@@ -59,13 +59,13 @@ public class PlayFilter extends Filter
      */
     public void configure( JSONDocument config )
     {
-        maxLineSyllables = (Integer)config.get( Config.MAXLINE_SYLLABLES );
-        vowels = (String)config.get( Config.VOWELS );
-        trailing = (String)config.get( Config.TRAILING );
-        String se = (String)config.get( Config.SPEAKER_END );
+        maxLineSyllables = (Integer)config.get( PlayConfig.MAXLINE_SYLLABLES );
+        vowels = (String)config.get( PlayConfig.VOWELS );
+        trailing = (String)config.get( PlayConfig.TRAILING );
+        String se = (String)config.get( PlayConfig.SPEAKER_END );
         speakerEnd = se.charAt(0);
-        sentenceEnd = (String)config.get( Config.SENTENCE_END );
-        ArrayList array = (ArrayList)config.get( Config.STAGE_KEYS );
+        sentenceEnd = (String)config.get( PlayConfig.SENTENCE_END );
+        ArrayList array = (ArrayList)config.get( PlayConfig.STAGE_KEYS );
         for ( int i=0;i<array.size();i++ )
             stageKeys.add( (String)array.get(i) );
     }
