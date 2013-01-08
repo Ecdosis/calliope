@@ -252,10 +252,10 @@ public class HritHTMLHandler extends HritGetHandler
             JSONResponse html = new JSONResponse();
             byte[] text = corTex.getVersion();
     //        // debug
-    //        try{
-    //            String textString = new String(text,"UTF-8");
-    //            System.out.println(textString);
-    //        }catch(Exception e){}
+            try{
+                String textString = new String(text,"UTF-8");
+                System.out.println(textString);
+            }catch(Exception e){}
             // end
             int res = new HritFormatter().format( 
                 text, corCodes, styles, formats, html );

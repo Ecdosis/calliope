@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public abstract class Test extends HritHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Comparenew Edition Image Import Table Tilt";
+    public static String tabs = "Home Compare Comparenew Edition Html Image Import Table Tilt";
     private static String KING_LEAR = 
         "english/shakespeare/kinglear/act1/scene1";
     /** contains a leading slash */
