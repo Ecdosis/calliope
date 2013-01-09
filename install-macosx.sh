@@ -5,15 +5,18 @@ if [ $USER = "root" ]; then
 pgrep(){ ps -ax -o pid,command | grep "$@" | grep -v 'grep' | awk '{print $1;}'; }
 BREW_LOC=`which brew`
 if [ -z $BREW_LOC ]; then
-    echo "installing homebrew ..."
-    su - $SUDO_USER -c "ruby -e \"$(curl -fsSkL raw.github.com/mxcl/homebrew/go)\""
+    echo "installing homebrew. this may take some time ..."
+    su - $SUDO_USER -c "curl -o /tmp/012345.rb -fsSkL raw.github.com/mxcl/homebrew/go"
+	chmod +x /tmp/012345.rb
+    su - $SUDO_USER -c "/tmp/012345.rb"
+	rm /tmp/012345.rb
     BREW_LOC=`which brew`
 else
     echo "homebrew was already installed"
 fi
 # check that homebrew was installed
 if [ -z $BREW_LOC ]; then
-    echo "homebrew not installed. exiting..."
+    echo "homebrew install failed. exiting..."
     exit
 fi
 # install gcc
@@ -22,8 +25,14 @@ if [ -z $GCC_LOC ]; then
     echo "installing gcc..."
     brew tap homebrew/dupes
     brew install apple-gcc42
+	GCC_LOC=`which gcc`
 else
     echo "gcc already installed"
+fi
+# check that gcc was installed
+if [ -z $GCC_LOC ]; then
+    echo "gcc install failed. exiting..."
+    exit
 fi
 # install couchdb
 COUCHDB_LOC=`which couchdb`
