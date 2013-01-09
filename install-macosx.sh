@@ -41,6 +41,11 @@ if [ -z $COUCHDB_LOC ]; then
 else
     echo "couchdb already installed"
 fi
+# check that couchdb was installed
+if [ -z $COUCHDB_LOC ]; then
+    echo "couchdb install failed. exiting..."
+    exit
+fi
 # launch couchdb daemon
 COUCHDAEMON=`launchctl list | grep couchdb | awk '{print $1;}'`
 if [ -z $COUCHDAEMON ]; then
@@ -78,21 +83,35 @@ res=`curl -s -X GET http://admin:jabberw0cky@localhost:5984/_users/_all_docs|gre
 if [ -z $res ]; then
     echo "creating admin user..."
     curl -s -X PUT http://localhost:5984/_config/admins/admin -d '"jabberw0cky"'
+	res=`curl -s -X GET http://admin:jabberw0cky@localhost:5984/_users/_all_docs|grep _design/_auth`
+	if [ -z $res ]; then
+		echo "couldn't create admin user. exiting..."
+		exit
+	fi
 else
     echo "admin user found"
 fi
-# upload sample data
+# move to runfolder
 RUNFOLDER=`ls -d hritserver-*`
-echo "uploading sample data to database..."
-cd $RUNFOLDER/backup
-# avoid prompt for password
-export PASSWORD="jabberw0cky"
-./upload-all.sh
+cd $RUNFOLDER
+read -p "Reinitialise sample data? (deletes ALL data):" UPLOAD
+if [ $UPLOAD == "Y" ]; then
+	# upload sample data
+	echo "uploading sample data to database..."
+	cd backup
+	# avoid prompt for password
+	export PASSWORD="jabberw0cky"
+	./upload-all.sh
+    # move back to runfolder
+	cd ..
+else
+	echo "OK, not uploading any data..."
+fi
 echo "installing formatter and stripper libraries"
-cd ..
 ./install-libs.sh
 ./hritserver-start.sh
 cd ../..
+echo "done!"
 else
   echo "Need to be root. Did you use sudo?"
 fi
