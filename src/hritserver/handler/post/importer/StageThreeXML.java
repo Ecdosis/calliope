@@ -68,7 +68,14 @@ public class StageThreeXML extends Stage
             {
                 if ( f.isTEI() )
                     hasTEI = true;
-                this.files.add( f );
+                if ( f.isTEICorpus() )
+                {
+                    File[] members = f.splitTEICorpus();
+                    for ( int j=0;j<members.length;j++ )
+                        this.files.add( members[j] );
+                }
+                else
+                    this.files.add( f );
             }
             else
             {
@@ -152,11 +159,16 @@ public class StageThreeXML extends Stage
             prev = chars[i];
         }
     }
+    /**
+     * Append a note or interp to the notes document
+     * @param notes the notes document
+     * @param notesElem the element in notes to append to
+     * @param node the actual element to append
+     */
     private void addToNotes( Document notes, Node notesElem, Node node )
 	{
-		Node root = notes.getDocumentElement();
-		root.appendChild( notes.createTextNode("\n") );
-		root.appendChild( node );		
+		notesElem.appendChild( notes.createTextNode("\n") );
+		notesElem.appendChild( node );		
 	}
 	/**
      * Recursively search through the DOM for note, interp and interpGrp

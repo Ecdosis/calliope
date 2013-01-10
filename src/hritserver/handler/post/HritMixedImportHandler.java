@@ -36,7 +36,7 @@ public class HritMixedImportHandler extends HritImportHandler
     HritMixedImportHandler()
     {
         super();
-        style = Formats.TEI;
+        style = Formats.TEI+"%2Fdefault";
     }
     /**
      * Handle posted files from the input dialog. Can be mixed TEXT etc files
@@ -111,7 +111,7 @@ public class HritMixedImportHandler extends HritImportHandler
                             for ( int i=0;i<stage2Files.size();i++ )
                             {
                                 File f = stage2Files.get(i);
-                                if ( !stage3Xml.containsFile(f) )
+                                if ( !stage3Xml.containsFile(f)&&!f.isXML() )
                                     stage3Text.add( f );
                             }
                             log.append( stage3Text.process(cortex,corcode) );
