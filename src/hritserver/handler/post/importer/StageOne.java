@@ -17,13 +17,13 @@
 package hritserver.handler.post.importer;
 import java.util.ArrayList;
 import hritserver.importer.Archive;
+import hritserver.constants.Globals;
 /**
  * A stage to eliminate over-size and non-text or non-XML files
  * @author desmond
  */
 public class StageOne extends Stage
 {
-    static int MAX_LEN = 102400;
     static String XML = "xml";
     static String TEXT = "txt";
     public StageOne( ArrayList<File> files )
@@ -58,14 +58,14 @@ public class StageOne extends Stage
         {
             File item = files.get(i);
             String suffix = suffix(item.name);
-            if ( item.data.length()>MAX_LEN )
+            if ( item.data.length()>Globals.MAX_UPLOAD_LEN )
             {
                 log.append("File ");
                 log.append( item.name );
                 log.append( " rejected because it is too long (" );
                 log.append( item.data.length() );
                 log.append( "). Maximum is " );
-                log.append( MAX_LEN );
+                log.append( Globals.MAX_UPLOAD_LEN );
                 log.append( ".\n" );
             }
             else if ( suffix.length() == 0 || suffix.equals(XML)
