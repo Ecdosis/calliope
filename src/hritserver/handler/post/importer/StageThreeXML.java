@@ -57,6 +57,11 @@ public class StageThreeXML extends Stage
     {
         super();
     }
+    public StageThreeXML( String style )
+    {
+        super();
+        this.style = style;
+    }
     public StageThreeXML( Stage last, String style )
     {
         super();
@@ -272,7 +277,7 @@ public class StageThreeXML extends Stage
             notesRoot.appendChild( textElem );
             Element bodyElem = notes.createElement("body");
             textElem.appendChild( bodyElem );
-            lookForNotes( doc, root, notes, textElem );
+            lookForNotes( doc, root, notes, bodyElem );
             return notes;
         }
         catch ( Exception e )

@@ -83,10 +83,14 @@ public class HritMixedImportHandler extends HritImportHandler
                                 {
                                     Archive nCorTex = new Archive(docID.getWork(), 
                                         docID.getAuthor());
-                                    cortex.setStyle( style );
+                                    nCorTex.setStyle( style );
                                     Archive nCorCode = new Archive(docID.getWork(), 
                                         docID.getAuthor());
-                                    StageThreeXML s3notes = new StageThreeXML();
+                                    StageThreeXML s3notes = new StageThreeXML(style);
+                                    s3notes.setStripConfig( 
+                                        getConfig(Config.stripper, stripperName) );
+                                    s3notes.setSplitConfig( 
+                                        getConfig(Config.splitter, splitterName) );
                                     for ( int j=0;j<notes.size();j++ )
                                         s3notes.add(notes.get(j));
                                     log.append( s3notes.process(nCorTex,nCorCode) );
