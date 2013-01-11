@@ -14,5 +14,5 @@ public class Globals
     //public static final String JQUERY_SITE = "code.jquery.com";
     public static final String JQUERY_SITE = "localhost";  
     /** disables import */
-    public static final boolean DEMO = false;
+    public static final boolean DEMO = true;
 }
