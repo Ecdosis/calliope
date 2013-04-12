@@ -69,7 +69,7 @@ public class StageThreeXML extends Stage
         for ( int i=0;i<last.files.size();i++ )
         {
             File f = last.files.get( i );
-            if ( f.isXML() )
+            if ( f.isXML(log) )
             {
                 if ( f.isTEI() )
                     hasTEI = true;
@@ -258,7 +258,7 @@ public class StageThreeXML extends Stage
     /**
      * Remove note, interp and interpGrp from TEI-Lite documents
      * @param doc the doc to remove them from
-     * @return a TEI document contain the removed notes etc.
+     * @return a TEI document containing the removed notes etc.
      * @throws HritException 
      */
     private Document separateNotes( Document doc ) throws Exception
@@ -310,7 +310,9 @@ public class StageThreeXML extends Stage
                     sr = new StringReader( f.toString() );
                     is = new InputSource( sr );
                     Document doc = db.parse( is );
-                    log.append("Separating notes in "+f.name);
+                    log.append("Separating notes in ");
+                    log.append(f.name);
+                    log.append("\n");
                     Document notesDoc = separateNotes( doc );
                     f.setData( Utils.docToString(doc) );
                     File g = new File(f.simpleName()+"-notes",
@@ -368,13 +370,15 @@ public class StageThreeXML extends Stage
                         Formats.STIL, style, text, markup );
                     if ( res == 1 )
                     {
-                        String group = "";
-                        group = stripSuffix(files.get(i).name)+"/";
+                        String vid = "Base/";
+                        vid += stripSuffix(files.get(i).name);
+                        if ( map.size()>1 )
+                            vid += "/"+key;
                         //char[] chars = text.getBody().toCharArray();
                         //convertQuotes( chars );
                         //cortex.put( group+key, new String(chars).getBytes("UTF-8") );
-                        cortex.put( group+key, text.getBody().getBytes("UTF-8") );
-                        corcode.put( group+key, markup.getBody().getBytes("UTF-8") );
+                        cortex.put( vid, text.getBody().getBytes("UTF-8") );
+                        corcode.put( vid, markup.getBody().getBytes("UTF-8") );
                         log.append( "Stripped " );
                         log.append( file.name );
                         log.append("(");

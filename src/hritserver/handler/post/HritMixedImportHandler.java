@@ -68,6 +68,7 @@ public class HritMixedImportHandler extends HritImportHandler
                         // it's safer to do this in a try-catch handler
                         try
                         {
+                            String suffix = "";
                             StageTwo stage2 = new StageTwo( stage1, true );
                             log.append( stage2.process(cortex,corcode) );
                             StageThreeXML stage3Xml = new StageThreeXML( stage2, 
@@ -96,6 +97,8 @@ public class HritMixedImportHandler extends HritImportHandler
                                     log.append( s3notes.process(nCorTex,nCorCode) );
                                     addToDBase(nCorTex, "cortex", "notes" );
                                     addToDBase( nCorCode, "corcode", "notes" );
+                                    // differentiate base from notes
+                                    suffix = "base";
                                 }
                                 if ( xslt == null )
                                     xslt = Params.XSLT_DEFAULT;
@@ -115,12 +118,12 @@ public class HritMixedImportHandler extends HritImportHandler
                             for ( int i=0;i<stage2Files.size();i++ )
                             {
                                 File f = stage2Files.get(i);
-                                if ( !stage3Xml.containsFile(f)&&!f.isXML() )
+                                if ( !stage3Xml.containsFile(f)&&!f.isXML(log) )
                                     stage3Text.add( f );
                             }
                             log.append( stage3Text.process(cortex,corcode) );
-                            addToDBase( cortex, "cortex", "" );
-                            addToDBase( corcode, "corcode", "" );
+                            addToDBase( cortex, "cortex", suffix );
+                            addToDBase( corcode, "corcode", suffix );
                         }
                         catch ( Exception e )
                         {

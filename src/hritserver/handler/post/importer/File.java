@@ -163,9 +163,10 @@ public class File
     }
     /**
      * Is this an XML file?
+     * @param log the log to write error messages to
      * @return true if it is
      */
-    public boolean isXML()
+    public boolean isXML( StringBuilder log )
     {
         boolean isXML = false;
         for ( int i=0;i<data.length();i++ )
@@ -205,6 +206,8 @@ public class File
             catch ( Exception e ) 
             {
                 isXML = false;
+                log.append( e.getMessage() );
+                log.append("\n");
             }
         }
         return isXML;
