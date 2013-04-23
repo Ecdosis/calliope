@@ -109,7 +109,7 @@ else
 fi
 echo "installing formatter and stripper libraries"
 ./install-libs.sh
-./hritserver-start.sh
+./calliope-start.sh
 cd ../..
 echo "done!"
 else
