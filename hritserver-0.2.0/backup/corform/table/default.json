@@ -1,5 +1,0 @@
-{
-	"format": "CSS",
-	"title": "table",
-	"body": "td {white-space: nowrap;padding:0;border:0;} tr {border:0} table {border:0} td.siglum {font-weight: bold; padding-right: 3px; padding-left: 3px;} td.siglumleft {position:absolute;left:0;font-weight: bold; padding-right: 5px; padding-left: 3px;} td.siglumhidden { display: none; } table {border-spacing: 0px 2px;} table.inline:hover {cursor:pointer} table.inline { display: inline-table; position: relative; } tr.shown { display: table-row; } tr.hidden { display: none; } span.base { border-bottom: 1px dotted #ba0000;} span.inserted { color: blue; position: relative } span.left {position: relative;float:left; } span.right {position: relative;float:right; } span.inserted-left { position: relative;float: left; color: blue} span.inserted-right { position: relative;float: right; color: blue}"
-}

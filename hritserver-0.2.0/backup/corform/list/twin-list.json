@@ -1,1 +1,0 @@
-{"format":"CSS","title":"LIST","body":"span.description { -hrit-id: id }\nselect.list { -hrit-name: name; -hrit-id: id; -hrit-function: onchange }\noption.version-short { -hrit-description: title; -hrit-version1: value; -hrit-selected: selected }\noptgroup.group { -hrit-name: label }"}
