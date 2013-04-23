@@ -17,12 +17,12 @@ then
 fi
 if [ `uname` = "Darwin" ]; then
   pgrep(){ ps -ax -o pid,command | grep "$@" | grep -v 'grep' | awk '{print $1;}'; }
-  HPID=`pgrep hritserver.jar`
+  HPID=`pgrep calliope.jar`
   if [ -n "$HPID" ]; then
     kill $HPID
   fi
 else
-  pkill -c -f hritserver.jar
+  pkill -c -f calliope.jar
 fi
-nohup java -Djava.library.path=$LIBPATH -cp .$JARPATHS -jar hritserver.jar >/dev/null &
+nohup java -Djava.library.path=$LIBPATH -cp .$JARPATHS -jar calliope.jar >/dev/null &
 
