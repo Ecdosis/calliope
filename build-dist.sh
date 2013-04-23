@@ -3,27 +3,27 @@ VERSION=$1
 if [ -z $VERSION ]; then
   echo "specify a version as first argument"
 else 
-  if [ -e "hritserver-$VERSION" ]; then
-    rm -f hritserver-$VERSION/1
+  if [ -e "calliope-$VERSION" ]; then
+    rm -f calliope-$VERSION/1
   else 
-    mkdir hritserver-$VERSION
+    mkdir calliope-$VERSION
   fi
-  if [ ! -d hritserver-$VERSION/formatter ]; then
-    mkdir hritserver-$VERSION/formatter
+  if [ ! -d calliope-$VERSION/formatter ]; then
+    mkdir calliope-$VERSION/formatter
   fi
-  if [ ! -d hritserver-$VERSION/stripper ]; then
-    mkdir hritserver-$VERSION/stripper
+  if [ ! -d calliope-$VERSION/stripper ]; then
+    mkdir calliope-$VERSION/stripper
   fi
-  if [ ! -d hritserver-$VERSION/lib ]; then
-    mkdir hritserver-$VERSION/lib
+  if [ ! -d calliope-$VERSION/lib ]; then
+    mkdir calliope-$VERSION/lib
   fi
-  cp -r ../standoff/stripper/include hritserver-$VERSION/stripper
-  cp -r ../standoff/stripper/src hritserver-$VERSION/stripper/
-  cp -r ../standoff/formatter/include hritserver-$VERSION/formatter/
-  cp -r ../standoff/formatter/src hritserver-$VERSION/formatter/
-  cp -r lib/*.jar hritserver-$VERSION/lib
-  cp dist/hritserver.jar hritserver-$VERSION
-  rm -f hritserver-$VERSION/libHritStripper.so
-  rm -f hritserver-$VERSION/libHritFormatter.so
-  tar -zcvf hritserver-$VERSION.tar.gz hritserver-$VERSION
+  cp -r ../standoff/stripper/include calliope-$VERSION/stripper
+  cp -r ../standoff/stripper/src calliope-$VERSION/stripper/
+  cp -r ../standoff/formatter/include calliope-$VERSION/formatter/
+  cp -r ../standoff/formatter/src calliope-$VERSION/formatter/
+  cp -r lib/*.jar calliope-$VERSION/lib
+  cp dist/calliope.jar calliope-$VERSION
+  rm -f calliope-$VERSION/libAeseStripper.so
+  rm -f calliope-$VERSION/libAeseFormatter.so
+  tar -zcvf calliope-$VERSION.tar.gz calliope-$VERSION
 fi

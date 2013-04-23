@@ -1,0 +1,8 @@
+{
+    "maxline_syllables": 14,
+    "vowels": "aeiouy",
+    "trailing": "e",
+    "speaker_end": ".",
+    "stage_keys": ["Enter","Exit","Sennet"],
+    "sentence_end": "[\\.\\?!]"
+}

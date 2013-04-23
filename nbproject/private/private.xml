@@ -2,4 +2,45 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/AeseFormatter.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/AeseStripper.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/AeseTransformer.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/CalliopeServerThread.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/Test.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/URLEncoder.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/Utils.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/ChunkState.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Commands.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Config.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Database.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Filters.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Formats.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Globals.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/HTMLNames.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/JSONKeys.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Libraries.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/MIMETypes.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/MMP.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Params.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/Services.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/XMLAttrs.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/constants/XMLElems.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/AeseException.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/AeseExceptionMessage.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/ConfigException.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/ImportException.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/JSONException.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/NativeException.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/ParamException.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/exception/PathException.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseHandler.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseImgImportHandler.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseMVD.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseVersion.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/handler/delete/AeseDeleteHandler.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetCorCodeHandler.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/src/calliope/handler/get/compare/AeseComparisonHandler.java</file>
+        <file>file:/Users/desmond/NetBeansProjects/calliope/nbproject/build-impl.xml</file>
+    </open-files>
 </project-private>

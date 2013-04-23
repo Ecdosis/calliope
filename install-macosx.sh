@@ -92,7 +92,7 @@ else
     echo "admin user found"
 fi
 # move to runfolder
-RUNFOLDER=`ls -d hritserver-*`
+RUNFOLDER=`ls -d calliope-*`
 cd $RUNFOLDER
 read -p "Reinitialise sample data? (deletes ALL data):" UPLOAD
 if [ $UPLOAD == "Y" ]; then
