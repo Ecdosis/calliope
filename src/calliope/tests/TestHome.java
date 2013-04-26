@@ -178,18 +178,18 @@ public class TestHome extends Test
      * @return a non-null server response or raise an exception
      * @throws AeseException 
      */
-    byte[] pollServer() throws AeseException
+    String pollServer() throws AeseException
     {
-        byte[] data = null;
+        String json = null;
         int count = 0;
-        while ( data == null && count < 5 )
+        while ( json == null && count < 5 )
         {
-            data = AeseServer.getFromDb("/cortex/_all_docs/");
+            json = AeseServer.getConnection().getFromDb("/cortex/_all_docs/");
             count++;
         }
-        if ( data == null )
+        if ( json == null )
             throw new AeseException("No response from database");
-        return data;
+        return json;
     }
     /**
      * Get the content of this test: a simple dropdown menu
@@ -200,7 +200,7 @@ public class TestHome extends Test
     {
         try
         {
-            byte[] data = pollServer();
+            String data = pollServer();
             Element form = formElement( "/tests/home" );
             form.addChild( docIDHidden(docID) );
             HTMLCatalog cata = new HTMLCatalog();
@@ -208,7 +208,7 @@ public class TestHome extends Test
             boolean result = false;
             do
             {
-                result = cata.load( new String(data,"UTF-8") );
+                result = cata.load( data );
                 if ( !result )
                 {
                     data = pollServer();

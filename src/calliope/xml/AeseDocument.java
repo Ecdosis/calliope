@@ -28,13 +28,13 @@ import java.io.FileInputStream;
 import org.xml.sax.InputSource;
 import java.util.ArrayList;
 /**
- * Represent a HRIT XML document as a JSON document
+ * Represent an AESE XML document as a JSON document
  * @author desmond
  */
 public class AeseDocument 
 {
     /**
-     * Convert an external XML HRIT document to a JSON document
+     * Convert an external XML AESE document to a JSON document
      * @param src the external file
      * @param encoding its encoding, e.g. "UTF-8"
      * @return a JSON document or null
@@ -56,8 +56,8 @@ public class AeseDocument
         }
     }
     /**
-     * Convert a HRIT document to JSON internal format
-     * @param xml the text of the HRIT xml
+     * Convert a AESE document to JSON internal format
+     * @param xml the text of the AESE xml
      * @return the JSONDOcument object
      */
     public static JSONDocument internalise( String xml )

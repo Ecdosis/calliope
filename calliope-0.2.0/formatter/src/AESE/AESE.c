@@ -17,8 +17,8 @@
  */
 /**
  * The purpose of this module is to render a particular standoff markup
- * format called "HRIT", with the addition of the plain base text and a
- * CSS file, into HTML. There might be formats other than HRIT, so this
+ * format called "AESE", with the addition of the plain base text and a
+ * CSS file, into HTML. There might be formats other than AESE, so this
  * file needs to be called in an interchangeable way. The ranges read and
  * translated here must already be non-overlapping. Overlap should have
  * been resolved before the only public routine, load_markup, is called.
@@ -40,7 +40,7 @@
 #include "range_array.h"
 #include "hashset.h"
 #include "formatter.h"
-#include "HRIT/HRIT.h"
+#include "AESE/AESE.h"
 #include "plain_text.h"
 #include "error.h"
 
@@ -119,7 +119,7 @@ static void XMLCALL start_element_scan( void *userData, const char *name,
                 range_set_absolute( u->current, u->absolute_off );
             }
             else
-                warning("HRIT: invalid range\n");
+                warning("AESE: invalid range\n");
         }
         else
             range_set_removed( u->current, 1 );
@@ -161,7 +161,7 @@ static void XMLCALL end_element_scan( void *userData, const char *name )
  * @param props store in here the names of all the properties
  * @return 1 if it loaded successfully, else 0
  */
-int load_hrit_markup( const char *mdata, int mlen, range_array *ranges, hashset *props )
+int load_aese_markup( const char *mdata, int mlen, range_array *ranges, hashset *props )
 {
     int res = 0;
     struct userdata_struct userdata;
@@ -176,7 +176,7 @@ int load_hrit_markup( const char *mdata, int mlen, range_array *ranges, hashset 
         if ( XML_Parse(parser,mdata,mlen,1) == XML_STATUS_ERROR )
         {
             warning(
-                "HRIT: %s at line %" XML_FMT_INT_MOD "u\n",
+                "AESE: %s at line %" XML_FMT_INT_MOD "u\n",
                 XML_ErrorString(XML_GetErrorCode(parser)),
                 XML_GetCurrentLineNumber(parser));
         }
@@ -185,7 +185,7 @@ int load_hrit_markup( const char *mdata, int mlen, range_array *ranges, hashset 
         XML_ParserFree( parser );
     }
     else
-        warning("HRIT: failed to create parser\n");
+        warning("AESE: failed to create parser\n");
     //hashset_print( props );
     return res;
 }

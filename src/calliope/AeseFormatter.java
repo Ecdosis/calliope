@@ -16,7 +16,7 @@
 package calliope;
 
 import calliope.json.JSONResponse;
-
+import calliope.constants.Libraries;
 public class AeseFormatter
 {
     /**
@@ -33,6 +33,6 @@ public class AeseFormatter
     // ensure library is loaded
 	static 
 	{
-        System.loadLibrary("AeseFormatter");
+        System.loadLibrary(Libraries.AESEFORMATTER);
 	}
 }

@@ -30,7 +30,7 @@ public class AeseStripper
 	{
         try
         {
-            System.loadLibrary(Libraries.HRITSTRIPPER);
+            System.loadLibrary(Libraries.AESESTRIPPER);
         }
         catch ( Exception e )
         {

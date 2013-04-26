@@ -98,7 +98,7 @@ public class AeseGetHandler extends AeseHandler
     {
         try
         {
-            String jStr = new String(AeseServer.getFromDb(urn),"UTF-8");
+            String jStr = AeseServer.getConnection().getFromDb(urn);
             if ( jStr != null )
             {
                 JSONDocument jDoc = JSONDocument.internalise( jStr );
@@ -175,7 +175,7 @@ public class AeseGetHandler extends AeseHandler
         //System.out.println("fetching version "+vPath );
         try
         {
-            res = new String(AeseServer.getFromDb(path.getResource()), "UTF-8");
+            res = AeseServer.getConnection().getFromDb(path.getResource());
         }
         catch ( Exception e )
         {
@@ -291,7 +291,7 @@ public class AeseGetHandler extends AeseHandler
     {
         try
         {
-            String data = new String(AeseServer.getFromDb(path),"UTF-8");
+            String data = AeseServer.getConnection().getFromDb(path);
             if ( data.length() > 0 )
             {
                 JSONDocument doc = JSONDocument.internalise(data);

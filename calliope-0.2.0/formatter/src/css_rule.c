@@ -251,7 +251,7 @@ int css_rule_get_num_properties( css_rule *r )
  */
 static void css_rule_print_property( css_property *p )
 {
-	fprintf( stderr, "    -hrit-%s: %s;\n", css_property_get_xml_name(p),
+	fprintf( stderr, "    -aese-%s: %s;\n", css_property_get_xml_name(p),
         css_property_get_html_name(p) );
 }
 /**

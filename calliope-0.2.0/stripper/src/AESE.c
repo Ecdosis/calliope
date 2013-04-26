@@ -1,5 +1,5 @@
 /*
- * HRIT.c
+ * AESE.c
  *
  *  Created on: 23/10/2010
  * (c) Desmond Schmidt 2010
@@ -24,12 +24,12 @@
 #include <string.h>
 #include "ramfile.h"
 #include "format.h"
-#include "HRIT.h"
+#include "AESE.h"
 #include "error.h"
 #include "memwatch.h"
 
 /**
- * Write the header information. IN HRIT this will produce an
+ * Write the header information. IN AESE this will produce an
  * opening x:document tag which will only be balanced at the end
  * by the tail.
  * @param arg ignored optional user param
@@ -37,19 +37,19 @@
  * @param dst the destination markup file handle
  * @return 1 if successful, 0 otherwise
  */
-int HRIT_write_header( void *arg, DST_FILE *dst, const char *style )
+int AESE_write_header( void *arg, DST_FILE *dst, const char *style )
 {
 	int n,len,res = 1;
 	char *xml_decl = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-	const char *hrit_decl = "<hrit-markup style=\"%s\">\n";
+	const char *aese_decl = "<aese-markup style=\"%s\">\n";
 	// write header
 	len = strlen(xml_decl);
 	n = DST_WRITE( xml_decl, len, dst );
 	if ( n != len )
 		res = 0;
 	// write lmnl document declaration
-	len = strlen( hrit_decl );
-	n = DST_PRINT( dst, hrit_decl, style );
+	len = strlen( aese_decl );
+	n = DST_PRINT( dst, aese_decl, style );
 	if ( n != len+strlen(style)-2 )
 		res = 0;
 	return res;
@@ -57,9 +57,9 @@ int HRIT_write_header( void *arg, DST_FILE *dst, const char *style )
 /**
  * Write the tail
  */
-int HRIT_write_tail( void *arg, DST_FILE *dst )
+int AESE_write_tail( void *arg, DST_FILE *dst )
 {
-	const char *fmt = "</hrit-markup>";
+	const char *fmt = "</aese-markup>";
 	int len = strlen( fmt );
 	int n = DST_WRITE( fmt, len, dst );
 	return (n==len);
@@ -68,14 +68,14 @@ int HRIT_write_tail( void *arg, DST_FILE *dst )
  * This will be called repeatedly
  * @param name the name of the range
  * @param atts a NULL-terminated array of XML attributes.
- * These get turned into HRIT annotations
+ * These get turned into AESE annotations
  * @param reloff relative offset for this range
  * @param len length of the range
  * @param dst the output file handle
  * @param first 1 if this is the first range (ignored)
  * @param queue the output queue to get them in order
  */
-int HRIT_write_range( char *name, char **atts, int removed,
+int AESE_write_range( char *name, char **atts, int removed,
 	int reloff, int len, char *contents, int content_len, int first, 
     DST_FILE *dst )
 {

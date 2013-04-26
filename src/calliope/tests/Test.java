@@ -136,20 +136,21 @@ public abstract class Test extends AeseHandler
     {
         try
         {
-            byte[] data = AeseServer.getFromDb("/cortex/"+Utils.escape(KING_LEAR) );
-            if ( data != null )
+            String json = AeseServer.getConnection().getFromDb(
+                "/cortex/"+Utils.escape(KING_LEAR) );
+            if ( json != null )
                 return KING_LEAR;
             else
             {
-                data = AeseServer.getFromDb("/cortex/_all_docs/");
-                if ( data != null )
+                json = AeseServer.getConnection().getFromDb(
+                    "/cortex/_all_docs/");
+                if ( json != null )
                 {
-                    String json = new String( data, "UTF-8" );
                     JSONDocument jdoc = JSONDocument.internalise( json );
                     if ( jdoc == null )
                         throw new AeseException(
                             "Failed to internalise all docs. data length="
-                            +data.length);
+                            +json.length());
                     ArrayList docs = (ArrayList) jdoc.get( JSONKeys.ROWS );
                     if ( docs.size()>0 )
                     {
@@ -189,10 +190,10 @@ public abstract class Test extends AeseHandler
     {
         try
         {
-            byte[] data = AeseServer.getFromDb("/cortex/"+docIDCanonise(docID));
-            if ( data != null )
+            String json = AeseServer.getConnection().getFromDb(
+                "/cortex/"+docIDCanonise(docID));
+            if ( json != null )
             {
-                String json = new String( data, "UTF-8" );
                 JSONDocument doc = JSONDocument.internalise( json );
                 if ( !doc.containsKey(JSONKeys.VERSION1) )
                     throw new AeseException("Doc "+docID
@@ -395,9 +396,9 @@ public abstract class Test extends AeseHandler
         {
             String fullPath = Utils.canonisePath(Database.CORFORM,corformId);
             Path path = new Path(fullPath);
-            byte[] data = AeseServer.getFromDb( path.getResource() );
-            JSONDocument doc = JSONDocument.internalise( 
-                new String(data,"UTF-8") );
+            String json = AeseServer.getConnection().getFromDb( 
+                path.getResource() );
+            JSONDocument doc = JSONDocument.internalise( json );
             return doc.get(JSONKeys.BODY).toString();
         }
         catch (Exception e )

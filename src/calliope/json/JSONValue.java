@@ -27,4 +27,8 @@ public class JSONValue
     {
         this.value = value;
     }
+    public Object getValue()
+    {
+        return value;
+    }
 }

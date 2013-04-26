@@ -1,5 +1,5 @@
 /**
- * Strip XML tags from a file and write them out in HRIT format
+ * Strip XML tags from a file and write them out in AESE format
  * Created on 22/10/2010
  * (c) Desmond Schmidt 2010
  */
@@ -32,7 +32,7 @@
 #include "format.h"
 #include "expat.h"
 #include "stack.h"
-#include "HRIT.h"
+#include "AESE.h"
 #include "STIL.h"
 #include "hashset.h"
 #include "error.h"
@@ -74,8 +74,8 @@ struct UserData user_data;
 /** array of available formats - add more here */
 format formats[]={{"STIL",STIL_write_header,STIL_write_tail,
 	STIL_write_range,".txt",".json","-stil"},
-    {"HRIT",HRIT_write_header,HRIT_write_tail,
-	HRIT_write_range,".txt",".xml","-hrit"}};
+    {"AESE",AESE_write_header,AESE_write_tail,
+	AESE_write_range,".txt",".xml","-aese"}};
 /** size of formats array */
 int num_formats = sizeof(formats)/sizeof(format);
 /** source file */

@@ -25,8 +25,8 @@ public class Formats
     public static String DEFAULT = "default";
     /** canonical name of STIL JSON format */
     public static String STIL = "STIL";
-    /** canonical name of HRIT XML format */
-    public static String HRIT = "HRIT";
+    /** canonical name of AESE XML format */
+    public static String AESE = "AESE";
     /** response to strip service */
     public static String TEXT = "TEXT";
     /** style of TEI corform */

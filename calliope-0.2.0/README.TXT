@@ -19,7 +19,7 @@ brew install couchdb
 4. Set up databases
 
 You need to first download the calliope package, available from 
-www.github.com/AustESE-Infrastructure. Click on the calliope repository, 
+www.github.com/AESE-Infrastructure. Click on the calliope repository, 
 then the Downloads tab. Select "calliope-0.2.0.tar.gz" and download it 
 (Don't click on "Download as .tar.gz" or .zip). When it is on you hard 
 disk it will unpack automatically or by double-clicking on it or on the 
@@ -101,4 +101,4 @@ to the TEI-Lite schema should import correctly if the TEI/default style
 is chosen.
 
 Alternatively the mmpupload tool can be used to upload files in XML or 
-plain text in batches. See www.github.com/AustESE-Infrastructure.
+plain text in batches. See www.github.com/AESE-Infrastructure.

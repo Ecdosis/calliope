@@ -402,13 +402,13 @@ public class TestImport extends Test
      * @return a non-null server response or raise an exception
      * @throws AeseException 
      */
-    byte[] pollServer() throws AeseException
+    String pollServer() throws AeseException
     {
-        byte[] data = null;
+        String data = null;
         int count = 0;
         while ( data == null && count < 5 )
         {
-            data = AeseServer.getFromDb("/corform/_all_docs/");
+            data = AeseServer.getConnection().getFromDb("/corform/_all_docs/");
             count++;
         }
         if ( data == null )
@@ -423,10 +423,10 @@ public class TestImport extends Test
     {
         try
         {
-            byte[] data = pollServer();
+            String data = pollServer();
             if ( data != null )
             {
-                HTMLDocSelect sel = new HTMLDocSelect(new String(data), 
+                HTMLDocSelect sel = new HTMLDocSelect(data, 
                     Params.STYLE, Params.STYLE);
                 sel.addAttribute(HTMLNames.ONCHANGE,"update_group()");
                 return sel;

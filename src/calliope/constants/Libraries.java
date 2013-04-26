@@ -21,8 +21,8 @@ package calliope.constants;
  */
 public class Libraries 
 {
-    /** name of hrit stripper lib */
-    public static String HRITSTRIPPER = "AeseStripper";
-    /** name of hrit formatter lib */
-    public static String HRITFORMATTER = "AeseFormatter";
+    /** name of aese stripper lib */
+    public static String AESESTRIPPER = "AeseStripper";
+    /** name of aese formatter lib */
+    public static String AESEFORMATTER = "AeseFormatter";
 }

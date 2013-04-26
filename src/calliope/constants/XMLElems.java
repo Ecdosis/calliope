@@ -16,16 +16,16 @@
 package calliope.constants;
 
 /**
- * definitions of XML element names used in HRIT XML
+ * definitions of XML element names used in AESE XML
  * @author desmond
  */
 public class XMLElems 
 {
-    /** name of range elements in HRIT XML format */
+    /** name of range elements in AESE XML format */
     public static String RANGE = "range";
-    /** name of content elements in HRIT XML format */
+    /** name of content elements in AESE XML format */
     public static String CONTENT = "content";
-    /** name of content elements in HRIT annotation  */
+    /** name of content elements in AESE annotation  */
     public static String ANNOTATION = "annotation";
 
 }

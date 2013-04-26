@@ -65,11 +65,11 @@ public class AeseMVDImportHandler extends AeseImportHandler
                 {
                     // remember to set style into corcode
                     // now get the json docs and add them at the right docid
-                    AeseServer.putToDb( "/cortex/"+docID.get(false), 
-                        cortex.toMVD("cortex") );
+                    AeseServer.getConnection().putToDb( 
+                        "/cortex/"+docID.get(false), cortex.toMVD("cortex") );
                     log.append( cortex.getLog() );
-                    AeseServer.putToDb( "/corcode/"+docID.get(false), 
-                        corcode.toMVD("corcode") );
+                    AeseServer.getConnection().putToDb( 
+                        "/corcode/"+docID.get(false), corcode.toMVD("corcode") );
                     log.append( corcode.getLog() );
                 }
                 else

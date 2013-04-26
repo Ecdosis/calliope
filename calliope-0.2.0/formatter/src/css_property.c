@@ -23,12 +23,12 @@
 #include "error.h"
 #include "memwatch.h"
 
-#define HRIT_PREFIX "-hrit-"
-#define HRIT_PREFIX_LEN 6
+#define AESE_PREFIX "-aese-"
+#define AESE_PREFIX_LEN 6
 
 /**
  * A css property is a property like font-weight: bold. Except that we
- * extend it by prefixing "-hrit-xmlname: htmlname. This is for copying 
+ * extend it by prefixing "-aese-xmlname: htmlname. This is for copying 
  * over attributes from XML to HTML.
  */
 struct css_property_struct
@@ -147,7 +147,7 @@ static void strip_char( char *str, char c )
 }
 /**
  * Parse a single property from the raw CSS data. Ignore any property
- * not beginning with "-hrit-". Such properties specify
+ * not beginning with "-aese-". Such properties specify
  * the xml attribute name and its corresponding html name. The attribute
  * value is the same in both cases. Such properties are supposed to be
  * ignored by browser-based css parsers
@@ -157,7 +157,7 @@ static void strip_char( char *str, char c )
  */
 css_property *css_property_parse( const char *data, int len )
 {
-    // format: -hrit-xml_name: html_name;
+    // format: -aese-xml_name: html_name;
     // copy the attribute value over from the xml unchanged (not here)
 	int i,start=0, end=len;
     css_property *prop_temp = NULL;
@@ -168,9 +168,9 @@ css_property *css_property_parse( const char *data, int len )
 		start++;
         end--;
     }
-	if ( strncmp(&data[start],HRIT_PREFIX,HRIT_PREFIX_LEN)==0 )
+	if ( strncmp(&data[start],AESE_PREFIX,AESE_PREFIX_LEN)==0 )
     {
-        start += HRIT_PREFIX_LEN;
+        start += AESE_PREFIX_LEN;
         i = start;
         while ( i < end )
         {

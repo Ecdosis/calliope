@@ -33,7 +33,7 @@ public class AeseGetCorPixHandler extends AeseGetHandler
     {
         try
         {
-            byte[] data = AeseServer.getFromDb( urn );
+            byte[] data = AeseServer.getConnection().getImageFromDb( urn );
             /*Either remove the setContentType(), or send the response using 
 response.getOutputStream() method. That should solve the problem. */
             ServletOutputStream sos = response.getOutputStream();

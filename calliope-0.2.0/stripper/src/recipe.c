@@ -152,15 +152,15 @@ static int recipe_add_layer( recipe *r, layer *l )
  * Add a basic rule
  * @param r the recipe to add it to
  * @param xml_name the name of the xml element
- * @param hrit_name the name of the hrit property
+ * @param aese_name the name of the aese property
  * @return the rule added
  */
 static simplification *recipe_add_rule( recipe *r,
-    const char *xml_name, const char *hrit_name )
+    const char *xml_name, const char *aese_name )
 {
     int i;
     simplification **rules;
-    simplification *s = simplification_new( xml_name, hrit_name );
+    simplification *s = simplification_new( xml_name, aese_name );
     int n_rules = count_rules( r->rules );
     rules = malloc( (n_rules+2)*sizeof(simplification*) );
     if ( rules == NULL )

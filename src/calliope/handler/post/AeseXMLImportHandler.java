@@ -60,12 +60,12 @@ public class AeseXMLImportHandler extends AeseImportHandler
                         splitterName) );
                     log.append( stage3Xml.process(cortex,corcode) );
                     // now get the json docs and add them at the right docid
-                    AeseServer.putToDb( "/cortex/"+docID.get(false), 
+                    AeseServer.getConnection().putToDb( "/cortex/"+docID.get(false), 
                         cortex.toMVD("cortex") );
                     log.append( cortex.getLog() );
                     String fullAddress = "/corcode/"+docID.get(false)+"%2F"
                         +Formats.DEFAULT;
-                    log.append( AeseServer.putToDb(fullAddress, 
+                    log.append( AeseServer.getConnection().putToDb(fullAddress, 
                         corcode.toMVD("corcode")) );
                     log.append( corcode.getLog() );
                 }

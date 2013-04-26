@@ -80,10 +80,7 @@ public abstract class AeseImportHandler extends AesePostHandler
                 path = "/"+type+"/"+docID.get(false);
             if ( type.equals("corcode") )
                 path += "%2Fdefault";
-            String revid = AeseServer.getRevId( path );
-            if ( revid != null && revid.length()>0 )
-                archive.setRevId( revid );
-            AeseServer.putToDb( path, archive.toMVD(type) );
+            AeseServer.getConnection().putToDb( path, archive.toMVD(type) );
             log.append( archive.getLog() );
         }
         else
@@ -200,8 +197,9 @@ public abstract class AeseImportHandler extends AesePostHandler
             String configDocId = "/"+Database.CONFIG+"/"+kind.toString()+"%2F"+path;
             while ( doc == null )
             {
-                byte[] data = AeseServer.getFromDb( configDocId.toLowerCase() );
-                if ( data == null )
+                doc = AeseServer.getConnection().getFromDb( 
+                    configDocId.toLowerCase() );
+                if ( doc == null )
                 {
                     String[] parts = configDocId.split("%2F");
                     if ( parts.length == 1 )
@@ -231,10 +229,6 @@ public abstract class AeseImportHandler extends AesePostHandler
                             throw new AeseException("config "+oldDocId
                                 +" not found");
                     }
-                }
-                else
-                {
-                    doc = new String( data, "UTF-8" );
                 }
             }
             return doc;

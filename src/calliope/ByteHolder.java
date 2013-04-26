@@ -38,7 +38,7 @@ public class ByteHolder extends ArrayList<byte[]>
      * Get this buffer's data
      * @return a byte array
      */
-    byte[] getData()
+    public byte[] getData()
     {
         byte[] data = new byte[overall];
         for ( int i=0,pos=0;i<size();i++ )
