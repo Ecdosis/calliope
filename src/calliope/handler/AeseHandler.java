@@ -24,6 +24,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 abstract public class AeseHandler 
 {
-    protected abstract void handle( HttpServletRequest request, 
+    public abstract void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException;
 }

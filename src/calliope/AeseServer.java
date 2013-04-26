@@ -30,13 +30,10 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
  
 public class AeseServer extends AbstractHandler
 {
-    public static String user;
-    public static String password;
-    public static String host;
-    public static int dbPort;
-    public static int wsPort;
-    public static Repository repository;
     static Connection connection;
+    /** needed by AeseServerThread */
+    static String host;
+    static int wsPort;
     AeseServer()
     {
         super();
@@ -88,61 +85,68 @@ public class AeseServer extends AbstractHandler
         //response.getWriter().close();
     }
     /**
-     * Set the default values for the AeseServer itself
-     * @param user the db user name
-     * @param password the db password
-     * @param host the host domain name where we are running
-     * @param dbPort the port used by couchdb
-     * @param wsPort the web services port
-     * @param rep the type of repository
-     */
-    public static void setDefaults( String user, String password, String host, 
-        int dbPort, int wsPort, Repository rep )
-    {
-        AeseServer.user = user;
-        AeseServer.password = password;
-        AeseServer.host = host;
-        AeseServer.dbPort = dbPort;
-        AeseServer.wsPort = wsPort;
-        AeseServer.repository = rep;
-    }
-    /**
      * Read the commandline arguments
      * @param args the arguments passed into java
      */
     static boolean readArgs( String[] args )
     {
         boolean sane = true;
-        // set up defaults
-        AeseServer.wsPort = 8080;
-        AeseServer.dbPort = 5984;
-        AeseServer.host = "localhost";
-        AeseServer.password = "";
-        AeseServer.user = null;
-        for ( int i=0;i<args.length;i++ )
+        try
         {
-            if ( args[i].charAt(0)=='-' && args[i].length()==2 )
+            // set up defaults
+            int dbPort = 5984;
+            String password = "";
+            String user = null;
+            Repository repository = Repository.MONGO;
+            for ( int i=0;i<args.length;i++ )
             {
-                if ( args.length>i+1 )
+                if ( args[i].charAt(0)=='-' && args[i].length()==2 )
                 {
-                    if ( args[i].charAt(1) == 'u' )
-                        AeseServer.user = args[i+1];
-                    else if ( args[i].charAt(1) == 'p' )
-                        AeseServer.password = args[i+1];
-                    else if ( args[i].charAt(1) == 'h' )
-                        AeseServer.password = args[i+1];
-                    else if ( args[i].charAt(1) == 'd' )
-                        AeseServer.dbPort = Integer.parseInt(args[i+1]);
-                    else if ( args[i].charAt(1) == 'w' )
-                        AeseServer.wsPort = Integer.parseInt(args[i+1]);
+                    if ( args.length>i+1 )
+                    {
+                        if ( args[i].charAt(1) == 'u' )
+                            user = args[i+1];
+                        else if ( args[i].charAt(1) == 'p' )
+                            password = args[i+1];
+                        else if ( args[i].charAt(1) == 'h' )
+                            password = args[i+1];
+                        else if ( args[i].charAt(1) == 'd' )
+                            dbPort = Integer.parseInt(args[i+1]);
+                        else if ( args[i].charAt(1) == 'w' )
+                            AeseServer.wsPort = Integer.parseInt(args[i+1]);
+                        else if ( args[i].charAt(1) == 'r' )
+                            repository = Repository.valueOf(args[i+1]);
+                        else
+                            sane = false;
+                    } 
                     else
                         sane = false;
-                } 
-                else
-                    sane = false;
+                }
+                if ( !sane )
+                    break;
             }
-            if ( !sane )
-                break;
+            if ( sane )
+            {
+                switch ( repository )
+                {
+                    case COUCH:
+                        connection = new CouchConnection(
+                            user,password,host,dbPort,wsPort );
+                        break;
+                    case MONGO:
+                        connection = new MongoConnection(
+                            user,password,host, dbPort,wsPort );
+                        break;
+                    default:
+                        throw new AeseException( "Unknown repository type "
+                            +repository );
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace( System.out );
+            sane = false;
         }
         return sane;
     }
@@ -169,23 +173,6 @@ public class AeseServer extends AbstractHandler
      */
     public static Connection getConnection() throws AeseException
     {
-        if ( connection == null )
-        {
-            switch ( repository )
-            {
-                case COUCH:
-                    connection = new CouchConnection(
-                        user,password,host, dbPort,wsPort );
-                    break;
-                case MONGO:
-                    connection = new MongoConnection(
-                        user,password,host, dbPort,wsPort );
-                    break;
-                default:
-                    throw new AeseException( "Unknown repository type "
-                        +repository );
-            }
-        }
         return connection;
     }
     /**

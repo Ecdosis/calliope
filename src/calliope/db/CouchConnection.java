@@ -47,7 +47,7 @@ public class CouchConnection extends Connection
         //long startTime = System.currentTimeMillis();
         try
         {
-            String login = (AeseServer.user==null)?"":user+":"+password+"@";
+            String login = (user==null)?"":user+":"+password+"@";
             URL u = new URL("http://"+login+host+":"+dbPort+path);
             URLConnection conn = u.openConnection();
             InputStream is = conn.getInputStream();
@@ -106,7 +106,7 @@ public class CouchConnection extends Connection
         try
         {
             path = path.replace(" ","%20");
-            String login = (AeseServer.user==null)?"":user+":"+password+"@";
+            String login = (user==null)?"":user+":"+password+"@";
             URL u = new URL("http://"+login+host+":"+dbPort+path);
             conn = (HttpURLConnection)u.openConnection();
             conn.setRequestMethod("HEAD");
@@ -194,7 +194,7 @@ public class CouchConnection extends Connection
         try
         {
             path = path.replace(" ","%20");
-            String login = (AeseServer.user==null)?"":user+":"+password+"@";
+            String login = (user==null)?"":user+":"+password+"@";
             String revid = getRevId( path );
             if ( revid != null && revid.length()> 0 )
             {
@@ -228,7 +228,7 @@ public class CouchConnection extends Connection
         try
         {
             path = path.replace(" ","%20");
-            String login = (AeseServer.user==null)?"":user+":"+password+"@";
+            String login = (user==null)?"":user+":"+password+"@";
             String url = "http://"+login+host+":"+dbPort+path;
             String revid = getRevId( path );
             if ( revid != null )

@@ -7,7 +7,7 @@ package calliope.db;
 import calliope.exception.AeseException;
 
 /**
- * Interface for factory and other methods
+ * Abstract connection class for various databases/repositories
  * @author desmond
  */
 public abstract class Connection 
