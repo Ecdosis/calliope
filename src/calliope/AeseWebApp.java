@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package calliope;
-import static calliope.AeseServer.connection;
 import calliope.db.Connection;
 import calliope.db.CouchConnection;
 import calliope.db.MongoConnection;

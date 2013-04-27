@@ -30,11 +30,13 @@ public class CouchConnection extends Connection
     static long bigTimeout = 2000;// milliseconds
     /** time to wait after read for any more data */
     static long smallTimeout = 200;// milliseconds
+    static String webRoot;
     public CouchConnection( 
         String user, String password, String host, 
-        int dbPort, int wsPort )
+        int dbPort, int wsPort, String webRoot )
     {
         super( user, password, host, dbPort, wsPort );
+        this.webRoot = webRoot;
     }
     /**
      * Fetch a resource from the server, or try to.
@@ -83,7 +85,8 @@ public class CouchConnection extends Connection
             try
             {
                 FileOutputStream fos = new FileOutputStream(
-                    System.getProperty("java.io.tmpdir")+"calliope.log",true);
+                    System.getProperty("java.io.tmpdir")+File.pathSeparator
+                    +"calliope.log",true);
                 PrintWriter pw = new PrintWriter(fos);
                 e.printStackTrace( pw );
                 pw.close();
@@ -268,7 +271,7 @@ public class CouchConnection extends Connection
     {
         try
         {
-            File wd = new File( System.getProperty("user.dir") );
+            File wd = new File( CouchConnection.webRoot );
             File f = new File( wd, path );
             if ( f.exists() )
             {
@@ -280,7 +283,7 @@ public class CouchConnection extends Connection
                 return data;
             }
             else
-                throw new AeseException( "File not found "+path );
+                throw new AeseException( "File not found "+f.getAbsolutePath() );
         }
         catch ( Exception e )
         {
@@ -298,7 +301,7 @@ public class CouchConnection extends Connection
     {
         try
         {
-            File wd = new File( System.getProperty("user.dir") );
+            File wd = new File( CouchConnection.webRoot );
             File child = new File( wd, path );
             if ( !child.getParentFile().exists() )
                 child.getParentFile().mkdirs();
@@ -324,7 +327,7 @@ public class CouchConnection extends Connection
     {
         try
         {
-            File wd = new File( System.getProperty("user.dir") );
+            File wd = new File( CouchConnection.webRoot );
             File f = new File( wd, path );
             if ( f.exists() )
             {

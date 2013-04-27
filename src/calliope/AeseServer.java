@@ -19,7 +19,6 @@ import calliope.handler.delete.AeseDeleteHandler;
 import calliope.handler.put.AesePutHandler;
 import calliope.handler.post.AesePostHandler;
 import calliope.exception.AeseException;
-import calliope.exception.AeseExceptionMessage;
 import calliope.db.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,13 +73,7 @@ public class AeseServer extends AbstractHandler
         }
         catch ( Exception e )
         {
-            AeseException he;
-            if ( e instanceof AeseException )
-                he = (AeseException) e ;
-            else
-                he = new AeseException( e );
-            response.setContentType("text/html");
-            response.getWriter().println(new AeseExceptionMessage(he).toString() );
+            System.out.equals(e.getMessage());
         }
         //response.getWriter().close();
     }
@@ -95,9 +88,12 @@ public class AeseServer extends AbstractHandler
         {
             // set up defaults
             int dbPort = 5984;
+            wsPort = 8080;
+            host = "localhost";
+            String webRoot = "/var/www";
             String password = "";
             String user = null;
-            Repository repository = Repository.MONGO;
+            Repository repository = Repository.COUCH;
             for ( int i=0;i<args.length;i++ )
             {
                 if ( args[i].charAt(0)=='-' && args[i].length()==2 )
@@ -113,9 +109,11 @@ public class AeseServer extends AbstractHandler
                         else if ( args[i].charAt(1) == 'd' )
                             dbPort = Integer.parseInt(args[i+1]);
                         else if ( args[i].charAt(1) == 'w' )
-                            AeseServer.wsPort = Integer.parseInt(args[i+1]);
+                            wsPort = Integer.parseInt(args[i+1]);
                         else if ( args[i].charAt(1) == 'r' )
                             repository = Repository.valueOf(args[i+1]);
+                        else if ( args[i].charAt(1) == 'i' )
+                            webRoot = args[i+1];
                         else
                             sane = false;
                     } 
@@ -131,7 +129,7 @@ public class AeseServer extends AbstractHandler
                 {
                     case COUCH:
                         connection = new CouchConnection(
-                            user,password,host,dbPort,wsPort );
+                            user,password,host,dbPort,wsPort,webRoot );
                         break;
                     case MONGO:
                         connection = new MongoConnection(

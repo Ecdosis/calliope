@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+  metadata-complete="true">
+
+    <description>
+     Calliope Web App.
+    </description>
+    <display-name>Calliope Web Service</display-name>
+
+    <servlet>
+      <servlet-name>AeseWebApp</servlet-name>
+      <servlet-class>calliope.AeseWebApp</servlet-class>
+      <init-param>
+        <param-name>user</param-name>
+        <param-value>admin</param-value>
+      </init-param>
+      <init-param>
+        <param-name>password</param-name>
+        <param-value>jabberw0cky</param-value>
+      </init-param>
+      <init-param>
+        <param-name>repository</param-name>
+        <param-value>MONGO</param-value>
+      </init-param>
+      <init-param>
+        <param-name>dbport</param-name>
+        <param-value>27017</param-value>
+      </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AeseWebApp</servlet-name>
+        <url-pattern>/calliope</url-pattern>
+    </servlet-mapping>
+</web-app>
