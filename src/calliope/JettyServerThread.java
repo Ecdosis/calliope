@@ -20,7 +20,7 @@ import org.eclipse.jetty.server.Connector;
  *
  * @author desmond
  */
-public class AeseServerThread extends Thread 
+public class JettyServerThread extends Thread 
 {
     public void run()
     {
@@ -28,9 +28,9 @@ public class AeseServerThread extends Thread
         {
             Server server = new Server(8080);
             Connector[] connectors = server.getConnectors();
-            connectors[0].setHost(AeseServer.host);
-            connectors[0].setPort(AeseServer.wsPort);
-            server.setHandler(new AeseServer());
+            connectors[0].setHost(JettyServer.host);
+            connectors[0].setPort(JettyServer.wsPort);
+            server.setHandler(new JettyServer());
             System.out.println("starting...");
             server.start();
             server.join();

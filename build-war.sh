@@ -29,5 +29,5 @@ cp lib/nmerge.jar calliope/WEB-INF/lib/
 cp lib/servlet-api-3.0.jar calliope/WEB-INF/lib/
 cp dist/calliope.jar calliope/WEB-INF/lib/
 cp web.xml calliope/WEB-INF/
-jar cf calliope.war -C calliope WEB-INF
+jar cf calliope.war -C calliope WEB-INF -C calliope list
 

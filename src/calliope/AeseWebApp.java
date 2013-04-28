@@ -22,7 +22,7 @@ import javax.servlet.http.*;
 import javax.servlet.ServletConfig;
 
 /**
- * WebApp for Tomcat
+ * WebApp for Tomcat etc.
  * @author desmond
  */
 public class AeseWebApp extends HttpServlet

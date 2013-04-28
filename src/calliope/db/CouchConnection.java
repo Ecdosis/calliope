@@ -4,7 +4,7 @@
  */
 package calliope.db;
 
-import calliope.AeseServer;
+import calliope.JettyServer;
 import calliope.ByteHolder;
 import calliope.constants.MIMETypes;
 import calliope.exception.AeseException;

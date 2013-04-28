@@ -27,12 +27,12 @@ import java.io.IOException;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
  
-public class AeseServer extends AbstractHandler
+public class JettyServer extends AbstractHandler
 {
     /** needed by AeseServerThread */
     static String host;
     static int wsPort;
-    AeseServer()
+    JettyServer()
     {
         super();
     }
@@ -57,7 +57,9 @@ public class AeseServer extends AbstractHandler
             response.setStatus(HttpServletResponse.SC_OK);
             String method = request.getMethod();
             baseRequest.setHandled( true );
-            //System.out.println(target);
+            // remove webapp prefix
+            if ( target.startsWith("/calliope") )
+                target = target.substring( 9 );
             if ( method.equals("GET") )
                 new AeseGetHandler().handle( request, response, target );
             else if ( method.equals("PUT") )
@@ -149,7 +151,7 @@ public class AeseServer extends AbstractHandler
      */
     public static void launchServer() throws Exception
     {
-        AeseServerThread p = new AeseServerThread();
+        JettyServerThread p = new JettyServerThread();
         p.start();
     }
     /**
