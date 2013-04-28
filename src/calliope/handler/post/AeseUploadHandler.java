@@ -16,7 +16,7 @@
 
 package calliope.handler.post;
 
-import calliope.AeseServer;
+import calliope.Connector;
 import calliope.exception.AeseException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +38,7 @@ public class AeseUploadHandler extends AeseImportHandler
                 for ( int i=0;i<files.size();i++ )
                 {
                     String url = "/"+database+"/"+docID.get(false);
-                    String resp = AeseServer.getConnection().putToDb( 
+                    String resp = Connector.getConnection().putToDb( 
                         url, files.get(i).data );
                     log.append( resp );
                 }

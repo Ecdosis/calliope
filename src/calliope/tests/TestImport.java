@@ -14,7 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests;
-import calliope.AeseServer;
+import calliope.Connector;
 import calliope.Utils;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -408,7 +408,7 @@ public class TestImport extends Test
         int count = 0;
         while ( data == null && count < 5 )
         {
-            data = AeseServer.getConnection().getFromDb("/corform/_all_docs/");
+            data = Connector.getConnection().getFromDb("/corform/_all_docs/");
             count++;
         }
         if ( data == null )

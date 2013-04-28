@@ -17,7 +17,7 @@ package calliope.handler.get;
 import calliope.path.*;
 import calliope.Utils;
 import calliope.tests.Test;
-import calliope.AeseServer;
+import calliope.Connector;
 import calliope.handler.AeseHandler;
 import calliope.handler.AeseVersion;
 import calliope.handler.AeseMVD;
@@ -98,7 +98,7 @@ public class AeseGetHandler extends AeseHandler
     {
         try
         {
-            String jStr = AeseServer.getConnection().getFromDb(urn);
+            String jStr = Connector.getConnection().getFromDb(urn);
             if ( jStr != null )
             {
                 JSONDocument jDoc = JSONDocument.internalise( jStr );
@@ -175,7 +175,7 @@ public class AeseGetHandler extends AeseHandler
         //System.out.println("fetching version "+vPath );
         try
         {
-            res = AeseServer.getConnection().getFromDb(path.getResource());
+            res = Connector.getConnection().getFromDb(path.getResource());
         }
         catch ( Exception e )
         {
@@ -291,7 +291,7 @@ public class AeseGetHandler extends AeseHandler
     {
         try
         {
-            String data = AeseServer.getConnection().getFromDb(path);
+            String data = Connector.getConnection().getFromDb(path);
             if ( data.length() > 0 )
             {
                 JSONDocument doc = JSONDocument.internalise(data);

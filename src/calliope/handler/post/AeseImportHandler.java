@@ -16,7 +16,7 @@
 
 package calliope.handler.post;
 
-import calliope.AeseServer;
+import calliope.Connector;
 import calliope.constants.*;
 import calliope.exception.AeseException;
 import calliope.handler.post.importer.*;
@@ -80,7 +80,7 @@ public abstract class AeseImportHandler extends AesePostHandler
                 path = "/"+type+"/"+docID.get(false);
             if ( type.equals("corcode") )
                 path += "%2Fdefault";
-            AeseServer.getConnection().putToDb( path, archive.toMVD(type) );
+            Connector.getConnection().putToDb( path, archive.toMVD(type) );
             log.append( archive.getLog() );
         }
         else
@@ -197,7 +197,7 @@ public abstract class AeseImportHandler extends AesePostHandler
             String configDocId = "/"+Database.CONFIG+"/"+kind.toString()+"%2F"+path;
             while ( doc == null )
             {
-                doc = AeseServer.getConnection().getFromDb( 
+                doc = Connector.getConnection().getFromDb( 
                     configDocId.toLowerCase() );
                 if ( doc == null )
                 {

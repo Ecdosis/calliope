@@ -16,7 +16,7 @@
 
 package calliope.handler.post;
 
-import calliope.AeseServer;
+import calliope.Connector;
 import calliope.exception.AeseException;
 import calliope.handler.post.importer.File;
 import calliope.importer.Archive;
@@ -65,10 +65,10 @@ public class AeseMVDImportHandler extends AeseImportHandler
                 {
                     // remember to set style into corcode
                     // now get the json docs and add them at the right docid
-                    AeseServer.getConnection().putToDb( 
+                    Connector.getConnection().putToDb( 
                         "/cortex/"+docID.get(false), cortex.toMVD("cortex") );
                     log.append( cortex.getLog() );
-                    AeseServer.getConnection().putToDb( 
+                    Connector.getConnection().putToDb( 
                         "/corcode/"+docID.get(false), corcode.toMVD("corcode") );
                     log.append( corcode.getLog() );
                 }

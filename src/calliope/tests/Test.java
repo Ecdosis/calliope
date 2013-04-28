@@ -15,7 +15,7 @@
  */
 
 package calliope.tests;
-import calliope.AeseServer;
+import calliope.Connector;
 import calliope.Utils;
 import calliope.handler.AeseHandler;
 import javax.servlet.http.HttpServletResponse;
@@ -136,13 +136,13 @@ public abstract class Test extends AeseHandler
     {
         try
         {
-            String json = AeseServer.getConnection().getFromDb(
+            String json = Connector.getConnection().getFromDb(
                 "/cortex/"+Utils.escape(KING_LEAR) );
             if ( json != null )
                 return KING_LEAR;
             else
             {
-                json = AeseServer.getConnection().getFromDb(
+                json = Connector.getConnection().getFromDb(
                     "/cortex/_all_docs/");
                 if ( json != null )
                 {
@@ -190,7 +190,7 @@ public abstract class Test extends AeseHandler
     {
         try
         {
-            String json = AeseServer.getConnection().getFromDb(
+            String json = Connector.getConnection().getFromDb(
                 "/cortex/"+docIDCanonise(docID));
             if ( json != null )
             {
@@ -396,7 +396,7 @@ public abstract class Test extends AeseHandler
         {
             String fullPath = Utils.canonisePath(Database.CORFORM,corformId);
             Path path = new Path(fullPath);
-            String json = AeseServer.getConnection().getFromDb( 
+            String json = Connector.getConnection().getFromDb( 
                 path.getResource() );
             JSONDocument doc = JSONDocument.internalise( json );
             return doc.get(JSONKeys.BODY).toString();

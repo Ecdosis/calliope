@@ -16,7 +16,7 @@
 package calliope.handler.get;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import calliope.AeseServer;
+import calliope.Connector;
 import calliope.exception.AeseException;
 import javax.servlet.ServletOutputStream;
 
@@ -33,7 +33,8 @@ public class AeseGetCorPixHandler extends AeseGetHandler
     {
         try
         {
-            byte[] data = AeseServer.getConnection().getImageFromDb( urn );
+            byte[] data = Connector.getConnection().getImageFromDb( urn );
+            System.out.println(urn);
             /*Either remove the setContentType(), or send the response using 
 response.getOutputStream() method. That should solve the problem. */
             ServletOutputStream sos = response.getOutputStream();

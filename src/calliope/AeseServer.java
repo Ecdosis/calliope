@@ -29,7 +29,6 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
  
 public class AeseServer extends AbstractHandler
 {
-    static Connection connection;
     /** needed by AeseServerThread */
     static String host;
     static int wsPort;
@@ -125,20 +124,8 @@ public class AeseServer extends AbstractHandler
             }
             if ( sane )
             {
-                switch ( repository )
-                {
-                    case COUCH:
-                        connection = new CouchConnection(
-                            user,password,host,dbPort,wsPort,webRoot );
-                        break;
-                    case MONGO:
-                        connection = new MongoConnection(
-                            user,password,host, dbPort,wsPort );
-                        break;
-                    default:
-                        throw new AeseException( "Unknown repository type "
-                            +repository );
-                }
+                Connector.init( repository, user, password, host, dbPort, 
+                    wsPort, webRoot);
             }
         }
         catch ( Exception e )
@@ -164,14 +151,6 @@ public class AeseServer extends AbstractHandler
     {
         AeseServerThread p = new AeseServerThread();
         p.start();
-    }
-    /**
-     * Get the connection object
-     * @return an active Connection
-     */
-    public static Connection getConnection() throws AeseException
-    {
-        return connection;
     }
     /**
      * Launch the Jetty service
