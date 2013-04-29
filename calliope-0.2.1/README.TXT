@@ -20,19 +20,19 @@ brew install couchdb
 
 You need to first download the calliope package, available from 
 www.github.com/AESE-Infrastructure. Click on the calliope repository, 
-then the Downloads tab. Select "calliope-0.2.0.tar.gz" and download it 
+then the Downloads tab. Select "calliope-0.2.1.tar.gz" and download it 
 (Don't click on "Download as .tar.gz" or .zip). When it is on you hard 
 disk it will unpack automatically or by double-clicking on it or on the 
 commandline (OSX removes the .gz automatically):
 
-tar xvf calliope-0.2.0.tar
+tar xvf calliope-0.2.1.tar
 Now move the folder to a convenient location:
 
 cd ~/Downloads
-mv calliope-0.2.0 ~
-cd ~/calliope-0.2.0
+mv calliope-0.2.1 ~
+cd ~/calliope-0.2.1
 
-First set up the database for admin access. In the calliope-0.2.0 
+First set up the database for admin access. In the calliope-0.2.1 
 folder are two scripts add-user.sh and couchdb.sh Run this command first:
 
 sudo ./couchdb.sh
