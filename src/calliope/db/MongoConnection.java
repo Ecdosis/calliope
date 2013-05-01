@@ -5,11 +5,10 @@
 package calliope.db;
 
 import calliope.exception.AeseException;
-import calliope.json.JSONDocument;
-import calliope.json.JSONValue;
 import com.mongodb.MongoClient;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.util.JSON;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -17,8 +16,6 @@ import com.mongodb.WriteResult;
 import com.mongodb.MongoException;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
-import java.util.Set;
-import java.util.Iterator;
 import java.io.InputStream;
 
 
@@ -57,26 +54,26 @@ public class MongoConnection extends Connection
     /**
      * Get the collection name from the path
      * @param path the path including the collection name as the first 
-     * @return a String or null
+     * @return a String 
      */
     private DBCollection getCollection( String path ) throws AeseException
     {
         String collName = getCollName( path );
         if ( collName != null )
         {
-            if ( db.collectionExists(collName) )
-            {
-                DBCollection coll = db.getCollection( collName );
-                if ( coll == null )
-                    throw new AeseException( "Unknown collection "+collName );
-                else
-                    return coll;
-            }
+            DBCollection coll = db.getCollection( collName );
+            if ( coll == null )
+                coll = db.createCollection( collName, null );
+            if ( coll != null )
+                return coll;
+            else
+                throw new AeseException( "Unknown collection "+collName );
         }
-        return null;
+        else
+            throw new AeseException( "No colelction specified in path "+path);
     }
     /**
-     * Get the docID proper from the path
+     * Get the docID proper from the path as a DBObject
      * @param path the path including the collection name
      * @return the docID stripped of the collection name
      */
@@ -114,39 +111,6 @@ public class MongoConnection extends Connection
         }
     }
     /**
-     * Convert a JSONDocument to a DBObject
-     * @param jDoc the json document already parsed from the string
-     * @return null if it failed else the doc
-     */
-    private DBObject jsonDocToDBObject( JSONDocument jDoc )
-    {
-        BasicDBObject doc = new BasicDBObject();
-        Set<String> keys = jDoc.keySet();
-        Iterator<String> iter = keys.iterator();
-        while ( iter.hasNext() )
-        {
-            String key = iter.next();
-            Object obj = jDoc.get( key );
-            if ( obj instanceof JSONDocument )
-                doc.append( key, jsonDocToDBObject((JSONDocument)obj) );
-            else if ( obj instanceof JSONValue )
-                doc.append( key, ((JSONValue)obj).getValue() );
-        }
-        return doc;
-    }
-    /**
-     * Convert a json string to a DBObject
-     * @param json the json document as a string
-     * @return null if it failed else the DBObject
-     */
-    private DBObject jsonToDBObject( String json )
-    {
-        JSONDocument jDoc = JSONDocument.internalise( json );
-        if ( jDoc != null )
-            return jsonDocToDBObject( jDoc );
-        return null;
-    }
-    /**
      * PUT a json file to the database
      * @param path the full path of the resource including database
      * @param json the json to put there
@@ -157,11 +121,13 @@ public class MongoConnection extends Connection
     {
         try
         {
-            DBObject doc = jsonToDBObject(json);
+            DBObject doc = (DBObject) JSON.parse(json);
+            doc.put( DOCID_KEY, getDocID(path) );
             connect();
             DBCollection coll = getCollection( path );
             DBObject query = getDocQuery( path );
-            WriteResult result = coll.update( query, doc, true, true );
+            WriteResult result = coll.update( query, doc, true, false );
+            //return removeFromDb( path );
             return result.toString();
         }
         catch ( Exception e )

@@ -35,6 +35,7 @@ public abstract class Connection
     protected String getDocID( String path )
     {
         String docID = null;
+        path = path.replaceAll( "%2F", "/" );
         int pos = path.indexOf("/");
         if ( pos == -1 )
             return null;
