@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public abstract class Test extends AeseHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Comparenew Edition Html Image Import Table Tilt";
+    public static String tabs = "Home Compare Comparenew Edition Html Image Import Internal Table Tilt";
     private static String KING_LEAR = 
         "english/shakespeare/kinglear/act1/scene1";
     /** contains a leading slash */
@@ -142,26 +142,12 @@ public abstract class Test extends AeseHandler
                 return KING_LEAR;
             else
             {
-                json = Connector.getConnection().getFromDb(
-                    "/cortex/_all_docs/");
-                if ( json != null )
-                {
-                    JSONDocument jdoc = JSONDocument.internalise( json );
-                    if ( jdoc == null )
-                        throw new AeseException(
-                            "Failed to internalise all docs. data length="
-                            +json.length());
-                    ArrayList docs = (ArrayList) jdoc.get( JSONKeys.ROWS );
-                    if ( docs.size()>0 )
-                    {
-                        JSONDocument d = (JSONDocument)docs.get(0);
-                        return (String) d.get( JSONKeys.KEY );
-                    }
-                    else
-                        throw new AeseException("document list is empty");
-                }
-                else 
-                    throw new AeseException("no docs in database");
+                String[] docs = 
+                    Connector.getConnection().listCollection(Database.CORTEX);
+                if ( docs.length==0 )
+                    throw new AeseException( "No docs in database" );
+                else
+                    return docs[0];
             }
         }
         catch ( Exception e )
@@ -365,6 +351,7 @@ public abstract class Test extends AeseHandler
             HTML doc = new HTML();
             Element p = new Element("p");
             p.addText( "Error: "+e.getMessage() );
+            doc.add( p );
             response.setContentType("text/html;charset=UTF-8");
             try 
             {

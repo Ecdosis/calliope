@@ -265,103 +265,101 @@ public class Path implements Test
         else
             return "";
     }
-    boolean testFirst()
+    String testFirst()
     {
+        StringBuilder sb = new StringBuilder();
         boolean failed = false;
         // test first
 		String res = first("banana/apple/pear");
 		if ( res== null || !res.equals("banana") )
         {
-			System.out.println("Path:test 1 failed");
+			sb.append("Path:test 1 failed\n");
             failed = true;
         }
 		res = first("/banana/apple/pear");
 		if ( res== null || !res.equals("banana") )
         {
-			System.out.println("Path:test 2 failed");
+			sb.append("Path:test 2 failed\n");
             failed = true;
         }
 		res = first("/banana");
 		if ( res== null || !res.equals("banana") )
         {
-			System.out.println("Path:test 3 failed");
+			sb.append("Path:test 3 failed\n");
             failed = true;
         }
 		res = first("banana");
 		if ( res== null || !res.equals("banana") )
         {
-			System.out.println("Path:test 4 failed");
+			sb.append("Path:test 4 failed\n");
             failed = true;
         }
 		res = first("/banana/");
 		if ( res== null || !res.equals("banana") )
         {
-			System.out.println("Path:test 5 failed");
+			sb.append("Path:test 5 failed\n");
             failed = true;
         }
         res = first("banana/");
 		if ( res== null || !res.equals("banana") )
         {
-			System.out.println("Path:test 6 failed");
+			sb.append("Path:test 6 failed\n");
             failed = true;
         }
-        return !failed;
+        return sb.toString();
 	}
-    private boolean testChomp()
+    private String testChomp()
     {
-        boolean failed = false;
+        StringBuilder sb = new StringBuilder();
         try
         {
             Path p = new Path("/cortex/path/to/glory/f1");
             String res = p.chomp();
             if ( res == null || !res.equals("f1") )
             {
-                System.out.println("failed chomp:test1");
-                failed = true;
+                sb.append("failed chomp:test1\n");
             }
             p = new Path("/cortex/path/to/glory/f1/");
             res = p.chomp();
             if ( res == null || !res.equals("f1") )
             {
-                System.out.println("failed chomp:test2");
-                failed = true;
+                sb.append("failed chomp:test2\n");
             }
             p = new Path("f1");
             res = p.chomp();
             if ( res == null || !res.equals("f1") )
             {
-                System.out.println("failed chomp:test3");
-                failed = true;
+                sb.append("failed chomp:test3\n");
             }
             p = new Path("path/f1");
             res = p.chomp();
             if ( res == null || !res.equals("f1") )
             {
-                System.out.println("failed chomp:test4");
-                failed = true;
+                sb.append("failed chomp:test4\n");
             }
             p = new Path("f1/");
             res = p.chomp();
             if ( res == null || !res.equals("f1") )
             {
-                System.out.println("failed chomp:test5");
-                failed = true;
+                sb.append("failed chomp:test5\n");
             }
         }
         catch ( Exception e )
         {
+            sb.append( e.getMessage() );
+            sb.append("\n");
         }
-        return failed;
+        return sb.toString();
     }
     /**
      * Test the path
-     * @return true if it passed
+     * @return a response if it passed
      */
-	public boolean test()
+	public String test()
 	{
-        boolean res = testFirst();
-        if ( res )
-            res = testChomp();
-        return res;
+        StringBuilder sb = new StringBuilder();
+        sb.append( testFirst() );
+        sb.append( testChomp() );
+        return sb.toString();
     }
 }

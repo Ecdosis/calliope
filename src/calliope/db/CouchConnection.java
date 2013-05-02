@@ -6,8 +6,10 @@ package calliope.db;
 
 import calliope.JettyServer;
 import calliope.ByteHolder;
+import calliope.constants.JSONKeys;
 import calliope.constants.MIMETypes;
 import calliope.exception.AeseException;
+import calliope.json.JSONDocument;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -19,6 +21,7 @@ import java.net.URL;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 /**
  * Implementation of database Connection interface for CouchDB
@@ -260,6 +263,39 @@ public class CouchConnection extends Connection
                 conn.disconnect(); 
             throw new AeseException( e );
         } 
+    }
+    /*
+     * List the documents in a collection
+     * @param collName the name of a collection e.g. cortex
+     * @return an array of document keys
+     */
+    @Override
+    public String[] listCollection( String collName ) throws AeseException
+    {
+        String json = getFromDb( "/"+collName+"/_all_docs/" );
+        if ( json != null )
+        {
+            JSONDocument jdoc = JSONDocument.internalise( json );
+            if ( jdoc == null )
+                throw new AeseException(
+                    "Failed to internalise all docs. data length="
+                    +json.length());
+            ArrayList docs = (ArrayList) jdoc.get( JSONKeys.ROWS );
+            if ( docs.size()>0 )
+            {
+                String[] array = new String[docs.size()];
+                for ( int i=0;i<array.length;i++ )
+                {
+                    JSONDocument d = (JSONDocument)docs.get(i);
+                    array[i] = (String) d.get( JSONKeys.KEY );
+                }
+                return array;
+            }
+            else
+                throw new AeseException("document list is empty");
+        }
+        else 
+            throw new AeseException("no docs in database");
     }
     /**
      * Get an image from the database

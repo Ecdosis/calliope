@@ -66,6 +66,8 @@ public abstract class Connection
             collName = path.substring( 0, pos );
         return collName;
     }
+    public abstract String[] listCollection( String collName ) 
+        throws AeseException;
     public abstract String getFromDb( String path );
     public abstract String putToDb( String path, String json ) 
         throws AeseException;

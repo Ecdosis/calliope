@@ -21,5 +21,5 @@ package calliope;
  */
 public interface Test 
 {
-    public boolean test();
+    public String test();
 }
