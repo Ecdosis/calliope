@@ -15,13 +15,13 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.WriteResult;
-import com.mongodb.MongoException;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.mongodb.DBCursor;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.InputStream;
+import java.io.FileNotFoundException;
 
 
 /**
@@ -200,10 +200,9 @@ public class MongoConnection extends Connection implements Test
     {
         try
         {
-            DBObject query = getDocQuery( path );
             String collName = getCollName( path );
             GridFS gfs = new GridFS( db, collName );
-            GridFSDBFile file = gfs.findOne( query );
+            GridFSDBFile file = gfs.findOne( getDocID(path) );
             InputStream ins = file.getInputStream();
             long dataLen = file.getLength();
             // this only happens if it is > 2 GB
@@ -250,12 +249,13 @@ public class MongoConnection extends Connection implements Test
         try
         {
             String collName = getCollName( path );
-            DBObject query = getDocQuery( path );
             GridFS gfs = new GridFS( db, collName );
-            GridFSDBFile file = gfs.findOne( query );
+            GridFSDBFile file = gfs.findOne( getDocID(path) );
+            if ( file == null )
+                throw new FileNotFoundException("file "+path+" not found");
             gfs.remove( file );
         }
-        catch ( MongoException e )
+        catch ( Exception e )
         {
             throw new AeseException( e );
         }
@@ -263,7 +263,7 @@ public class MongoConnection extends Connection implements Test
     /**
      * Check that the database response is OK
      * @param response the json response from the MongoDB
-     * @return true if its OK was 1.0
+     * @return true if its OK was 1.0 or the response has an _id field
      */
     private boolean checkResponse( String response )
     {
@@ -271,10 +271,14 @@ public class MongoConnection extends Connection implements Test
         Object value = doc.get( "ok" );
         if ( value instanceof Double && ((Double)value).doubleValue()==1.0 )
             return true;
-        else if ( value instanceof Float && ((Float)value).floatValue()==1.0 )
-            return true;
         else
-            return false;
+        {
+            value = doc.get("_id");
+            if ( value != null )
+                return true;
+            else
+                return false;
+        }
     }
     /**
      * Test a Mongo connection by putting, deleting, getting a JSON 
@@ -499,9 +503,11 @@ public class MongoConnection extends Connection implements Test
                 if ( !checkResponse(response) )
                     sb.append( "failed put/get test for plain json\n" );
                 else
+                {
                     response = removeFromDb( "/test/data/text" );
-                if ( !checkResponse(response) )
-                    sb.append( "failed to remove plain json\n" );
+                    if ( !checkResponse(response) )
+                        sb.append( "failed to remove plain json\n" );
+                }
             }
             putImageToDb( "/corpix/data/image", imageData );
             byte[] data = getImageFromDb( "/corpix/data/image" );
@@ -517,6 +523,7 @@ public class MongoConnection extends Connection implements Test
         }
         catch ( Exception e )
         {
+            e.printStackTrace( System.out );
         }
         return sb.toString();
     }
