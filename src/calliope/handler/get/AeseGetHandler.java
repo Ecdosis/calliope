@@ -70,6 +70,12 @@ public class AeseGetHandler extends AeseHandler
                     throw new AeseException( e );
                 }
             }
+            else if ( prefix.equals(Services.JSON) )
+                new AeseJSONHandler().handle( request, response, urn );
+            else if ( prefix.equals(Services.LIST) )
+                new AeseTextListHandler().handle( request, response, urn );
+            else if ( prefix.equals(Services.PDEF) )
+                new AesePDEFHandler().handle( request, response, urn );
             else if ( prefix.equals(Database.CORTEX) )
                 new AeseGetCorTexHandler().handle( request, response, 
                     Path.removePrefix(urn) );
@@ -79,10 +85,6 @@ public class AeseGetHandler extends AeseHandler
                 new AeseGetCorFormHandler().handle( request, response, urn );
             else if ( prefix.equals(Database.CORPIX) )
                 new AeseGetCorPixHandler().handle( request, response, urn );
-            else if ( prefix.equals(Services.LIST) )
-                new AeseTextListHandler().handle( request, response, urn );
-            else if ( prefix.equals(Services.JSON) )
-                new AeseJSONHandler().handle( request, response, urn );
             else 
                 throw new AeseException("invalid urn: "+urn );
         }

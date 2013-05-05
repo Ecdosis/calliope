@@ -1,6 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* This file is part of calliope.
+ *
+ *  calliope is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  calliope is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.db;
 
@@ -22,6 +33,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.io.InputStream;
 import java.io.FileNotFoundException;
+import java.util.regex.Pattern;
 
 
 /**
@@ -99,7 +111,7 @@ public class MongoConnection extends Connection implements Test
      * @return the response as a string or null if not found
      */
     @Override
-    public String getFromDb( String path )
+    public String getFromDb( String path ) throws AeseException
     {
         try
         {
@@ -110,12 +122,11 @@ public class MongoConnection extends Connection implements Test
             if ( obj != null )
                 return obj.toString();
             else
-                throw new AeseException( "failed to find "+path );
+                throw new FileNotFoundException( "failed to find "+path );
         }
         catch ( Exception e )
         {
-            e.printStackTrace( System.out );
-            return null;
+            throw new AeseException( e );
         }
     }
     /**
@@ -159,6 +170,42 @@ public class MongoConnection extends Connection implements Test
             DBObject query = getDocQuery( path );
             WriteResult result = coll.remove( query );
             return result.toString();
+        }
+        catch ( Exception e )
+        {
+            throw new AeseException( e );
+        }
+    }
+    /**
+     * Get a list of docIDs or file names corresponding to the regex expr
+     * @param collName the collection to query
+     * @param expr the regular expression to match against docid
+     * @return an array of matching docids, which may be empty
+     */
+    @Override
+    public String[] listDocuments( String collName, String expr )
+        throws AeseException
+    {
+        try
+        {
+            connect();
+            DBCollection coll = getCollectionFromName( collName );
+            if ( coll != null )
+            {
+                BasicDBObject q = new BasicDBObject();
+                q.put(DOCID_KEY, Pattern.compile(expr) );
+                DBCursor curs = coll.find( q );
+                String[] docids = new String[curs.length()];
+                Iterator<DBObject> iter = curs.iterator();
+                int i = 0;
+                while ( iter.hasNext() )
+                {
+                    docids[i++] = (String)iter.next().get(DOCID_KEY);
+                }
+                return docids;
+            }
+            else
+                throw new AeseException("collection "+collName+" not found");
         }
         catch ( Exception e )
         {

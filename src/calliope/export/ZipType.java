@@ -13,14 +13,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
-package calliope.db;
+package calliope.export;
 
 /**
- * Names of supported repositories
+ * Kinds of Zip archive
  * @author desmond
  */
-public enum Repository 
+public enum ZipType 
 {
-    COUCH,
-    MONGO;
+    TAR_GZ,
+    ZIP;
 }

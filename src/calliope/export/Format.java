@@ -13,14 +13,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
-package calliope.db;
+package calliope.export;
 
 /**
- * Names of supported repositories
+ * Formats used within a PDEF archive
  * @author desmond
  */
-public enum Repository 
+public enum Format 
 {
-    COUCH,
-    MONGO;
+    TEXT,
+    XML,
+    MVD;
 }

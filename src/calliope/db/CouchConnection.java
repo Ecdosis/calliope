@@ -1,10 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* This file is part of calliope.
+ *
+ *  calliope is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  calliope is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.db;
 
-import calliope.JettyServer;
 import calliope.ByteHolder;
 import calliope.constants.JSONKeys;
 import calliope.constants.MIMETypes;
@@ -15,13 +25,14 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.FileNotFoundException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of database Connection interface for CouchDB
@@ -47,11 +58,11 @@ public class CouchConnection extends Connection
      * @return the response as a string or null if not found
      */
     @Override
-    public String getFromDb( String path )
+    public String getFromDb( String path ) throws AeseException
     {
-        //long startTime = System.currentTimeMillis();
         try
         {
+            //long startTime = System.currentTimeMillis();
             String login = (user==null)?"":user+":"+password+"@";
             URL u = new URL("http://"+login+host+":"+dbPort+path);
             URLConnection conn = u.openConnection();
@@ -75,30 +86,16 @@ public class CouchConnection extends Connection
             }
             is.close();
             if ( bh.isEmpty() )
-            {
-                System.out.println("failed to fetch resource "+path);
-                return null;
-            }
-            //System.out.println("time taken to fetch from couch: "+(System.currentTimeMillis()-startTime) );
+                throw new FileNotFoundException("failed to fetch resource "
+                    +path);
+            //System.out.println("time taken to fetch from couch: "
+            //+(System.currentTimeMillis()-startTime) );
             else
                 return new String( bh.getData(), "UTF-8" );
         }
         catch ( Exception e )
         {
-            try
-            {
-                FileOutputStream fos = new FileOutputStream(
-                    System.getProperty("java.io.tmpdir")+File.pathSeparator
-                    +"calliope.log",true);
-                PrintWriter pw = new PrintWriter(fos);
-                e.printStackTrace( pw );
-                pw.close();
-            }
-            catch ( Exception ee )
-            {
-                // do nothing in this case
-            }
-            return null;
+            throw new AeseException( e );
         }
     }
     /**
@@ -296,6 +293,18 @@ public class CouchConnection extends Connection
         }
         else 
             throw new AeseException("no docs in database");
+    }
+    /**
+     * Get a list of docIDs or file names corresponding to the regex expr
+     * @param collName the collection to query
+     * @param expr the regular expression to match against docid
+     * @return an array of matching docids, which may be empty
+     */
+    @Override
+    public String[] listDocuments( String collName, String expr ) throws AeseException
+    {
+        String[] empty = new String[0];
+        return empty;
     }
     /**
      * Get an image from the database

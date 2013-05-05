@@ -1,4 +1,4 @@
-/* This file is part of calliope.
+ /* This file is part of calliope.
  *
  *  calliope is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -81,4 +81,6 @@ public class JSONKeys
     public static String SECTION = "section";
     /** work subsection */
     public static String SUBSECTION = "subsection";
+    /** base url for uploads */
+    public static String BASE_URL = "base_url";
 }

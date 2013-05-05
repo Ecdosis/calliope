@@ -53,4 +53,6 @@ public class Services
     public static String DESCRIPTION = "description";
     /** mixed import service */
     public static String MIXED = "mixed";
+    /** downloadable export ZIP file format */
+    public static String PDEF = "pdef";
 }

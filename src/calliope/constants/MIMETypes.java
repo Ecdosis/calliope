@@ -26,4 +26,5 @@ public class MIMETypes
     public static String HTML = "application/html";
     public static String MULTIPART = "multipart/mixed";
     public static String CSS = "text/css";
+    public static String ZIP = "application/octet-stream";
 }

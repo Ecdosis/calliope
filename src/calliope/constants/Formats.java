@@ -31,4 +31,5 @@ public class Formats
     public static String TEXT = "TEXT";
     /** style of TEI corform */
     public static String TEI = "TEI";
+    
 }
