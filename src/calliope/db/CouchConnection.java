@@ -301,10 +301,19 @@ public class CouchConnection extends Connection
      * @return an array of matching docids, which may be empty
      */
     @Override
-    public String[] listDocuments( String collName, String expr ) throws AeseException
+    public String[] listDocuments( String collName, String expr ) 
+        throws AeseException
     {
-        String[] empty = new String[0];
-        return empty;
+        ArrayList<String> docs = new ArrayList<String>();
+        String[] list = listCollection( collName );
+        for ( int i=0;i<list.length;i++ )
+        {
+            if ( list[i].matches("^"+expr) )
+                docs.add( list[i] );
+        }
+        String[] array = new String[docs.size()];
+        docs.toArray( array );
+        return array;
     }
     /**
      * Get an image from the database

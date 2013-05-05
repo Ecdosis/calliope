@@ -96,8 +96,9 @@ public class PDEFArchive
         {
             root = createTempDirectory();
             archive = new File( root, name );
-            root.mkdir();
+            archive.mkdir();
             File archiveConf = new File( archive, "archive.conf" );
+            archiveConf.createNewFile();
             FileWriter fw = new FileWriter( archiveConf );
             fw.write( "{\n\t\"" );
             fw.write( JSONKeys.BASE_URL );

@@ -105,7 +105,10 @@ public class AesePDEFHandler extends AeseGetHandler
         String name = request.getParameter( Params.NAME );
         if ( name == null )
             name = PDEFArchive.NAME;
-        String host = request.getRequestURL().toString();
+        String host = "http://"+request.getServerName();
+        if ( request.getServerPort()!=80 )
+            host += ":"+request.getServerPort();
+        host += "/";
         PDEFArchive pdef = new PDEFArchive( name, formats, host );
         for ( int i=0;i<exprs.length;i++ )
         {
