@@ -100,7 +100,6 @@ public class AeseTableHandler extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        Path path = new Path( urn );
         Map map = request.getParameterMap();
         offset = getIntegerOption( map, Params.OFFSET, 0 );
         length = getIntegerOption( map, Params.LENGTH, 100 );
@@ -113,13 +112,12 @@ public class AeseTableHandler extends AeseGetHandler
             selectedVersions = getStringOption(map, Params.SELECTED_VERSIONS,ALL );
         else
             selectedVersions = ALL;
-        path.setName( Database.CORTEX );
         try
         {
             String shortName="";
             String groups = "";
             String baseVersion=null;
-            AeseMVD mvd = loadMVD( path.getResource() );
+            AeseMVD mvd = loadMVD( Database.CORTEX, urn );
             if ( selectedVersions.equals(ALL) )
                 baseVersion = mvd.version1;  
             else

@@ -112,7 +112,7 @@ public class DocID
         this.language = UNKNOWN;
         this.work = UNKNOWN;
         canonise( docID );
-        parts = docID.split("%2F");
+        parts = docID.split("/");
         int state = 0;
         StringBuilder sb = null;
         for ( int i=0;i<parts.length;i++ )
@@ -136,7 +136,7 @@ public class DocID
                 case 2:
                     if ( parts[i].length()>0 )
                     {
-                        if ( parts[i].startsWith("%20") )
+                        if ( parts[i].startsWith(" ") )
                             subDir = parts[i];
                         else 
                         {
@@ -151,7 +151,7 @@ public class DocID
                         if ( sb == null )
                             sb = new StringBuilder();
                         else
-                            sb.append("%2F");
+                            sb.append("/");
                         sb.append( parts[i] );
                     }
                     break;
@@ -162,27 +162,18 @@ public class DocID
     }
     /**
      * Build the docID 
-     * @param clean if true use " " and "/" not "%20" and "%2F"
      * @return the docID for use in the database as a document key
      */
-    public String get( boolean clean )
+    public String get()
     {
         StringBuilder sb = new StringBuilder();
         for ( int i=0;i<parts.length;i++ )
         {
             if ( parts[i].length()>0 )
             {
-                String part = parts[i];
-                if ( !clean )
-                    part = part.replace(" ","%20");
-                sb.append( part );
+                sb.append( parts[i] );
                 if ( i < parts.length-1 )
-                {
-                    if ( clean )
-                        sb.append("/");
-                    else
-                        sb.append( "%2F" );
-                }
+                    sb.append("/");
             }
         }
         return sb.toString();

@@ -53,18 +53,31 @@ public class CouchConnection extends Connection
         this.webRoot = webRoot;
     }
     /**
+     * Prepare a docID containing slashes and spaces for URL transmission
+     * @param raw the raw URL
+     * @return the converted docID
+     */
+    private String convertDocID( String raw )
+    {
+        raw = raw.replaceAll("/","%2F");
+        raw = raw.replaceAll(" ","%20");
+        return raw;
+    }
+    /**
      * Fetch a resource from the server, or try to.
-     * @param path the path to the reputed resource
+     * @param db the name of the database
+     * @param docID the docid of the reputed resource
      * @return the response as a string or null if not found
      */
     @Override
-    public String getFromDb( String path ) throws AeseException
+    public String getFromDb( String db, String docID ) throws AeseException
     {
         try
         {
             //long startTime = System.currentTimeMillis();
             String login = (user==null)?"":user+":"+password+"@";
-            URL u = new URL("http://"+login+host+":"+dbPort+path);
+            docID = convertDocID( docID );
+            URL u = new URL("http://"+login+host+":"+dbPort+"/"+db+"/"+docID);
             URLConnection conn = u.openConnection();
             InputStream is = conn.getInputStream();
             ByteHolder bh = new ByteHolder();
@@ -87,7 +100,7 @@ public class CouchConnection extends Connection
             is.close();
             if ( bh.isEmpty() )
                 throw new FileNotFoundException("failed to fetch resource "
-                    +path);
+                    +db+"/"+docID);
             //System.out.println("time taken to fetch from couch: "
             //+(System.currentTimeMillis()-startTime) );
             else
@@ -100,17 +113,17 @@ public class CouchConnection extends Connection
     }
     /**
      * Get a document's revid
-     * @param path the path of the document including its database
+     * @param db the database name
+     * @param docID a prepared docID
      * @return a string or null to indicate it isn't there
      */
-    private String getRevId( String path ) throws AeseException
+    private String getRevId( String db, String docID ) throws AeseException
     {
         HttpURLConnection conn = null;
         try
         {
-            path = path.replace(" ","%20");
             String login = (user==null)?"":user+":"+password+"@";
-            URL u = new URL("http://"+login+host+":"+dbPort+path);
+            URL u = new URL("http://"+login+host+":"+dbPort+db+"/"+docID);
             conn = (HttpURLConnection)u.openConnection();
             conn.setRequestMethod("HEAD");
             conn.setRequestProperty("Content-Type",MIMETypes.JSON);
@@ -186,22 +199,24 @@ public class CouchConnection extends Connection
     }
     /**
      * Remove a document from the database
-     * @param path the full path of the resource including database
+     * @param db the database name
+     * @param docID the docid of the resource
      * @param json the json to put there
      * @return the server response
      */
     @Override
-    public String removeFromDb( String path ) throws AeseException
+    public String removeFromDb( String db, String docID ) throws AeseException
     {
         HttpURLConnection conn = null;
         try
         {
-            path = path.replace(" ","%20");
             String login = (user==null)?"":user+":"+password+"@";
-            String revid = getRevId( path );
+            docID = convertDocID( docID );
+            String revid = getRevId( db, docID );
             if ( revid != null && revid.length()> 0 )
             {
-                String url = "http://"+login+host+":"+dbPort+path+"?rev="+revid;
+                String url = "http://"+login+host+":"+dbPort+"/"+db+"/"
+                    +docID+"?rev="+revid;
                 URL u = new URL(url);
                 conn = (HttpURLConnection)u.openConnection();
                 conn.setRequestMethod("DELETE");
@@ -220,20 +235,21 @@ public class CouchConnection extends Connection
     }
     /**
      * PUT a json file to the database
-     * @param path the full path of the resource including database
+     * @param db the database name
+     * @param docID the docID of the resource
      * @param json the json to put there
      * @return the server response
      */
     @Override
-    public String putToDb( String path, String json ) throws AeseException
+    public String putToDb( String db, String docID, String json ) throws AeseException
     {
         HttpURLConnection conn = null;
         try
         {
-            path = path.replace(" ","%20");
+            docID = convertDocID( docID );
             String login = (user==null)?"":user+":"+password+"@";
-            String url = "http://"+login+host+":"+dbPort+path;
-            String revid = getRevId( path );
+            String url = "http://"+login+host+":"+dbPort+"/"+db+"/"+docID;
+            String revid = getRevId( db, docID );
             if ( revid != null )
                 json = addRevId( json, revid );
             URL u = new URL(url);
@@ -269,7 +285,7 @@ public class CouchConnection extends Connection
     @Override
     public String[] listCollection( String collName ) throws AeseException
     {
-        String json = getFromDb( "/"+collName+"/_all_docs/" );
+        String json = getFromDb( collName, "_all_docs" );
         if ( json != null )
         {
             JSONDocument jdoc = JSONDocument.internalise( json );
@@ -321,12 +337,12 @@ public class CouchConnection extends Connection
      * @return the image data
      */
     @Override
-    public byte[] getImageFromDb( String path ) throws AeseException
+    public byte[] getImageFromDb( String db, String docID ) throws AeseException
     {
         try
         {
             File wd = new File( CouchConnection.webRoot );
-            File f = new File( wd, path );
+            File f = new File( wd, db+"/"+docID );
             if ( f.exists() )
             {
                 int len = (int)f.length();
@@ -346,17 +362,18 @@ public class CouchConnection extends Connection
     }
     /**
      * Save a file to the file system
-     * @param path the path to the file
+     * @param docID the docID of the file
      * @param data the data of the file
      * @throws AeseException 
      */
     @Override
-    public void putImageToDb( String path, byte[] data ) throws AeseException
+    public void putImageToDb( String db, String docID, byte[] data ) 
+        throws AeseException
     {
         try
         {
             File wd = new File( CouchConnection.webRoot );
-            File child = new File( wd, path );
+            File child = new File( wd, db+"/"+docID );
             if ( !child.getParentFile().exists() )
                 child.getParentFile().mkdirs();
             if ( child.exists() )
@@ -373,16 +390,17 @@ public class CouchConnection extends Connection
     }
     /**
      * Delete a file from the file system
-     * @param path the relative path to the file
+     * @param db the database name
+     * @param docID the document ID of the resource
      * @throws AeseException 
      */
     @Override
-    public void removeImageFromDb( String path ) throws AeseException
+    public void removeImageFromDb( String db, String docID ) throws AeseException
     {
         try
         {
             File wd = new File( CouchConnection.webRoot );
-            File f = new File( wd, path );
+            File f = new File( wd, db+"/"+docID );
             if ( f.exists() )
             {
                 f.delete();
@@ -401,7 +419,7 @@ public class CouchConnection extends Connection
                 while ( parent != null );
             }
             else
-                throw new AeseException( "File not found "+path );
+                throw new AeseException( "File not found "+db+"/"+docID );
         }
         catch ( Exception e )
         {

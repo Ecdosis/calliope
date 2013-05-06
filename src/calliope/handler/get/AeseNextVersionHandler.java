@@ -9,7 +9,6 @@ import calliope.constants.Params;
 import calliope.exception.AeseException;
 import calliope.handler.AeseMVD;
 import calliope.path.Path;
-import java.util.Map;
 import calliope.Utils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +30,7 @@ public class AeseNextVersionHandler extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        Path path = new Path( urn );
         String version1 = request.getParameter( Params.VERSION1 );
-        path.setName( Database.CORTEX );
         try
         {
             String fullName = "";
@@ -41,7 +38,7 @@ public class AeseNextVersionHandler extends AeseGetHandler
             {
                 String shortName = Utils.getShortName( version1 );
                 String groups = Utils.getGroupName( version1 );
-                AeseMVD mvd = loadMVD( path.getResource() );
+                AeseMVD mvd = loadMVD( Database.CORTEX, urn );
                 int v1 = mvd.mvd.getVersionByNameAndGroup( shortName, groups );
                 if ( v1 > 0 )
                 {

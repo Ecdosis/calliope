@@ -53,7 +53,8 @@ public class AeseComparisonHandler extends AeseHTMLHandler
     }
     /**
      * Get an array of CorCodes, and their styles and formats too
-     * @param resPath the database+docID for the resource
+     * @param db the database
+     * @param docID the docID for the resource
      * @param version1 the group-path+version name
      * @param userCC an array of specified CorCode names for this docID
      * @param diffCC the CorCode of the diffs
@@ -62,7 +63,8 @@ public class AeseComparisonHandler extends AeseHTMLHandler
      * @param formats an empty array of CorCode formats to be filled
      * @return a simple array of CorCode texts in their corresponding formats
      */
-    String[] getCorCodes( String resPath, String version1, String[] userCC, 
+    String[] getCorCodes( String db, String docID, String version1, 
+        String[] userCC, 
         CorCode diffCC, String[] styleNames, ArrayList<String> styles, 
         ArrayList<String> formats ) throws AeseException
     {
@@ -79,9 +81,9 @@ public class AeseComparisonHandler extends AeseHTMLHandler
         }
         for ( int i=0;i<userCC.length;i++ )
         {
-            String ccResource = Utils.canonisePath(resPath,userCC[i]);
-            Path ccPath = new Path( ccResource );
-            AeseVersion hv = doGetMVDVersion( ccPath, version1 );
+            String ccResource = Utils.canonisePath(docID,userCC[i]);
+            AeseVersion hv = doGetMVDVersion( Database.CORCODE, ccResource, 
+                version1 );
             try
             {
                 byte[] versionText = hv.getVersion();
@@ -123,9 +125,7 @@ public class AeseComparisonHandler extends AeseHTMLHandler
                     +Params.DIFF_KIND+" assuming "+ChunkState.DELETED );
             }
             CorCode cc = new CorCode( diffKind );
-            Path path = new Path( urn );
-            path.setName( Database.CORTEX );
-            AeseMVD text = loadMVD( path.getResource() );
+            AeseMVD text = loadMVD( Database.CORTEX, urn );
             int v1 = text.mvd.getVersionByNameAndGroup(
                 Utils.getShortName(version1),Utils.getGroupName(version1));
             if ( v1 == -1 )
@@ -146,14 +146,13 @@ public class AeseComparisonHandler extends AeseHTMLHandler
                 request.getParameterMap(), true );
             String[] styles = getEnumeratedParams( Params.STYLE, 
                 request.getParameterMap(), false );
-            path.setName( Database.CORCODE );
             ArrayList<String> styleNames = new ArrayList<String>();
             ArrayList<String> formats = new ArrayList<String>();
             // add diff styles
             String[] newStyles = new String[styles.length+1];
             System.arraycopy( styles, 0, newStyles, 0, styles.length );
             newStyles[styles.length] = "diffs/default";
-            String[] ccTexts = getCorCodes( path.getResourcePath(true), 
+            String[] ccTexts = getCorCodes( Database.CORTEX, urn, 
                 version1, corCodes, cc, newStyles, styleNames, formats );
             String[] styleTexts = new String[styleNames.size()];
             styleNames.toArray( styleTexts );

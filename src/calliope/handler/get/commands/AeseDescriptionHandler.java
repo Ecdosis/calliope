@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.handler.get.commands;
+import calliope.constants.Database;
 import calliope.handler.AeseMVD;
 import calliope.exception.AeseException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +37,7 @@ public class AeseDescriptionHandler extends AeseGetHandler
         HttpServletResponse response, String urn )
         throws AeseException
     {
-        Path path = new Path( urn );
-        AeseMVD mvd = loadMVD( path.getResource() );
+        AeseMVD mvd = loadMVD( Database.CORTEX, urn );
         if ( mvd != null )
         {
             try
@@ -51,7 +51,7 @@ public class AeseDescriptionHandler extends AeseGetHandler
             }
         }
         else
-            throw new AeseException( "path "+path+" not found") ;
+            throw new AeseException( "path "+urn+" not found") ;
     }
 
 }

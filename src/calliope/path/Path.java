@@ -131,59 +131,30 @@ public class Path implements Test
         this.name = name;
     }
     /**
-     * Remove the rightmost segment of the path and resource
-     * @return the popped-off last segment of the path
+     * Pop off the frontmost part of the path
+     * @param path the path to pop
+     * @return the popped path
      */
-    public String chomp()
+    public static String pop( String path )
+    {
+        while ( path.length()>0 && path.startsWith("/") )
+            path = path.substring(1);
+        int pos = path.indexOf("/");
+        if ( pos != -1 )
+            path = path.substring( pos+1 );
+        return path;
+    }
+    /**
+     * Remove the rightmost segment of the path and resource
+     * @return the remains of the path
+     */
+    public static String chomp( String path )
     {
         String popped = "";
-        int index = resource.lastIndexOf( ESC_SLASH );
-        if ( index == -1 )
-            resource = "";
-        else
-            resource = resource.substring(0,index);
-        index = path.lastIndexOf( "/" );
-        if ( index == -1 )
-        {
-            popped = path;
-            path = "";
-        }
-        else
-        {
-            popped = path.substring( index+1 );
-            path = path.substring( 0, index );
-        }
+        int index = path.lastIndexOf( "/" );
+        if ( index != -1 )
+            popped = path.substring( 0, index );
         return popped;
-    }
-    /**
-     * Is this resource now empty?
-     * @return true if empty
-     */
-    public boolean isEmpty()
-    {
-        return resource.length()==0;
-    }
-    /**
-     * Get an appropriate database name for this path
-     * @return a String being a database name
-     */
-    protected String getDbName()
-    {
-        if ( this.name.equals(Database.CORTEX)
-            || this.name.equals(Database.CORCODE)
-            || this.name.equals(Database.CORFORM)
-            || this.name.equals(Database.CORPIX) )
-            return this.name;
-        else
-            return Database.CORTEX;
-    }
-    /**
-     * Set the database name for this path
-     * @return a String being a database name
-     */
-    public void setDbName( String name )
-    {
-        this.name = name;
     }
     /**
 	 * Chop off the first component of a urn
@@ -252,19 +223,6 @@ public class Path implements Test
 			start = urn.length();
         return urn.substring( start, end );
 	}
-    /**
-     * Remove the prefix from a urn
-     * @param urn the urn whose first component is to be removed
-     * @return the stripped urn or the empty string
-     */
-    public static String removePrefix( String urn )
-    {
-        int index = urn.indexOf( "/", 1 );
-        if ( index != -1 )
-            return urn.substring( index+1 );
-        else
-            return "";
-    }
     String testFirst()
     {
         StringBuilder sb = new StringBuilder();
@@ -313,33 +271,33 @@ public class Path implements Test
         StringBuilder sb = new StringBuilder();
         try
         {
-            Path p = new Path("/cortex/path/to/glory/f1");
-            String res = p.chomp();
-            if ( res == null || !res.equals("f1") )
+            String p = "path/to/glory/f1";
+            String res = Path.chomp(p);
+            if ( res == null || !res.equals("path/to/glory") )
             {
                 sb.append("failed chomp:test1\n");
             }
-            p = new Path("/cortex/path/to/glory/f1/");
-            res = p.chomp();
-            if ( res == null || !res.equals("f1") )
+            p = "path/to/glory/f1/";
+            res = Path.chomp(p);
+            if ( res == null || !res.equals("path/to/glory") )
             {
                 sb.append("failed chomp:test2\n");
             }
-            p = new Path("f1");
-            res = p.chomp();
-            if ( res == null || !res.equals("f1") )
+            p = "f1";
+            res = Path.chomp(p);
+            if ( res == null || !res.equals("") )
             {
                 sb.append("failed chomp:test3\n");
             }
-            p = new Path("path/f1");
-            res = p.chomp();
-            if ( res == null || !res.equals("f1") )
+            p = "path/f1";
+            res = Path.chomp(p);
+            if ( res == null || !res.equals("path") )
             {
                 sb.append("failed chomp:test4\n");
             }
-            p = new Path("f1/");
-            res = p.chomp();
-            if ( res == null || !res.equals("f1") )
+            p = "f1/";
+            res = Path.chomp(p);
+            if ( res == null || !res.equals("") )
             {
                 sb.append("failed chomp:test5\n");
             }

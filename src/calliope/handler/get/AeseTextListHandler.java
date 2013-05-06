@@ -98,21 +98,19 @@ public class AeseTextListHandler extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        Path path = new Path( urn );
         version1 = request.getParameter( Params.VERSION1 );
-        path.setName( Database.CORTEX );
         try
         {
-            if ( !path.isEmpty() )
+            if ( urn.length()>0 )
             {
-                AeseMVD mvd = loadMVD( path.getResource() );
+                AeseMVD mvd = loadMVD( Database.CORTEX, urn );
                 String table = mvd.mvd.getVersionTable();
                 response.setContentType("text/plain;charset=UTF-8");
                 String list = formatTable( table );
                 response.getWriter().println( list );
             }
             else
-                throw new AeseException("Invalid path "+path.getResource());
+                throw new AeseException("Invalid path "+urn);
         }
         catch ( Exception e )
         {

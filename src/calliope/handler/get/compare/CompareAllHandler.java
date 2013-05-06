@@ -45,8 +45,7 @@ public class CompareAllHandler extends AeseGetHandler
         String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
         String[] styles = getEnumeratedParams( Params.STYLE, map, true );
         String[] base = (String[])map.get( Params.SHORTNAME ); 
-        path.setName( Database.CORTEX );
-        AeseMVD text = loadMVD(path.getResource());
+        AeseMVD text = loadMVD(Database.CORTEX, path.getResource());
         // read all the pairs, creating a merged block where all the versions agree, and split blocks for the stuff in-between
         // at the same time, for each version in the corcode, split blocks if there are further differences
         // do all this using a corcode

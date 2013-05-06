@@ -42,37 +42,25 @@ public class AeseHTMLHandler extends AeseGetHandler
     /**
      * Get the HTML for the given path
      * @param request the request to read from
-     * @param urn the original URN
+     * @param urn the original URN, minus the prefix
      * @return a formatted html String
      */
     @Override
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        String second = Path.second(urn);
-        if ( second.equals(Services.COMPARISON) )
+        String first = Path.first(urn);
+        if ( first.equals(Services.COMPARISON) )
         {
-            int pos = urn.indexOf( Services.HTML );
-            if ( pos == -1 )
-                throw new AeseException("invalid urn: "+urn );
-            String rest = urn.substring( pos+Services.HTML.length() );
-            new AeseComparisonHandler().handle(request,response,rest);
+            new AeseComparisonHandler().handle(request,response,Path.pop(urn));
         }
-        else if ( second.equals(Services.LIST))
+        else if ( first.equals(Services.LIST))
         {
-            int pos = urn.indexOf(Services.HTML );
-            if ( pos == -1 )
-                throw new AeseException("invalid urn: "+urn );
-            String rest = urn.substring( pos+Services.HTML.length() );
-            new AeseListHandler().handle(request,response,rest);
+            new AeseListHandler().handle(request,response,Path.pop(urn));
         }
-        else if ( second.equals(Services.TABLE) )
+        else if ( first.equals(Services.TABLE) )
         {
-            int pos = urn.indexOf(Services.HTML );
-            if ( pos == -1 )
-                throw new AeseException("invalid urn: "+urn );
-            String rest = urn.substring( pos+Services.HTML.length() );
-            new AeseTableHandler().handle(request,response,rest);
+            new AeseTableHandler().handle(request,response,Path.pop(urn));
         }
         else
             handleGetVersion( request, response, urn );
@@ -181,7 +169,6 @@ public class AeseHTMLHandler extends AeseGetHandler
         HttpServletResponse response, String urn )
         throws AeseException
     {
-        Path path = new Path( urn );
         String version1 = request.getParameter( Params.VERSION1 );
         if ( version1 == null )
         {
@@ -197,27 +184,25 @@ public class AeseHTMLHandler extends AeseGetHandler
         }
         else
         {
-            String selectedVersions = request.getParameter( Params.SELECTED_VERSIONS );
+            String selectedVersions = request.getParameter( 
+                Params.SELECTED_VERSIONS );
             //System.out.println("version1="+version1);
-            path.setName( Database.CORTEX );
-            AeseVersion corTex = doGetMVDVersion( path, version1 );
+            AeseVersion corTex = doGetMVDVersion( Database.CORTEX, urn, version1 );
             // 1. get corcodes and styles
             Map map = request.getParameterMap();
             String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
             String[] styles = getEnumeratedParams( Params.STYLE, map, false );
-            path.setName( Database.CORCODE );
             String[] formats = new String[corCodes.length];
             HashSet<String> styleSet = new HashSet<String>();
             for ( int i=0;i<styles.length;i++ )
                 styleSet.add( styles[i] );
             try
             {
-                String resource = path.getResource();
                 for ( int i=0;i<corCodes.length;i++ )
                 {
-                    String ccResource = Utils.canonisePath(resource,corCodes[i]);
-                    Path ccPath = new Path( ccResource );
-                    AeseVersion hv = doGetMVDVersion( ccPath, version1 );
+                    String ccResource = Utils.canonisePath(urn,corCodes[i]);
+                    AeseVersion hv = doGetMVDVersion( Database.CORCODE, 
+                        ccResource, version1 );
                     HTMLComment comment = new HTMLComment();
                     comment.addText( "version-length: "+hv.getVersionLength() );
                     response.setCharacterEncoding("UTF-8");

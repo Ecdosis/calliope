@@ -16,6 +16,7 @@
 package calliope.tests;
 import calliope.Connector;
 import calliope.Utils;
+import calliope.constants.Database;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import calliope.exception.*;
@@ -408,7 +409,8 @@ public class TestImport extends Test
         int count = 0;
         while ( data == null && count < 5 )
         {
-            data = Connector.getConnection().getFromDb("/corform/_all_docs/");
+            data = Connector.getConnection().getFromDb(Database.CORFORM,
+                "_all_docs");
             count++;
         }
         if ( data == null )

@@ -37,9 +37,8 @@ public class AeseUploadHandler extends AeseImportHandler
                 parseImportParams( request );
                 for ( int i=0;i<files.size();i++ )
                 {
-                    String url = "/"+database+"/"+docID.get(false);
                     String resp = Connector.getConnection().putToDb( 
-                        url, files.get(i).data );
+                        database, docID.get(), files.get(i).data );
                     log.append( resp );
                 }
                 response.setContentType("text/html;charset=UTF-8");

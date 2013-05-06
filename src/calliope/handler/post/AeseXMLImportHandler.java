@@ -22,6 +22,7 @@ import calliope.handler.post.importer.*;
 import calliope.constants.Formats;
 import calliope.importer.Archive;
 import calliope.constants.Config;
+import calliope.constants.Database;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -60,13 +61,12 @@ public class AeseXMLImportHandler extends AeseImportHandler
                         splitterName) );
                     log.append( stage3Xml.process(cortex,corcode) );
                     // now get the json docs and add them at the right docid
-                    Connector.getConnection().putToDb( "/cortex/"+docID.get(false), 
-                        cortex.toMVD("cortex") );
+                    Connector.getConnection().putToDb( Database.CORTEX, 
+                        docID.get(), cortex.toMVD("cortex") );
                     log.append( cortex.getLog() );
-                    String fullAddress = "/corcode/"+docID.get(false)+"%2F"
-                        +Formats.DEFAULT;
-                    log.append( Connector.getConnection().putToDb(fullAddress, 
-                        corcode.toMVD("corcode")) );
+                    String fullAddress = docID.get()+"/"+Formats.DEFAULT;
+                    log.append( Connector.getConnection().putToDb(
+                        Database.CORCODE,fullAddress, corcode.toMVD("corcode")) );
                     log.append( corcode.getLog() );
                 }
                 response.setContentType("text/html;charset=UTF-8");

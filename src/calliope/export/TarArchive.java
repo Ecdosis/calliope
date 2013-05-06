@@ -91,7 +91,7 @@ public class TarArchive implements Compressor
     @Override
     public File compress() throws Exception
     {
-        File dest = File.createTempFile("","");
+        File dest = File.createTempFile("TMP","tar.gz");
         FileOutputStream fos = new FileOutputStream( dest );
         TarOutputStream out = new TarOutputStream( 
             new BufferedOutputStream(fos) );

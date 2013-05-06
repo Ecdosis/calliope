@@ -38,55 +38,16 @@ public abstract class Connection
         this.dbPort = dbPort;
         this.wsPort = wsPort;
     }
-    /**
-     * Get the docID component of the path
-     * @param path the path including the collection
-     * @return the path with the collection popped off
-     */
-    protected String getDocID( String path )
-    {
-        String docID = null;
-        path = path.replaceAll( "%2F", "/" );
-        int pos = path.indexOf("/");
-        if ( pos == -1 )
-            return null;
-        else if ( pos == 0 )
-        {
-            pos = path.indexOf("/",1);
-            docID = path.substring( pos+1 );
-        }
-        else
-            docID = path.substring( pos+1 );
-        return docID;
-    }
-    /**
-     * Get the name of the collection (aka database in old money)
-     * @param path the full path to the resource
-     * @return the first part of the file-like path
-     */
-    protected String getCollName( String path )
-    {
-        String collName = null;
-        int pos = path.indexOf("/");
-        if ( pos == 0 )
-        {
-            pos = path.indexOf("/",1);
-            collName = path.substring( 1, pos );
-        }
-        else if ( pos != -1 )
-            collName = path.substring( 0, pos );
-        return collName;
-    }
-    public abstract String[] listCollection( String collName ) 
+    public abstract String[] listCollection( String coll ) 
         throws AeseException;
-    public abstract String[] listDocuments( String collName, String expr )
+    public abstract String[] listDocuments( String coll, String expr )
         throws AeseException;
-    public abstract String getFromDb( String path ) throws AeseException;
-    public abstract String putToDb( String path, String json ) 
+    public abstract String getFromDb( String coll, String docID ) throws AeseException;
+    public abstract String putToDb( String coll, String docID, String json ) 
         throws AeseException;
-    public abstract String removeFromDb( String path ) throws AeseException;
-    public abstract byte[] getImageFromDb( String path ) throws AeseException;
-    public abstract void putImageToDb( String path, byte[] data ) 
+    public abstract String removeFromDb( String coll, String docID ) throws AeseException;
+    public abstract byte[] getImageFromDb( String coll, String docID ) throws AeseException;
+    public abstract void putImageToDb( String coll, String docID, byte[] data ) 
         throws AeseException;
-    public abstract void removeImageFromDb( String path ) throws AeseException;
+    public abstract void removeImageFromDb( String coll, String docID ) throws AeseException;
 }

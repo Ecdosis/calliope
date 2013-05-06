@@ -30,6 +30,13 @@ import calliope.constants.Database;
  */
 public class AeseGetCorTexHandler extends AeseGetHandler
 {
+    /**
+     * Get a CorTex
+     * @param request the servlet request
+     * @param response the servlet response
+     * @param urn the docID, stripped of its prefix
+     * @throws AeseException 
+     */
     @Override
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn )
@@ -43,8 +50,8 @@ public class AeseGetCorTexHandler extends AeseGetHandler
             try
             {
                 String version1 = request.getParameter(Params.VERSION1 );
-                Path path = new Path( Utils.canonisePath(Database.CORTEX,urn) );
-                AeseVersion hv = doGetMVDVersion( path, version1 );
+                AeseVersion hv = doGetMVDVersion( Database.CORTEX, urn, 
+                    version1 );
                 response.getWriter().println(hv.getVersionString()); 
             }
             catch ( Exception e )

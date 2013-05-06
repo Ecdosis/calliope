@@ -16,7 +16,6 @@
 package calliope.handler.get;
 
 import calliope.constants.Database;
-import calliope.constants.Params;
 import calliope.exception.AeseException;
 import calliope.handler.AeseMVD;
 import calliope.path.Path;
@@ -102,20 +101,18 @@ public class AeseJSONListHandler  extends AeseTextListHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        Path path = new Path( urn );
-        path.setName( Database.CORTEX );
         try
         {
-            if ( !path.isEmpty() )
+            if ( urn.length()>0 )
             {
-                AeseMVD mvd = loadMVD( path.getResource() );
+                AeseMVD mvd = loadMVD( Database.CORTEX, urn );
                 String table = mvd.mvd.getVersionTable();
                 response.setContentType("text/plain;charset=UTF-8");
                 String list = formatTable( table );
                 response.getWriter().println( list );
             }
             else
-                throw new AeseException("Invalid path "+path.getResource());
+                throw new AeseException("Invalid path "+urn);
         }
         catch ( Exception e )
         {

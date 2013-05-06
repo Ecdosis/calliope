@@ -22,6 +22,7 @@ import calliope.tests.html.HTMLCatalog;
 import calliope.tests.html.Text;
 import calliope.exception.*;
 import calliope.Connector;
+import calliope.constants.Database;
 /*
  * This class implements a twist-down hierarchical list
  */
@@ -185,7 +186,8 @@ public class TestHome extends Test
         int count = 0;
         while ( json == null && count < 5 )
         {
-            json = Connector.getConnection().getFromDb("/cortex/_all_docs/");
+            json = Connector.getConnection().getFromDb(Database.CORTEX,
+                "_all_docs");
             count++;
         }
         if ( json == null )

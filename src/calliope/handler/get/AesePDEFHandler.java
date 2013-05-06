@@ -129,6 +129,8 @@ public class AesePDEFHandler extends AeseGetHandler
                 read = fis.read( buf );
                 sos.write( buf, 0, read );
             }
+            sos.close();
+            zip.delete();
         }
         catch ( Exception e )
         {

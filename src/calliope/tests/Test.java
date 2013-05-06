@@ -28,7 +28,6 @@ import calliope.exception.*;
 import calliope.json.JSONDocument;
 import calliope.tests.html.*;
 import calliope.path.Path;
-import java.util.ArrayList;
 /**
  *
  * @author desmond
@@ -36,7 +35,8 @@ import java.util.ArrayList;
 public abstract class Test extends AeseHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Comparenew Edition Html Image Import Internal Table Tilt";
+    public static String tabs = "Home Compare Comparenew Edition Html "
+        +"Image Import Internal Table Tilt";
     private static String KING_LEAR = 
         "english/shakespeare/kinglear/act1/scene1";
     /** contains a leading slash */
@@ -137,7 +137,7 @@ public abstract class Test extends AeseHandler
         try
         {
             String json = Connector.getConnection().getFromDb(
-                "/cortex/"+Utils.escape(KING_LEAR) );
+                Database.CORTEX,KING_LEAR );
             if ( json != null )
                 return KING_LEAR;
             else
@@ -177,7 +177,7 @@ public abstract class Test extends AeseHandler
         try
         {
             String json = Connector.getConnection().getFromDb(
-                "/cortex/"+docIDCanonise(docID));
+                Database.CORTEX, docIDCanonise(docID));
             if ( json != null )
             {
                 JSONDocument doc = JSONDocument.internalise( json );
@@ -381,10 +381,8 @@ public abstract class Test extends AeseHandler
     {
         try
         {
-            String fullPath = Utils.canonisePath(Database.CORFORM,corformId);
-            Path path = new Path(fullPath);
             String json = Connector.getConnection().getFromDb( 
-                path.getResource() );
+                Database.CORFORM, corformId );
             JSONDocument doc = JSONDocument.internalise( json );
             return doc.get(JSONKeys.BODY).toString();
         }

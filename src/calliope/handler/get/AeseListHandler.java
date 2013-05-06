@@ -197,7 +197,6 @@ public class AeseListHandler extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        Path path = new Path( urn );
         Map map = request.getParameterMap();
         String[] styles = (String[])map.get( Params.STYLE );
         if ( styles == null )
@@ -206,10 +205,9 @@ public class AeseListHandler extends AeseGetHandler
             styles[0] = "/list/default";
         }
         version1 = request.getParameter( Params.VERSION1 );
-        path.setName( Database.CORTEX );
         try
         {
-            AeseMVD mvd = loadMVD( path.getResource() );
+            AeseMVD mvd = loadMVD( Database.CORTEX, urn );
             String table = mvd.mvd.getVersionTable();
             String listName = request.getParameter( Params.NAME );
             if ( listName == null )

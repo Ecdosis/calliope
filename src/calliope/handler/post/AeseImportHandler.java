@@ -63,11 +63,11 @@ public abstract class AeseImportHandler extends AesePostHandler
     /**
      * Add the archive to the database
      * @param archive the archive
-     * @param type its type: cortex or corcode
+     * @param db cortex or corcode
      * @param suffix the suffix to append
      * @throws AeseException 
      */
-    protected void addToDBase( Archive archive, String type, String suffix ) 
+    protected void addToDBase( Archive archive, String db, String suffix ) 
         throws AeseException
     {
         // now get the json docs and add them at the right docid
@@ -75,16 +75,16 @@ public abstract class AeseImportHandler extends AesePostHandler
         {
             String path;
             if ( suffix.length()>0 )
-                path = "/"+type+"/"+docID.get(false)+"%2F"+suffix;
+                path = docID.get()+"/"+suffix;
             else
-                path = "/"+type+"/"+docID.get(false);
-            if ( type.equals("corcode") )
-                path += "%2Fdefault";
-            Connector.getConnection().putToDb( path, archive.toMVD(type) );
+                path = docID.get();
+            if ( db.equals("corcode") )
+                path += "/default";
+            Connector.getConnection().putToDb( db, path, archive.toMVD(db) );
             log.append( archive.getLog() );
         }
         else
-            log.append("No "+type+" created (empty)\n");
+            log.append("No "+db+" created (empty)\n");
     }
     /**
      * Parse the import params from the request
@@ -133,9 +133,9 @@ public abstract class AeseImportHandler extends AesePostHandler
                         else if ( fieldName.equals(Params.FILTER) )
                             filterName = contents.toLowerCase();
                         else if ( fieldName.equals(Params.SPLITTER) )
-                            splitterName = contents.toLowerCase().replace("/","%2F");
+                            splitterName = contents;
                         else if ( fieldName.equals(Params.STRIPPER) )
-                            stripperName = contents.toLowerCase().replace("/","%2F");
+                            stripperName = contents;
                         else if ( fieldName.equals(Params.TEXT) )
                             textName = contents.toLowerCase();
                         else if ( fieldName.equals(Params.XSLT) )
@@ -174,7 +174,7 @@ public abstract class AeseImportHandler extends AesePostHandler
         sb.append("<html><body>");
         sb.append("<h3>LOG</h3>");
         sb.append("<p class=\"docid\"> DocID: ");
-        sb.append( docID.get(true) );
+        sb.append( docID.get() );
         sb.append( "</p><p class=\"log\">" );
         sb.append( log.toString().replace("\n","<br>") );
         sb.append("</p>");
@@ -194,14 +194,14 @@ public abstract class AeseImportHandler extends AesePostHandler
         try
         {
             String doc = null;
-            String configDocId = "/"+Database.CONFIG+"/"+kind.toString()+"%2F"+path;
+            String configDocId = kind.toString()+"/"+path;
             while ( doc == null )
             {
                 doc = Connector.getConnection().getFromDb( 
-                    configDocId.toLowerCase() );
+                    Database.CONFIG, configDocId.toLowerCase() );
                 if ( doc == null )
                 {
-                    String[] parts = configDocId.split("%2F");
+                    String[] parts = configDocId.split("/");
                     if ( parts.length == 1 )
                         throw new AeseException("config not found: "
                             +configDocId);
@@ -214,15 +214,12 @@ public abstract class AeseImportHandler extends AesePostHandler
                         for ( int i=0;i<parts.length-N;i++ )
                         {
                             sb.append( parts[i] );
-                            sb.append("%2F");
+                            sb.append("/");
                         }
                         if ( sb.length()==0 )
                         {
-                            sb.append("/");
-                            sb.append(Database.CONFIG);
-                            sb.append("/");
                             sb.append(kind);
-                            sb.append("%2F");
+                            sb.append("/");
                         }
                         configDocId = sb.toString()+Formats.DEFAULT;
                         if ( oldDocId.equals(configDocId) )

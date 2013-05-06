@@ -68,6 +68,12 @@ public class MongoConnection extends Connection implements Test
                 throw new AeseException( "MongoDB authentication failed");
         }
     }
+    /**
+     * Get the Mongo db collection object form its name
+     * @param collName the collection name
+     * @return a DBCollection object
+     * @throws AeseException 
+     */
     private DBCollection getCollectionFromName( String collName )
         throws AeseException
     {
@@ -80,49 +86,25 @@ public class MongoConnection extends Connection implements Test
             throw new AeseException( "Unknown collection "+collName );
     }
     /**
-     * Get the collection name from the path
-     * @param path the path including the collection name as the first 
-     * @return a String 
-     */
-    private DBCollection getCollection( String path ) throws AeseException
-    {
-        String collName = getCollName( path );
-        if ( collName != null )
-            return getCollectionFromName( collName );
-        else
-            throw new AeseException( "No colelction specified in path "+path);
-    }
-    /**
-     * Get the docID proper from the path as a DBObject
-     * @param path the path including the collection name
-     * @return the docID stripped of the collection name
-     */
-    private DBObject getDocQuery( String path )
-    {
-        String docID = getDocID( path );
-        if ( docID != null )
-            return new BasicDBObject( DOCID_KEY, docID );
-        else
-            return null;
-    }
-    /**
      * Fetch a resource from the server, or try to.
-     * @param path the path to the reputed resource
+     * @param collName the collection or database name
+     * @param docID the path to the resource in the collection
      * @return the response as a string or null if not found
      */
     @Override
-    public String getFromDb( String path ) throws AeseException
+    public String getFromDb( String collName, String docID ) throws AeseException
     {
         try
         {
             connect();
-            DBCollection coll = getCollection( path );
-            DBObject query = getDocQuery( path );
+            DBCollection coll = getCollectionFromName( collName );
+            DBObject query = new BasicDBObject( DOCID_KEY, docID );
             DBObject obj = coll.findOne( query );
             if ( obj != null )
                 return obj.toString();
             else
-                throw new FileNotFoundException( "failed to find "+path );
+                throw new FileNotFoundException( "failed to find "
+                    +collName+"/"+docID );
         }
         catch ( Exception e )
         {
@@ -131,20 +113,22 @@ public class MongoConnection extends Connection implements Test
     }
     /**
      * PUT a json file to the database
-     * @param path the full path of the resource including database
+     * @param collName the name of the collection
+     * @param docID the docid of the resource 
      * @param json the json to put there
      * @return the server response
      */
     @Override
-    public String putToDb( String path, String json ) throws AeseException
+    public String putToDb( String collName, String docID, String json ) 
+        throws AeseException
     {
         try
         {
             DBObject doc = (DBObject) JSON.parse(json);
-            doc.put( DOCID_KEY, getDocID(path) );
+            doc.put( DOCID_KEY, docID );
             connect();
-            DBCollection coll = getCollection( path );
-            DBObject query = getDocQuery( path );
+            DBCollection coll = getCollectionFromName( collName );
+            DBObject query = new BasicDBObject( DOCID_KEY, docID );
             WriteResult result = coll.update( query, doc, true, false );
             //return removeFromDb( path );
             return result.toString();
@@ -156,18 +140,20 @@ public class MongoConnection extends Connection implements Test
     }
     /**
      * Remove a document from the database
-     * @param path the full path of the resource including database
+     * @param collName name of the collection
+     * @param docID the docid of the resource 
      * @param json the json to put there
      * @return the server response
      */
     @Override
-    public String removeFromDb( String path ) throws AeseException
+    public String removeFromDb( String collName, String docID ) 
+        throws AeseException
     {
         try
         {
             connect();
-            DBCollection coll = getCollection( path );
-            DBObject query = getDocQuery( path );
+            DBCollection coll = getCollectionFromName( collName );
+            DBObject query = new BasicDBObject( DOCID_KEY, docID );
             WriteResult result = coll.remove( query );
             return result.toString();
         }
@@ -239,17 +225,17 @@ public class MongoConnection extends Connection implements Test
     }
     /**
      * Get an image from the database
-     * @param path the path to the corpix
+     * @param collName the collection name
+     * @param docID the docid of the corpix
      * @return the image data
      */
     @Override
-    public byte[] getImageFromDb( String path )
+    public byte[] getImageFromDb( String collName, String docID )
     {
         try
         {
-            String collName = getCollName( path );
             GridFS gfs = new GridFS( db, collName );
-            GridFSDBFile file = gfs.findOne( getDocID(path) );
+            GridFSDBFile file = gfs.findOne( docID );
             InputStream ins = file.getInputStream();
             long dataLen = file.getLength();
             // this only happens if it is > 2 GB
@@ -272,34 +258,37 @@ public class MongoConnection extends Connection implements Test
     }
     /**
      * Store an image in the database
-     * @param path the path to the resource
+     * @param collName name of the image collection
+     * @param docID the docid of the resource
      * @param data the image data to store
      * @throws AeseException 
      */
     @Override
-    public void putImageToDb( String path, byte[] data ) throws AeseException
+    public void putImageToDb( String collName, String docID, byte[] data ) 
+        throws AeseException
     {
-        String collName = getCollName( path );
         GridFS gfs = new GridFS( db, collName );
         GridFSInputFile	file = gfs.createFile( data );
-        file.setFilename( getDocID(path) );
+        file.setFilename( docID );
         file.save();
     }
     /**
      * Delete an image from the database
-     * @param path the full path to the file
+     * @param collName the colleciton name e.g. "corpix"
+     * @param docID the image's docid path
      * @throws AeseException 
      */
     @Override
-    public void removeImageFromDb( String path ) throws AeseException
+    public void removeImageFromDb( String collName, String docID ) 
+        throws AeseException
     {
         try
         {
-            String collName = getCollName( path );
             GridFS gfs = new GridFS( db, collName );
-            GridFSDBFile file = gfs.findOne( getDocID(path) );
+            GridFSDBFile file = gfs.findOne( docID );
             if ( file == null )
-                throw new FileNotFoundException("file "+path+" not found");
+                throw new FileNotFoundException("file "+collName+"/"+docID
+                    +" not found");
             gfs.remove( file );
         }
         catch ( Exception e )
@@ -543,26 +532,26 @@ public class MongoConnection extends Connection implements Test
         {
             byte[] imageData = Base64.decodeBase64( image );
             connect();
-            String response = putToDb( "/test/data/text", json );
+            String response = putToDb( "test", "data/text", json );
             if ( checkResponse(response) )
             {
-                response = getFromDb( "/test/data/text" );
+                response = getFromDb( "test", "data/text" );
                 if ( !checkResponse(response) )
                     sb.append( "failed put/get test for plain json\n" );
                 else
                 {
-                    response = removeFromDb( "/test/data/text" );
+                    response = removeFromDb( "test", "data/text" );
                     if ( !checkResponse(response) )
                         sb.append( "failed to remove plain json\n" );
                 }
             }
-            putImageToDb( "/corpix/data/image", imageData );
-            byte[] data = getImageFromDb( "/corpix/data/image" );
+            putImageToDb( "corpix", "data/image", imageData );
+            byte[] data = getImageFromDb( "corpix", "data/image" );
             if ( data == null || data.length != imageData.length )
                 sb.append( "failed put/get test for image\n" );
             else
-                removeImageFromDb( "/corpix/data/image" );
-            DBObject query = getDocQuery( "/corpix/data/image" );
+                removeImageFromDb( "corpix", "data/image" );
+            DBObject query = new BasicDBObject( DOCID_KEY, "data/image" );
             GridFS gfs = new GridFS( db, "corpix" );
             GridFSDBFile file = gfs.findOne( query );
             if ( file != null )

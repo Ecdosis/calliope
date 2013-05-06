@@ -49,7 +49,7 @@ public class AeseGetHandler extends AeseHandler
         if ( prefix != null )
         {
             if ( prefix.equals(Services.HTML) )
-                new AeseHTMLHandler().handle( request, response, urn );
+                new AeseHTMLHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Services.TESTS) )
             {
                 try
@@ -63,7 +63,7 @@ public class AeseGetHandler extends AeseHandler
                     String className = "calliope.tests.Test"+second;
                     Class tClass = Class.forName( className );
                     Test t = (Test)tClass.newInstance();
-                    t.handle( request, response, urn );
+                    t.handle( request, response, Path.pop(urn) );
                 }
                 catch ( Exception e )
                 {
@@ -71,20 +71,24 @@ public class AeseGetHandler extends AeseHandler
                 }
             }
             else if ( prefix.equals(Services.JSON) )
-                new AeseJSONHandler().handle( request, response, urn );
+                new AeseJSONHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Services.LIST) )
-                new AeseTextListHandler().handle( request, response, urn );
+                new AeseTextListHandler().handle( request, response, 
+                    Path.pop(urn) );
             else if ( prefix.equals(Services.PDEF) )
-                new AesePDEFHandler().handle( request, response, urn );
+                new AesePDEFHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Database.CORTEX) )
                 new AeseGetCorTexHandler().handle( request, response, 
-                    Path.removePrefix(urn) );
+                    Path.pop(urn) );
             else if ( prefix.equals(Database.CORCODE) )
-                new AeseGetCorCodeHandler().handle( request, response, urn );
+                new AeseGetCorCodeHandler().handle( request, response, 
+                    Path.pop(urn) );
             else if ( prefix.equals(Database.CORFORM) )
-                new AeseGetCorFormHandler().handle( request, response, urn );
+                new AeseGetCorFormHandler().handle( request, response, 
+                    Path.pop(urn) );
             else if ( prefix.equals(Database.CORPIX) )
-                new AeseGetCorPixHandler().handle( request, response, urn );
+                new AeseGetCorPixHandler().handle( request, response, 
+                    Path.pop(urn) );
             else 
                 throw new AeseException("invalid urn: "+urn );
         }
@@ -93,14 +97,16 @@ public class AeseGetHandler extends AeseHandler
     }
     /**
      * Get the document body of the given urn or null
-     * @param urn the path to the resource
+     * @param db the database where it is
+     * @param docID the docID of the resource
      * @return the document body or null if not present
      */
-    protected String getDocumentBody( String urn ) throws AeseException
+    protected String getDocumentBody( String db, String docID ) 
+        throws AeseException
     {
         try
         {
-            String jStr = Connector.getConnection().getFromDb(urn);
+            String jStr = Connector.getConnection().getFromDb(db,docID);
             if ( jStr != null )
             {
                 JSONDocument jDoc = JSONDocument.internalise( jStr );
@@ -111,7 +117,7 @@ public class AeseGetHandler extends AeseHandler
                         return body.toString();
                 }
             }
-            throw new AeseException("document "+urn+" not found");
+            throw new AeseException("document "+db+"/"+docID+" not found");
         }
         catch ( Exception e )
         {
@@ -125,20 +131,18 @@ public class AeseGetHandler extends AeseHandler
      */
     protected String fetchStyle( String style ) throws AeseException
     {
-        String prefix = "/"+Database.CORFORM+"/";
-        Path path = new Path( prefix+style );
         // 1. try to get each literal style name
-        String actual = getDocumentBody(path.getResource());
+        String actual = getDocumentBody(Database.CORFORM,style);
         while ( actual == null )
         {
             // 2. add "default" to the end
-            actual = getDocumentBody( 
-                URLEncoder.append(path.getResource(),Formats.DEFAULT) );
+            actual = getDocumentBody( Database.CORFORM,
+                URLEncoder.append(style,Formats.DEFAULT) );
             if ( actual == null )
             {
                 // 3. pop off last path component and try again
-                if ( !path.isEmpty() )
-                    path.chomp();
+                if ( style.length()>0 )
+                    style = Path.chomp(style);
                 else
                     throw new AeseException("no suitable format");
             }
@@ -162,13 +166,14 @@ public class AeseGetHandler extends AeseHandler
     }
     /**
      * Try to retrieve the CorTex/CorCode version specified by the path
+     * @param db the database to fetch from
      * @param path the already parsed URN with a valid db name
      * @param vId the groups/version to get
      * @return the CorTex/CorCode version contents or null if not found
      * @throws AeseException if the resource couldn't be found for some reason
      */
-    protected AeseVersion doGetMVDVersion( Path path, String vPath )
-        throws AeseException
+    protected AeseVersion doGetMVDVersion( String db, String docID, 
+        String vPath ) throws AeseException
     {
         AeseVersion version = new AeseVersion();
         JSONDocument doc = null;
@@ -177,7 +182,7 @@ public class AeseGetHandler extends AeseHandler
         //System.out.println("fetching version "+vPath );
         try
         {
-            res = Connector.getConnection().getFromDb(path.getResource());
+            res = Connector.getConnection().getFromDb(db,docID);
         }
         catch ( Exception e )
         {
@@ -285,22 +290,23 @@ public class AeseGetHandler extends AeseHandler
     }
     /**
      * Fetch and load an MVD
-     * @param path the database path to it
+     * @param db the database 
+     * @param docID
      * @return the loaded MVD
-     * @throws a AeseException if not found
+     * @throws an AeseException if not found
      */
-    protected AeseMVD loadMVD( String path ) throws AeseException
+    protected AeseMVD loadMVD( String db, String docID ) throws AeseException
     {
         try
         {
-            String data = Connector.getConnection().getFromDb(path);
+            String data = Connector.getConnection().getFromDb(db,docID);
             if ( data.length() > 0 )
             {
                 JSONDocument doc = JSONDocument.internalise(data);
                 if ( doc != null )
                     return new AeseMVD( doc );
             }
-            throw new AeseException( "MVD not found "+path );
+            throw new AeseException( "MVD not found "+docID );
         }
         catch ( Exception e )
         {
