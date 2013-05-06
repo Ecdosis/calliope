@@ -105,7 +105,7 @@ public class PDEFArchive
             FileWriter fw = new FileWriter( archiveConf );
             fw.write( "{\n\t\"" );
             fw.write( JSONKeys.BASE_URL );
-            fw.write( "\": " );
+            fw.write( "\": \"" );
             fw.write( host );
             fw.write( "\"\n}\n" );
             fw.close();
