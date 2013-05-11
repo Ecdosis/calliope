@@ -22,7 +22,6 @@ import org.xml.sax.InputSource;
 import java.util.ArrayList;
 import calliope.exception.AeseException;
 import calliope.Utils;
-import java.io.StringWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

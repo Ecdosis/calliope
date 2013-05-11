@@ -18,6 +18,7 @@ import calliope.constants.Database;
 import calliope.Connector;
 import calliope.constants.JSONKeys;
 import calliope.json.JSONDocument;
+import calliope.exception.AeseExportException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -30,7 +31,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.ArrayList;
-import java.util.HashMap;
 import edu.luc.nmerge.mvd.MVD;
 import edu.luc.nmerge.mvd.MVDFile;
 
@@ -210,6 +210,34 @@ public class PDEFArchive
         fw.close();
     }
     /**
+     * Write a config file to a directory with the keys of the json doc
+     * @param jdoc the jdoc
+     * @param fname name of the config file
+     * @param dir the directory to write to
+     */
+    private void writeConfigRest( JSONDocument jdoc, String fname, File dir ) 
+        throws Exception
+    {
+        File f = new File( dir, fname );
+        f.createNewFile();
+        FileWriter fw = new FileWriter( f );
+        JSONDocument jdoc2 = new JSONDocument();
+        if ( jdoc.containsKey(JSONKeys.STYLE) )
+            jdoc2.put( JSONKeys.STYLE, (String)jdoc.get(JSONKeys.STYLE) );
+        if ( jdoc.containsKey(JSONKeys.FORMAT) )
+            jdoc2.put( JSONKeys.FORMAT, (String)jdoc.get(JSONKeys.FORMAT) );
+        if ( jdoc.containsKey(JSONKeys.TITLE) )
+            jdoc2.put( JSONKeys.TITLE, (String)jdoc.get(JSONKeys.TITLE) );
+        if ( jdoc.containsKey(JSONKeys.AUTHOR) )
+            jdoc2.put( JSONKeys.AUTHOR, (String)jdoc.get(JSONKeys.AUTHOR) );
+        if ( jdoc.containsKey(JSONKeys.SECTION) )
+            jdoc2.put( JSONKeys.SECTION, (String)jdoc.get(JSONKeys.SECTION) );
+        if ( jdoc.containsKey(JSONKeys.VERSION1) )
+            jdoc2.put( JSONKeys.VERSION1, (String)jdoc.get(JSONKeys.VERSION1) );
+        fw.write( jdoc2.toString() );
+        fw.close();
+    }
+    /**
      * Write a cortex to disk
      * @param dir the "%" directory to create it in
      * @param docID the file's docID
@@ -225,10 +253,12 @@ public class PDEFArchive
         if ( !mvdDir.exists() )
             mvdDir.mkdir();
         writeCorform( jdoc );
+        writeConfigRest( jdoc, "cortex.conf", mvdDir );
         File cor = new File( mvdDir, CORTEX_NAME );
         cor.createNewFile();
         fw = new FileWriter( cor );
-        fw.write( json, 0, json.length() );
+        String mvd = (String)jdoc.get(JSONKeys.BODY);
+        fw.write( mvd, 0, mvd.length() );
         fw.close();
     }
     /**
@@ -418,6 +448,7 @@ public class PDEFArchive
             // find the individual corcode's file name (tail)
             tail = corcodes[i].substring(docID.length()+1);
             File ccFile = new File( ccDir, tail );
+            writeConfigRest( jdoc, tail+".conf", ccDir );
             ccFile.createNewFile();
             fw = new FileWriter( ccFile );
             fw.write( mvd );

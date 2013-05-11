@@ -49,10 +49,12 @@ public abstract class AeseImportHandler extends AesePostHandler
     /** text filter config */
     String textName;
     HashMap<String,String> nameMap;
+    HashMap<String,String> jsonKeys;
     ArrayList<File> files;
     public AeseImportHandler()
     {
         nameMap = new HashMap<String,String>(); 
+        jsonKeys = new HashMap<String,String>();
         filterName = Filters.EMPTY;
         stripperName = "default";
         splitterName = "default";
@@ -140,6 +142,8 @@ public abstract class AeseImportHandler extends AesePostHandler
                             textName = contents.toLowerCase();
                         else if ( fieldName.equals(Params.XSLT) )
                             xslt = getConfig(Config.xslt,contents);
+                        else
+                            jsonKeys.put( fieldName, contents );
                     }
                 }
                 else if ( item.getName().length()>0 )

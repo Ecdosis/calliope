@@ -123,7 +123,7 @@ public class CouchConnection extends Connection
         try
         {
             String login = (user==null)?"":user+":"+password+"@";
-            URL u = new URL("http://"+login+host+":"+dbPort+db+"/"+docID);
+            URL u = new URL("http://"+login+host+":"+dbPort+"/"+db+"/"+docID);
             conn = (HttpURLConnection)u.openConnection();
             conn.setRequestMethod("HEAD");
             conn.setRequestProperty("Content-Type",MIMETypes.JSON);
@@ -164,10 +164,13 @@ public class CouchConnection extends Connection
     /**
      * Read the response of the server
      * @param conn an open connection
+     * @param delay time to wait for a response in milliseconds
+     * @param message message from a former invocation of this function
      * @return the server's response or the empty string
      * @throws IOException 
      */
-    private String readResponse( HttpURLConnection conn, long delay ) throws Exception
+    private String readResponse( HttpURLConnection conn, long delay, 
+        String message ) throws Exception
     {
         if ( delay < 50 )
         {
@@ -191,11 +194,11 @@ public class CouchConnection extends Connection
             catch ( Exception e )
             {
                 Thread.sleep( 10 );
-                return readResponse( conn, delay+10 );
+                return readResponse( conn, delay+10, e.getMessage() );
             }
         }
         else
-            return "";
+            return message;
     }
     /**
      * Remove a document from the database
@@ -223,7 +226,7 @@ public class CouchConnection extends Connection
                 conn.setUseCaches (false);
                 conn.setDoOutput(true);
                 //Get Response	
-                return readResponse( conn, 0L );
+                return readResponse( conn, 0L, "" );
             }
             else // it's not there, so do nothing
                 return "";
@@ -268,7 +271,7 @@ public class CouchConnection extends Connection
             wr.flush ();
             wr.close ();
             //Get Response	
-            return readResponse( conn, 0L );
+            return readResponse( conn, 0L, "" );
         } 
         catch (Exception e) 
         {

@@ -18,6 +18,9 @@ package calliope.handler.post;
 
 import calliope.Connector;
 import calliope.exception.AeseException;
+import calliope.handler.post.importer.JDocWrapper;
+import calliope.constants.Database;
+import calliope.path.Path;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -27,18 +30,29 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  */
 public class AeseUploadHandler extends AeseImportHandler
 {
+    @Override
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
         try
         {
+            database = Path.first(urn);
             if (ServletFileUpload.isMultipartContent(request) )
             {
                 parseImportParams( request );
                 for ( int i=0;i<files.size();i++ )
                 {
+                    String json = files.get(i).data;
+                    // wrap cortex and corcodes with kosher params
+                    if ( database.equals(Database.CORTEX)
+                        || database.equals(Database.CORCODE) )
+                    {
+                        JDocWrapper wrapper = new JDocWrapper( 
+                            json, jsonKeys );
+                        json = wrapper.toString();
+                    }
                     String resp = Connector.getConnection().putToDb( 
-                        database, docID.get(), files.get(i).data );
+                        database, docID.get(), json );
                     log.append( resp );
                 }
                 response.setContentType("text/html;charset=UTF-8");

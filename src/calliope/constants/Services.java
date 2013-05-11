@@ -46,7 +46,7 @@ public class Services
     /** json list versions service */
     public static String JSON = "json";
     /** mvd import service */
-    public static String MVD = "mvd";
+    public static String LITERAL = "literal";
     /** get the second versions given the first */
     public static String VERSION2 = "version2";
     /** get the description of a CorTex/CorCode */

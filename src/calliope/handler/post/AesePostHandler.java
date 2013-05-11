@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import calliope.tests.Test;
 
-
-    
 /**
  * Handle a POST request
  * @author desmond
@@ -62,16 +60,16 @@ public void handle( HttpServletRequest request,
                 String second = Path.second( urn );
                 if ( second.length() > 0 )
                 {
-                    if ( second.equals(Services.MVD) )
-                        new AeseMVDImportHandler().handle(request,response,urn);
+                    int pos = urn.indexOf(second);
+                    urn = urn.substring(pos+second.length()+1);
+                    if ( second.equals(Services.LITERAL) )
+                        new AeseUploadHandler().handle(request,response,urn);
                     else if ( second.equals(Services.XML) )
                         new AeseXMLImportHandler().handle(request,response,urn);
                     else if ( second.equals(Services.TEXT) )
                         new AeseTextImportHandler().handle(request,response,urn);
                     else if ( second.equals(Services.MIXED) )
                         new AeseMixedImportHandler().handle(request,response,urn);
-                    else if ( second.equals(Services.IMG) )
-                        new AeseImgImportHandler().handle(request,response,urn);
                     else
                         throw new AeseException("Unknown service "+second);
                 }
