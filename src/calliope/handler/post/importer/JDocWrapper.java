@@ -6,6 +6,7 @@ package calliope.handler.post.importer;
 import java.util.Map;
 import java.util.Set;
 import java.util.Iterator;
+import calliope.Utils;
 import calliope.json.JSONDocument;
 import calliope.constants.JSONKeys;
 
@@ -30,16 +31,6 @@ public class JDocWrapper
                 return true;
         return false;
     }
-    private String cleanCR( String value )
-    {
-        StringBuilder sb = new StringBuilder();
-        for ( int i=0;i<value.length();i++ )
-        {
-            if ( value.charAt(i)!='\n'&&value.charAt(i)!='\r' )
-                sb.append(value.charAt(i));
-        }
-        return sb.toString();
-    }
     /**
      * Construct the wrapper
      * @param body the raw data 
@@ -48,7 +39,7 @@ public class JDocWrapper
     public JDocWrapper( String body, Map<String,String> params )
     {
         jdoc = new JSONDocument();
-        jdoc.put( JSONKeys.BODY, cleanCR(body) );
+        jdoc.put( JSONKeys.BODY, Utils.cleanCR(body,false) );
         Set<String> keys = params.keySet();
         Iterator<String> iter = keys.iterator();
         while ( iter.hasNext() )
@@ -57,7 +48,7 @@ public class JDocWrapper
             String value = params.get(key);
             if ( isValidKey(key) )
             {
-                jdoc.put( key, cleanCR(value) );
+                jdoc.put( key, Utils.cleanCR(value,false) );
             }
         }
     }

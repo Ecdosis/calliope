@@ -21,6 +21,7 @@ import calliope.exception.AeseException;
 import calliope.handler.post.importer.JDocWrapper;
 import calliope.constants.Database;
 import calliope.path.Path;
+import calliope.Utils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -51,6 +52,8 @@ public class AeseUploadHandler extends AeseImportHandler
                             json, jsonKeys );
                         json = wrapper.toString();
                     }
+                    else if ( database.equals(Database.CORFORM) )
+                        json = Utils.cleanCR( json, true );
                     String resp = Connector.getConnection().putToDb( 
                         database, docID.get(), json );
                     log.append( resp );
