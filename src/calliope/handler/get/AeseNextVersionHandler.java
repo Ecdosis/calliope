@@ -38,6 +38,7 @@ public class AeseNextVersionHandler extends AeseGetHandler
             {
                 String shortName = Utils.getShortName( version1 );
                 String groups = Utils.getGroupName( version1 );
+                urn = Path.pop( urn );
                 AeseMVD mvd = loadMVD( Database.CORTEX, urn );
                 int v1 = mvd.mvd.getVersionByNameAndGroup( shortName, groups );
                 if ( v1 > 0 )

@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 /**
  * Implementation of database Connection interface for CouchDB

@@ -3,11 +3,6 @@
  * and open the template in the editor.
  */
 package calliope;
-import calliope.db.Connection;
-import calliope.db.CouchConnection;
-import calliope.db.MongoConnection;
-import static calliope.db.Repository.COUCH;
-import static calliope.db.Repository.MONGO;
 import calliope.exception.AeseException;
 import calliope.exception.AeseExceptionMessage;
 import calliope.handler.AeseHandler;
@@ -16,7 +11,6 @@ import calliope.handler.put.AesePutHandler;
 import calliope.handler.post.AesePostHandler;
 import calliope.handler.delete.AeseDeleteHandler;
 import calliope.db.Repository;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.ServletConfig;

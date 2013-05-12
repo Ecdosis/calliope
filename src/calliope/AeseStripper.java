@@ -18,7 +18,7 @@ package calliope;
 import calliope.json.JSONResponse;
 import calliope.constants.Libraries;
 /**
- *
+ * Strip XML embedded codes from text out into STIL (JSON) format
  * @author desmond
  */
 public class AeseStripper 

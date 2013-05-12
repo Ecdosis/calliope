@@ -21,7 +21,6 @@ import calliope.AeseFormatter;
 import calliope.exception.*;
 import calliope.constants.Params;
 import calliope.constants.Formats;
-import calliope.path.*;
 import calliope.handler.AeseMVD;
 import calliope.json.JSONResponse;
 import calliope.constants.Database;
@@ -171,6 +170,7 @@ public class AeseComparisonHandler extends AeseHTMLHandler
                 try
                 {
                     HTMLComment comment = new HTMLComment();
+                    comment.addText( "styles: ");
                     for ( int i=0;i<styleTexts.length;i++ )
                         comment.addText( styleTexts[i] );
                     //System.out.println(html.getBody());

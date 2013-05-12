@@ -16,7 +16,7 @@
 package calliope.db;
 
 /**
- * Names of supported repositories
+ * Names of supported repositories/databases
  * @author desmond
  */
 public enum Repository 

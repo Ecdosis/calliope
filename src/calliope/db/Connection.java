@@ -18,7 +18,7 @@ package calliope.db;
 import calliope.exception.AeseException;
 
 /**
- * Abstract connection class for various databases/repositories
+ * Abstract database API for various databases/repositories
  * @author desmond
  */
 public abstract class Connection 
@@ -42,12 +42,16 @@ public abstract class Connection
         throws AeseException;
     public abstract String[] listDocuments( String coll, String expr )
         throws AeseException;
-    public abstract String getFromDb( String coll, String docID ) throws AeseException;
+    public abstract String getFromDb( String coll, String docID ) 
+        throws AeseException;
     public abstract String putToDb( String coll, String docID, String json ) 
         throws AeseException;
-    public abstract String removeFromDb( String coll, String docID ) throws AeseException;
-    public abstract byte[] getImageFromDb( String coll, String docID ) throws AeseException;
+    public abstract String removeFromDb( String coll, String docID ) 
+        throws AeseException;
+    public abstract byte[] getImageFromDb( String coll, String docID ) 
+        throws AeseException;
     public abstract void putImageToDb( String coll, String docID, byte[] data ) 
         throws AeseException;
-    public abstract void removeImageFromDb( String coll, String docID ) throws AeseException;
+    public abstract void removeImageFromDb( String coll, String docID ) 
+        throws AeseException;
 }

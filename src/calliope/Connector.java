@@ -11,12 +11,23 @@ import calliope.db.Repository;
 import calliope.exception.AeseException;
 
 /**
- * Handle connections with database: once per instantiation
+ * Handle connections with a database
  * @author desmond
  */
 public class Connector 
 {
     static Connection connection;
+    /**
+     * Initialise once per instantiation
+     * @param repository the repository type
+     * @param user the user name
+     * @param password the user's password
+     * @param host the domain name of the host
+     * @param dbPort the database port
+     * @param wsPort the web-service port
+     * @param webRoot the full path to the web-root
+     * @throws AeseException 
+     */
     public static void init( Repository repository, String user, 
         String password, String host, int dbPort, int wsPort, String webRoot ) 
         throws AeseException
@@ -46,6 +57,10 @@ public class Connector
             throw new AeseException( "connection to database was null" );
         return connection;
     }
+    /**
+     * Is the connection open?
+     * @return true if so
+     */
     public static boolean isOpen()
     {
         return connection != null;

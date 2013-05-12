@@ -276,7 +276,8 @@ public class TestComparenew extends Test
             divRight.addAttribute( HTMLNames.ID, "rightColumn" );
             String list1 = getList(version1, Params.VERSION1, 
                 "document.forms.default.submit();", LONG_NAME1 );
-            if ( version2 == null || version1.equals(version2) )
+            if ( version2 == null || version2.length()==0 
+                || version1.equals(version2) )
                 version2 = getNextVersion();
             String list2 = getList( version2, Params.VERSION2, 
                 "document.forms.default.submit();", 

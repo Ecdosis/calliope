@@ -20,7 +20,7 @@ import calliope.constants.Libraries;
 public class AeseFormatter
 {
     /**
-     * Call the C formatting code
+     * Convert standoff properties into HTML
      * @param text the text as a string of bytes
      * @param markup an array of CorCodes
      * @param css an array of CSS formats

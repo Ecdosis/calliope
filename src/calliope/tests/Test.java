@@ -16,7 +16,6 @@
 
 package calliope.tests;
 import calliope.Connector;
-import calliope.Utils;
 import calliope.handler.AeseHandler;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;

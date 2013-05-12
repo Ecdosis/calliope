@@ -47,8 +47,7 @@ public class MongoConnection extends Connection implements Test
     static String DOCID_KEY = "docid";
     /** connection to database */
     DB  db;
-    public MongoConnection( 
-        String user, String password, String host, 
+    public MongoConnection( String user, String password, String host, 
         int dbPort, int wsPort )
     {
         super( user, password, host, dbPort, wsPort );

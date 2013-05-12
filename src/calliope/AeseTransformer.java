@@ -12,6 +12,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import org.w3c.dom.Document;
 
+/** 
+ * Perform an XSLT transformation on XML
+ * @author desmond
+ */
 public class AeseTransformer
 {
     private static String readFile( String file )
