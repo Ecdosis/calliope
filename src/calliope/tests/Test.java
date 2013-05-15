@@ -26,7 +26,6 @@ import calliope.constants.JSONKeys;
 import calliope.exception.*;
 import calliope.json.JSONDocument;
 import calliope.tests.html.*;
-import calliope.path.Path;
 /**
  *
  * @author desmond
@@ -34,7 +33,7 @@ import calliope.path.Path;
 public abstract class Test extends AeseHandler
 {
     // names of tabs we support
-    public static String tabs = "Home Compare Comparenew Edition Html "
+    public static String tabs = "Home Compare Edition Html "
         +"Image Import Internal Table Tilt";
     private static String KING_LEAR = 
         "english/shakespeare/kinglear/act1/scene1";

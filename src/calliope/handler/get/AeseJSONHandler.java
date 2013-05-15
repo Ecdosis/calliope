@@ -35,14 +35,10 @@ public class AeseJSONHandler extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        String second = Path.second(urn);
-        if ( second.equals(Services.LIST))
+        String first = Path.first(urn);
+        if ( first.equals(Services.LIST))
         {
-            int pos = urn.indexOf(Services.JSON );
-            if ( pos == -1 )
-                throw new AeseException("invalid urn: "+urn );
-            String rest = urn.substring( pos+Services.HTML.length() );
-            new AeseJSONListHandler().handle(request,response,rest);
+            new AeseJSONListHandler().handle(request,response,Path.pop(urn));
         }
         else
             throw new AeseException("Unknown service: "+urn);

@@ -16,6 +16,7 @@
 package calliope.db;
 
 import calliope.ByteHolder;
+import calliope.Test;
 import calliope.constants.JSONKeys;
 import calliope.constants.MIMETypes;
 import calliope.exception.AeseException;
@@ -32,18 +33,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Implementation of database Connection interface for CouchDB
  * @author desmond
  */
-public class CouchConnection extends Connection 
+public class CouchConnection extends Connection implements Test
 {
     /** time to wait after read for any data at start */
     static long bigTimeout = 2000;// milliseconds
     /** time to wait after read for any more data */
     static long smallTimeout = 200;// milliseconds
     static String webRoot;
+    static String ERROR = "error";
+    static String OK = "ok";
+    static String _ID = "_id";
     public CouchConnection( 
         String user, String password, String host, 
         int dbPort, int wsPort, String webRoot )
@@ -60,6 +65,17 @@ public class CouchConnection extends Connection
     {
         raw = raw.replaceAll("/","%2F");
         raw = raw.replaceAll(" ","%20");
+        return raw;
+    }
+    /**
+     * Ensure a docid is in file path format for retrieving images
+     * @param raw the raw URL
+     * @return the converted docID
+     */
+    private String deconvertDocID( String raw )
+    {
+        raw = raw.replaceAll("%2F","/");
+        raw = raw.replaceAll("%20","\\ ");
         return raw;
     }
     /**
@@ -248,6 +264,7 @@ public class CouchConnection extends Connection
         HttpURLConnection conn = null;
         try
         {
+            docIDCheck( db, docID );
             docID = convertDocID( docID );
             String login = (user==null)?"":user+":"+password+"@";
             String url = "http://"+login+host+":"+dbPort+"/"+db+"/"+docID;
@@ -343,6 +360,7 @@ public class CouchConnection extends Connection
     {
         try
         {
+            docID = deconvertDocID(docID);
             File wd = new File( CouchConnection.webRoot );
             File f = new File( wd, db+"/"+docID );
             if ( f.exists() )
@@ -374,6 +392,8 @@ public class CouchConnection extends Connection
     {
         try
         {
+            docID = deconvertDocID(docID);
+            docIDCheck( db, docID );
             File wd = new File( CouchConnection.webRoot );
             File child = new File( wd, db+"/"+docID );
             if ( !child.getParentFile().exists() )
@@ -401,6 +421,7 @@ public class CouchConnection extends Connection
     {
         try
         {
+            docID = deconvertDocID(docID);
             File wd = new File( CouchConnection.webRoot );
             File f = new File( wd, db+"/"+docID );
             if ( f.exists() )
@@ -427,5 +448,68 @@ public class CouchConnection extends Connection
         {
             throw new AeseException( e );
         }
+    }
+    /**
+     * Check that the database response is OK
+     * @param response the json response from the MongoDB
+     * @return true if its OK was 1.0 or the response has an _id field
+     */
+    private boolean checkResponse( String response )
+    {
+        JSONDocument jdoc = JSONDocument.internalise(response);
+        Boolean ok = (Boolean)jdoc.get( OK );
+        return ok != null && ok.booleanValue() &&
+            !jdoc.containsKey(ERROR);
+    }
+    private boolean checkId( String response, String id )
+    {
+        JSONDocument jdoc = JSONDocument.internalise(response);
+        String idGot = (String)jdoc.get( _ID );
+        return idGot != null && idGot.equals(id);
+    }
+    /**
+     * Test a Mongo connection by putting, deleting, getting a JSON 
+     * file and an image.
+     * @return a String indicating how many tests succeeded
+     */
+    @Override
+    public String test()
+    {
+        StringBuilder sb = new StringBuilder();
+        try
+        {
+            byte[] imageData = Base64.decodeBase64( testImage );
+            String response = putToDb( "cortex", "data/text", testJson );
+            if ( checkResponse(response) )
+            {
+                sb.append( "passed put test for plain json\n" );
+                response = getFromDb( "cortex", "data/text" );
+                if ( !checkId(response,"data/text") )
+                    sb.append( "failed get test for plain json\n" );
+                else
+                {
+                    sb.append( "passed get test for plain json\n" );
+                    response = removeFromDb( "cortex", "data/text" );
+                    if ( !checkResponse(response) )
+                        sb.append( "failed to remove plain json\n" );
+                    else
+                        sb.append( "passed remove test for plain json\n" );
+                }
+            }
+            putImageToDb( "corpix", "data/image", imageData );
+            byte[] data = getImageFromDb( "corpix", "data/image" );
+            if ( data == null || data.length != imageData.length )
+                sb.append( "failed put/get test for image\n" );
+            else
+                removeImageFromDb( "corpix", "data/image" );
+            imageData = getImageFromDb( "corpix", "data/image" );
+            if ( imageData != null )
+                sb.append( "removed failed for image\n" );
+        }
+        catch ( Exception e )
+        {
+            sb.append(e.getMessage());
+        }
+        return sb.toString();
     }
 }

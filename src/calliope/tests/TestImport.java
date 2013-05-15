@@ -399,25 +399,6 @@ public class TestImport extends Test
         return demo;
     }
     /**
-     * Ensure that we get a response from the server
-     * @return a non-null server response or raise an exception
-     * @throws AeseException 
-     */
-    String pollServer() throws AeseException
-    {
-        String data = null;
-        int count = 0;
-        while ( data == null && count < 5 )
-        {
-            data = Connector.getConnection().getFromDb(Database.CORFORM,
-                "_all_docs");
-            count++;
-        }
-        if ( data == null )
-            throw new AeseException("No response from database");
-        return data;
-    }
-    /**
      * Make a dropdown menu of CorForms available on server
      * @return a select dropdown (possibly empty if it failed)
      */
@@ -425,10 +406,11 @@ public class TestImport extends Test
     {
         try
         {
-            String data = pollServer();
+            String[] data = Connector.getConnection().listCollection(
+                Database.CORFORM);
             if ( data != null )
             {
-                HTMLDocSelect sel = new HTMLDocSelect(data, 
+                HTMLDocSelect sel = new HTMLDocSelect( data, 
                     Params.STYLE, Params.STYLE);
                 sel.addAttribute(HTMLNames.ONCHANGE,"update_group()");
                 return sel;
@@ -452,7 +434,6 @@ public class TestImport extends Test
     {
         try
         {
-            
             Element form = new Element( HTMLNames.FORM );
             form.addAttribute( HTMLNames.NAME, HTMLNames.DEFAULT );
             form.addAttribute( HTMLNames.METHOD, "POST" );

@@ -18,7 +18,6 @@ import calliope.constants.Database;
 import calliope.Connector;
 import calliope.constants.JSONKeys;
 import calliope.json.JSONDocument;
-import calliope.exception.AeseExportException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -158,7 +157,19 @@ public class PDEFArchive
     {
         String corformID = (String)jdoc.get( JSONKeys.STYLE );
         if ( corformID != null )
+        {
+            String json;
+            try
+            {
+                json = Connector.getConnection().getFromDb(
+                    Database.CORFORM,corformID );
+            }
+            catch ( Exception e )
+            {
+                corformID = "default";
+            }
             addToAbsolutePath( Database.CORFORM, corformID );
+        }
     }
     /**
      * Save the split versions of an MVD as separate files

@@ -17,7 +17,6 @@ package calliope.handler.get;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import calliope.exception.AeseException;
-import calliope.path.Path;
 import calliope.exception.NativeException;
 import calliope.AeseFormatter;
 import calliope.constants.Params;
@@ -30,6 +29,7 @@ import calliope.handler.AeseMVD;
 import calliope.json.corcode.STILDocument;
 import calliope.json.corcode.Range;
 import calliope.json.JSONDocument;
+import calliope.path.Path;
 import java.util.ArrayList;
 import java.util.Map;
 /**
@@ -202,7 +202,7 @@ public class AeseListHandler extends AeseGetHandler
         if ( styles == null )
         {
             styles = new String[1];
-            styles[0] = "/list/default";
+            styles[0] = "list/default";
         }
         version1 = request.getParameter( Params.VERSION1 );
         try

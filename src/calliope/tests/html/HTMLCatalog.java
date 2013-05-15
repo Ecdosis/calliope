@@ -14,14 +14,11 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests.html;
-import calliope.json.JSONDocument;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Arrays;
 import calliope.Utils;
 import calliope.constants.HTMLNames;
-import calliope.constants.JSONKeys;
 
 /**
  * Generate a twist-down catalog of documents in HTML - a ul
@@ -47,26 +44,16 @@ public class HTMLCatalog extends Element
     }
     /**
      * Load a catalog from data returned from the database
-     * @param json the json text from all_docs
+     * @param docs an array of docids
      * @return true if at least one document was found
      */
-    public boolean load( String json )
+    public boolean load( String[] docids )
     {
         boolean found = false;
-        JSONDocument doc = JSONDocument.internalise( json );
-        if ( doc != null )
+        for ( int i=0;i<docids.length;i++ )
         {
-            ArrayList docs = (ArrayList) doc.get( JSONKeys.ROWS );
-            if ( docs != null )
-            {
-                for ( int i=0;i<docs.size();i++ )
-                {
-                    JSONDocument d = (JSONDocument)docs.get(i);
-                    String key = (String) d.get( JSONKeys.KEY );
-                    digest( key );
-                    found = true;
-                }
-            }
+            digest( docids[i] );
+            found = true;
         }
         return found;
     }

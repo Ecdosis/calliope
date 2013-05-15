@@ -22,7 +22,7 @@ import calliope.exception.AeseException;
 import javax.servlet.ServletOutputStream;
 
 /**
- *
+ * Fetch an image from the corpix collection
  * @author desmond
  */
 public class AeseGetCorPixHandler extends AeseGetHandler
@@ -36,7 +36,6 @@ public class AeseGetCorPixHandler extends AeseGetHandler
         {
             byte[] data = Connector.getConnection().getImageFromDb( 
                 Database.CORPIX, urn );
-            System.out.println(urn);
             /*Either remove the setContentType(), or send the response using 
 response.getOutputStream() method. That should solve the problem. */
             ServletOutputStream sos = response.getOutputStream();

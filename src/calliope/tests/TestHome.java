@@ -176,25 +176,6 @@ public class TestHome extends Test
         super.handle( request, response, urn );
     }
     /**
-     * Ensure that we get a response from the server
-     * @return a non-null server response or raise an exception
-     * @throws AeseException 
-     */
-    String pollServer() throws AeseException
-    {
-        String json = null;
-        int count = 0;
-        while ( json == null && count < 5 )
-        {
-            json = Connector.getConnection().getFromDb(Database.CORTEX,
-                "_all_docs");
-            count++;
-        }
-        if ( json == null )
-            throw new AeseException("No response from database");
-        return json;
-    }
-    /**
      * Get the content of this test: a simple dropdown menu
      * @return a select element object with appropriate attributes and children
      */
@@ -203,21 +184,12 @@ public class TestHome extends Test
     {
         try
         {
-            String data = pollServer();
+            String[] docs = Connector.getConnection().listCollection(
+                Database.CORTEX);
             Element form = formElement( "/tests/home" );
             form.addChild( docIDHidden(docID) );
             HTMLCatalog cata = new HTMLCatalog();
-            int count = 5;
-            boolean result = false;
-            do
-            {
-                result = cata.load( data );
-                if ( !result )
-                {
-                    data = pollServer();
-                    count++;
-                }
-            } while (!result&&count<5);
+            cata.load( docs );
             // NB this method itself is called by build
             cata.build();
             form.addChild( cata );

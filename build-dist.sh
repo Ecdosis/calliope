@@ -17,7 +17,7 @@ else
   if [ ! -d calliope-$VERSION/lib ]; then
     mkdir calliope-$VERSION/lib
   fi
-  cp -r ../standoff/stripper/include calliope-$VERSION/stripper
+  cp -r ../standoff/stripper/include calliope-$VERSION/stripper/
   cp -r ../standoff/stripper/src calliope-$VERSION/stripper/
   cp -r ../standoff/formatter/include calliope-$VERSION/formatter/
   cp -r ../standoff/formatter/src calliope-$VERSION/formatter/

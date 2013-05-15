@@ -4,13 +4,7 @@
  */
 package calliope.tests.html;
 
-import calliope.Utils;
 import calliope.constants.HTMLNames;
-import calliope.constants.JSONKeys;
-import calliope.json.JSONDocument;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.Iterator;
 
 /**
  * Generate a select element from an _all_docs query result from couchdb
@@ -19,19 +13,19 @@ import java.util.Iterator;
 public class HTMLDocSelect extends Element
 {
     /**
-     * Convert an _all_docs output from couchdb to a select list
-     * @param json the text of the _all_docs call
+     * Convert an array of document ids to a HTML select element
+     * @param docids the text of the _all_docs call
      * @param name the name of the select list
      * @param id the id of the select
      */
-    public HTMLDocSelect( String json, String name, String id )
+    public HTMLDocSelect( String[] docids, String name, String id )
     {
         super( HTMLNames.SELECT );
         if ( id != null )
             this.addAttribute(HTMLNames.ID, id );
         if ( name != null )
             this.addAttribute( HTMLNames.NAME, name );
-        load( json );
+        load( docids );
     }
     private String makeOptLabel( String[] parts )
     {
@@ -46,60 +40,51 @@ public class HTMLDocSelect extends Element
     }
     /**
      * Load a json document being the output of _all_docs
-     * @param json the all docs response as a string
+     * @param docids an array of all the doc IDs 
      */
-    private void load( String json )
+    private void load( String[] docids )
     {
-        JSONDocument doc = JSONDocument.internalise( json );
-        if ( doc != null )
+        for ( int i=0;i<docids.length;i++ )
         {
-            ArrayList docs = (ArrayList) doc.get( JSONKeys.ROWS );
-            if ( docs != null )
+            String key = docids[i];
+            String[] parts = key.split("/");
+            if ( parts.length == 1 )
             {
-                for ( int i=0;i<docs.size();i++ )
+                addChild( new HTMLOption(key,parts[0]) );
+            }
+            else if ( parts.length > 1 )
+            {
+                HTMLOptGroup g = null;
+                String optLabel = makeOptLabel( parts );
+                try
                 {
-                    JSONDocument d = (JSONDocument)docs.get(i);
-                    String key = (String) d.get( JSONKeys.KEY );
-                    String[] parts = key.split("/");
-                    if ( parts.length == 1 )
+                    for ( int j=0;j<this.numChildren();j++ )
                     {
-                        addChild( new HTMLOption(key,parts[0]) );
-                    }
-                    else if ( parts.length > 1 )
-                    {
-                        HTMLOptGroup g = null;
-                        String optLabel = makeOptLabel( parts );
-                        try
+                        Element e = this.getChild( j );
+                        if ( e instanceof HTMLOptGroup )
                         {
-                            for ( int j=0;j<this.numChildren();j++ )
+                            HTMLOptGroup group = (HTMLOptGroup)e;
+                            String label = group.getAttribute(
+                                HTMLNames.LABEL);
+                            if ( label != null 
+                                && label.equals(optLabel) )
                             {
-                                Element e = this.getChild( j );
-                                if ( e instanceof HTMLOptGroup )
-                                {
-                                    HTMLOptGroup group = (HTMLOptGroup)e;
-                                    String label = group.getAttribute(
-                                        HTMLNames.LABEL);
-                                    if ( label != null 
-                                        && label.equals(optLabel) )
-                                    {
-                                        g = group;
-                                        break;
-                                    }
-                                }
+                                g = group;
+                                break;
                             }
                         }
-                        catch ( Exception e )
-                        {
-                            System.out.println(e.getMessage());
-                        }
-                        if ( g == null )
-                        {
-                            g = new HTMLOptGroup( optLabel );
-                            addChild( g );
-                        }
-                        g.addChild( new HTMLOption(key,parts[parts.length-1]) );
                     }
                 }
+                catch ( Exception e )
+                {
+                    System.out.println(e.getMessage());
+                }
+                if ( g == null )
+                {
+                    g = new HTMLOptGroup( optLabel );
+                    addChild( g );
+                }
+                g.addChild( new HTMLOption(key,parts[parts.length-1]) );
             }
         }
     }

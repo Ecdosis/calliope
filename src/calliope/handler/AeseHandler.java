@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Grand-daddy class for all handlers
  * @author ddos
  */
 abstract public class AeseHandler 

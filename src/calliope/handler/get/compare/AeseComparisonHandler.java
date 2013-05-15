@@ -30,7 +30,8 @@ import calliope.constants.ChunkState;
 import calliope.handler.AeseVersion;
 import calliope.tests.html.HTMLComment;
 import java.util.ArrayList;
-
+import java.io.File;
+import java.io.FileWriter;
 /**
  * Handle comparison between two versions of a document
  * @author desmond

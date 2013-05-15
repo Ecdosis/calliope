@@ -7,7 +7,9 @@ package calliope.tests;
 import calliope.Connector;
 import calliope.db.Connection;
 import calliope.db.MongoConnection;
+import calliope.db.CouchConnection;
 import calliope.constants.HTMLNames;
+import calliope.constants.Database;
 import calliope.exception.AeseException;
 import calliope.tests.html.Element;
 import calliope.tests.html.HTML;
@@ -59,7 +61,30 @@ public class TestInternal extends Test
             String value = "No database";
             Connection conn = Connector.getConnection();
             if ( conn instanceof MongoConnection )
+            {
+                textArea.addText("Running MongoDB\n");
                 value = ((MongoConnection)conn).test();
+            }
+            else if ( conn instanceof CouchConnection )
+            {
+                textArea.addText("Running CouchDB\n");
+                value = ((CouchConnection)conn).test();
+            }
+            textArea.addText( "DB Port: "+conn.getDbPort()+"\n" );
+            textArea.addText( "WS Port: "+conn.getWsPort()+"\n" );
+            textArea.addText( "Host: "+conn.getHost()+"\n" );
+            String[] docs = conn.listCollection( Database.CONFIG ); 
+            textArea.addText( docs.length+" documents in collection "
+                +Database.CONFIG+"\n" );
+            docs = conn.listCollection( Database.CORTEX ); 
+            textArea.addText( docs.length+" documents in collection "
+                +Database.CORTEX+"\n" );
+            docs = conn.listCollection( Database.CORCODE ); 
+            textArea.addText( docs.length+" documents in collection "
+                +Database.CORCODE+"\n" );
+            docs = conn.listCollection( Database.CORFORM ); 
+            textArea.addText( docs.length+" documents in collection "
+                +Database.CORFORM+"\n" );
             textArea.addText( value );
         }
         catch ( Exception e )

@@ -114,7 +114,10 @@ public class AesePDEFHandler extends AeseGetHandler
         {
             String[] list = conn.listDocuments( Database.CORTEX, exprs[i] );
             for ( int j=0;j<list.length;j++ )
+            {
+                //System.out.println("Adding corTex "+list[j] );
                 pdef.addCorTex( list[j] );
+            }
         }
         File zip = pdef.zip( getZipType(request) );
         response.setContentType( MIMETypes.ZIP );
