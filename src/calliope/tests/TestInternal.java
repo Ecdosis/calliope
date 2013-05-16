@@ -51,7 +51,9 @@ public class TestInternal extends Test
     @Override
     public Element getContent()
     {
+        Element form = formElement("/tests/internal" );
         Element outer = new Element( HTMLNames.DIV );
+        form.addChild( outer );
         outer.addAttribute( HTMLNames.ID, "centre" );
         Element textArea = new Element( "textarea" );
         textArea.addAttribute( "rows", "20" );
@@ -92,6 +94,6 @@ public class TestInternal extends Test
             textArea.addText( e.getMessage() );
         }
         outer.addChild( textArea );
-        return outer;
+        return form;
     }
 }

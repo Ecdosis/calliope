@@ -397,7 +397,8 @@ public class CouchConnection extends Connection implements Test
             File wd = new File( CouchConnection.webRoot );
             File child = new File( wd, db+"/"+docID );
             if ( !child.getParentFile().exists() )
-                child.getParentFile().mkdirs();
+                if (!child.getParentFile().mkdirs() )
+                    throw new SecurityException("couldn't create "+docID);
             if ( child.exists() )
                 child.delete();
             child.createNewFile();
@@ -437,6 +438,8 @@ public class CouchConnection extends Connection implements Test
                     {
                         parent.delete();
                         parent = parent.getParentFile();
+                        if ( parent.equals(wd) )
+                            break;
                     }
                 }
                 while ( parent != null );
@@ -501,8 +504,19 @@ public class CouchConnection extends Connection implements Test
             if ( data == null || data.length != imageData.length )
                 sb.append( "failed put/get test for image\n" );
             else
+            {
+                sb.append("add image succeeded\n");
                 removeImageFromDb( "corpix", "data/image" );
-            imageData = getImageFromDb( "corpix", "data/image" );
+            }
+            try
+            {
+                imageData = getImageFromDb( "corpix", "data/image" );
+            }
+            catch ( Exception e )
+            {
+                imageData = null;
+                sb.append( "image removal succeeded\n" );
+            }
             if ( imageData != null )
                 sb.append( "removed failed for image\n" );
         }
