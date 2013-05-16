@@ -24,7 +24,8 @@ public class TestInternal extends Test
 {
     static String CENTRE_DIV_STYLE = "div#centre { width: 600px; "
            + "margin-left: auto; margin-right: auto; "
-           +"background-color: white; padding: 10px }";
+           +"background-color: white; padding: 10px }"
+           + "textarea#panel { width: 100%; height: 250px }";
     public TestInternal()
     {
         description = "Runs some tests in a console";
@@ -41,6 +42,7 @@ public class TestInternal extends Test
     {
         //setDocID( request );
         doc = new HTML();
+        doc.getHeader().addCSS( CENTRE_DIV_STYLE );
         super.handle( request, response, urn );
     }
     /**
@@ -56,8 +58,8 @@ public class TestInternal extends Test
         form.addChild( outer );
         outer.addAttribute( HTMLNames.ID, "centre" );
         Element textArea = new Element( "textarea" );
-        textArea.addAttribute( "rows", "20" );
-        textArea.addAttribute( "cols", "50" );
+        textArea.addAttribute( HTMLNames.ID, "panel" );
+        textArea.addAttribute( "readonly", "readonly" );
         try
         {
             String value = "No database";
