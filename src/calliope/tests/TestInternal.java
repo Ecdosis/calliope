@@ -4,15 +4,12 @@
  */
 package calliope.tests;
 
-import calliope.Connector;
-import calliope.db.Connection;
-import calliope.db.MongoConnection;
-import calliope.db.CouchConnection;
-import calliope.constants.HTMLNames;
-import calliope.constants.Database;
+
+import calliope.constants.Params;
 import calliope.exception.AeseException;
 import calliope.tests.html.Element;
 import calliope.tests.html.HTML;
+import calliope.constants.HTMLNames;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,8 +21,8 @@ public class TestInternal extends Test
 {
     static String CENTRE_DIV_STYLE = "div#centre { width: 600px; "
            + "margin-left: auto; margin-right: auto; "
-           +"background-color: white; padding: 10px }"
-           + "textarea#panel { width: 100%; height: 250px }";
+           + "background-color: white; padding: 10px }"
+           + "textarea#panel { position: relative; width: 100%; height: 250px }";
     public TestInternal()
     {
         description = "Runs some tests in a console";
@@ -62,39 +59,16 @@ public class TestInternal extends Test
         textArea.addAttribute( "readonly", "readonly" );
         try
         {
-            String value = "No database";
-            Connection conn = Connector.getConnection();
-            if ( conn instanceof MongoConnection )
-            {
-                textArea.addText("Running MongoDB\n");
-                value = ((MongoConnection)conn).test();
-            }
-            else if ( conn instanceof CouchConnection )
-            {
-                textArea.addText("Running CouchDB\n");
-                value = ((CouchConnection)conn).test();
-            }
-            textArea.addText( "DB Port: "+conn.getDbPort()+"\n" );
-            textArea.addText( "WS Port: "+conn.getWsPort()+"\n" );
-            textArea.addText( "Host: "+conn.getHost()+"\n" );
-            String[] docs = conn.listCollection( Database.CONFIG ); 
-            textArea.addText( docs.length+" documents in collection "
-                +Database.CONFIG+"\n" );
-            docs = conn.listCollection( Database.CORTEX ); 
-            textArea.addText( docs.length+" documents in collection "
-                +Database.CORTEX+"\n" );
-            docs = conn.listCollection( Database.CORCODE ); 
-            textArea.addText( docs.length+" documents in collection "
-                +Database.CORCODE+"\n" );
-            docs = conn.listCollection( Database.CORFORM ); 
-            textArea.addText( docs.length+" documents in collection "
-                +Database.CORFORM+"\n" );
-            textArea.addText( value );
+            TestGetURL basicUrl = new TestGetURL(
+                "http://localhost:8080/test/basic/");
+            String basic = calliope.URLEncoder.getResponseForUrl( 
+                basicUrl.toString() );
+            textArea.addText( basic );
         }
         catch ( Exception e )
         {
             textArea.addText( e.getMessage() );
-        }
+        }   
         outer.addChild( textArea );
         return form;
     }

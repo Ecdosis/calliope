@@ -55,4 +55,6 @@ public class Services
     public static String MIXED = "mixed";
     /** downloadable export ZIP file format */
     public static String PDEF = "pdef";
+    /** individual tests */
+    public static String TEST = "test";
 }

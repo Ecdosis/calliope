@@ -77,6 +77,8 @@ public class AeseGetHandler extends AeseHandler
                     Path.pop(urn) );
             else if ( prefix.equals(Services.PDEF) )
                 new AesePDEFHandler().handle( request, response, Path.pop(urn) );
+            else if ( prefix.equals(Services.TEST) )
+                new AeseTestHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Database.CORTEX) )
                 new AeseGetCorTexHandler().handle( request, response, 
                     Path.pop(urn) );

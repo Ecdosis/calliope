@@ -15,6 +15,7 @@
  */
 package calliope.db;
 
+import calliope.Test;
 import calliope.exception.AeseException;
 import calliope.exception.PathException;
 import calliope.path.Path;
@@ -23,7 +24,7 @@ import calliope.path.Path;
  * Abstract database API for various databases/repositories
  * @author desmond
  */
-public abstract class Connection 
+public abstract class Connection implements Test
 {
     String user;
     String password;
@@ -51,6 +52,11 @@ public abstract class Connection
     public final String getHost()
     {
         return host;
+    }
+    @Override
+    public String test()
+    {
+        return "";
     }
     /**
      * A docID is not allowed if there is already a file in its parent "dir"

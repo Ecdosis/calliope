@@ -68,24 +68,29 @@ public class TestGetURL
      */
     public String toString()
     {
-        Set<String> keys = params.keySet();
-        boolean first = true;
-        Iterator<String> iter = keys.iterator();
-        StringBuilder sb = new StringBuilder(baseURL.toString());
-        while( iter.hasNext() )
+        if ( params == null )
+            return baseURL.toString();
+        else
         {
-            String name = iter.next();
-            if ( first )
+            Set<String> keys = params.keySet();
+            boolean first = true;
+            Iterator<String> iter = keys.iterator();
+            StringBuilder sb = new StringBuilder(baseURL.toString());
+            while( iter.hasNext() )
             {
-                sb.append("?");
-                first = false;
+                String name = iter.next();
+                if ( first )
+                {
+                    sb.append("?");
+                    first = false;
+                }
+                else
+                    sb.append("&");
+                sb.append( name );
+                sb.append("=");
+                sb.append( params.get(name) );
             }
-            else
-                sb.append("&");
-            sb.append( name );
-            sb.append("=");
-            sb.append( params.get(name) );
+            return sb.toString().replace(" ","%20");
         }
-        return sb.toString().replace(" ","%20");
     }
 }
