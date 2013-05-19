@@ -64,6 +64,8 @@ public class TestInternal extends Test
             String basic = calliope.URLEncoder.getResponseForUrl( 
                 basicUrl.toString() );
             textArea.addText( basic );
+            if ( version1 != null )
+                rememberParam( form, Params.VERSION1, version1 );
         }
         catch ( Exception e )
         {

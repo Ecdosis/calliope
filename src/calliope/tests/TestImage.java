@@ -20,10 +20,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class TestImage extends Test
 {
+    // version1 subsitutute just for this test
+    String versionHere;
     public TestImage()
     {
         description = "Parallel facsimile/formated text view";
-        version1 = "/introduction/add0";
+        versionHere = "/introduction/base";
     }
     /**
      * Display the test GUI
@@ -59,11 +61,11 @@ public class TestImage extends Test
         doc.getHeader().addChild( script4 );
         doc.getHeader().addChild( script5 );
         doc.getHeader().addCSS( TestImageStrings.IMAGE_CSS );
-        // get parameter version1 and use it to select the 
+        // get parameter versionHere and use it to select the 
         // version of the imagemap and the version of the text
-        String v1param = request.getParameter( Params.VERSION1 );
-        if ( v1param != null )
-            version1 = v1param;
+        String v1param = request.getParameter( "versionHere" );
+        if ( v1param != null && v1param.startsWith("/introduction") )
+            versionHere = v1param;
         super.handle( request, response, urn );
     }
     /**
@@ -82,14 +84,14 @@ public class TestImage extends Test
         Element divRight = new Element( HTMLNames.DIV );
         divLeft.addAttribute( HTMLNames.ID, "leftColumn" );
         divRight.addAttribute( HTMLNames.ID, "rightColumn" );
-        if ( version1.equals("/introduction/add0") )
+        if ( versionHere.equals("/introduction/add0") )
             divLeft.addChild( new HTMLLiteral(TestImageStrings.IMAGEMAP_A) );
         else
             divLeft.addChild( new HTMLLiteral(TestImageStrings.IMAGEMAP_D) );
         divLeft.addChild( new HTMLLiteral(TestImageStrings.BUTTONS));
         divRight.addChild( new HTMLLiteral("<span class=\"description\">"
             +"aristofanunculos by capuana</span> ") );
-        if ( version1.equals("/introduction/add0") )
+        if ( versionHere.equals("/introduction/add0") )
         {
             divRight.addChild( new HTMLLiteral(TestImageStrings.SELECT_A) );
             divRight.addChild( new HTMLLiteral(TestImageStrings.f1a) );
@@ -101,6 +103,9 @@ public class TestImage extends Test
         }
         divCentre.addChild( divLeft );
         divCentre.addChild( divRight );
+        // save the original version1 setting for when we leave
+        if ( version1 != null )
+            rememberParam( form, Params.VERSION1, version1 );
         return form;
     }
 }

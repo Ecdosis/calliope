@@ -154,18 +154,6 @@ public abstract class Test extends AeseHandler
         }
     }
     /**
-     * Replace slashes and spaces with escaped equivalents
-     * @param docID the raw docID
-     * @return the escaped version suitable for the database
-     */
-    String docIDCanonise( String docID )
-    {
-        if ( docID.startsWith("/") )
-            docID = docID.substring(1);
-        docID = docID.replace("/","%2F");
-        return docID.replace(" ","%20");
-    }
-    /**
      * Get the default version1 for the current docID
      * @return the name of version1 
      * @throws AeseException if there was no such field
@@ -175,7 +163,7 @@ public abstract class Test extends AeseHandler
         try
         {
             String json = Connector.getConnection().getFromDb(
-                Database.CORTEX, docIDCanonise(docID));
+                Database.CORTEX, docID );
             if ( json != null )
             {
                 JSONDocument doc = JSONDocument.internalise( json );

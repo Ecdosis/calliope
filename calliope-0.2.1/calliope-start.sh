@@ -22,7 +22,7 @@ if [ `uname` = "Darwin" ]; then
     kill $HPID
   fi
 else
-  pkill -c -f calliope.jar
+  pkill -f calliope.jar
 fi
-nohup java -Djava.library.path=$LIBPATH -cp .$JARPATHS -jar calliope.jar >/dev/null &
+nohup java -Djava.library.path=$LIBPATH -cp .$JARPATHS -jar calliope.jar -r COUCH -d 5984  &
 

@@ -18,12 +18,14 @@ package calliope.handler.post;
 
 import calliope.Connector;
 import calliope.constants.*;
+import calliope.ByteHolder;
 import calliope.exception.AeseException;
 import calliope.handler.post.importer.*;
 import calliope.importer.Archive;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -51,6 +53,7 @@ public abstract class AeseImportHandler extends AesePostHandler
     HashMap<String,String> nameMap;
     HashMap<String,String> jsonKeys;
     ArrayList<File> files;
+    ArrayList<ImageFile> images;
     public AeseImportHandler()
     {
         nameMap = new HashMap<String,String>(); 
@@ -60,6 +63,7 @@ public abstract class AeseImportHandler extends AesePostHandler
         splitterName = "default";
         textName = "default";
         files = new ArrayList<File>();
+        images = new ArrayList<ImageFile>();
         log = new StringBuilder();
     }
     /**
@@ -152,9 +156,29 @@ public abstract class AeseImportHandler extends AesePostHandler
                     {
                         // assuming that the contents are text
                         //item.getName retrieves the ORIGINAL file name
-                        File f = new File( item.getName(), 
+                        String type = item.getContentType();
+                        if ( type.startsWith("image/") )
+                        {
+                            InputStream is = item.getInputStream();
+                            ByteHolder bh = new ByteHolder();
+                            while ( is.available()>0 )
+                            {
+                                byte[] b = new byte[is.available()];
+                                is.read( b );
+                                bh.append( b );
+                            }
+                            ImageFile iFile = new ImageFile(
+                                item.getName(), 
+                                item.getContentType(), 
+                                bh.getData() );
+                            images.add( iFile );
+                        }
+                        else
+                        {
+                            File f = new File( item.getName(), 
                             item.getString("UTF-8") );
-                        files.add( f );
+                            files.add( f );
+                        }
                     }
                     catch ( Exception e )
                     {

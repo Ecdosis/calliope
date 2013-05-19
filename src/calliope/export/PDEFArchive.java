@@ -246,6 +246,7 @@ public class PDEFArchive
         if ( jdoc.containsKey(JSONKeys.VERSION1) )
             jdoc2.put( JSONKeys.VERSION1, (String)jdoc.get(JSONKeys.VERSION1) );
         fw.write( jdoc2.toString() );
+        fw.write( "\n" );
         fw.close();
     }
     /**
@@ -430,7 +431,7 @@ public class PDEFArchive
     {
         FileWriter fw;
         String tail;
-        String regex = docID+"/.*";
+        String regex = docID+"/[^/]*";
         String[] corcodes = Connector.getConnection().listDocuments( 
             Database.CORCODE, regex );
         // prepare directory for corcodes
@@ -480,7 +481,7 @@ public class PDEFArchive
     {
         FileWriter fw;
         String tail;
-        String regex = docID+"/.*";
+        String regex = docID+"/[^/]*";
         String[] corcodes = Connector.getConnection().listDocuments( 
             Database.CORCODE, regex );
         for ( int i=0;i<corcodes.length;i++ )

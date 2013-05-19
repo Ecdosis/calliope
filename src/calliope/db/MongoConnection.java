@@ -16,6 +16,7 @@
 package calliope.db;
 
 import calliope.exception.AeseException;
+import calliope.constants.Database;
 import java.util.Iterator;
 import calliope.Test;
 import com.mongodb.MongoClient;
@@ -34,6 +35,8 @@ import org.apache.commons.codec.binary.Base64;
 import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
+import java.util.List;
+import java.util.HashSet;
 
 
 /**
@@ -207,21 +210,41 @@ public class MongoConnection extends Connection implements Test
     @Override
     public String[] listCollection( String collName ) throws AeseException
     {
-        DBCollection coll = getCollectionFromName( collName );
-        BasicDBObject keys = new BasicDBObject();
-        keys.put( DOCID_KEY, 1 );
-        DBCursor cursor = coll.find( new BasicDBObject(), keys );
-        if ( cursor.length() > 0 )
+        if ( !collName.equals(Database.CORPIX) )
         {
-            String[] docs = new String[cursor.length()];
-            Iterator<DBObject> iter = cursor.iterator();
-            int i = 0;
-            while ( iter.hasNext() )
-                docs[i] = (String)iter.next().get( DOCID_KEY );
-            return docs;
+            DBCollection coll = getCollectionFromName( collName );
+            BasicDBObject keys = new BasicDBObject();
+            keys.put( DOCID_KEY, 1 );
+            DBCursor cursor = coll.find( new BasicDBObject(), keys );
+            if ( cursor.length() > 0 )
+            {
+                String[] docs = new String[cursor.length()];
+                Iterator<DBObject> iter = cursor.iterator();
+                int i = 0;
+                while ( iter.hasNext() )
+                    docs[i++] = (String)iter.next().get( DOCID_KEY );
+                return docs;
+            }
+            else
+                throw new AeseException( "no docs in collection "+collName );
         }
         else
-            throw new AeseException( "no docs in collection "+collName );
+        {
+            GridFS gfs = new GridFS( db, collName );
+            DBCursor curs = gfs.getFileList();
+            int i = 0;
+            List<DBObject> list = curs.toArray();
+            HashSet<String> set = new HashSet<String>();
+            Iterator<DBObject> iter = list.iterator();
+            while ( iter.hasNext() )
+            {
+                String name = (String)iter.next().get("filename");
+                set.add(name);
+            }
+            String[] docs = new String[set.size()];
+            set.toArray( docs );
+            return docs;
+        }
     }
     /**
      * Get an image from the database
@@ -236,19 +259,24 @@ public class MongoConnection extends Connection implements Test
         {
             GridFS gfs = new GridFS( db, collName );
             GridFSDBFile file = gfs.findOne( docID );
-            InputStream ins = file.getInputStream();
-            long dataLen = file.getLength();
-            // this only happens if it is > 2 GB
-            if ( dataLen > Integer.MAX_VALUE )
-                throw new AeseException( "file too big (size="+dataLen+")" );
-            byte[] data = new byte[(int)dataLen];
-            int offset = 0;
-            while ( ins.available()>0 && offset < dataLen )
+            if ( file != null )
             {
-                int len = ins.available();
-                offset += ins.read( data, offset, len );
+                InputStream ins = file.getInputStream();
+                long dataLen = file.getLength();
+                // this only happens if it is > 2 GB
+                if ( dataLen > Integer.MAX_VALUE )
+                    throw new AeseException( "file too big (size="+dataLen+")" );
+                byte[] data = new byte[(int)dataLen];
+                int offset = 0;
+                while ( offset < dataLen )
+                {
+                    int len = ins.available();
+                    offset += ins.read( data, offset, len );
+                }
+                return data;
             }
-            return data;
+            else
+                throw new FileNotFoundException(docID);
         }
         catch ( Exception e )
         {

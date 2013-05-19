@@ -109,15 +109,25 @@ public class AesePDEFHandler extends AeseGetHandler
         if ( request.getServerPort()!=80 )
             host += ":"+request.getServerPort();
         host += "/";
+        int j = 0;
+        String[] list=null;
         PDEFArchive pdef = new PDEFArchive( name, formats, host );
-        for ( int i=0;i<exprs.length;i++ )
+        try
         {
-            String[] list = conn.listDocuments( Database.CORTEX, exprs[i] );
-            for ( int j=0;j<list.length;j++ )
+            for ( int i=0;i<exprs.length;i++ )
             {
-                //System.out.println("Adding corTex "+list[j] );
-                pdef.addCorTex( list[j] );
+                list = conn.listDocuments( Database.CORTEX, exprs[i] );
+                for ( j=0;j<list.length;j++ )
+                {
+                    //System.out.println("Adding corTex "+list[j] );
+                    pdef.addCorTex( list[j] );
+                }
             }
+        }
+        catch ( Exception e )
+        {
+            System.out.println(list[j]);
+            e.printStackTrace( System.out );
         }
         File zip = pdef.zip( getZipType(request) );
         response.setContentType( MIMETypes.ZIP );

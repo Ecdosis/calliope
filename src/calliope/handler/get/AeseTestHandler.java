@@ -11,7 +11,7 @@ import calliope.db.Connection;
 import calliope.db.CouchConnection;
 import calliope.db.MongoConnection;
 import calliope.exception.AeseException;
-import calliope.constants.Params;
+import calliope.constants.Formats;
 import calliope.json.JSONDocument;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,6 +25,10 @@ import calliope.path.Path;
  */
 public class AeseTestHandler 
 {
+    /** permitted cortex formats */
+    String[] cortexFormats = {Formats.TEXT};
+    /** permitted corcode formats */
+    String[] corcodeFormats = {Formats.STIL};
     /**
      * Load all docids into a hashset for quick lookup
      * @param collName the colection to process
@@ -47,6 +51,19 @@ public class AeseTestHandler
         return docids;
     }
     /**
+     * Check that a format is on the permitted list
+     * @param format the format to check
+     * @param list the list it should be on
+     * @return true if it is present
+     */
+    private boolean formatPermitted( String format, String[] list )
+    {
+        for ( int i=0;i<list.length;i++ )
+            if ( format.equals(list[i]) )
+                return true;
+        return false;
+    }
+    /**
      * Check the style, format and version1 fields
      * @param collName the collection to fetch the documents form
      * @param keys the keys of all the documents
@@ -54,7 +71,7 @@ public class AeseTestHandler
      * @param sb the log
      * @throws AeseException 
      */
-    private void checkCorThing( String collName, HashSet<String> keys, 
+    private void checkCorThingy( String collName, HashSet<String> keys, 
         HashSet<String> corforms, StringBuilder sb ) throws AeseException
     {
         // examine attributes in all cortexs
@@ -74,18 +91,36 @@ public class AeseTestHandler
                     sb.append( style );
                     sb.append( " from cortex " );
                     sb.append( docid );
+                    sb.append( "\n" );
                 }
                 if ( !jdoc.containsKey(JSONKeys.VERSION1) )
                 {
                     sb.append( "Missing version1 field in " );
                     sb.append( collName );
                     sb.append( docid );
+                    sb.append( "\n" );
                 }
                 if ( !jdoc.containsKey(JSONKeys.FORMAT) )
                 {
                     sb.append( "Missing format field in " );
                     sb.append( collName );
                     sb.append( docid );
+                    sb.append( "\n" );
+                }
+                else
+                {
+                    String format = (String)jdoc.get( JSONKeys.FORMAT );
+                    if ( (collName.equals(Database.CORTEX) 
+                        && !formatPermitted(format,cortexFormats) )
+                        || (collName.equals(Database.CORCODE)
+                        &&!format.equals(Formats.STIL)) )
+                    {
+                        sb.append( "Invalid format " );
+                        sb.append( format );
+                        sb.append( " for " );
+                        sb.append( collName );
+                        sb.append( "\n" );
+                    }
                 }
             }
         }
@@ -105,8 +140,8 @@ public class AeseTestHandler
             HashSet<String> corforms = loadDocIDs( Database.CORFORM );
             HashSet<String> configs = loadDocIDs( Database.CONFIG );
             // examine corcodes similarly
-            checkCorThing( Database.CORTEX, cortexs, corforms, sb );
-            checkCorThing( Database.CORCODE, corcodes, corforms, sb );
+            checkCorThingy( Database.CORTEX, cortexs, corforms, sb );
+            checkCorThingy( Database.CORCODE, corcodes, corforms, sb );
             if ( !corforms.contains("default") )
                 sb.append( "Missing default style\n" );
             if ( !configs.contains("stripper/default") )
@@ -173,6 +208,17 @@ public class AeseTestHandler
             sb.append( Database.CORFORM );
             sb.append( "\n" );
             sb.append( value );
+            docs = conn.listCollection( Database.CORPIX ); 
+            sb.append( docs.length );
+            sb.append( " documents in collection " );
+            sb.append( Database.CORPIX );
+            sb.append( "\n" );
+            sb.append( value );
+            for ( int i=0;i<docs.length;i++ )
+            {
+                sb.append(docs[i] );
+                sb.append("\n");
+            }
         }
         catch ( Exception e )
         {

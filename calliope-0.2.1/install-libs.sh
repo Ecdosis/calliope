@@ -28,7 +28,7 @@ if [ $USER = "root" ]; then
 # build stripper and formatter libs
   JDKINCLUDE=`getjdkinclude`
   if [ -d $JDKINCLUDE ]; then
-    gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Istripper/include -Iformatter/include/STIL -I$JDKINCLUDE -O0 -g3 -Wall -fPIC stripper/src/*.c formatter/src/STIL/cJSON.c -shared -o libAeseStripper.$LIBSUFFIX
+    gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Istripper/include -I$JDKINCLUDE -O0 -g3 -Wall -fPIC stripper/src/*.c formatter/src/STIL/cJSON.c -shared -o libAeseStripper.$LIBSUFFIX
     gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Iformatter/include -Iformatter/include/AESE -Iformatter/include/STIL -I$JDKINCLUDE -O0 -g3 -Wall -fPIC formatter/src/*.c formatter/src/AESE/*.c formatter/src/STIL/*.c -shared -o libAeseFormatter.$LIBSUFFIX
     if [ -e /usr/local/lib/libAeseStripper.$LIBSUFFIX ]; then
       rm /usr/local/lib/libAeseStripper.$LIBSUFFIX

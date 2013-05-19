@@ -231,13 +231,13 @@ public class TestImageStrings
     +"poly\" coords=\"1388,2845,1390,2806,1533,2778,1889,2788,1885"
     +",2846\" href=\"#F44\"></map>\n";
     static String SELECT_A =
-    "<select name=\"version1\" id=\"version1\" onchange=\"do_popup"
+    "<select name=\"versionHere\" id=\"versionHere\" onchange=\"do_popup"
     +"1()\" class=\"list\" onchange=\"do_popup1()\"><option title=\"Version base\" value=\""
     +"/introduction/base\" class=\"version-short\">base</option>"	
 	+"<option title=\"Version add0\" value=\"/introduction/add0\" "
     +"class=\"version-short\" selected=\"selected\">add0</option></select>";
     static String SELECT_D =
-    "<select name=\"version1\" id=\"version1\" onchange=\"do_popup"
+    "<select name=\"versionHere\" id=\"versionHere\" onchange=\"do_popup"
     +"1()\" class=\"list\" onchange=\"do_popup1()\"><option title=\"Version base\" value=\""
     +"/introduction/base\" class=\"version-short\" selected=\"selected\">base</option>"	
 	+"<option title=\"Version add0\" value=\"/introduction/add0\" "

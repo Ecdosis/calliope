@@ -331,7 +331,7 @@ public class TestEdition extends Test
     }
     private String getVersions() throws Exception
     {
-        String rawURL = "http://localhost:8080/list/"+docIDCanonise(docID);
+        String rawURL = "http://localhost:8080/list/"+docID;
         URL url = new URL( rawURL );
         URLConnection conn = url.openConnection();
         InputStream is = conn.getInputStream();
@@ -536,8 +536,7 @@ public class TestEdition extends Test
      */
     private String fetchTable()
     {
-        String rawURL = "http://localhost:8080/html/table/"
-            +docIDCanonise(docID);
+        String rawURL = "http://localhost:8080/html/table/"+docID;
         // add required params to get table
         rawURL = addGetParam( rawURL, Params.HIDE_MERGED, 
             (hideMerged)?"1":"0" );

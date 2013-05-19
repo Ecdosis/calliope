@@ -6,5 +6,5 @@ if [ `uname` = "Darwin" ]; then
     kill $HPID
   fi
 else
-  pkill -c -f calliope.jar
+  pkill -f calliope.jar
 fi

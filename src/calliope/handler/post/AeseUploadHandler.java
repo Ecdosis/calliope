@@ -19,6 +19,8 @@ package calliope.handler.post;
 import calliope.Connector;
 import calliope.exception.AeseException;
 import calliope.handler.post.importer.JDocWrapper;
+import calliope.handler.post.importer.ImageFile;
+import calliope.handler.post.importer.File;
 import calliope.constants.Database;
 import calliope.path.Path;
 import calliope.Utils;
@@ -41,21 +43,33 @@ public class AeseUploadHandler extends AeseImportHandler
             if (ServletFileUpload.isMultipartContent(request) )
             {
                 parseImportParams( request );
+                for ( int i=0;i<images.size();i++ )
+                {
+                    ImageFile iFile = images.get(i);
+                    Connector.getConnection().putImageToDb( 
+                        database, docID.get(), 
+                        iFile.getData() );
+                }
                 for ( int i=0;i<files.size();i++ )
                 {
-                    String json = files.get(i).data;
-                    // wrap cortex and corcodes with kosher params
-                    if ( database.equals(Database.CORTEX)
-                        || database.equals(Database.CORCODE) )
+                    String resp = "";
+                    File file = files.get(i);
+                    if ( file instanceof File )
                     {
-                        JDocWrapper wrapper = new JDocWrapper( 
-                            json, jsonKeys );
-                        json = wrapper.toString();
+                        // wrap cortex and corcodes with kosher params
+                        String json = file.data;
+                        if ( database.equals(Database.CORTEX)
+                        || database.equals(Database.CORCODE) )
+                        {
+                            JDocWrapper wrapper = new JDocWrapper( 
+                                json, jsonKeys );
+                            json = wrapper.toString();
+                        }
+                        else if ( database.equals(Database.CORFORM) )
+                            json = Utils.cleanCR( json, true );
+                        resp = Connector.getConnection().putToDb( 
+                            database, docID.get(), json );
                     }
-                    else if ( database.equals(Database.CORFORM) )
-                        json = Utils.cleanCR( json, true );
-                    String resp = Connector.getConnection().putToDb( 
-                        database, docID.get(), json );
                     log.append( resp );
                 }
                 response.setContentType("text/html;charset=UTF-8");
