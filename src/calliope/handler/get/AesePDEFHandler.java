@@ -98,6 +98,7 @@ public class AesePDEFHandler extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
+        boolean addRequired = false;
         Format[] formats = readFormats( request );
         Map map = request.getParameterMap();
         String[] exprs = (String[])map.get( Params.DOC_ID );
@@ -105,13 +106,16 @@ public class AesePDEFHandler extends AeseGetHandler
         String name = request.getParameter( Params.NAME );
         if ( name == null )
             name = PDEFArchive.NAME;
+        String addReqdStr = request.getParameter( Params.ADD_REQUIRED );
+        if ( addReqdStr != null )
+            addRequired = Boolean.parseBoolean( addReqdStr );
         String host = "http://"+request.getServerName();
         if ( request.getServerPort()!=80 )
             host += ":"+request.getServerPort();
         host += "/";
         int j = 0;
         String[] list=null;
-        PDEFArchive pdef = new PDEFArchive( name, formats, host );
+        PDEFArchive pdef = new PDEFArchive( name, formats, host, addRequired );
         try
         {
             for ( int i=0;i<exprs.length;i++ )

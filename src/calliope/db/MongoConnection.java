@@ -17,6 +17,7 @@ package calliope.db;
 
 import calliope.exception.AeseException;
 import calliope.constants.Database;
+import calliope.constants.JSONKeys;
 import java.util.Iterator;
 import calliope.Test;
 import com.mongodb.MongoClient;
@@ -47,7 +48,6 @@ public class MongoConnection extends Connection implements Test
 {
     MongoClient client;
     static int MONGO_PORT = 27017;
-    static String DOCID_KEY = "docid";
     /** connection to database */
     DB  db;
     public MongoConnection( String user, String password, String host, 
@@ -100,7 +100,7 @@ public class MongoConnection extends Connection implements Test
         {
             connect();
             DBCollection coll = getCollectionFromName( collName );
-            DBObject query = new BasicDBObject( DOCID_KEY, docID );
+            DBObject query = new BasicDBObject( JSONKeys.DOCID, docID );
             DBObject obj = coll.findOne( query );
             if ( obj != null )
                 return obj.toString();
@@ -128,10 +128,10 @@ public class MongoConnection extends Connection implements Test
         {
             docIDCheck( collName, docID );
             DBObject doc = (DBObject) JSON.parse(json);
-            doc.put( DOCID_KEY, docID );
+            doc.put( JSONKeys.DOCID, docID );
             connect();
             DBCollection coll = getCollectionFromName( collName );
-            DBObject query = new BasicDBObject( DOCID_KEY, docID );
+            DBObject query = new BasicDBObject( JSONKeys.DOCID, docID );
             WriteResult result = coll.update( query, doc, true, false );
             //return removeFromDb( path );
             return result.toString();
@@ -156,7 +156,7 @@ public class MongoConnection extends Connection implements Test
         {
             connect();
             DBCollection coll = getCollectionFromName( collName );
-            DBObject query = new BasicDBObject( DOCID_KEY, docID );
+            DBObject query = new BasicDBObject( JSONKeys.DOCID, docID );
             WriteResult result = coll.remove( query );
             return result.toString();
         }
@@ -182,14 +182,14 @@ public class MongoConnection extends Connection implements Test
             if ( coll != null )
             {
                 BasicDBObject q = new BasicDBObject();
-                q.put(DOCID_KEY, Pattern.compile(expr) );
+                q.put(JSONKeys.DOCID, Pattern.compile(expr) );
                 DBCursor curs = coll.find( q );
                 String[] docids = new String[curs.length()];
                 Iterator<DBObject> iter = curs.iterator();
                 int i = 0;
                 while ( iter.hasNext() )
                 {
-                    docids[i++] = (String)iter.next().get(DOCID_KEY);
+                    docids[i++] = (String)iter.next().get(JSONKeys.DOCID);
                 }
                 return docids;
             }
@@ -212,9 +212,17 @@ public class MongoConnection extends Connection implements Test
     {
         if ( !collName.equals(Database.CORPIX) )
         {
+            try
+            {
+                connect();
+            }
+            catch ( Exception e )
+            {
+                throw new AeseException( e );
+            }
             DBCollection coll = getCollectionFromName( collName );
             BasicDBObject keys = new BasicDBObject();
-            keys.put( DOCID_KEY, 1 );
+            keys.put( JSONKeys.DOCID, 1 );
             DBCursor cursor = coll.find( new BasicDBObject(), keys );
             if ( cursor.length() > 0 )
             {
@@ -222,7 +230,7 @@ public class MongoConnection extends Connection implements Test
                 Iterator<DBObject> iter = cursor.iterator();
                 int i = 0;
                 while ( iter.hasNext() )
-                    docs[i++] = (String)iter.next().get( DOCID_KEY );
+                    docs[i++] = (String)iter.next().get( JSONKeys.DOCID );
                 return docs;
             }
             else
@@ -377,7 +385,7 @@ public class MongoConnection extends Connection implements Test
                 sb.append( "failed put/get test for image\n" );
             else
                 removeImageFromDb( "corpix", "data/image" );
-            DBObject query = new BasicDBObject( DOCID_KEY, "data/image" );
+            DBObject query = new BasicDBObject( JSONKeys.DOCID, "data/image" );
             GridFS gfs = new GridFS( db, "corpix" );
             GridFSDBFile file = gfs.findOne( query );
             if ( file != null )

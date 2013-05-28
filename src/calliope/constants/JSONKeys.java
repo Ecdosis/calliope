@@ -67,6 +67,8 @@ public class JSONKeys
     public static String FUNCTION = "function";
     /** generic ID */
     public static String ID = "id";
+    /** database id */
+    public static String _ID = "_id";
     /** rows of documents returned by _all_docs */
     public static String ROWS = "rows";
     /** key for document in _all_docs */
@@ -83,4 +85,6 @@ public class JSONKeys
     public static String SUBSECTION = "subsection";
     /** base url for uploads */
     public static String BASE_URL = "base_url";
+    /** docid */
+    public static String DOCID = "docid";
 }

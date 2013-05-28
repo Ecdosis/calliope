@@ -65,4 +65,19 @@ public class Connector
     {
         return connection != null;
     }
+    /**
+     * Get the type of this connection
+     * @return a Repository type
+     */
+    public static Repository getRepository()
+    {
+        if ( connection != null )
+        {
+            if ( connection instanceof CouchConnection )
+                return Repository.COUCH;
+            else if ( connection instanceof MongoConnection )
+                return Repository.MONGO;
+        }
+        return Repository.UNSET;
+    }
 }

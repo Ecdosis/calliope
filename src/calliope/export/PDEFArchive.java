@@ -26,6 +26,8 @@ import calliope.exception.AeseException;
 import static calliope.export.Format.MVD;
 import static calliope.export.Format.TEXT;
 import static calliope.export.Format.XML;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
@@ -42,8 +44,11 @@ public class PDEFArchive
     public static String CORTEX_NAME = "cortex.mvd";
     public static String NAME = "archive";
     static String[] IMG_KEYS = { "img","src" };
+    final String[] tabooFields = {JSONKeys._ID,JSONKeys.DOCID,JSONKeys.REV};
     static String[] IMG_SUFFIXES = {".bmp",".eps",".gif",".jpg",".png",
         ".tif","jpeg","tiff"};
+    static String[] requiredCorforms = {"default","diffs/default",
+        "list/default","list/twin-list","table/default"};
     /** unique wrapper for archive */
     File root;
     /** actual archive directory inside root */
@@ -90,8 +95,8 @@ public class PDEFArchive
      * @param formats an array of formats of type
      * @param host
      */
-    public PDEFArchive( String name, Format[] formats, String host ) 
-        throws AeseException
+    public PDEFArchive( String name, Format[] formats, String host, 
+        boolean addRequired ) throws AeseException
     {
         this.formats = formats;
         try
@@ -108,11 +113,55 @@ public class PDEFArchive
             fw.write( host );
             fw.write( "\"\n}\n" );
             fw.close();
+            if ( addRequired )
+            {
+                addAllConfigs();
+                addRequiredCorforms();
+            }
         }
-        catch ( IOException ioe )
+        catch ( Exception e )
         {
-            throw new AeseException( ioe );
+            throw new AeseException( e );
         }
+    }
+    /**
+     * Add all configs to be on the safe side
+     */
+    private void addAllConfigs() throws Exception
+    {
+        String[] configs = Connector.getConnection().listCollection(
+            Database.CONFIG );
+        for ( int i=0;i<configs.length;i++ )
+            addToAbsolutePath( Database.CONFIG, configs[i] );
+    }
+    /**
+     * Add required corforms
+     */
+    private void addRequiredCorforms() throws Exception
+    {
+        for ( int i=0;i<requiredCorforms.length;i++ )
+            addToAbsolutePath( Database.CORFORM, requiredCorforms[i] );
+    }
+    /**
+     * Remove fields that will be added by the database after import
+     * @param json the original JSON string
+     * @return a possibly modified JSON string with the fields removed 
+     */
+    private String removeTabooFields( String json )
+    {
+        boolean changed = false;
+        DBObject jdoc = (DBObject) JSON.parse(json);
+        for ( int i=0;i<tabooFields.length;i++ )
+        {
+            if ( jdoc.containsField(tabooFields[i]) )
+            {
+                jdoc.removeField(tabooFields[i]);
+                changed = true;
+            }
+        }
+        if ( changed )
+            json = jdoc.toString();
+        return json;
     }
     /**
      * Add a resource from the server to the root directory
@@ -125,6 +174,7 @@ public class PDEFArchive
         if ( !parent.exists() )
             parent.mkdir();
         String json = Connector.getConnection().getFromDb( db, docID );
+        json = removeTabooFields( json );
         String[] parts = docID.split("/");
         File current = parent;
         for ( int i=0;i<parts.length;i++ )

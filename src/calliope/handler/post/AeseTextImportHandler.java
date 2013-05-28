@@ -56,7 +56,9 @@ public class AeseTextImportHandler extends AesePostHandler
                         String fieldName = item.getFieldName();
                         if ( fieldName != null )
                         {
-                            sb.append("<p>form field: "+fieldName+"</p>");
+                            sb.append("<p>form field: " );
+                            sb.append( fieldName );
+                            sb.append( "</p>");
                         }
                     }
                     else if ( item.getName().length()>0 )
@@ -64,7 +66,9 @@ public class AeseTextImportHandler extends AesePostHandler
                         String fieldName = item.getFieldName();
                         if ( fieldName != null )
                         {
-                            sb.append("<p>file field: "+fieldName+"</p>");
+                            sb.append("<p>file field: " );
+                            sb.append( fieldName );
+                            sb.append( "</p>" );
                         }
                     }
                 }

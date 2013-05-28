@@ -22,5 +22,6 @@ package calliope.db;
 public enum Repository 
 {
     COUCH,
-    MONGO;
+    MONGO,
+    UNSET;
 }
