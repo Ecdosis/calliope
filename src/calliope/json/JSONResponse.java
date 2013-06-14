@@ -14,7 +14,6 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.json;
-import java.util.ArrayList;
 /**
  * A simple holder for responses returned by native methods. We pass one of 
  * these objects into the native method, it sets the fields and we get the 

@@ -36,7 +36,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
     AeseMixedImportHandler()
     {
         super();
-        style = Formats.TEI+"%2Fdefault";
+        style = Formats.TEI+"/default";
     }
     /**
      * Handle posted files from the input dialog. Can be mixed TEXT etc files
@@ -113,7 +113,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                             StageThreeText stage3Text = new StageThreeText( 
                                 filterName );
                             stage3Text.setConfig( getConfig(Config.text,
-                                filterName+"%2F"+textName) );
+                                filterName+"/"+textName) );
                             ArrayList<File> stage2Files = stage2.getFiles();
                             for ( int i=0;i<stage2Files.size();i++ )
                             {
@@ -138,7 +138,8 @@ public class AeseMixedImportHandler extends AeseImportHandler
                 else
                 {
                     response.setContentType("text/html;charset=UTF-8");
-                    response.getWriter().println( "<p>Not enabled on public server</p>" );
+                    response.getWriter().println( 
+                        "<p>Password required on public server</p>" );
                 }
             }
         }

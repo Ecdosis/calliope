@@ -1,0 +1,35 @@
+<TEI>
+ <teiHeader>
+  <fileDesc>
+   <titleStmt>
+    <title>A poem</title>
+   </titleStmt>
+   <publicationStmt>
+    <publisher>Desmond Schmidt</publisher>
+    <date>2009</date>
+    <availability>GNU Free Documentation License 1.3</availability>
+   </publicationStmt>
+   <sourceDesc>
+    <bibl>
+      <title>A Poem</title>
+      <author>Anonymous</author>
+      <publisher>AustESE</publisher>
+      <date>2013</date>.
+    </bibl>
+   </sourceDesc>
+  </fileDesc>
+ </teiHeader>
+<text><body><head>A poem</head>
+<lg><l>My poem interrupts me.</l>
+<l>My poem is a pain.</l></lg>
+<lg><l>It is like fresh garbage</l>
+<l>When I throw it out.</l></lg>
+<lg><l>It is like a sore</l>
+<l>The day it was first made.</l></lg>
+<lg><l>I cried as I wrote it,</l>
+<l>And wrung my hands.</l></lg>
+<lg><l>I will stop a stranger</l>
+<l>To show him my poem.</l></lg>
+<lg><l>Because it disgusts me.</l>
+<l>Because it is mine.</l></lg>
+</body></text></TEI>

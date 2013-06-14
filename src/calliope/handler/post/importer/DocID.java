@@ -29,7 +29,7 @@ public class DocID
     String author;
     /** subdirectory */
     String subDir;
-    /** %2F delimited sequence of work and section names of unlimited length*/
+    /** /-delimited sequence of work and section names of unlimited length*/
     String work;
     /** the remainder of the docID if any */
     String rest;
@@ -104,7 +104,7 @@ public class DocID
     }
     /**
      * Initialise an docid from canonical reference to one
-     * @param docID language%2Fauthor%2Fwork...
+     * @param docID language/author/work...
      */
     public DocID( String docID )
     {

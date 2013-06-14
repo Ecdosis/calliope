@@ -42,7 +42,7 @@ public class Archive extends HashMap<String,byte[]>
     HashMap<String,String> nameMap;
     /**
      * Create an archive
-     * @param work the work path, after language and author, %2F delimited
+     * @param work the work path, after language and author, / delimited
      * @param author the full author's name
      * @param section the section of the work if any or null
      * @param subsection the subsection of the section or null
@@ -55,7 +55,7 @@ public class Archive extends HashMap<String,byte[]>
         this.style = "default";
         this.nameMap = new HashMap<String,String>();
         StringBuilder sb = new StringBuilder();
-        String[] parts = work.split("%2F");
+        String[] parts = work.split("/");
         for ( int i=0;i<parts.length;i++ )
         {
             if ( sb.length()==0 )

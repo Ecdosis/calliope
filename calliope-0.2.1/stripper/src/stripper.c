@@ -576,7 +576,7 @@ static int add_layer( JNIEnv *env, jobject obj, char *value )
 /*
  * Class:     calliope_AeseStripper
  * Method:    strip
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/JSONResponse;Lcalliope/JSONResponse;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
  */
 JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
   (JNIEnv *env, jobject obj, jstring xml, jstring recipe, jstring format, 
@@ -689,7 +689,7 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
  * Method:    version
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_calliope_AeseStripper_version
+JNIEXPORT jstring JNICALL Java_aeseserver_AeseStripper_version
   (JNIEnv *env, jobject obj )
 {
 	return (*env)->NewStringUTF(env, 
@@ -697,12 +697,12 @@ JNIEXPORT jstring JNICALL Java_calliope_AeseStripper_version
 }
 
 /*
- * Class:     AeseStripper
+ * Class:     calliope_AeseStripper
  * Method:    formats
  * Signature: ()[Ljava/lang/String;
  */
 JNIEXPORT jobjectArray JNICALL Java_calliope_AeseStripper_formats
-  (JNIEnv *env, jobject obj )
+(JNIEnv *env, jobject obj )
 {
 	jobjectArray ret = (jobjectArray)(*env)->NewObjectArray(
 		env,

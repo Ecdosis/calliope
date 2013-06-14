@@ -24,6 +24,8 @@ import calliope.exception.ImportException;
  */
 public class PoemFilter extends Filter
 {
+    MarkupSet markup;
+    
     public PoemFilter()
     {
         super();
@@ -54,10 +56,12 @@ public class PoemFilter extends Filter
     public String convert( String input, String name, Archive cortex, 
         Archive corcode ) throws ImportException
     {
-        StringBuilder xml = new StringBuilder();
+        StringBuilder txt = new StringBuilder();
         String[] lines = input.split("\n");
         String localTitle="";
         String tempTitle="";
+        int lgStart = 0;
+        markup = new MarkupSet();
         int state = 0;
         for ( int i=0;i<lines.length;i++ )
         {
@@ -75,36 +79,53 @@ public class PoemFilter extends Filter
                     if ( lines[i].length()==0 )
                     {
                         localTitle = tempTitle;
-                        //setTitle( localTitle );
-                        //xml.append( header );
-                        xml.append("<head>");
-                        //xml.append(title );
-                        xml.append("</head>\n");
-                        xml.append( "<lg>" );
+                        //txt.append("<head>");
+                        markup.add("head",0,localTitle.length());
+                        txt.append( localTitle );
+                        txt.append( "\n" );
+                        lgStart = localTitle.length()+1;
+                        //xml.append("</head>\n");
+                        //xml.append( "<lg>" );
                     }
-                    else
+                    else    // no title
                     {
-                        //header.replace("[header]","");
-                        //xml.append( header );
-                        xml.append( "<lg><l>$temp_title</l>\n" );
-                        xml.append( "<l>$line</l>\n" );
+                        //xml.append( "<lg><l>" );
+                        lgStart = txt.length();
+                        if ( localTitle.length()==0 && tempTitle.length()>0 )
+                        {
+                            markup.add("l",txt.length(),tempTitle.length());
+                            txt.append( tempTitle );
+                        }
+                        //xml.append( "</l>\n");
+                        //xml.append( "<l>");
+                        markup.add("l",txt.length(),lines[i].length());
+                        txt.append( lines[i] );
+                        txt.append("\n");
+                        //xml.append( "</l>\n" );
                     }
                     state = 2;
                     break;
                 case 2:
                     if ( lines[i].length()>0 )
-                        xml.append( "<l>$line</l>\n" );
+                    {
+                        markup.add( "l",txt.length(),lines[i].length() );
+                        txt.append( lines[i] );
+                        txt.append( "\n" );
+                    }
                     else
                     {
-                        chomp( xml );
-                        xml.append( "</lg>\n" );
+                        markup.add("lg",lgStart,txt.length()-lgStart);
+                        txt.append("\n");
                         state = 3;
                     }
                     break;
-                case 3:
+                case 3: // new stanza
                     if ( lines[i].length()>0 )
                     {
-                        xml.append( "<lg><l>$line</l>\n" );
+                        lgStart = txt.length();
+                        markup.add( "l",txt.length(),lines[i].length() );
+                        txt.append( lines[i] );
+                        txt.append( "\n" );
                         state = 2;
                     }
                     break;
@@ -112,11 +133,13 @@ public class PoemFilter extends Filter
         }
         if ( state == 2 )
         {
-            chomp( xml );
-            xml.append( "</lg>\n" );
+            markup.add("lg",lgStart,txt.length()-lgStart);
+            txt.append("\n");
         }
-        xml.append( "</body></text></TEI>\n" );
-        return xml.toString();
+        markup.sort();
+        cortex.put( name, txt.toString().getBytes() );
+        corcode.put( name, markup.toSTILDocument().toString().getBytes() );
+        return "";
     }
     /**
      * Do the perl chomp: remove trailing whitespace

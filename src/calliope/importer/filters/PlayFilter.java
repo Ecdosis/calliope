@@ -521,7 +521,8 @@ public class PlayFilter extends Filter
         }
         log.append( identifySpeeches(input) );
         markup.sort();
-        markup.print( input );
+        cortex.put( name, input.getBytes() );
+        corcode.put( name, markup.toSTILDocument().toString().getBytes() );
         return log.toString();
     }
 }

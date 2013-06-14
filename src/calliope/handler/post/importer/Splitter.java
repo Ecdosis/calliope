@@ -19,16 +19,22 @@ package calliope.handler.post.importer;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import java.io.StringReader;
+import java.io.FileReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.File;
 import org.w3c.dom.Document;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.InputSource;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+// these are not part of the JDK
 import calliope.json.JSONDocument;
 import calliope.exception.ConfigException;
 import calliope.exception.ImportException;
@@ -44,6 +50,28 @@ public class Splitter
     private HashMap<String,Removal> removals;
     private HashSet<Element> extendibles;
     private int proxy;
+    static String defaultConf = 
+    "{\n\"removals\":\n\t[\n\t\t{\n\t\t\t\"name\": \"app\",\n\t\t\t"
+    +"\"versions\": \"none\"\n\t\t},\n\t\t{\n\t\t\t\"name\": \"rd"
+    +"g\",\n\t\t\t\"wits\": \"wit\",\n\t\t\t\"versions\": \"freeze"
+    +"\"\n\t\t}\n\t\t,\n\t\t{\n\t\t\t\"name\": \"lem\",\n\t\t\t\"w"
+    +"its\": \"wit\",\n\t\t\t\"versions\": \"freeze\"\n\t\t}\n\t\t"
+    +",\n\t\t{\n\t\t\t\"name\": \"choice\",\n\t\t\t\"versions\": \""
+    +"none\"\n\t\t}\n\t\t,\n\t\t{\n\t\t\t\"name\": \"abbr\",\n\t\t"
+    +"\t\"versions\": \"freeze\"\n\t\t}\n\t\t,\n\t\t{\n\t\t\t\"na"
+    +"me\": \"expan\",\n\t\t\t\"versions\": \"freeze\"\n\t\t}\n\t\t"
+    +",\n\t\t{\n\t\t\t\"name\": \"add\",\n\t\t\t\"strip\": false,"
+    +"\n\t\t\t\"versions\": \"extend\"\n\t\t}\n\t\t,\n\t\t{\n\t\t\t"
+    +"\"name\": \"del\",\n\t\t\t\"strip\": false,\n\t\t\t\"versio"
+    +"ns\": \"freeze\"\n\t\t}\n\t\t,\n\t\t{\n\t\t\t\"name\": \"rdg"
+    +"Grp\",\n\t\t\t\"versions\": \"none\"\n\t\t}\n\t\t,\n\t\t{\n\t"
+    +"\t\t\"name\": \"reg\",\n\t\t\t\"versions\": \"freeze\"\n\t\t"
+    +"}\n\t\t,\n\t\t{\n\t\t\t\"name\": \"corr\",\n\t\t\t\"version"
+    +"s\": \"freeze\"\n\t\t}\n\t\t,\n\t\t{\n\t\t\t\"name\": \"sic\""
+    +",\n\t\t\t\"versions\": \"freeze\"\n\t\t}\n\t\t,\n\t\t{\n\t\t"
+    +"\t\"name\": \"mod\",\n\t\t\t\"versions\": \"none\"\n\t\t}\n"
+    +"\t\t,\n\t\t{\n\t\t\t\"name\": \"subst\",\n\t\t\t\"versions\""
+    +": \"none\"\n\t\t}\n\t]\n}";
     Element root;
     /**
      * Initialise a splitter from its JSON config file
@@ -342,7 +370,7 @@ public class Splitter
     }
     /**
      * Split elements labelled with versions into separate versions
-     * @param doc  the XML version-labelled document to split
+     * @param doc the XML version-labelled document to split
      * @return an array of split XML sub-documents
      */
     private Map<String,String> splitAll( Document doc )
@@ -390,5 +418,72 @@ public class Splitter
         {
             throw new ImportException( e );
         }
+    }
+    private static String readConfig( String fName ) throws IOException
+    {
+        File f = new File( fName );
+        FileReader fr = new FileReader( f );
+        char[] data = new char[(int)f.length()];
+        fr.read( data );
+        // use platform encoding - pretty simple
+        return new String( data );
+    }
+    /** test and commandline utility */
+    public static void main( String[] args )
+    {
+        if ( args.length>=1 )
+        {
+            try
+            {
+                int i=0;
+                int fileIndex = 0;
+                // see if the user supplied a conf file
+                String textConf = defaultConf;
+                while ( i<args.length )
+                {
+                    if ( args[i].equals("-c") && i < args.length-1 )
+                    {
+                        textConf = readConfig( args[i+1] );
+                        i+=2;
+                    }
+                    else
+                    {
+                        fileIndex = i;
+                        i++;
+                    }
+                }
+                File f = new File( args[fileIndex] );
+                char[] data = new char[(int)f.length()];
+                FileReader fr = new FileReader( f );
+                fr.read( data );
+                JSONDocument config = JSONDocument.internalise(textConf);
+                Splitter split = new Splitter( config );
+                Map<String,String> map = split.split( new String(data) );
+                Set<String>keys = map.keySet();
+                String rawFileName = args[fileIndex];
+                int pos = rawFileName.lastIndexOf(".");
+                if ( pos != -1 )
+                    rawFileName = rawFileName.substring(0,pos);
+                Iterator<String> iter = keys.iterator();
+                while ( iter.hasNext() )
+                {
+                    String key = iter.next();
+                    String fName = rawFileName + "-"+key+".xml";
+                    File g = new File( fName );
+                    if ( g.exists() )
+                        g.delete();
+                    FileOutputStream fos = new FileOutputStream( g );
+                    fos.write( map.get(key).getBytes("UTF-8") );
+                    fos.close();
+                }
+            }
+            catch ( Exception e )
+            {
+                e.printStackTrace(System.out);
+            }
+        }
+        else
+            System.out.println(
+                "usage: java -jar split.jar [-c json-config] <tei-xml>\n");
     }
 }

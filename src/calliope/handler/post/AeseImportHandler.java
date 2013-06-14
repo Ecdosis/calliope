@@ -135,7 +135,12 @@ public abstract class AeseImportHandler extends AesePostHandler
                         else if ( fieldName.equals(Params.STYLE) )
                             style = contents;
                         else if ( fieldName.equals(Params.DEMO) )
-                            demo = true;
+                        {
+                            if ( contents!=null&&contents.equals("brillig") )
+                                demo = false;
+                            else
+                                demo = true;
+                        }
                         else if ( fieldName.equals(Params.FILTER) )
                             filterName = contents.toLowerCase();
                         else if ( fieldName.equals(Params.SPLITTER) )
