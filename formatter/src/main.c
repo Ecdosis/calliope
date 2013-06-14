@@ -35,7 +35,7 @@
 #include "formatter.h"
 #include "css_parse.h"
 #include "file_list.h"
-#include "HRIT/HRIT.h"
+#include "AESE/AESE.h"
 #include "STIL/STIL.h"
 #include "error.h"
 #include "master.h"

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include "hritserver_HritFormatter.h"
+#include "calliope_AeseFormatter.h"
 #include "master.h"
 #include "memwatch.h"
 
@@ -47,11 +47,11 @@ void jni_report( const char *fmt, ... )
 }
 
 /*
- * Class:     hritserver_HritFormatter
+ * Class:     calliope_AeseFormatter
  * Method:    format
- * Signature: ([B[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;Lhritserver/json/JSONResponse;)I
+ * Signature: ([B[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;Lcalliope/json/JSONResponse;)I
  */
-JNIEXPORT jint JNICALL Java_hritserver_HritFormatter_format
+JNIEXPORT jint JNICALL Java_calliope_AeseFormatter_format
   (JNIEnv *env, jobject obj, jbyteArray text, jobjectArray markup, 
     jobjectArray css, jobjectArray formats, jobject jsonHtml)
 {

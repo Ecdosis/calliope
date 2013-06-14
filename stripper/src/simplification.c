@@ -11,9 +11,9 @@ struct simplification_struct
     attribute **attributes;
 };
 /**
- * Create a new rule to simplify xml to hrit properties
+ * Create a new rule to simplify xml to aese properties
  * @param xml_name the xml name of the simplification
- * @param prop_name the hrit property name
+ * @param prop_name the aese property name
  * @return a simplification rule
  */
 simplification *simplification_new( const char *xml_name,
@@ -27,7 +27,7 @@ simplification *simplification_new( const char *xml_name,
         error( "recipe: failed to allocate xml name\n");
     s->prop_name = malloc( strlen(prop_name)+1 );
     if ( s->prop_name == NULL )
-        error( "recipe: failed to allocate hrit name\n");
+        error( "recipe: failed to allocate aese name\n");
     strcpy( s->xml_name, xml_name );
     strcpy( s->prop_name, prop_name );
     s->attributes = calloc( 1, sizeof(attribute*) );
@@ -111,7 +111,7 @@ char *simplification_get_xml_name( simplification *s )
     return s->xml_name;
 }
 /**
- * Get the hrit name of a rule
+ * Get the aese name of a rule
  * @param s the simplification rule in question
  * @return its xml name
  */

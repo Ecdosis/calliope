@@ -35,24 +35,24 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/recipe.o \
-	${OBJECTDIR}/src/range.o \
-	${OBJECTDIR}/src/layer.o \
-	${OBJECTDIR}/src/stack.o \
-	${OBJECTDIR}/_ext/1078767344/memwatch.o \
-	${OBJECTDIR}/src/dest_file.o \
-	${OBJECTDIR}/src/log.o \
-	${OBJECTDIR}/src/STIL.o \
-	${OBJECTDIR}/src/stripper.o \
-	${OBJECTDIR}/src/HRIT.o \
-	${OBJECTDIR}/src/simplification.o \
-	${OBJECTDIR}/src/hashmap.o \
-	${OBJECTDIR}/src/error.o \
-	${OBJECTDIR}/src/ramfile.o \
 	${OBJECTDIR}/_ext/1858218211/cJSON.o \
+	${OBJECTDIR}/_ext/1078767344/memwatch.o \
+	${OBJECTDIR}/src/AESE.o \
+	${OBJECTDIR}/src/STIL.o \
+	${OBJECTDIR}/src/attribute.o \
+	${OBJECTDIR}/src/dest_file.o \
+	${OBJECTDIR}/src/error.o \
+	${OBJECTDIR}/src/hashmap.o \
 	${OBJECTDIR}/src/hashset.o \
-	${OBJECTDIR}/src/attr1bute.o \
-	${OBJECTDIR}/src/milestone.o
+	${OBJECTDIR}/src/layer.o \
+	${OBJECTDIR}/src/log.o \
+	${OBJECTDIR}/src/milestone.o \
+	${OBJECTDIR}/src/ramfile.o \
+	${OBJECTDIR}/src/range.o \
+	${OBJECTDIR}/src/recipe.o \
+	${OBJECTDIR}/src/simplification.o \
+	${OBJECTDIR}/src/stack.o \
+	${OBJECTDIR}/src/stripper.o
 
 
 # C Compiler Flags
@@ -77,97 +77,97 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stripper: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stripper ${OBJECTFILES} ${LDLIBSOPTIONS} 
-
-${OBJECTDIR}/src/recipe.o: src/recipe.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/recipe.o src/recipe.c
-
-${OBJECTDIR}/src/range.o: src/range.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/range.o src/range.c
-
-${OBJECTDIR}/src/layer.o: src/layer.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/layer.o src/layer.c
-
-${OBJECTDIR}/src/stack.o: src/stack.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stack.o src/stack.c
-
-${OBJECTDIR}/_ext/1078767344/memwatch.o: ../formatter/src/memwatch.c 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1078767344
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1078767344/memwatch.o ../formatter/src/memwatch.c
-
-${OBJECTDIR}/src/dest_file.o: src/dest_file.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/dest_file.o src/dest_file.c
-
-${OBJECTDIR}/src/log.o: src/log.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/log.o src/log.c
-
-${OBJECTDIR}/src/STIL.o: src/STIL.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/STIL.o src/STIL.c
-
-${OBJECTDIR}/src/stripper.o: src/stripper.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stripper.o src/stripper.c
-
-${OBJECTDIR}/src/HRIT.o: src/HRIT.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/HRIT.o src/HRIT.c
-
-${OBJECTDIR}/src/simplification.o: src/simplification.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/simplification.o src/simplification.c
-
-${OBJECTDIR}/src/hashmap.o: src/hashmap.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashmap.o src/hashmap.c
-
-${OBJECTDIR}/src/error.o: src/error.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/error.o src/error.c
-
-${OBJECTDIR}/src/ramfile.o: src/ramfile.c 
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ramfile.o src/ramfile.c
+	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stripper ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/_ext/1858218211/cJSON.o: ../formatter/src/STIL/cJSON.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1858218211
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1858218211/cJSON.o ../formatter/src/STIL/cJSON.c
 
+${OBJECTDIR}/_ext/1078767344/memwatch.o: ../formatter/src/memwatch.c 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1078767344
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1078767344/memwatch.o ../formatter/src/memwatch.c
+
+${OBJECTDIR}/src/AESE.o: src/AESE.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/AESE.o src/AESE.c
+
+${OBJECTDIR}/src/STIL.o: src/STIL.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/STIL.o src/STIL.c
+
+${OBJECTDIR}/src/attribute.o: src/attribute.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/attribute.o src/attribute.c
+
+${OBJECTDIR}/src/dest_file.o: src/dest_file.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/dest_file.o src/dest_file.c
+
+${OBJECTDIR}/src/error.o: src/error.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/error.o src/error.c
+
+${OBJECTDIR}/src/hashmap.o: src/hashmap.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashmap.o src/hashmap.c
+
 ${OBJECTDIR}/src/hashset.o: src/hashset.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashset.o src/hashset.c
 
-${OBJECTDIR}/src/attr1bute.o: src/attr1bute.c 
+${OBJECTDIR}/src/layer.o: src/layer.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/attr1bute.o src/attr1bute.c
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/layer.o src/layer.c
+
+${OBJECTDIR}/src/log.o: src/log.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/log.o src/log.c
 
 ${OBJECTDIR}/src/milestone.o: src/milestone.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/milestone.o src/milestone.c
+
+${OBJECTDIR}/src/ramfile.o: src/ramfile.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ramfile.o src/ramfile.c
+
+${OBJECTDIR}/src/range.o: src/range.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/range.o src/range.c
+
+${OBJECTDIR}/src/recipe.o: src/recipe.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/recipe.o src/recipe.c
+
+${OBJECTDIR}/src/simplification.o: src/simplification.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/simplification.o src/simplification.c
+
+${OBJECTDIR}/src/stack.o: src/stack.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stack.o src/stack.c
+
+${OBJECTDIR}/src/stripper.o: src/stripper.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stripper.o src/stripper.c
 
 # Subprojects
 .build-subprojects:

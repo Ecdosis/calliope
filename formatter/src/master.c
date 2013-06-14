@@ -10,12 +10,12 @@
 #include "hashset.h"
 #include "formatter.h"
 #include "master.h"
-#include "HRIT/HRIT.h"
+#include "AESE/AESE.h"
 #include "STIL/STIL.h"
 #include "error.h"
 
 #include "memwatch.h"
-static format formats[]={{"HRIT",load_hrit_markup},{"STIL",load_stil_markup}};
+static format formats[]={{"AESE",load_aese_markup},{"STIL",load_stil_markup}};
 static int num_formats = sizeof(formats)/sizeof(format);
 static char error_string[128] = "";
 struct master_struct
@@ -30,7 +30,7 @@ struct master_struct
     formatter *f;
 };
 /**
- * Create a hrit formatter
+ * Create a aese formatter
  * @param text the text to format
  * @param len the length of the text
  * @return an initialised master instance
@@ -60,7 +60,7 @@ master *master_create( char *text, int len )
     return hf;
 }
 /**
- * Dispose of a hrit formatter
+ * Dispose of a aese formatter
  */
 void master_dispose( master *hf )
 {

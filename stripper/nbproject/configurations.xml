@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="84">
+<configurationDescriptor version="88">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>include/HRIT.h</itemPath>
+      <itemPath>include/AESE.h</itemPath>
       <itemPath>include/STIL.h</itemPath>
-      <itemPath>include/attr1bute.h</itemPath>
       <itemPath>../formatter/include/STIL/cJSON.h</itemPath>
+      <itemPath>include/calliope_AeseStripper.h</itemPath>
       <itemPath>include/dest_file.h</itemPath>
       <itemPath>include/error.h</itemPath>
       <itemPath>include/format.h</itemPath>
       <itemPath>include/hashmap.h</itemPath>
       <itemPath>include/hashset.h</itemPath>
-      <itemPath>include/hritserver_HritStripper.h</itemPath>
       <itemPath>include/layer.h</itemPath>
       <itemPath>include/log.h</itemPath>
       <itemPath>include/milestone.h</itemPath>
@@ -30,9 +29,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>src/HRIT.c</itemPath>
+      <itemPath>src/AESE.c</itemPath>
       <itemPath>src/STIL.c</itemPath>
-      <itemPath>src/attr1bute.c</itemPath>
+      <itemPath>src/attribute.c</itemPath>
       <itemPath>../formatter/src/STIL/cJSON.c</itemPath>
       <itemPath>src/dest_file.c</itemPath>
       <itemPath>src/error.c</itemPath>
@@ -89,6 +88,76 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="../formatter/include/STIL/cJSON.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../formatter/src/STIL/cJSON.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../formatter/src/memwatch.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="include/AESE.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/STIL.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/calliope_AeseStripper.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/dest_file.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/error.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/format.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/hashmap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/hashset.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/layer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/log.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/milestone.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/ramfile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/range.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/recipe.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/simplification.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/stack.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/AESE.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/STIL.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/attribute.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/dest_file.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/error.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/hashmap.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/hashset.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/layer.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/log.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/milestone.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/ramfile.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/range.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/recipe.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/simplification.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/stack.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/stripper.c" ex="false" tool="0" flavor2="0">
+      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -109,6 +178,76 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="../formatter/include/STIL/cJSON.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../formatter/src/STIL/cJSON.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../formatter/src/memwatch.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="include/AESE.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/STIL.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/calliope_AeseStripper.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/dest_file.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/error.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/format.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/hashmap.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/hashset.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/layer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/log.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/milestone.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/ramfile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/range.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/recipe.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/simplification.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/stack.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/AESE.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/STIL.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/attribute.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/dest_file.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/error.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/hashmap.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/hashset.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/layer.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/log.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/milestone.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/ramfile.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/range.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/recipe.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/simplification.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/stack.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/stripper.c" ex="false" tool="0" flavor2="0">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>

@@ -1,5 +1,5 @@
 /**
- * Strip XML tags from a file and write them out in HRIT format
+ * Strip XML tags from a file and write them out in AESE format
  * Created on 22/10/2010
  * (c) Desmond Schmidt 2010
  */
@@ -26,13 +26,13 @@
 #include <syslog.h>
 #ifdef JNI
 #include <jni.h>
-#include "hritserver_HritStripper.h"
+#include "calliope_AeseStripper.h"
 #include "ramfile.h"
 #endif
 #include "format.h"
 #include "expat.h"
 #include "stack.h"
-#include "HRIT.h"
+#include "AESE.h"
 #include "STIL.h"
 #include "hashset.h"
 #include "error.h"
@@ -74,8 +74,8 @@ struct UserData user_data;
 /** array of available formats - add more here */
 format formats[]={{"STIL",STIL_write_header,STIL_write_tail,
 	STIL_write_range,".txt",".json","-stil"},
-    {"HRIT",HRIT_write_header,HRIT_write_tail,
-	HRIT_write_range,".txt",".xml","-hrit"}};
+    {"AESE",AESE_write_header,AESE_write_tail,
+	AESE_write_range,".txt",".xml","-aese"}};
 /** size of formats array */
 int num_formats = sizeof(formats)/sizeof(format);
 /** source file */
@@ -574,11 +574,11 @@ static int add_layer( JNIEnv *env, jobject obj, char *value )
     return res;
 }
 /*
- * Class:     hritserver_HritStripper
+ * Class:     calliope_AeseStripper
  * Method:    strip
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lhritserver/JSONResponse;Lhritserver/JSONResponse;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
  */
-JNIEXPORT jint JNICALL Java_hritserver_HritStripper_strip
+JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
   (JNIEnv *env, jobject obj, jstring xml, jstring recipe, jstring format, 
     jstring style, jobject text, jobject markup)
 {
@@ -685,11 +685,11 @@ JNIEXPORT jint JNICALL Java_hritserver_HritStripper_strip
 }
 
 /*
- * Class:     HritStripper
+ * Class:     AeseStripper
  * Method:    version
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_hritserver_HritStripper_version
+JNIEXPORT jstring JNICALL Java_aeseserver_AeseStripper_version
   (JNIEnv *env, jobject obj )
 {
 	return (*env)->NewStringUTF(env, 
@@ -697,12 +697,12 @@ JNIEXPORT jstring JNICALL Java_hritserver_HritStripper_version
 }
 
 /*
- * Class:     HritStripper
+ * Class:     calliope_AeseStripper
  * Method:    formats
  * Signature: ()[Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_hritserver_HritStripper_formats
-  (JNIEnv *env, jobject obj )
+JNIEXPORT jobjectArray JNICALL Java_calliope_AeseStripper_formats
+(JNIEnv *env, jobject obj )
 {
 	jobjectArray ret = (jobjectArray)(*env)->NewObjectArray(
 		env,

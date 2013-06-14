@@ -51,7 +51,7 @@ void dest_file_enqueue( dest_file *df, range *r )
  * Create a dest file object
  * @param kind the kind of dest file: markup or text
  * @param l the layer this dest_file is for or NULL for the main markup
- * @param midname its middle name e.g. -hrit, up to 5
+ * @param midname its middle name e.g. -aese, up to 5
  * @param name the name of the file, any length
  * @param f the format for this dest_file to follow
  * @return an initialised det file object
