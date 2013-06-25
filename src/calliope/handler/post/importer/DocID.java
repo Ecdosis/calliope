@@ -15,7 +15,7 @@
  */
 
 package calliope.handler.post.importer;
-
+import calliope.Utils;
 /**
  * Build a suitable docid
  * @author desmond
@@ -112,6 +112,7 @@ public class DocID
         this.language = UNKNOWN;
         this.work = UNKNOWN;
         canonise( docID );
+        docID = Utils.removePercent2F( docID );
         parts = docID.split("/");
         int state = 0;
         StringBuilder sb = null;

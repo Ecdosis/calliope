@@ -64,6 +64,8 @@ public class AeseWebApp extends HttpServlet
         {
             String method = req.getMethod();
             String target = req.getRequestURI();
+            // hack to fix %2F bug");
+            target = Utils.removePercent2F( target );
             // remove webapp prefix
             if ( target.startsWith("/calliope") )
                 target = target.substring( 9 );

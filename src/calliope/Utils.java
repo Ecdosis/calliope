@@ -195,4 +195,21 @@ public class Utils
         }
         return sb.toString();
     }
+     public static String removePercent2F( String urn )
+    {
+        StringBuilder sb;
+        String urnUpper = urn.toUpperCase();
+        int index = urnUpper.indexOf("%2F");
+        if ( index != -1 )
+        {
+            sb = new StringBuilder( urnUpper );
+            while ( index != -1 )
+            {
+                sb.replace( index, index+3, "/" );
+                index = sb.indexOf( "%2F" );
+            }
+            urn = sb.toString();
+        }
+        return urn;
+    }
 }

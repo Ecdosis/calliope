@@ -222,7 +222,7 @@ public abstract class AeseImportHandler extends AesePostHandler
      * @return the loaded config document
      * @throws AeseException 
      */
-    String getConfig( Config kind, String path ) throws AeseException
+    String getConfig( Config kind, String path ) //throws AeseException
     {
         try
         {
@@ -265,12 +265,14 @@ public abstract class AeseImportHandler extends AesePostHandler
         }
         catch ( Exception e )
         {
-            AeseException he;
-            if ( e instanceof AeseException )
-                he = (AeseException) e ;
-            else
-                he = new AeseException( e );
-            throw he;
+//            AeseException he;
+//            if ( e instanceof AeseException )
+//                he = (AeseException) e ;
+//            else
+//                he = new AeseException( e );
+//            throw he;
+            // just return empty config
+            return "{}";
         }
     }
 }
