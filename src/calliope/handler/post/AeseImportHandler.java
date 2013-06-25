@@ -162,7 +162,7 @@ public abstract class AeseImportHandler extends AesePostHandler
                         // assuming that the contents are text
                         //item.getName retrieves the ORIGINAL file name
                         String type = item.getContentType();
-                        if ( type.startsWith("image/") )
+                        if ( type != null && type.startsWith("image/") )
                         {
                             InputStream is = item.getInputStream();
                             ByteHolder bh = new ByteHolder();
