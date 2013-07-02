@@ -1,0 +1,1 @@
+{ "format" : "CSS" , "title" : "diffs" , "body" : "span.deleted { color: red } span.added { color: blue } span.merged { -aese-mergeid: id } a.parent { color: grey; -aese-childid: href } a.child { color: grey; -aese-parentid: href }"}
