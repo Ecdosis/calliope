@@ -77,28 +77,7 @@ To upload this go to the pdef-tool folder and type:
 
 pdef-tool archive
 
-This will upload all the data needed by teh service to run.
-
-Access the service on http://localhost:8080/tests/ (trailing slash is 
-significant). To make it visible on port 80 add the following lines to 
-the end of /etc/apache2/httpd.conf,and restart apache
-
-On OSX:
-
-ProxyPass /tests/ http://localhost:8080/tests/ retry=0
-ProxyPass /corpix/ http://localhost:8080/corpix/ retry=0
-ProxyPass /import/ http://localhost:8080/import/ retry=0
-ProxyPass /upload/ http://localhost:8080/upload/ retry=0
-ProxyPass /calliope/ http://localhost:8080/calliope/ retry=0
-ProxyPass /test/ http://localhost:8080/test/ retry=0
-
-Now restart apache: sudo apachectl restart
-
-On Ubuntu:
-
-cp proxy.conf to /etc/apache2/mods-available/
-
-Restart apache2: sudo service apache2 restart
+This will upload all the data needed by the service to run.
 
 Now install the test databases:
 

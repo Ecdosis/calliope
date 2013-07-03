@@ -6,7 +6,7 @@ if [ "`uname`" = "Darwin" ]; then
   JAVAC=`whereis javac | awk '{print $1;}'`
   JDKINCLUDEDIRNAME="Headers"
   HAS_BREW=`which brew`
-  if ( -z "$HAS_BREW" ]; then
+  if [ -z "$HAS_BREW" ]; then
     echo "Please install homebrew"
     exit
   fi
@@ -82,8 +82,10 @@ elif [ -e /etc/apache2/httpd.conf ]; then
 else
   echo "unrecognised apache configuration"
 fi
-echo "You must set up mongodb's admin user and then upload the test data."
-echo "You must also upload the sample data"
-echo "See README.txt for details"
-echo "To start the service type ./calliope-start.sh"
-echo "To stop it type ./calliope-stop.sh"
+apachectl restart
+# setup mongo user
+mongo mongouser.js
+./calliope-start.sh
+# upload test data
+cd pdef-tool
+pdef-tool archive
