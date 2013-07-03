@@ -21,29 +21,27 @@ brew install mongodb
 4. Set up databases
 
 You need to first download the calliope package, available from 
-www.github.com/AESE-Infrastructure. Click on the calliope repository, 
-then the Downloads tab. Select "calliope-0.2.2.tar.gz" and download it 
-(Don't click on "Download as .tar.gz" or .zip). When it is on you hard 
-disk it will unpack automatically or by double-clicking on it or on the 
-commandline (OSX removes the .gz automatically):
+www.github.com/AESE-Infrastructure. Click the "download as .zip or .tar.gz"
+If it does not unpack automatically unzip it thus:
 
-tar xvf calliope-0.2.2.tar
+unzip calliope-master.zip 
+OR 
+tar xzvf calliope-master.tar.gz
+
 Now move the folder to a convenient location:
 
 cd ~/Downloads
-mv calliope-0.2.2 ~
-cd ~/calliope-0.2.2
+mv calliope-master ~/calliope
+cd ~/calliope/calliope-0.2.2
 
-First set up the database for admin access. In the calliope-0.2.2
-folder are two scripts add-user.sh and couchdb.sh Run this command first:
+Database setup
 
 mongo
 db = db.getSiblingDB('admin')
 db.addUser( { user: "admin", pwd: "jabberw0cky" } )
 exit
 
-After running this you have to press return to get back the prompt. Check 
-that mongodb is running:
+Check that mongodb is running:
 
 ps aux | grep mongodb
 
@@ -72,6 +70,15 @@ chmod +x install.sh
 chmod +x calliope-start.sh
 chmod +x calliope-stop.sh
 
+Uploading sample data
+
+calliope needs some sample data to run (explicitly the kinglear example)
+To upload this go to the pdef-tool folder and type:
+
+pdef-tool archive
+
+This will upload all the data needed by teh service to run.
+
 Access the service on http://localhost:8080/tests/ (trailing slash is 
 significant). To make it visible on port 80 add the following lines to 
 the end of /etc/apache2/httpd.conf,and restart apache
@@ -89,7 +96,7 @@ Now restart apache: sudo apachectl restart
 
 On Ubuntu:
 
-Add the above lines instead to /etc/apache2/mods-available/proxy.conf.
+cp proxy.conf to /etc/apache2/mods-available/
 
 Restart apache2: sudo service apache2 restart
 
