@@ -9,6 +9,11 @@ getjarpaths()
   echo $JARPATH
   return
 }
+if [ "`uname`" = "Darwin" ]; then
+  WEB_ROOT="/Library/WebServer/Documents"
+else
+  WEB_ROOT="/var/www"
+fi
 JARPATHS=`getjarpaths lib`
 LIBPATH=`java LibPath`
 if [[ $LIBPATH != */usr/local/lib* ]]
@@ -24,5 +29,5 @@ if [ `uname` = "Darwin" ]; then
 else
   pkill -f calliope.jar
 fi
-nohup java -Djava.library.path=$LIBPATH -cp .$JARPATHS -jar calliope.jar -r MONGO -d 27017  &
+nohup java -Djava.library.path=$LIBPATH -cp .$JARPATHS -jar calliope.jar -u admin -p jabberw0cky -i $WEB_ROOT -r MONGO -d 27017 &
 

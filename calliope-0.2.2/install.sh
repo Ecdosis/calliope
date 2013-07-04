@@ -1,9 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 if [ "`uname`" = "Darwin" ]; then
   APACHE2_LOC=`which httpd`
-  HASREADLINK=`whereis readlink | awk '{print $1;}'`
+  HASREADLINK=`which readlink`
+  echo $HAS_READLINK
   LIBSUFFIX="dylib"
-  JAVAC=`whereis javac | awk '{print $1;}'`
+  JAVAC=`which javac`
+  echo $JAVAC
   JDKINCLUDEDIRNAME="Headers"
   HAS_BREW=`which brew`
   if [ -z "$HAS_BREW" ]; then
@@ -13,8 +15,8 @@ if [ "`uname`" = "Darwin" ]; then
 else
   APACHE2_LOC=`which apache2`
   LIBSUFFIX="so"
-  HASREADLINK=`whereis -b readlink | awk '{print $2;}'`
-  JAVAC=`whereis -b javac | awk '{print $2;}'`
+  HASREADLINK=`which readlink`
+  JAVAC=`which javac`
   JDKINCLUDEDIRNAME="include"
 fi
 HAS_GCC=`which gcc`
@@ -31,9 +33,37 @@ if [ -z "$APACHE2_LOC" ]; then
   exit
 fi
 # passed all basic sanity checks
-a2enmod proxy 1>/dev/null
-a2enmod proxy_http 1>/dev/null
-a2enmod proxy_balancer 1>/dev/null
+# set up proxy
+HAS_A2ENMOD=`which a2enmod`
+HAS_PERL=`which perl`
+if [ -z $HAS_A2ENMOD ]; then
+  if [ -z $HAS_PERL ]; then 
+    echo "perl not installed: failed to update http.conf, skipping"
+  elif [ -e "/etc/apache2/httpd.conf" ]; then
+    perl update_httpd.pl /etc/apache2/httpd.conf
+  else
+    echo "couldn't findf httpd.conf. apache proxy configuration not done"
+  fi
+else
+  a2enmod proxy 1>/dev/null
+  a2enmod proxy_http 1>/dev/null
+  a2enmod proxy_balancer 1>/dev/null
+fi
+# ensure proxy modules loaded
+if [ -d /etc/apache2/mods-available/ ]; then
+  if [ -e /etc/apache2/mods-available/proxy.conf ]; then
+    mv /etc/apache2/mods-available/proxy.conf /etc/apache2/mods-available/proxy.conf~
+  fi
+  cp proxy.conf /etc/apache2/mods-available/
+elif grep -Fq "ProxyPass /calliope/ http://localhost:8080/calliope/ retry=0" /etc/apache2/httpd.conf ; then
+  echo "proxy already set up"
+elif [ -e /etc/apache2/httpd.conf ]; then
+   cat httpd.conf >> /etc/apache2/httpd.conf
+else
+  echo "unrecognised apache configuration"
+fi
+apachectl restart
+# 
 LIB_LOC=/usr/local/lib
 getjdkinclude()
 {
@@ -72,20 +102,10 @@ if [ $USER = "root" ]; then
 else
   echo "Need to be root. Did you use sudo?"
 fi
-# set up proxy
-if [ -d /etc/apache2/mods-available/ ]; then
-  cp proxy.conf /etc/apache2/mods-available/
-elif grep -Fq "ProxyPass /calliope/ http://localhost:8080/calliope/ retry=0" /etc/apache2/httpd.conf ; then 
-  echo "proxy already set up"
-elif [ -e /etc/apache2/httpd.conf ]; then
-   cat httpd.conf >> /etc/apache2/httpd.conf 
-else
-  echo "unrecognised apache configuration"
-fi
-apachectl restart
 # setup mongo user
 mongo mongouser.js
 ./calliope-start.sh
 # upload test data
+sleep 2
 cd pdef-tool
 pdef-tool archive

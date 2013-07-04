@@ -1,0 +1,128 @@
+SIMPLE INSTALLATION
+Download the calliope application from www.github.com/AustESE-Infrastructure/calliope as a 
+.zip or .tar.gz archive. Unpack it:
+
+unzip calliope-master.zip
+OR
+tar xzvf calliope-master.tar.gz
+
+then move the "calliope-master" folder to home and rename it:
+
+mv -r calliope-master ~/calliope
+cd ~/calliope/calliope-0.2.2/
+sudo ./install.sh
+
+and everything should work provided all the prerequisites are met (see below). Any errors will 
+appear on the console. Then go to http://localhost/tests/ to see Calliope in action.
+
+DETAILED INSTALLATION
+1. Prerequisites
+Installation will only proceed when all these packages have been installed.
+
+a. Homebrew (OSX only)
+Homebrew can be fetched from http://mxcl.github.com/homebrew/. Follow the 
+instructions there.
+
+b. gcc
+To build the C libraries used by calliope you will first have to install gcc:
+
+On OSX:
+brew tap homebrew/dupes
+brew install apple-gcc42
+
+On Ubuntu/Debian:
+sudo apt-get install gcc
+
+On Redhat/CentOS:
+sudo yum install gcc
+
+c. Install mongodb
+This is the database on which the DSEs will be stored. The command on OSX is:
+
+brew update
+brew install mongodb
+
+Ubuntu/Debian:
+sudo apt-get install mongodb
+
+Redhat/CentOS:
+Instructions are on the Mongodb site: 
+http://docs.mongodb.org/manual/tutorial/install-mongodb-on-red-hat-centos-or-fedora-linux/
+
+d. A Java Development Kit (JDK)
+
+On OSX:
+Go to https://developer.apple.com/downloads/index.action
+you will need an AppleID
+
+On Debian/Ubuntu:
+Use Synaptic or apt-get:
+sudo apt-get install default-jdk
+
+On Redhat/CentOS:
+sudo yum install java-1.6.0-openjdk-devel
+(or a later version)
+
+e. readlink 
+This is required to trace the aliases to the JDK directory. It is usually preinstalled, however.
+
+2. DATABASE SETUP
+The installer does this for you. If it should fail you can check that the admin user is 
+installed by using the mongo commandline application:
+
+mongo
+db = db.getSiblingDB('admin')
+db.system.users.find({user: "admin"}).count()
+[this should print a "1". If it prints "0" then add that user:]
+db.addUser( { user: "admin", pwd: "jabberw0cky" } )
+exit
+
+Check that mongodb is running:
+
+ps aux | grep mongodb
+
+You should get two process numbers, one 1-line long (that's the command 
+you just ran) and a longer one about 6 lines long. That's mongodb running.
+
+In the browser check that mongodb is running. Navigate to 
+http://localhost:28017/ There should be a web interface to mongodb 
+there.
+
+3. RUNNING calliope
+
+sudo ./calliope-start.sh
+
+Hit return. The service will run even when you log off. To stop the 
+service, log in as the same user who launched it initially and type 
+(but don't do this now):
+
+sudo ./calliope-stop.sh
+
+If any of these scripts complain that you don't have permission to 
+execute them just add executable privileges:
+
+chmod +x install.sh
+chmod +x calliope-start.sh
+chmod +x calliope-stop.sh
+
+You can check if calliope is running the same way you check for mongodb, except search for 
+"calliope"
+
+4. UPLOADING SAMPLE DATA
+
+calliope needs some sample data to run (explicitly the kinglear example) But calliope MUST 
+be running first, because the pdef-tool communications with the pdef-service on calliope. 
+To upload this go to the pdef-tool folder and type:
+
+pdef-tool archive
+
+This will upload all the data needed by the service to run.
+
+5. ADDING OTHER TEXTS
+
+The Import dialog can be used to import XML or plain text files. For 
+plain text to work there must be a suitable import filter. XML conforming 
+to the TEI-Lite schema should import correctly if the TEI/default style 
+is chosen. As a security precaution a password is required. This is set to 
+"brillig" (without quotation marks).
+
