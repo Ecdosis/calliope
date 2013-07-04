@@ -43,7 +43,7 @@ brew update
 brew install mongodb
 
 Ubuntu/Debian:
-sudo apt-get install mongodb
+See docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu
 
 Redhat/CentOS:
 Instructions are on the Mongodb site: 
