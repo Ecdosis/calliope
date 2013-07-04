@@ -102,13 +102,13 @@ if [ $USER = "root" ]; then
   cd pdef-tool
   ./rebuild.sh
   cd ..
+# setup mongo user
+  mongo mongouser.js
+  ./calliope-start.sh
+# upload test data
+  sleep 2
+  cd pdef-tool
+  pdef-tool archive
 else
   echo "Need to be root. Did you use sudo?"
 fi
-# setup mongo user
-mongo mongouser.js
-./calliope-start.sh
-# upload test data
-sleep 2
-cd pdef-tool
-pdef-tool archive
