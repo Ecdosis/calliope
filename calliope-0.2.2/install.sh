@@ -32,6 +32,11 @@ if [ -z "$APACHE2_LOC" ]; then
   echo "Please install apache2"
   exit
 fi
+NGINX_RUNNING=`ps aux | grep nginx | wc | awk '{print $1}'`
+if [ $NGINX_RUNNING -gt 1 ]; then
+  echo "nginx is running, please shut it down"
+  exit
+fi
 # passed all basic sanity checks
 # set up proxy
 HAS_A2ENMOD=`which a2enmod`
