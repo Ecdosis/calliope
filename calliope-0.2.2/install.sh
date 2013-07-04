@@ -2,10 +2,8 @@
 if [ "`uname`" = "Darwin" ]; then
   APACHE2_LOC=`which httpd`
   HASREADLINK=`which readlink`
-  echo $HAS_READLINK
   LIBSUFFIX="dylib"
   JAVAC=`which javac`
-  echo $JAVAC
   JDKINCLUDEDIRNAME="Headers"
   HAS_BREW=`which brew`
   if [ -z "$HAS_BREW" ]; then
