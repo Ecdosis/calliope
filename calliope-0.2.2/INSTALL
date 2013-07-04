@@ -1,6 +1,8 @@
 SIMPLE INSTALLATION
-Download the calliope application from www.github.com/AustESE-Infrastructure/calliope as a 
-.zip or .tar.gz archive. Unpack it:
+
+Download the calliope application from 
+www.github.com/AustESE-Infrastructure/calliope as a .zip or .tar.gz archive. 
+Unpack it:
 
 unzip calliope-master.zip
 OR
@@ -12,8 +14,9 @@ mv -r calliope-master ~/calliope
 cd ~/calliope/calliope-0.2.2/
 sudo ./install.sh
 
-and everything should work provided all the prerequisites are met (see below). Any errors will 
-appear on the console. Then go to http://localhost/tests/ to see Calliope in action.
+and everything should work provided all the prerequisites are met (see below). Any 
+errors will appear on the console. Then go to http://localhost/tests/ to see 
+Calliope in action.
 
 DETAILED INSTALLATION
 1. Prerequisites
@@ -64,11 +67,12 @@ sudo yum install java-1.6.0-openjdk-devel
 (or a later version)
 
 e. readlink 
-This is required to trace the aliases to the JDK directory. It is usually preinstalled, however.
+This is required to trace the aliases to the JDK directory. It is usually 
+preinstalled, however.
 
-2. DATABASE SETUP
-The installer does this for you. If it should fail you can check that the admin user is 
-installed by using the mongo commandline application:
+2. DATABASE SETUP 
+The installer does this for you. If it should fail you can check that the admin 
+user is installed by using the mongo commandline application:
 
 mongo
 db = db.getSiblingDB('admin')
@@ -105,14 +109,15 @@ chmod +x install.sh
 chmod +x calliope-start.sh
 chmod +x calliope-stop.sh
 
-You can check if calliope is running the same way you check for mongodb, except search for 
-"calliope"
+You can check if calliope is running the same way you check for mongodb, except 
+search for "calliope"
 
 4. UPLOADING SAMPLE DATA
 
-calliope needs some sample data to run (explicitly the kinglear example) But calliope MUST 
-be running first, because the pdef-tool communications with the pdef-service on calliope. 
-To upload this go to the pdef-tool folder and type:
+calliope needs some sample data to run (explicitly the kinglear example) But 
+calliope MUST be running first, because the pdef-tool communications with the 
+pdef-service on calliope. The installer does this automatically, but if it should 
+fail you can do it manually by going to the pdef-tool folder and typing:
 
 pdef-tool archive
 
