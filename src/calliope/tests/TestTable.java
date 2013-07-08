@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests;
+import calliope.Utils;
 import java.net.URL;
 import java.net.URLConnection;
 import java.io.InputStream;
@@ -276,7 +277,9 @@ public class TestTable extends Test
     }
     private String getVersions() throws Exception
     {
-        String rawURL = "http://localhost:8080/list/"+docID;
+        String rawURL = "http://localhost:8080/list";
+        String urn = Utils.escape( docID );
+        rawURL = calliope.URLEncoder.append( rawURL, urn );
         URL url = new URL( rawURL );
         URLConnection conn = url.openConnection();
         InputStream is = conn.getInputStream();
@@ -396,7 +399,9 @@ public class TestTable extends Test
         try
         {
             Element div = new Element("div");
-            String rawURL = "http://localhost:8080/html/table/"+docID;
+            String rawURL = "http://localhost:8080/html/table";
+            String urn = Utils.escape( docID );
+            rawURL = calliope.URLEncoder.append( rawURL, urn );
             // add required params
             rawURL = addGetParam( rawURL, Params.HIDE_MERGED, 
                 (hideMerged)?"1":"0" );

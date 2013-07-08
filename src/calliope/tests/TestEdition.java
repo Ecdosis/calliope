@@ -331,7 +331,9 @@ public class TestEdition extends Test
     }
     private String getVersions() throws Exception
     {
-        String rawURL = "http://localhost:8080/list/"+docID;
+        String rawURL = "http://localhost:8080/list";
+        String urn = Utils.escape( docID );
+        rawURL = URLEncoder.append( rawURL, urn );
         URL url = new URL( rawURL );
         URLConnection conn = url.openConnection();
         InputStream is = conn.getInputStream();
@@ -364,8 +366,9 @@ public class TestEdition extends Test
         try
         {
             TestGetURL rawUrl = new TestGetURL(
-                "http://localhost:8080/html/list/");
-            rawUrl.append( docID );
+                "http://localhost:8080/html/list");
+            String urn = Utils.escape( docID );
+            rawUrl.append( urn );
             rawUrl.addParam( Params.NAME, Params.VERSION1 );
             rawUrl.addParam( Params.VERSION1, version1 );
             rawUrl.addParam( Params.FUNCTION, "do_popup1()" );
@@ -536,7 +539,9 @@ public class TestEdition extends Test
      */
     private String fetchTable()
     {
-        String rawURL = "http://localhost:8080/html/table/"+docID;
+        String rawURL = "http://localhost:8080/html/table";
+        String urn = Utils.escape( docID );
+        rawURL = URLEncoder.append( rawURL, urn );
         // add required params to get table
         rawURL = addGetParam( rawURL, Params.HIDE_MERGED, 
             (hideMerged)?"1":"0" );
