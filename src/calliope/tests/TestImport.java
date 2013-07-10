@@ -154,6 +154,8 @@ public class TestImport extends Test
         +"belonging to ONE work (dissimilar files will be rejected)";
     private static String UPLOAD_TIP = "Click here when all versions of the "
         +"work or part-work have been selected";
+    private static String LENGTH_TIP = "Turn on/off restrictions on length. "
+        +"If set, files differing greatly in length will be rejected.";
     private String log;
     /**
      * Display the test GUI, selecting the default Home tab
@@ -364,6 +366,22 @@ public class TestImport extends Test
         cell14.addChild( makeCorformDropdown() );
         cell14.addAttribute("title",STYLE_TIP);
         row7.addChild( cell14 );
+        
+        Element row8 = new Element( "tr" );
+        Element cell15 = new Element( "td" );
+        table.addChild( row8 );
+        row8.addChild( cell15 );
+        cell15.addText( "Check length: " );
+        cell15.addAttribute("title",LENGTH_TIP);
+        Element cell16 = new Element("td" );
+        Element checkbox = new Element( HTMLNames.INPUT );
+        checkbox.addAttribute( HTMLNames.NAME, Params.SIMILARITY );
+        checkbox.addAttribute( HTMLNames.TYPE, "checkbox" );
+        checkbox.addAttribute( HTMLNames.VALUE, "1" );
+        checkbox.addAttribute( "checked", "checked" );
+        cell16.addChild( checkbox );
+        cell16.addAttribute("title",LENGTH_TIP);
+        row8.addChild( cell16 );
         return div;
     }
     Element makeHeader()

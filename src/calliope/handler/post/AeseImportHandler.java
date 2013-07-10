@@ -45,6 +45,7 @@ public abstract class AeseImportHandler extends AesePostHandler
     String database;
     String splitterName;
     String stripperName;
+    boolean similarityTest;
     /** uploaded xslt file contents */
     String xslt;
     boolean demo;
@@ -65,6 +66,7 @@ public abstract class AeseImportHandler extends AesePostHandler
         files = new ArrayList<File>();
         images = new ArrayList<ImageFile>();
         log = new StringBuilder();
+        similarityTest = false;
     }
     /**
      * Add the archive to the database
@@ -143,6 +145,8 @@ public abstract class AeseImportHandler extends AesePostHandler
                         }
                         else if ( fieldName.equals(Params.FILTER) )
                             filterName = contents.toLowerCase();
+                        else if ( fieldName.equals(Params.SIMILARITY) )
+                            similarityTest = contents!=null&&contents.equals("1");
                         else if ( fieldName.equals(Params.SPLITTER) )
                             splitterName = contents;
                         else if ( fieldName.equals(Params.STRIPPER) )

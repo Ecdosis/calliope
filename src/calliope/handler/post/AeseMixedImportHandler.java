@@ -69,7 +69,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                         try
                         {
                             String suffix = "";
-                            StageTwo stage2 = new StageTwo( stage1, true );
+                            StageTwo stage2 = new StageTwo( stage1, similarityTest );
                             log.append( stage2.process(cortex,corcode) );
                             StageThreeXML stage3Xml = new StageThreeXML( stage2, 
                                 style );
