@@ -24,11 +24,11 @@
       </init-param>
       <init-param>
         <param-name>repository</param-name>
-        <param-value>COUCH</param-value>
+        <param-value>MONGO</param-value>
       </init-param>
       <init-param>
         <param-name>dbport</param-name>
-        <param-value>5984</param-value>
+        <param-value>27017</param-value>
       </init-param>
       <init-param>
         <param-name>webroot</param-name>
