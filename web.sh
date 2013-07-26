@@ -7,6 +7,12 @@ read -p "Repository - COUCH or MONGO: (MONGO)" REPO
 REPO=${REPO:-MONGO}
 read -p "Web root: (/Library/WebServer/Documents)" WEBROOT
 WEBROOT=${WEBROOT:-/Library/WebServer/Documents}
+if [ ! -d "$WEBROOT" ]; then
+  echo "$WEBROOT not found. Exiting"
+  exit
+elif [ -d "webroot" ]; then
+  cp -r webroot/images $WEBROOT
+fi
 if [ $REPO==COUCH ]; then
   DBPORT=5984
 elif [ $REPO==MONGO ]; then
