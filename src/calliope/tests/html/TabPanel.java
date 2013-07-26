@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests.html;
+import calliope.Service;
 import java.util.ArrayList;
 import calliope.tests.Test;
 import calliope.constants.Params;
@@ -94,7 +95,8 @@ public class TabPanel extends Element
             {
                 Element link = new Element( "a" );
                 link.addAttribute( "href",
-                    "javascript:document.forms.default.setAttribute('action','/tests/"
+                    "javascript:document.forms.default.setAttribute('action','"
+                    +Service.PREFIX+"/tests/"
                     +key.toLowerCase()+"');document.forms.default.submit()");
                 link.addText( key );
                 Test instance = getTestInstance( key );

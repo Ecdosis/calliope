@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests;
+import calliope.Service;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import calliope.exception.*;
@@ -63,7 +64,7 @@ public class TestHtml extends Test
     {
         try
         {
-            String url = "http://localhost:8080/html";
+            String url = "http://localhost:8080"+Service.PREFIX+"/html";
             String urn = Utils.escape( docID );
             url = URLEncoder.append( url, urn );
             url = URLEncoder.addGetParam(url,Params.VERSION1,
@@ -90,13 +91,13 @@ public class TestHtml extends Test
         try
         {
             TestGetURL rawUrl = new TestGetURL(
-                "http://localhost:8080/html/list/");
+                "http://localhost:8080"+Service.PREFIX+"/html/list/");
             rawUrl.append( docID );
             rawUrl.addParam( Params.NAME, Params.VERSION1 );
             rawUrl.addParam( Params.VERSION1, version1 );
             rawUrl.addParam( Params.FUNCTION, "do_popup1()" );
             String html = URLEncoder.getResponseForUrl( rawUrl.toString() );
-            Element form = formElement("/tests/html" );
+            Element form = formElement(Service.PREFIX+"/tests/html" );
             Element content = new HTMLLiteral( html );
             form.addChild( content );
             if ( version1 != null )

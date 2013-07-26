@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests;
+import calliope.Service;
 import calliope.Connector;
 import calliope.Utils;
 import calliope.constants.Database;
@@ -186,7 +187,7 @@ public class TestImport extends Test
         try
         {
             StringBuilder sb = new StringBuilder();
-            URL mixedImport = new URL("http://localhost/import/mixed/");
+            URL mixedImport = new URL("http://localhost"+Service.PREFIX+"/import/mixed/");
             HttpURLConnection connection = null;
             connection = (HttpURLConnection) mixedImport.openConnection();
             connection.setRequestMethod("POST");

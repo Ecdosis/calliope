@@ -4,6 +4,8 @@
  */
 package calliope.tests;
 
+import calliope.Service;
+
 /**
  * Strings to needed to run TestImage
  * @author desmond

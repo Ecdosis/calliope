@@ -65,8 +65,8 @@ public class Utils
             for ( int i=0;i<value.length();i++ )
             if ( value.charAt(i) == ' ' )
                 sb.append("%20");
-            else if ( value.charAt(i) == '/' )
-                sb.append("%2F");
+            //else if ( value.charAt(i) == '/' )
+            //   sb.append("%2F");
             else
                 sb.append( value.charAt(i) );
         }

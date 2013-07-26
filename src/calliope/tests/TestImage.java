@@ -4,6 +4,7 @@
  */
 package calliope.tests;
 
+import calliope.Service;
 import calliope.constants.HTMLNames;
 import calliope.constants.Globals;
 import calliope.constants.Params;
@@ -75,7 +76,7 @@ public class TestImage extends Test
     @Override
     public Element getContent()
     {
-        Element form = formElement( "/tests/image" );
+        Element form = formElement( Service.PREFIX+"/tests/image" );
         form.addChild( docIDHidden(docID) );
         Element divCentre = new Element( HTMLNames.DIV );
         form.addChild( divCentre );

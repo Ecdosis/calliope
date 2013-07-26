@@ -15,6 +15,7 @@
  */
 
 package calliope.tests;
+import calliope.Service;
 import calliope.constants.ChunkState;
 import calliope.tests.html.Element;
 import calliope.tests.html.HTMLLiteral;
@@ -218,7 +219,7 @@ public class TestCompare extends Test
     String getList( String version1, String name, String onchange, 
         String longNameId ) throws Exception
     {
-        String url = "http://localhost:8080/html/list";
+        String url = "http://localhost:8080"+Service.PREFIX+"/html/list";
         url = URLEncoder.append( url, docID );
         url = URLEncoder.addGetParam( url, Params.NAME, name );
         url = URLEncoder.addGetParam( url, Params.VERSION1, 
@@ -234,7 +235,7 @@ public class TestCompare extends Test
      */
     String getNextVersion() throws Exception
     {
-        String url = "http://localhost:8080/cortex/version2";
+        String url = "http://localhost:8080"+Service.PREFIX+"/cortex/version2";
         url = URLEncoder.append( url, docID );
         url = URLEncoder.addGetParam( url, Params.VERSION1, 
             Utils.escape(version1) );
@@ -249,7 +250,7 @@ public class TestCompare extends Test
      */ 
     String getTextVersion( String v1, String v2, String diffKind ) throws Exception
     {
-        String url = "http://localhost:8080/html/comparison";
+        String url = "http://localhost:8080"+Service.PREFIX+"/html/comparison";
         String urn = Utils.escape( docID );
         url = URLEncoder.append( url, urn );
         url = URLEncoder.addGetParam(url,Params.VERSION1, Utils.escape(v1));

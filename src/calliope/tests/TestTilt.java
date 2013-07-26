@@ -4,6 +4,7 @@
  */
 package calliope.tests;
 
+import calliope.Service;
 import calliope.constants.HTMLNames;
 import calliope.constants.Globals;
 import calliope.exception.AeseException;
@@ -79,7 +80,7 @@ public class TestTilt extends Test
         script2.addText("var attributes = {code:'tilt.applet.TILTApplet',\n"
             +"archive:'TILT.jar',"
             +"id: 'TILT',"
-            +"codebase:'http://"+host+"/',"
+            +"codebase:'http://"+host+Service.PREFIX+"/',"
             +"width:810, height:640} ;\n"
             +"var parameters = {"+"host: '"+host+"',mayscript:'true'};\n"
             +"deployJava.runApplet(attributes, parameters, '1.6');");

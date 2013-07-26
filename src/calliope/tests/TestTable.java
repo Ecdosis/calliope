@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests;
+import calliope.Service;
 import calliope.Utils;
 import java.net.URL;
 import java.net.URLConnection;
@@ -277,7 +278,7 @@ public class TestTable extends Test
     }
     private String getVersions() throws Exception
     {
-        String rawURL = "http://localhost:8080/list";
+        String rawURL = "http://localhost:8080"+Service.PREFIX+"/list";
         String urn = Utils.escape( docID );
         rawURL = calliope.URLEncoder.append( rawURL, urn );
         URL url = new URL( rawURL );
@@ -399,7 +400,7 @@ public class TestTable extends Test
         try
         {
             Element div = new Element("div");
-            String rawURL = "http://localhost:8080/html/table";
+            String rawURL = "http://localhost:8080"+Service.PREFIX+"/html/table";
             String urn = Utils.escape( docID );
             rawURL = calliope.URLEncoder.append( rawURL, urn );
             // add required params

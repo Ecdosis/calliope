@@ -25,6 +25,7 @@ import calliope.json.JSONDocument;
 import calliope.exception.*;
 import calliope.constants.*;
 import calliope.URLEncoder;
+import calliope.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import edu.luc.nmerge.mvd.MVD;
@@ -41,6 +42,14 @@ import java.util.ArrayList;
  */
 public class AeseGetHandler extends AeseHandler
 {
+    static String HOME = "<html>\n" +
+    "<body>\n" +
+    "<h1>Calliope Web Service</h1>\n" +
+    "<p>Calliope is running. This interface only has the "+
+    "<a href=\""+
+    Service.PREFIX+"/tests/\">test suite</a>.</p>\n" +
+    "</body>\n" +
+    "</html>";
     @Override
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
@@ -48,7 +57,18 @@ public class AeseGetHandler extends AeseHandler
         String prefix = Path.first( urn );
         if ( prefix != null )
         {
-            if ( prefix.equals(Services.HTML) )
+            if ( prefix.length()==0||prefix.equals("/") )
+            {
+                try
+                {
+                    response.getWriter().print(HOME);
+                }
+                catch ( Exception e )
+                {
+                    throw new AeseException( e );
+                }
+            }
+            else if ( prefix.equals(Services.HTML) )
                 new AeseHTMLHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Services.TESTS) )
             {
@@ -95,7 +115,7 @@ public class AeseGetHandler extends AeseHandler
                 throw new AeseException("invalid urn: "+urn );
         }
         else
-            throw new PathException("Invalid urn "+urn );
+            throw new PathException("Invalid urn (prefix was null) "+urn );
     }
     /**
      * Get the document body of the given urn or null

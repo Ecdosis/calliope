@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests;
+import calliope.Service;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import calliope.tests.html.HTML;
@@ -127,7 +128,7 @@ public class TestHome extends Test
     static String CATALOG_SCRIPT = 
     "function setPath( link )\n{\n\tvar elem = document.getElement"
     +"ById(\"DOC_ID\");\n\telem.value=link;\n\tdocument.forms.defa"
-    +"ult.setAttribute('action','/tests/html');\n\tdocument.forms."
+    +"ult.setAttribute('action','"+Service.PREFIX+"/tests/html');\n\tdocument.forms."
     +"default.submit();\n}\nfunction toggle(node)\n{\n\tvar open ="
     +" node.className.match(/(^| )collapsibleListClosed( |$)/);\n\t"
     +"var uls = node.getElementsByTagName('ul');\n\tfor (var inde"

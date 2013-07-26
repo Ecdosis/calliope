@@ -59,7 +59,10 @@ public class JettyServer extends AbstractHandler
             baseRequest.setHandled( true );
             // remove webapp prefix
             if ( target.startsWith("/calliope") )
+            {
                 target = target.substring( 9 );
+                Service.PREFIX = "/calliope";
+            }
             if ( method.equals("GET") )
                 new AeseGetHandler().handle( request, response, target );
             else if ( method.equals("PUT") )
@@ -74,7 +77,7 @@ public class JettyServer extends AbstractHandler
         }
         catch ( Exception e )
         {
-            System.out.equals(e.getMessage());
+            System.out.println(e.getMessage());
         }
         //response.getWriter().close();
     }

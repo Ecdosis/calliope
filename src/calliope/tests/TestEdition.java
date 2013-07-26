@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package calliope.tests;
+import calliope.Service;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import calliope.exception.*;
@@ -310,7 +311,7 @@ public class TestEdition extends Test
     {
         try
         {
-            String url = "http://localhost:8080/html";
+            String url = "http://localhost:8080"+Service.PREFIX+"/html";
             String urn = Utils.escape( docID );
             url = URLEncoder.append( url, urn );
             url = URLEncoder.addGetParam(url,Params.VERSION1,
@@ -331,7 +332,7 @@ public class TestEdition extends Test
     }
     private String getVersions() throws Exception
     {
-        String rawURL = "http://localhost:8080/list";
+        String rawURL = "http://localhost:8080"+Service.PREFIX+"/list";
         String urn = Utils.escape( docID );
         rawURL = URLEncoder.append( rawURL, urn );
         URL url = new URL( rawURL );
@@ -366,7 +367,7 @@ public class TestEdition extends Test
         try
         {
             TestGetURL rawUrl = new TestGetURL(
-                "http://localhost:8080/html/list");
+                "http://localhost:8080"+Service.PREFIX+"/html/list/");
             String urn = Utils.escape( docID );
             rawUrl.append( urn );
             rawUrl.addParam( Params.NAME, Params.VERSION1 );
@@ -539,7 +540,7 @@ public class TestEdition extends Test
      */
     private String fetchTable()
     {
-        String rawURL = "http://localhost:8080/html/table";
+        String rawURL = "http://localhost:8080"+Service.PREFIX+"/html/table";
         String urn = Utils.escape( docID );
         rawURL = URLEncoder.append( rawURL, urn );
         // add required params to get table
@@ -671,7 +672,7 @@ public class TestEdition extends Test
     @Override
     public Element getContent()
     {
-        Element form = formElement("/tests/edition" );
+        Element form = formElement(Service.PREFIX+"/tests/edition" );
         Element outer = new Element( "div" );
         outer.addAttribute( HTMLNames.ID, "centre" );
         try

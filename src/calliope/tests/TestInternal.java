@@ -5,6 +5,7 @@
 package calliope.tests;
 
 
+import calliope.Service;
 import calliope.constants.Params;
 import calliope.exception.AeseException;
 import calliope.tests.html.Element;
@@ -60,7 +61,7 @@ public class TestInternal extends Test
         try
         {
             TestGetURL basicUrl = new TestGetURL(
-                "http://localhost:8080/test/basic/");
+                "http://localhost:8080"+Service.PREFIX+"/test/basic/");
             String basic = calliope.URLEncoder.getResponseForUrl( 
                 basicUrl.toString() );
             textArea.addText( basic );

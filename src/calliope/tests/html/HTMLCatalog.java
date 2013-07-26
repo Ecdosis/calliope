@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.tests.html;
+import calliope.Service;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Arrays;

@@ -68,7 +68,10 @@ public class AeseWebApp extends HttpServlet
             target = Utils.removePercent2F( target );
             // remove webapp prefix
             if ( target.startsWith("/calliope") )
+            {
                 target = target.substring( 9 );
+                Service.PREFIX = "/calliope";
+            }
             //resp.getWriter().println("<html><body><p>uri="+target
             //    +"</p></body></html>");
             AeseHandler handler;
