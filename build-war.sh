@@ -26,4 +26,4 @@ cp lib/*.jar calliope/WEB-INF/lib/
 echo `./web.sh` > calliope/WEB-INF/web.xml
 #cp web.xml calliope/WEB-INF/
 jar cf calliope.war -C calliope WEB-INF 
-echo "NB: you MUST copy the contents of tomcat-bin to $tomcat_home/bin"
+echo "NB: you MUST copy the contents of tomcat-bin to \$tomcat_home/bin"
