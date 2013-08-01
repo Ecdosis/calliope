@@ -31,8 +31,10 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c eden.css -m eden-v1.json:eden-v1-v2-diffs.json -t eden-v1.txt eden.html</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode1.json: -t test.txt test.html</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode1.json -t test.txt test.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode.json -t cortex.txt test.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c default.css -m corcode.json -t cortex.txt test.html</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -c style.css -m corcode1.json -t test.txt test.html</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -c default.css -m corcode.json -t cortex.txt test.html</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

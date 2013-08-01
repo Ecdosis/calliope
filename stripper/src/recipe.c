@@ -95,7 +95,7 @@ recipe *recipe_new()
 static void recipe_add_attribute( simplification *s, const char *name,
     const char *value )
 {
-    attribute *a = attribute_new( name, value );
+    attr1bute *a = attribute_new( name, value );
     simplification_add_attribute( s, a );
 }
 /**

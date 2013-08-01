@@ -52,7 +52,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/recipe.o \
 	${OBJECTDIR}/src/simplification.o \
 	${OBJECTDIR}/src/stack.o \
-	${OBJECTDIR}/src/stripper.o
+	${OBJECTDIR}/src/stripper.o \
+	${OBJECTDIR}/src/userdata.o \
+	${OBJECTDIR}/src/utils.o
 
 
 # C Compiler Flags
@@ -168,6 +170,16 @@ ${OBJECTDIR}/src/stripper.o: src/stripper.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stripper.o src/stripper.c
+
+${OBJECTDIR}/src/userdata.o: src/userdata.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/userdata.o src/userdata.c
+
+${OBJECTDIR}/src/utils.o: src/utils.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/utils.o src/utils.c
 
 # Subprojects
 .build-subprojects:

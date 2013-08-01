@@ -142,37 +142,103 @@ static int compute_range_lengths( dest_file *df, int tlen )
     return res;
 }
 /**
- * Write the enqueued ranges to disk
+ * Sort the ranges using shellsort for printing
+ * @param d the dom in question
+ */
+void range_array_sort( range **ra, int len )
+{
+    int i, j, k, h; range *v;
+    int incs[16] = { 1391376, 463792, 198768, 86961, 33936,
+        13776, 4592, 1968, 861, 336, 
+        112, 48, 21, 7, 3, 1 };
+    for ( k = 0; k < 16; k++)
+    {
+        for ( h=incs[k],i=h;i<=len-1;i++ )
+        { 
+            v = ra[i]; 
+            j = i;
+            while (j >= h && range_compare(ra[j-h],v)>0 )
+            { 
+                ra[j] = ra[j-h]; 
+                j -= h; 
+            }
+            ra[j] = v; 
+        }
+    }
+}
+/**
+ * Convert a list of ranges to a sorted array
+ * @param r the first range in the list
+ * @param len VAR param: set to length of array
+ * @return the array of ranges or NULL
+ */
+static range **ranges_to_array( range *r, int *len )
+{
+    int i = 0;
+    range *s = r;
+    while ( s != NULL )
+    {
+        i++;
+        s = range_get_next( s );
+    }
+    // so i is the length of the list
+    range **array = calloc( i, sizeof(range*) );
+    if ( array != NULL )
+    {
+        *len = i;
+        s = r;
+        i=0;
+        while ( s != NULL )
+        {
+            array[i++] = s;
+            s = range_get_next( s );
+        }
+        // now sort the array
+        range_array_sort( array, *len );
+    }
+    return array;
+}
+/**
+ * Write the enqueued ranges to disk, free them
  * @param df the dest file object
  * @return 1 if it worked, else 0
  */
 static int dest_file_dequeue( dest_file *df )
 {
-    int res = 1;
-    range *r = df->queue;
-    while ( r != NULL )
+    int i,res = 1;
+    int len = 0;
+    range **array = ranges_to_array( df->queue, &len );
+    if ( array != NULL )
     {
-        range *old;
-        int res = df->f->rfunc( 
-            range_get_name(r),
-            range_get_atts(r),
-            range_removed(r),
-            dest_file_reloff(df,range_get_start(r)),
-            range_get_len(r),
-            range_get_content(r),
-            range_get_content_len(r),
-            dest_file_first(df), 
-            dest_file_dst(df) );
-        dest_file_set_first( df, 0 );
-        if ( !res )
+        range *r = df->queue;
+        range *old = NULL;
+        dest_file_set_first( df, 1 );
+        for ( i=0;i<len;i++ )
         {
-            fprintf(stderr, "stripper: failed to write range" );
-            res = 0;
-            break;
+            old = r;
+            r = array[i];
+            res = df->f->rfunc( 
+                range_get_name(r),
+                range_get_atts(r),
+                range_removed(r),
+                dest_file_reloff(df,range_get_start(r)),
+                range_get_len(r),
+                range_get_content(r),
+                range_get_content_len(r),
+                dest_file_first(df), 
+                dest_file_dst(df) );
+            dest_file_set_first( df, 0 );
+            range_delete( r );
+            if ( !res )
+            {
+                fprintf(stderr, "stripper: failed to write range" );
+                res = 0;
+                break;
+            }
+            if ( !res )
+                break;
         }
-        old = r;
-        r = range_get_next( r );
-        range_delete( old );
+        free( array );
     }
     if ( res )
         df->queue = NULL;

@@ -41,7 +41,7 @@ int AESE_write_header( void *arg, DST_FILE *dst, const char *style )
 {
 	int n,len,res = 1;
 	char *xml_decl = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-	const char *hrit_decl = "<hrit-markup style=\"%s\">\n";
+	const char *hrit_decl = "<aese-markup style=\"%s\">\n";
 	// write header
 	len = strlen(xml_decl);
 	n = DST_WRITE( xml_decl, len, dst );
@@ -59,7 +59,7 @@ int AESE_write_header( void *arg, DST_FILE *dst, const char *style )
  */
 int AESE_write_tail( void *arg, DST_FILE *dst )
 {
-	const char *fmt = "</hrit-markup>";
+	const char *fmt = "</aese-markup>";
 	int len = strlen( fmt );
 	int n = DST_WRITE( fmt, len, dst );
 	return (n==len);

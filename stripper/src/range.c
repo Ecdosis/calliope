@@ -21,7 +21,7 @@ struct range_struct
  * Create a new range object
  * @param removed if 1 then the range has been removed
  * @param name the property name of the range
- * @param atts copy of the simplified attrbutes
+ * @param atts copy of the simplified attributes
  * @param offset the range's absolute offset
  * @return
  */
@@ -74,6 +74,27 @@ void range_delete( range *r )
 int range_removed( range *r )
 {
     return r->removed;
+}
+/**
+ * Compare two ranges. Sort on increasing offset then on decreasing length
+ * @param r1 the first range
+ * @param r2 the second range
+ * @return 1 if r1 > r2, if equal 0 else -1
+ */
+int range_compare( void *key1, void *key2 )
+{
+    range *r1 = key1;
+    range *r2 = key2;
+    if ( r1->start > r2->start )
+        return 1;
+    else if ( r2->start > r1->start )
+        return -1;
+    else if ( r2->len > r1->len )
+        return 1;
+    else if ( r1->len > r2->len )
+        return -1;
+    else
+        return 0;
 }
 /**
  * Add some content to a removed range

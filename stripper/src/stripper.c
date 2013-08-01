@@ -28,6 +28,8 @@
 #include <jni.h>
 #include "calliope_AeseStripper.h"
 #include "ramfile.h"
+#else
+#include "utils.h"
 #endif
 #include "format.h"
 #include "expat.h"
@@ -46,6 +48,7 @@
 #include "hashmap.h"
 #include "log.h"
 #include "memwatch.h"
+#include "userdata.h"
 
 #define FILE_NAME_LEN 128
 #ifdef XML_LARGE_SIZE
@@ -57,53 +60,34 @@
 #else
 #define XML_FMT_INT_MOD "l"
 #endif
-#define CHAR_TYPE_TEXT 0
-#define CHAR_TYPE_SPACE 1
-#define CHAR_TYPE_CR 2
-#define CHAR_TYPE_LF 3
 
-struct UserData
-{
-    /** flag to remove multiple white space */
-    int last_char_type;
-    /** current offset in the text file */
-    int current_text_offset;
-};
-
-struct UserData user_data;
 /** array of available formats - add more here */
-format formats[]={{"STIL",STIL_write_header,STIL_write_tail,
-	STIL_write_range,".txt",".json","-stil"},
+static format formats[]={{"STIL",STIL_write_header,STIL_write_tail,
+    STIL_write_range,".txt",".json","-stil"},
     {"AESE",AESE_write_header,AESE_write_tail,
-	AESE_write_range,".txt",".xml","-aese"}};
+    AESE_write_range,".txt",".xml","-aese"}};
 /** size of formats array */
-int num_formats = sizeof(formats)/sizeof(format);
-/** source file */
-char src[FILE_NAME_LEN];
-/** source file minus suffix */
-char barefile[FILE_NAME_LEN];
-/** name of style */
-char *style = "TEI";
-/** pointer to output stripped text file */
-dest_file *text_dest;
-/** array of markup_dest */
-dest_file **markup_dest;
-/** index into the currently selected format */
-int selected_format;
-/** if doing help or version info don't process anything */
-int doing_help = 0;
-/** the parser */
-XML_Parser parser;
-/** stack of potential ranges being maintained
- * as we parse the file */
-stack *range_stack;
-/** the recipe */
-recipe *rules;
-/** if non-empty ignore all tags and text */
-stack *ignoring;
-/** map of XML names to dest_files */
-hashmap *dest_map;
-
+static int num_formats = sizeof(formats)/sizeof(format);
+typedef struct 
+{
+    userdata *user_data;
+    /** source file */
+    char src[FILE_NAME_LEN];
+    /** source file minus suffix */
+    char barefile[FILE_NAME_LEN];
+    /** name of style */
+    char *style;
+    /** name of recipe file */
+    char *recipe_file;
+    /** index into the currently selected format */
+    int selected_format;
+    /** if doing help or version info don't process anything */
+    int doing_help;
+    /** language code */
+    char *language;
+    /** the parser */
+    XML_Parser parser;
+} stripper;
 /**
  * Copy an array of attributes as returned by expat
  * @param atts the attributes
@@ -125,42 +109,15 @@ static char **copy_atts( const char **atts )
 	{
 		new_atts[i] = strdup(atts[i]);
 		if ( new_atts[i] == NULL )
-			error( "stripper: failed to allocate store for attribute key" );
+			fprintf( stderr,
+                "stripper: failed to allocate store for attribute key" );
 		new_atts[i+1] = strdup( atts[i+1] );
 		if ( new_atts[i+1] == NULL )
-			error( "stripper: failed to allocate store for attribute value" );
+			fprintf( stderr,
+                "stripper: failed to allocate store for attribute value" );
 		i += 2;
 	}
 	return new_atts;
-}
-/**
- * Work out which dest file to send a named range to
- * @param range_name the range name
- * @return the appropriate dest_file object
- */
-static dest_file *get_markup_dest( char *range_name )
-{
-    if ( hashmap_contains(dest_map,range_name) )
-    {
-        return (dest_file*)hashmap_get( dest_map, range_name );
-    }
-    else
-    {
-        int i=1;
-        while ( markup_dest[i] != NULL )
-        {
-            layer *l = dest_file_layer(markup_dest[i]);
-            if ( l!=NULL&& layer_has_milestone(l,range_name) )
-            {
-                // remember for future calls
-                hashmap_put( dest_map,range_name,markup_dest[i] );
-                return markup_dest[i];
-            }
-            i++;
-        }
-        hashmap_put( dest_map, range_name, markup_dest[0] );
-        return (dest_file*)markup_dest[0];
-    }
 }
 /**
  * Start element handler for XML file stripping.
@@ -173,22 +130,22 @@ static void XMLCALL start_element_scan( void *userData,
 	const char *name, const char **atts )
 {
     range *r;
-    struct UserData *u = (struct UserData*)userData;
+    userdata *u = userData;
     char **new_atts;
     char *simple_name = (char*)name;
-    if ( recipe_has_removal(rules,(char*)name) )
-        stack_push( ignoring, (char*)name );
+    if ( recipe_has_removal(userdata_rules(u),(char*)name) )
+        stack_push( userdata_ignoring(u), (char*)name );
     new_atts = copy_atts( atts );
-    if ( stack_empty(ignoring) && recipe_has_rule(rules,name,atts) )
-        simple_name = recipe_simplify( rules, simple_name, new_atts );
-    r = range_new( stack_empty(ignoring)?0:1,
+    if ( stack_empty(userdata_ignoring(u)) && recipe_has_rule(userdata_rules(u),name,atts) )
+        simple_name = recipe_simplify( userdata_rules(u), simple_name, new_atts );
+    r = range_new( stack_empty(userdata_ignoring(u))?0:1,
         simple_name,
         new_atts,
-        u->current_text_offset );
+        userdata_toffset(u) );
     // stack has to set length when we get to the range end
-    stack_push( range_stack, r );
+    stack_push( userdata_range_stack(u), r );
     // queue preserves the order of the start elements
-    dest_file *df = get_markup_dest( range_get_name(r) );
+    dest_file *df = userdata_get_markup_dest( u, range_get_name(r) );
     dest_file_enqueue( df, r );
 }
 /**
@@ -198,11 +155,11 @@ static void XMLCALL start_element_scan( void *userData,
  */
 static void XMLCALL end_element_scan(void *userData, const char *name)
 {
-	range *r = stack_pop( range_stack );
-    struct UserData *u = (struct UserData *)userData;
-	range_set_len( r, u->current_text_offset-range_get_start(r) );
-	if ( !stack_empty(ignoring) && strcmp(stack_peek(ignoring),name)==0 )
-		stack_pop( ignoring );
+	userdata *u = userData;
+	range *r = stack_pop( userdata_range_stack(u) );
+    range_set_len( r, userdata_toffset(u)-range_get_start(r) );
+	if ( !stack_empty(userdata_ignoring(u)) && strcmp(stack_peek(userdata_ignoring(u)),name)==0 )
+		stack_pop( userdata_ignoring(u) );
 }
 /**
  * Is the given string just whitespace?
@@ -220,17 +177,36 @@ static int is_whitespace( const char *s, int len )
     return res;
 }
 /**
+ * Compute the length of the string in UTF-8
+ * @param text the UTF-8 string
+ * @param len its length in BYTES
+ * @return its length in CHARS
+ */
+static int utf8_len( XML_Char *text, int len )
+{
+     int i;
+     int nchars = 0;
+     for ( i=0;i<len;i++ )
+     {
+         unsigned char uc = (unsigned char) text[i];
+         // these are just continuation bytes not real "characters"
+         if ( uc < 0x80 || uc > 0xBF )
+             nchars++;
+     }
+     return nchars;
+}
+/**
  * trim leading and trailing white space down to 1 char
  * @param u the userdata struct
  * @param cptr VAR pointer to the string
  * @param len VAR pointer to its length
  */
-static void trim( struct UserData *u, char **cptr, int *len )
+static void trim( userdata *u, char **cptr, int *len )
 {
     char *text = *cptr;
     int length = *len;
     int i;
-    int state = u->last_char_type;
+    int state = userdata_last_char_type(u);
     // trim front of string
     for ( i=0;i<length;i++ )
     {
@@ -301,8 +277,20 @@ static void trim( struct UserData *u, char **cptr, int *len )
                     state = 3;
                 else
                 {
+                    if ( text[i] == '-' )
+                    {
+                        int ulen = utf8_len(text,length);
+                        userdata_update_last_word(u,text,length);
+                        userdata_set_hoffset(u,userdata_toffset(u)+ulen-1);
+                        userdata_set_hyphen_state(u,HYPHEN_ONLY);
+                    }
+                    else
+                    {
+                        userdata_clear_last_word(u);
+                        userdata_set_hyphen_state(u,HYPHEN_NONE);
+                    }
                     state = -1;
-                    u->last_char_type = CHAR_TYPE_TEXT;
+                    userdata_set_last_char_type(u,CHAR_TYPE_TEXT);
                 }
                 break;
             case 1: // last char was space
@@ -321,28 +309,56 @@ static void trim( struct UserData *u, char **cptr, int *len )
                 else
                 {
                     state = -1;
-                    u->last_char_type = CHAR_TYPE_SPACE;
+                    userdata_set_last_char_type(u,CHAR_TYPE_SPACE);
                 }
                 break;
             case 2: // last char was CR
-                if ( text[i] == '\r' )
+                if ( isspace(text[i]) )
                 {
                     (*len)--;
                 }
                 else
                 {
-                    u->last_char_type = CHAR_TYPE_CR;
+                    if ( text[i] == '-' )
+                    {
+                        // remove trailing LF
+                        (*len)--;
+                        userdata_set_hyphen_state(u,HYPHEN_LF);
+                        userdata_set_hoffset(u,userdata_toffset(u)
+                            +utf8_len(text,length)-2);
+                        userdata_update_last_word(u,text,length);
+                        userdata_set_last_char_type(u,CHAR_TYPE_TEXT);
+                    }
+                    else
+                    {
+                        userdata_clear_last_word(u);
+                        userdata_set_last_char_type(u,CHAR_TYPE_CR);
+                    }
                     state = -1;
                 }
                 break;
             case 3: // last char was LF
-                if ( text[i] == '\n' )
+                if ( isspace(text[i]) )
                 {
                     (*len)--;
                 }
                 else
                 {
-                    u->last_char_type = CHAR_TYPE_LF;
+                    if ( text[i] == '-' )
+                    {
+                        // remove trailing LF
+                        (*len)--;
+                        userdata_set_hyphen_state(u,HYPHEN_LF);
+                        userdata_set_hoffset(u,userdata_toffset(u)
+                            +utf8_len(text,length)-2);
+                        userdata_update_last_word(u,text,length);
+                        userdata_set_last_char_type(u,CHAR_TYPE_TEXT);
+                    }
+                    else
+                    {
+                        userdata_clear_last_word(u);
+                        userdata_set_last_char_type(u,CHAR_TYPE_LF);
+                    }
                     state = -1;
                 }
                 break;
@@ -351,34 +367,131 @@ static void trim( struct UserData *u, char **cptr, int *len )
             break;
     }
     if ( state != -1 && (*len)>0 )
-        u->last_char_type = state;
+        userdata_set_last_char_type(u,state);
+}
+/**
+ * Duplicate the first word of a text fragment
+ * @param text the text to pop the word off of
+ * @param len its length
+ * @return an allocated word in UTF8 or NULL
+ */
+static XML_Char *first_word( XML_Char *text, int len )
+{
+    int i;
+    // point to first non-space
+    for ( i=0;i<len;i++ )
+    {
+        if ( !isspace(text[i]) )
+            break;
+    }
+    int j = i;
+    for ( ;i<len;i++ )
+    {
+        if ( !isalpha(text[i])||text[i]=='-' )
+            break;
+    }
+    char *word = calloc( 1+i-j, sizeof(XML_Char) );
+    if ( word != NULL )
+    {
+        int nbytes = (i-j)*sizeof(XML_Char);
+        memcpy( word, &text[j], nbytes );
+    }
+    return word;
+}
+/**
+ * Combine two words by returning an allocated concatenation
+ * @param w1 the first word
+ * @param w2 the second word
+ * @return the combined word, caller to dispose
+ */
+static XML_Char *combine_words( XML_Char *w1, XML_Char *w2 )
+{
+    XML_Char *w3 = calloc( strlen(w1)+strlen(w2)+1,1 );
+    if ( w3 != NULL )
+    {
+        strcpy( w3,w1 );
+        strcat( w3, w2 );
+    }
+    return w3;
+}
+/**
+ * Add markup for the detected hyphen 
+ * @param u the userdata
+ * @param text the current text after the hyphen
+ * @param len its length
+ */
+static void process_hyphen( userdata *u, XML_Char *text, int len )
+{
+    XML_Char *next = first_word(text,len);
+    if ( next != NULL && strlen(next)>0 )
+    {
+        char *force = "weak";
+        XML_Char *last = userdata_last_word(u);
+        XML_Char *combined = combine_words(last,next);
+        if ( userdata_has_word(u,last)
+            && userdata_has_word(u,next)
+            && combined!=NULL
+            && !userdata_has_word(u,combined) )
+            force = "strong";
+        // create a range to describe a hard hyphen
+        char **atts = calloc(3,sizeof(char*));
+        if ( atts != NULL )
+        {
+            atts[0] = strdup("force");
+            atts[1] = strdup(force);
+            atts[2] = NULL;
+            range *r = range_new( 0, "pc", atts, userdata_hoffset(u) );
+            if ( r != NULL )
+            {
+                dest_file *df = userdata_get_markup_dest( u, "pc" );
+                userdata_set_hyphen_state(u,HYPHEN_NONE);
+                range_set_len( r, 1 );
+                dest_file_enqueue( df, r );
+            }
+        }
+        if ( combined != NULL )
+            free( combined );
+    }
+    if ( next != NULL )
+        free( next );
 }
 /**
  * Handle characters during stripping. We basically write
  * everything to all the files currently identified by
  * current_bitset.
- * @param userData a userdata structure or NULL
+ * @param userData a userdata object or NULL
+ * @param s the character data
+ * @param its length
  */
 static void XMLCALL charhndl( void *userData, const XML_Char *s, int len)
 {
-	if ( stack_empty(ignoring) )
+	userdata *u = userData;
+	if ( stack_empty(userdata_ignoring(u)) )
 	{
 		size_t n;
-        struct UserData *u = (struct UserData *)userData;
-		if ( len == 1 && s[0] == '&' )
+        if ( len == 1 && s[0] == '&' )
 		{
-			n = dest_file_write( text_dest, "&amp;", 5 );
-			u->current_text_offset += 5;
-            u->last_char_type = CHAR_TYPE_TEXT;
+			n = dest_file_write( userdata_text_dest(u), "&amp;", 5 );
+			userdata_inc_toffset( u, 5 );
+            userdata_set_last_char_type(u,CHAR_TYPE_TEXT);
 		}
         else 
 		{
 			char *text = (char*)s;
+            if ( userdata_hyphen_state(u) == HYPHEN_LF 
+                && !is_whitespace(text,len) )
+                process_hyphen(u,text,len);
             trim( u, &text, &len );
+            if ( len == 1 && (text[0]=='\n'||text[0]=='\r') 
+                && userdata_hyphen_state(u)==HYPHEN_ONLY )
+            {
+                userdata_set_hyphen_state(u,HYPHEN_LF);
+                len=0;
+            }
             if ( len > 0 )
             {
-                n = dest_file_write( text_dest, text, len );
-                u->current_text_offset += len;
+                n = dest_file_write( userdata_text_dest(u), text, len );
+                userdata_inc_toffset( u, utf8_len(text,len) );
                 if ( n != len )
                     error( "stripper: write error on text file" );
             }
@@ -386,7 +499,7 @@ static void XMLCALL charhndl( void *userData, const XML_Char *s, int len)
 	}
     else if ( !is_whitespace(s,len) )
     {
-        range *r = stack_peek( range_stack );
+        range *r = stack_peek( userdata_range_stack(u) );
         if ( len == 1 && s[0] == '&' )
         {
 			range_add_content( r, "&amp;", 5 );
@@ -401,31 +514,30 @@ static void XMLCALL charhndl( void *userData, const XML_Char *s, int len)
  * the tags file and text to the text file.
  * @param buf the data to parse
  * @param len its length
+ * @param s the stripper object
  * @return 1 if it succeeded, 0 otherwise
  */
-static int scan_source( const char *buf, int len )
+static int scan_source( const char *buf, int len, stripper *s )
 {
 	int res = 1;
-	memset( &user_data, 0, sizeof(struct UserData) );
-    user_data.last_char_type = CHAR_TYPE_LF;
-    parser = XML_ParserCreate( NULL );
-    if ( parser != NULL )
+	userdata_set_last_char_type(s->user_data, CHAR_TYPE_LF);
+    s->parser = XML_ParserCreate( NULL );
+    if ( s->parser != NULL )
     {
-        XML_SetElementHandler( parser, start_element_scan,
+        XML_SetElementHandler( s->parser, start_element_scan,
             end_element_scan );
-        XML_SetCharacterDataHandler( parser, charhndl );
-        XML_SetUserData( parser, &user_data );
-        if ( XML_Parse(parser,buf,len,1) == XML_STATUS_ERROR )
+        XML_SetCharacterDataHandler( s->parser, charhndl );
+        XML_SetUserData( s->parser, s->user_data );
+        if ( XML_Parse(s->parser,buf,len,1) == XML_STATUS_ERROR )
         {
             error(
                 "stripper: %s at line %" XML_FMT_INT_MOD "u\n",
-                XML_ErrorString(XML_GetErrorCode(parser)),
-                XML_GetCurrentLineNumber(parser));
+                XML_ErrorString(XML_GetErrorCode(s->parser)),
+                XML_GetCurrentLineNumber(s->parser));
             return 0;
         }
-        XML_ParserFree( parser );
-        // now write out the markup files
-        //....
+        XML_ParserFree( s->parser );
+        
     }
     else
     {
@@ -450,240 +562,104 @@ static int lookup_format( const char *fmt_name )
 	return -1;
 }
 /**
- * Open the dest files
- * @return 1 if it worked else 0
+ * Dispose of a stripper
+ * @param s the stripper perhaps partly completed
  */
-static int open_dest_files()
+void stripper_dispose( stripper *s )
 {
-    int res = 0;
-    text_dest = dest_file_create( text_kind, NULL, "", barefile, 
-        &formats[selected_format] );
-    if ( text_dest != NULL )
+    if ( s->user_data != NULL )
+        userdata_dispose( s->user_data );
+    if ( s != NULL )
+        free( s );
+}
+/**
+ * Create a stripper object. We need this for thread safety
+ * @return  a finished stripper object
+ */
+stripper *stripper_create()
+{
+    int err = 0;
+    stripper *s = calloc( 1, sizeof(stripper) );
+    if ( s != NULL )
     {
-        res = dest_file_open( text_dest );
-        if ( res )
-        {
-            // always at least one markup df is needed
-            dest_file *df = dest_file_create( markup_kind, NULL, 
-                (char*)formats[selected_format].middle_name, 
-                barefile, &formats[selected_format] );
-            if ( df != NULL && rules != NULL )
-            {
-                // ask the recipe which markup files to create
-                int i,n_layers = recipe_num_layers( rules );
-                markup_dest = calloc( n_layers+2, sizeof(dest_file*));
-                if ( markup_dest != NULL )
-                {
-                    markup_dest[0] = df;
-                    for ( i=1;i<=n_layers;i++ )
-                    {
-                        layer *l = recipe_layer( rules, i-1 );
-                        char *name = layer_name( l );
-                        int mlen = strlen(formats[selected_format].middle_name)
-                            +strlen(name)+2;
-                        char *mid_name = malloc( mlen );
-                        if ( mid_name != NULL )
-                        {
-                            snprintf( mid_name, mlen, "%s-%s", 
-                                formats[selected_format].middle_name, name );
-                            //dest_kind kind, layer *l, char *midname, 
-                            //char *name, format *f
-                            markup_dest[i] = dest_file_create( markup_kind,
-                                l, mid_name, barefile, 
-                                &formats[selected_format] );
-                            free( mid_name );
-                        }
-                        else
-                        {
-                            fprintf(stderr,
-                                "stripper: failed to allocate name\n");
-                            break;
-                        }
-                    }
-                    if ( i == n_layers )
-                        res = 1;
-                }
-                else
-                    fprintf(stderr,
-                        "stripper: failed to allocate markup array\n");
-                // now open the markup dest files 
-                if ( res )
-                {
-                    i = 0;
-                    while ( markup_dest[i] != NULL && res )
-                        res = dest_file_open( markup_dest[i++] );
-                }
-            }
-        }
+        s->language = "en_GB";
+        s->style = "TEI";
     }
-    if ( res )
-        dest_map = hashmap_create();
-    return res&&(dest_map!=NULL);
+    else
+        fprintf(stderr,"stripper: failed to allocate object\n");
+    return s;
 }
 #ifdef JNI
-static int set_string_field( JNIEnv *env, jobject obj, 
-    const char *field_name, char *value )
+static void unload_string( JNIEnv *env, jstring jstr, const char *cstr, 
+    jboolean copied )
 {
-    int res = 0;
-    jfieldID fid;
-    jstring jstr;
-    initlog();
-    //printf("setting string field\n");
-    jclass cls = (*env)->GetObjectClass(env, obj);
-    fid = (*env)->GetFieldID(env, cls, field_name, "Ljava/lang/String;");
-    if (fid != NULL) 
-    {
-        jstr = (*env)->NewStringUTF( env, value );
-        if (jstr != NULL) 
-        {
-            (*env)->SetObjectField(env, obj, fid, jstr);
-            res = 1;
-        }
-    }
-    return res;
+    if ( copied )
+        (*env)->ReleaseStringUTFChars( env, jstr, cstr );
 }
-static int add_layer( JNIEnv *env, jobject obj, char *value )
+static const char *load_string( JNIEnv *env, jstring jstr, jboolean *copied )
 {
-    int res = 0;
-    jstring jstr;
-    jstr = (*env)->NewStringUTF( env, value );
-    if (jstr != NULL) 
-    {
-        jclass cls = (*env)->GetObjectClass( env, obj );
-        jmethodID mid = (*env)->GetMethodID( env, cls,"addLayer",
-            "(Ljava/lang/String;)V");
-        if ( mid == 0 )
-        {
-            tmplog("stripper: failed to find method addLayer\n");
-            res = 0;
-        }
-        else
-        {
-            (*env)->ExceptionClear( env );
-            (*env)->CallVoidMethod( env, obj, mid, jstr);
-            if((*env)->ExceptionOccurred(env)) 
-            {
-                fprintf(stderr,"stripper: couldn't add layer\n");
-                (*env)->ExceptionDescribe( env );
-                (*env)->ExceptionClear( env );
-            }
-            else
-                res = 1;
-        }
-    }
-    return res;
+    return (*env)->GetStringUTFChars(env, jstr, copied);  
 }
 /*
  * Class:     calliope_AeseStripper
  * Method:    strip
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
  */
 JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
-  (JNIEnv *env, jobject obj, jstring xml, jstring recipe, jstring format, 
-    jstring style, jobject text, jobject markup)
+  (JNIEnv *env, jobject obj, jstring xml, jstring rules, jstring format, 
+    jstring style, jstring language, jobject text, jobject markup)
 {
-	int res = 0;
-    jboolean iscopy;
-    const char *c_format;
-    // read recipe -- now needed by open_dest_files
-    if ( recipe != NULL )
+	int res = 1;
+    jboolean x_copied,r_copied=JNI_FALSE,f_copied,s_copied,l_copied=JNI_FALSE;
+    const char *x_str = load_string( env, xml, &x_copied );
+    const char *r_str = (rules!=NULL)?load_string(env,rules,&r_copied):NULL;
+    const char *f_str = load_string( env, format, &f_copied );
+    const char *s_str = load_string( env, style, &s_copied );
+    const char *l_str = (language==NULL)?"en_GB"
+        :load_string( env, language, &l_copied );
+    stripper *s = stripper_create();
+    if ( s != NULL )
     {
-        const char* rstr = (*env)->GetStringUTFChars(env, recipe, &iscopy);
-        rules = recipe_load( rstr, strlen(rstr) );
-        if ( iscopy )
-            (*env)->ReleaseStringUTFChars( env, recipe, rstr );
-    }
-    else
-        rules = recipe_new();
-    res = open_dest_files();
-    if ( res )
-    {
-        c_format = (*env)->GetStringUTFChars(env, format, &iscopy);
-        selected_format = lookup_format( c_format );
-        if ( iscopy )
-            (*env)->ReleaseStringUTFChars( env, format, c_format ); 
-        range_stack = stack_create();
-        if ( range_stack == NULL )
-            tmplog( "stripper: failed to allocate range stack" );
-        ignoring = stack_create();
-        if ( ignoring == NULL )
-            tmplog( "stripper: failed to allocate ignore stack" );
-        if ( ignoring != NULL && range_stack != NULL )
+        recipe *ruleset;
+        s->selected_format = lookup_format( f_str );
+        // load or initialise rule set
+        if ( rules == NULL )
+            ruleset = recipe_new();
+        else
+            ruleset = recipe_load(r_str,strlen(r_str));
+        s->user_data = userdata_create( l_str, NULL, ruleset, 
+            &formats[s->selected_format] );
+        if ( s->user_data != NULL )
         {
             // write header
-            const char* cstr = (*env)->GetStringUTFChars(env, style, &iscopy);
             int i=0;
-            while ( markup_dest[i] )
+            while ( res && userdata_markup_dest(s->user_data,i)!= NULL )
             {
-                res = formats[selected_format].hfunc( NULL, 
-                    dest_file_dst(markup_dest[i]), cstr );
+                res = formats[s->selected_format].hfunc( NULL, 
+                    dest_file_dst(
+                        userdata_markup_dest(s->user_data,i)), s_str );
                 i++;
             }
-            if ( iscopy )
-                (*env)->ReleaseStringUTFChars( env, style, cstr ); 
             // parse XML
             if ( res )
             {
-                const char *xmlText = (*env)->GetStringUTFChars(env,xml,0);
-                if ( xmlText != NULL )
-                {
-                    int xlen = strlen(xmlText);
-                    res = scan_source( xmlText, xlen );
-                    (*env)->ReleaseStringUTFChars( env, xml, xmlText );
-                }
-                else
-                {
-                    res = 0;
-                    tmplog("failed to get xml text\n");
-                }
-                // we're finished with these
-                stack_delete( range_stack );
-                stack_delete( ignoring );
+                int xlen = strlen( x_str );
+                res = scan_source( x_str, xlen, s );
+                if ( res )
+                    userdata_write_files( env, s->user_data, text, markup );
             }
             else
-            {
                 tmplog("write header failed\n");
-                res = 0;
-            }
-            // write out text
-            dest_file_close( text_dest, 0 );
-            int tlen = dest_file_len( text_dest );
-            // save result to text and markup objects
-            if ( res )
-            {
-                //printf("about to set text field\n");
-                res = set_string_field( env, text, "body", 
-                    ramfile_get_buf(dest_file_dst(text_dest)) );
-                //tmplog("set_string_field returned %d\n",res);
-            }
-            dest_file_dispose( text_dest );
-            i=0;
-            while ( markup_dest[i] != NULL && res )
-            {
-                dest_file_close( markup_dest[i], tlen );
-                if ( res ) 
-                {
-                    if ( i == 0 )
-                    {
-                        res = set_string_field( env, markup, "body", 
-                        ramfile_get_buf(dest_file_dst(markup_dest[i])) );
-                    }
-                    else
-                    {
-                        res = add_layer( env, markup, 
-                            ramfile_get_buf(dest_file_dst(markup_dest[i])) );
-                    }
-                }
-                dest_file_dispose( markup_dest[i++] );
-            }
-            free( markup_dest );
-            if ( dest_map != NULL )
-                hashmap_dispose( dest_map );    
         }
+        stripper_dispose( s );
+        unload_string( env, xml, x_str, x_copied );
+        unload_string( env, rules, r_str, r_copied );
+        unload_string( env, format, f_str, f_copied );
+        unload_string( env, style, s_str, s_copied );
+        unload_string( env, language, l_str, l_copied );
     }
     return res;
 }
-
 /*
  * Class:     AeseStripper
  * Method:    version
@@ -721,55 +697,6 @@ JNIEXPORT jobjectArray JNICALL Java_calliope_AeseStripper_formats
 	return ret;
 }
 #else
-/**
- * Get the file length of the src file
- * @return its length as an int
- */
-static int file_size( const char *file_name )
-{
-    FILE *fp = fopen( file_name, "r" );
-    long sz = -1;
-    if ( fp != NULL )
-    {
-        fseek(fp, 0L, SEEK_END);
-        sz = ftell(fp);
-        fclose( fp );
-    }
-    return (int) sz;
-}
-/**
- * Read a file contents 
- * @param file_name the name of the file to read
- * @param len its length once entirely read
- * @return an allocated buffer. caller MUST dispose
- */
-static const char *read_file( const char *file_name, int *len )
-{
-    char *buf = NULL;
-    *len = file_size(file_name);
-    if ( *len > 0 )
-    {
-        FILE *src_file = fopen( file_name, "r" );
-        int flen;
-        if ( src_file != NULL )
-        {
-            buf = calloc( 1, (*len)+1 );
-            if ( buf != NULL )
-            {
-                flen = (int)fread( buf, 1, *len, src_file );
-                if ( flen != *len )
-                    error("couldn't read %s\n",file_name);
-            }
-            else
-                error("couldn't allocate buf\n");
-            fclose( src_file );
-            
-        }
-        else
-            error("failed to open %s\n",file_name );
-    }
-    return buf;
-}
 /**
  * Print a simple help message. If we get time we can
  * make a man page later.
@@ -826,9 +753,10 @@ static void list_formats()
  * Check the commandline arguments
  * @param argc number of commandline args+1
  * @param argv array of arguments, first is program name
+ * @param s the stripper object containing local vars
  * @return 1 if they were OK, 0 otherwise
  */
-static int check_args( int argc, char **argv )
+static int check_args( int argc, char **argv, stripper *s )
 {
 	char *dot_pos;
 	int sane = 1;
@@ -847,17 +775,17 @@ static int check_args( int argc, char **argv )
 					case 'v':
 						printf( "stripper version 1.1 (c) "
 								"Desmond Schmidt 2011\n");
-						doing_help = 1;
+						s->doing_help = 1;
 						break;
 					case 'h':
 						print_help();
-						doing_help = 1;
+						s->doing_help = 1;
 						break;
 					case 'f':
 						if ( i < argc-2 )
 						{
-							selected_format = lookup_format( argv[i+1] );
-							if ( selected_format == -1 )
+							s->selected_format = lookup_format( argv[i+1] );
+							if ( s->selected_format == -1 )
 								error("stripper: format %s not supported.\n",
                                     argv[i+1]);
 						}
@@ -866,34 +794,29 @@ static int check_args( int argc, char **argv )
 						break;
 					case 'l':
 						list_formats();
-						doing_help = 1;
+						s->doing_help = 1;
 						break;
                     case 'r':
-                        rdata = read_file( argv[i+1], &rlen );
-                        if ( rdata != NULL )
-                        {
-                            rules = recipe_load( rdata, rlen );
-                            free( (char*)rdata );
-                        }
+                        s->recipe_file = argv[i+1];
                         break;
                     case 's':
-                        style = argv[i+1];
+                        s->style = argv[i+1];
                         break;
 				}
 			}
 			if ( !sane )
 				break;
 		}
-		if ( !doing_help )
+		if ( !s->doing_help )
 		{
-			sscanf( argv[argc-1], "%127s", src );
-			sane = file_exists( src );
+			sscanf( argv[argc-1], "%127s", s->src );
+			sane = file_exists( s->src );
 			if ( !sane )
-				fprintf(stderr,"stripper: can't find %s\n",src );
+				fprintf(stderr,"stripper: can't find %s\n",s->src );
             else
             {
-                strncpy( barefile, src, FILE_NAME_LEN );
-                dot_pos = strrchr( barefile, '.' );
+                strncpy(s->barefile, s->src, FILE_NAME_LEN );
+                dot_pos = strrchr( s->barefile, '.' );
                 if ( dot_pos != NULL )
                     dot_pos[0] = 0;
             }
@@ -917,62 +840,64 @@ static void usage()
  */
 int main( int argc, char **argv )
 {
-	if ( check_args(argc,argv) )
-	{
-		if ( !doing_help )
+    stripper *s = stripper_create();
+    if ( s != NULL )
+    {
+        int res = 1;
+        if ( check_args(argc,argv,s) )
 		{
-			int i,res = 0;
-            if ( rules == NULL )
+            recipe *rules;
+            if ( s->recipe_file == NULL )
                 rules = recipe_new();
-			if ( !open_dest_files() )
-                error("stripper: couldn't open dest files\n");
-			range_stack = stack_create();
-			if ( range_stack == NULL )
-				error( "stripper: failed to allocate store for range stack" );
-			ignoring = stack_create();
-			if ( ignoring == NULL )
-				error( "stripper: failed to allocate store for ignore stack" );
-            // write header
-            i=0;
-			while ( markup_dest[i] )
+            else
             {
-                res = formats[selected_format].hfunc( NULL, 
-                    dest_file_dst(markup_dest[i]), style );
-                i++;
-            }
-            // parse XML, prepare body for writing
-            if ( res )
-            {
-                int len;
-                const char *data = read_file( src, &len );
-                if ( data != NULL )
+                int rlen;
+                const char *rdata = read_file( s->recipe_file, &rlen );
+                if ( rdata != NULL )
                 {
-                    res = scan_source( data, len );
-                    free( (char*)data );
+                    rules = recipe_load(rdata, rlen);
+                    free( (char*)rdata );
                 }
             }
-            stack_delete( ignoring );
-            stack_delete( range_stack );
-            // write out text
-            dest_file_close( text_dest, 0 );
-            int tlen = dest_file_len( text_dest );
-            dest_file_dispose( text_dest );
-            // write body for markup files
-            i=0;
-            while ( markup_dest[i] != NULL )
+            if ( rules != NULL )
             {
-                dest_file_close( markup_dest[i], tlen );
-                dest_file_dispose( markup_dest[i++] );
+                s->user_data = userdata_create( s->language, s->barefile, 
+                    rules, &formats[s->selected_format] );
+                if ( s->user_data == NULL )
+                {
+                    fprintf(stderr,"stripper: failed to initialise userdata\n");
+                    res = 0;
+                }
+                if ( res && !s->doing_help )
+                {
+                    int i=0;
+                    userdata *u = s->user_data;
+                    while ( userdata_markup_dest(u,i) )
+                    {
+                        res = formats[s->selected_format].hfunc( NULL, 
+                            dest_file_dst(userdata_markup_dest(u,i)), s->style );
+                        i++;
+                    }
+                    // parse XML, prepare body for writing
+                    if ( res )
+                    {
+                        int len;
+                        const char *data = read_file( s->src, &len );
+                        if ( data != NULL )
+                        {
+                            res = scan_source( data, len, s );
+                            free( (char*)data );
+                        }
+                    }
+                }
             }
-            free( markup_dest );
-            if ( dest_map != NULL )
-                hashmap_dispose( dest_map );
-		}
-        if ( rules != NULL )
-            rules = recipe_dispose( rules );
-	}
-	else
-		usage();
+        }
+        else if ( !res )
+            usage();
+        // save the files in a separate step
+        userdata_write_files( s->user_data );
+        stripper_dispose( s );
+    }
 	return 0;
 }
 #endif

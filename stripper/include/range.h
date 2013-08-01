@@ -21,5 +21,6 @@ int range_get_len( range *r );
 void range_set_len( range *r, int len );
 range *range_get_next( range *r );
 void range_set_next( range *r, range *next );
+int range_compare( void *key1, void *key2 );
 #endif	/* RANGE_H */
 
