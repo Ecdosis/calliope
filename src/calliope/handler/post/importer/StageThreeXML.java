@@ -367,7 +367,7 @@ public class StageThreeXML extends Stage
                     JSONResponse text = new JSONResponse();
                     AeseStripper stripper = new AeseStripper();
                     int res = stripper.strip( map.get(key), stripConfig, 
-                        Formats.STIL, style, text, markup );
+                        Formats.STIL, style, "en_GB", text, markup );
                     if ( res == 1 )
                     {
                         String vid = "Base/";

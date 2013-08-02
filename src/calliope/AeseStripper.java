@@ -24,7 +24,8 @@ import calliope.constants.Libraries;
 public class AeseStripper 
 {
     public native int strip( String xml, String recipe, String format, 
-            String style, JSONResponse text, JSONResponse markup );
+            String style, String language, JSONResponse text, 
+            JSONResponse markup );
 	public native String[] formats();
 	static 
 	{
