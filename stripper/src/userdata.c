@@ -4,6 +4,7 @@
 #include <wchar.h>
 #ifdef JNI
 #include <jni.h>
+#include "log.h"
 #endif
 #include "expat.h"
 #include "attribute.h"
@@ -120,7 +121,8 @@ static int open_dest_files( userdata *u, char *barefile, format *fmt )
 /**
  * Create a userdata object
  * @param language the language e.g. "en_GB"
- * @param recipe file path to recipe file
+ * @param rules recipe file path to recipe file
+ * @param fmt the format object containing function pointers
  * @return a complete userdata object or NULL
  */
 userdata *userdata_create( const char *language, char *barefile, recipe *rules, 
@@ -444,7 +446,7 @@ void userdata_set_last_char_type( userdata *u, int ctype )
 {
     u->last_char_type = ctype;
 }
-void *userdata_set_rules( userdata *u, recipe *r )
+void userdata_set_rules( userdata *u, recipe *r )
 {
     if ( u->rules != NULL )
         recipe_dispose( u->rules );

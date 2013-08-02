@@ -29,7 +29,7 @@ int userdata_last_char_type( userdata *u );
 int userdata_has_word( userdata *u, XML_Char *word );
 void userdata_inc_toffset( userdata *u, int inc );
 void userdata_set_last_char_type( userdata *u, int ctype );
-void *userdata_set_rules( userdata *u, recipe *r );
+void userdata_set_rules( userdata *u, recipe *r );
 int userdata_hyphen_state( userdata *u );
 void userdata_set_hyphen_state( userdata *u, int hstate );
 void userdata_update_last_word( userdata *u, char *line, int len );

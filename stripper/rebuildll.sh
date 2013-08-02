@@ -7,7 +7,7 @@ if [ $USER = "root" ]; then
     JDKINC="/usr/lib/jvm/java-6-openjdk/include"
   fi
   gcc -c -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DJNI -I$JDKINC -Iinclude -I../formatter/include -I../formatter/include/STIL -O0 -Wall -g3 -fPIC ../formatter/src/STIL/cJSON.c src/*.c  
-  gcc *.o -shared -o libAeseStripper.$LIBSUFFIX
+  gcc *.o -shared -lexpat -laspell -o libAeseStripper.$LIBSUFFIX
   cp libAeseStripper.$LIBSUFFIX /usr/local/lib
 else
 	echo "Need to be root. Did you use sudo?"

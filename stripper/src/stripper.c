@@ -578,7 +578,6 @@ void stripper_dispose( stripper *s )
  */
 stripper *stripper_create()
 {
-    int err = 0;
     stripper *s = calloc( 1, sizeof(stripper) );
     if ( s != NULL )
     {
@@ -627,7 +626,7 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
             ruleset = recipe_new();
         else
             ruleset = recipe_load(r_str,strlen(r_str));
-        s->user_data = userdata_create( l_str, NULL, ruleset, 
+        s->user_data = userdata_create( l_str, "main", ruleset, 
             &formats[s->selected_format] );
         if ( s->user_data != NULL )
         {

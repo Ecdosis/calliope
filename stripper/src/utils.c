@@ -38,15 +38,15 @@ const char *read_file( const char *file_name, int *len )
             {
                 flen = (int)fread( buf, 1, *len, src_file );
                 if ( flen != *len )
-                    error("couldn't read %s\n",file_name);
+                    fprintf(stderr,"couldn't read %s\n",file_name);
             }
             else
-                error("couldn't allocate buf\n");
+                fprintf(stderr,"couldn't allocate buf\n");
             fclose( src_file );
             
         }
         else
-            error("failed to open %s\n",file_name );
+            fprintf(stderr,"failed to open %s\n",file_name );
     }
     return buf;
 }
