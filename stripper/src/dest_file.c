@@ -211,11 +211,9 @@ static int dest_file_dequeue( dest_file *df )
     if ( array != NULL )
     {
         range *r = df->queue;
-        range *old = NULL;
         dest_file_set_first( df, 1 );
         for ( i=0;i<len;i++ )
         {
-            old = r;
             r = array[i];
             res = df->f->rfunc( 
                 range_get_name(r),

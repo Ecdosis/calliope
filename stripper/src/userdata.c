@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include <ctype.h>
 #ifdef JNI
 #include <jni.h>
 #include "log.h"

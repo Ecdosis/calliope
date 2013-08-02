@@ -99,25 +99,25 @@ static char **copy_atts( const char **atts )
 	int i = 0;
 	char **new_atts;
 	while ( atts[i] != NULL )
-	{
-		i += 2;
-		len+=2;
-	}
-	new_atts = calloc( len+2, sizeof(char*) );
-	i = 0;
-	while ( atts[i] != NULL )
-	{
-		new_atts[i] = strdup(atts[i]);
-		if ( new_atts[i] == NULL )
-			fprintf( stderr,
+    {
+        i += 2;
+        len+=2;
+    }
+    new_atts = calloc( len+2, sizeof(char*) );
+    i = 0;
+    while ( atts[i] != NULL )
+    {
+        new_atts[i] = strdup(atts[i]);
+        if ( new_atts[i] == NULL )
+            fprintf( stderr,
                 "stripper: failed to allocate store for attribute key" );
-		new_atts[i+1] = strdup( atts[i+1] );
-		if ( new_atts[i+1] == NULL )
-			fprintf( stderr,
+        new_atts[i+1] = strdup( atts[i+1] );
+        if ( new_atts[i+1] == NULL )
+            fprintf( stderr,
                 "stripper: failed to allocate store for attribute value" );
-		i += 2;
-	}
-	return new_atts;
+        i += 2;
+    }
+    return new_atts;
 }
 /**
  * Start element handler for XML file stripping.
@@ -279,11 +279,13 @@ static void trim( userdata *u, char **cptr, int *len )
                 {
                     if ( text[i] == '-' )
                     {
-                        //int ulen = utf8_len(text,length);
                         int ulen = length;
                         userdata_update_last_word(u,text,length);
-                        userdata_set_hoffset(u,userdata_toffset(u)+ulen-1);
-                        userdata_set_hyphen_state(u,HYPHEN_ONLY);
+                        if ( strlen(userdata_last_word(u))>0 )
+                        {
+                            userdata_set_hoffset(u,userdata_toffset(u)+ulen-1);
+                            userdata_set_hyphen_state(u,HYPHEN_ONLY);
+                        }
                     }
                     else
                     {
@@ -435,21 +437,20 @@ static void process_hyphen( userdata *u, XML_Char *text, int len )
             && !userdata_has_word(u,combined) )
             force = "strong";
         // create a range to describe a hard hyphen
-        char **atts = calloc(3,sizeof(char*));
+        char **atts = calloc(1,sizeof(char*));
         if ( atts != NULL )
         {
-            atts[0] = strdup("force");
-            atts[1] = strdup(force);
-            atts[2] = NULL;
-            range *r = range_new( 0, "pc", atts, userdata_hoffset(u) );
+            range *r = range_new( 0, force, atts, userdata_hoffset(u) );
             if ( r != NULL )
             {
-                dest_file *df = userdata_get_markup_dest( u, "pc" );
+                dest_file *df = userdata_get_markup_dest( u, force );
                 userdata_set_hyphen_state(u,HYPHEN_NONE);
                 range_set_len( r, 1 );
                 dest_file_enqueue( df, r );
             }
         }
+        else
+            fprintf(stderr,"stripper: failed to create hyphen range\n");
         if ( combined != NULL )
             free( combined );
     }
