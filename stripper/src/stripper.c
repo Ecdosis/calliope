@@ -279,7 +279,8 @@ static void trim( userdata *u, char **cptr, int *len )
                 {
                     if ( text[i] == '-' )
                     {
-                        int ulen = utf8_len(text,length);
+                        //int ulen = utf8_len(text,length);
+                        int ulen = length;
                         userdata_update_last_word(u,text,length);
                         userdata_set_hoffset(u,userdata_toffset(u)+ulen-1);
                         userdata_set_hyphen_state(u,HYPHEN_ONLY);
@@ -325,7 +326,7 @@ static void trim( userdata *u, char **cptr, int *len )
                         (*len)--;
                         userdata_set_hyphen_state(u,HYPHEN_LF);
                         userdata_set_hoffset(u,userdata_toffset(u)
-                            +utf8_len(text,length)-2);
+                            +length/*utf8_len(text,length)*/-2);
                         userdata_update_last_word(u,text,length);
                         userdata_set_last_char_type(u,CHAR_TYPE_TEXT);
                     }
@@ -350,7 +351,7 @@ static void trim( userdata *u, char **cptr, int *len )
                         (*len)--;
                         userdata_set_hyphen_state(u,HYPHEN_LF);
                         userdata_set_hoffset(u,userdata_toffset(u)
-                            +utf8_len(text,length)-2);
+                            +length/*utf8_len(text,length)*/-2);
                         userdata_update_last_word(u,text,length);
                         userdata_set_last_char_type(u,CHAR_TYPE_TEXT);
                     }
@@ -490,8 +491,11 @@ static void XMLCALL charhndl( void *userData, const XML_Char *s, int len)
             }
             if ( len > 0 )
             {
+                //int ulen = utf8_len(text,len);
                 n = dest_file_write( userdata_text_dest(u), text, len );
-                userdata_inc_toffset( u, utf8_len(text,len) );
+                userdata_inc_toffset( u, len );
+                //if ( ulen != len )
+                //    printf("ulen!=len\n");
                 if ( n != len )
                     error( "stripper: write error on text file" );
             }
