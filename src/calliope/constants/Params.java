@@ -97,7 +97,7 @@ public class Params
     public final static String UPLOAD = "UPLOAD";
     public final static String SIMILARITY = "SIMILARITY";
     public final static String DICT = "DICT";
-    public final static String HH_EXCEPTIONS = "HH_EXCEPTIONS";
+    public final static String HH_EXCEPTIONS = "hh_exceptions";
     /** default xslt stylesheet */
     public final static String XSLT_DEFAULT = "default";
     public final static String ZIP_TYPE = "zip_type";
