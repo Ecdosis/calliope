@@ -44,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/error.o \
 	${OBJECTDIR}/src/hashmap.o \
 	${OBJECTDIR}/src/hashset.o \
+	${OBJECTDIR}/src/hh_exceptions.o \
 	${OBJECTDIR}/src/layer.o \
 	${OBJECTDIR}/src/log.o \
 	${OBJECTDIR}/src/milestone.o \
@@ -84,102 +85,107 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stripper: ${OBJECTFILES}
 ${OBJECTDIR}/_ext/1858218211/cJSON.o: ../formatter/src/STIL/cJSON.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1858218211
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1858218211/cJSON.o ../formatter/src/STIL/cJSON.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1858218211/cJSON.o ../formatter/src/STIL/cJSON.c
 
 ${OBJECTDIR}/_ext/1078767344/memwatch.o: ../formatter/src/memwatch.c 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1078767344
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1078767344/memwatch.o ../formatter/src/memwatch.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1078767344/memwatch.o ../formatter/src/memwatch.c
 
 ${OBJECTDIR}/src/AESE.o: src/AESE.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/AESE.o src/AESE.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/AESE.o src/AESE.c
 
 ${OBJECTDIR}/src/STIL.o: src/STIL.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/STIL.o src/STIL.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/STIL.o src/STIL.c
 
 ${OBJECTDIR}/src/attribute.o: src/attribute.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/attribute.o src/attribute.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/attribute.o src/attribute.c
 
 ${OBJECTDIR}/src/dest_file.o: src/dest_file.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/dest_file.o src/dest_file.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/dest_file.o src/dest_file.c
 
 ${OBJECTDIR}/src/error.o: src/error.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/error.o src/error.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/error.o src/error.c
 
 ${OBJECTDIR}/src/hashmap.o: src/hashmap.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashmap.o src/hashmap.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashmap.o src/hashmap.c
 
 ${OBJECTDIR}/src/hashset.o: src/hashset.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashset.o src/hashset.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashset.o src/hashset.c
+
+${OBJECTDIR}/src/hh_exceptions.o: src/hh_exceptions.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hh_exceptions.o src/hh_exceptions.c
 
 ${OBJECTDIR}/src/layer.o: src/layer.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/layer.o src/layer.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/layer.o src/layer.c
 
 ${OBJECTDIR}/src/log.o: src/log.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/log.o src/log.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/log.o src/log.c
 
 ${OBJECTDIR}/src/milestone.o: src/milestone.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/milestone.o src/milestone.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/milestone.o src/milestone.c
 
 ${OBJECTDIR}/src/ramfile.o: src/ramfile.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ramfile.o src/ramfile.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/ramfile.o src/ramfile.c
 
 ${OBJECTDIR}/src/range.o: src/range.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/range.o src/range.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/range.o src/range.c
 
 ${OBJECTDIR}/src/recipe.o: src/recipe.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/recipe.o src/recipe.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/recipe.o src/recipe.c
 
 ${OBJECTDIR}/src/simplification.o: src/simplification.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/simplification.o src/simplification.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/simplification.o src/simplification.c
 
 ${OBJECTDIR}/src/stack.o: src/stack.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stack.o src/stack.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stack.o src/stack.c
 
 ${OBJECTDIR}/src/stripper.o: src/stripper.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stripper.o src/stripper.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/stripper.o src/stripper.c
 
 ${OBJECTDIR}/src/userdata.o: src/userdata.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/userdata.o src/userdata.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/userdata.o src/userdata.c
 
 ${OBJECTDIR}/src/utils.o: src/utils.c 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.c) -g -DCOMMANDLINE -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/utils.o src/utils.c
+	$(COMPILE.c) -g -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DMEMWATCH -DCOMMANDLINE -Iinclude -I../formatter/include/STIL -I../formatter/include -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/utils.o src/utils.c
 
 # Subprojects
 .build-subprojects:

@@ -48,6 +48,7 @@
 #include "hashmap.h"
 #include "log.h"
 #include "memwatch.h"
+#include "hh_exceptions.h"
 #include "userdata.h"
 
 #define FILE_NAME_LEN 128
@@ -85,6 +86,10 @@ typedef struct
     int doing_help;
     /** language code */
     char *language;
+    /** hard-hyphen object */
+    hh_exceptions *hh_except;
+    /** copy of commandline arg */
+    char *hh_except_string;
     /** the parser */
     XML_Parser parser;
 } stripper;
@@ -431,11 +436,18 @@ static void process_hyphen( userdata *u, XML_Char *text, int len )
         char *force = "weak";
         XML_Char *last = userdata_last_word(u);
         XML_Char *combined = combine_words(last,next);
-        if ( userdata_has_word(u,last)
+        if ( (userdata_has_word(u,last)
             && userdata_has_word(u,next)
             && combined!=NULL
-            && !userdata_has_word(u,combined) )
+            && (!userdata_has_word(u,combined)
+                ||userdata_has_hh_exception(u,combined)))
+            || (strlen(next)>0&&isupper(next[0])) )
+        {
             force = "strong";
+            printf("strong: %s-%s\n",last,next);
+        }
+        else
+            printf("weak: %s\n",combined);
         // create a range to describe a hard hyphen
         char **atts = calloc(1,sizeof(char*));
         if ( atts != NULL )
@@ -465,7 +477,7 @@ static void process_hyphen( userdata *u, XML_Char *text, int len )
  * @param s the character data
  * @param its length
  */
-static void XMLCALL charhndl( void *userData, const XML_Char *s, int len)
+static void XMLCALL charhndl( void *userData, const XML_Char *s, int len )
 {
 	userdata *u = userData;
 	if ( stack_empty(userdata_ignoring(u)) )
@@ -574,6 +586,10 @@ void stripper_dispose( stripper *s )
 {
     if ( s->user_data != NULL )
         userdata_dispose( s->user_data );
+    if ( s->hh_except_string != NULL )
+        free( s->hh_except_string );
+    if ( s->hh_except != NULL )
+        hh_exceptions_dispose( s->hh_except );
     if ( s != NULL )
         free( s );
 }
@@ -611,20 +627,25 @@ static const char *load_string( JNIEnv *env, jstring jstr, jboolean *copied )
  */
 JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
   (JNIEnv *env, jobject obj, jstring xml, jstring rules, jstring format, 
-    jstring style, jstring language, jobject text, jobject markup)
+    jstring style, jstring language, jstring hexcepts, jobject text, 
+    jobject markup);
 {
 	int res = 1;
-    jboolean x_copied,r_copied=JNI_FALSE,f_copied,s_copied,l_copied=JNI_FALSE;
+    jboolean x_copied,r_copied=JNI_FALSE,f_copied,s_copied,h_copied,l_copied=JNI_FALSE;
     const char *x_str = load_string( env, xml, &x_copied );
     const char *r_str = (rules!=NULL)?load_string(env,rules,&r_copied):NULL;
     const char *f_str = load_string( env, format, &f_copied );
     const char *s_str = load_string( env, style, &s_copied );
     const char *l_str = (language==NULL)?"en_GB"
         :load_string( env, language, &l_copied );
+    const char *h_str = (hexcepts==NULL)?NULL
+        :load_string( env, hexcepts, &h_copied );
     stripper *s = stripper_create();
     if ( s != NULL )
     {
         recipe *ruleset;
+        if ( h_str != NULL && strlen(h_str)>0 )
+            stripper_add_hh_extensions( s, h_str );
         s->selected_format = lookup_format( f_str );
         // load or initialise rule set
         if ( rules == NULL )
@@ -661,6 +682,7 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
         unload_string( env, format, f_str, f_copied );
         unload_string( env, style, s_str, s_copied );
         unload_string( env, language, l_str, l_copied );
+        unload_string( env, hexcepts, h_str, h_copied );
     }
     return res;
 }
@@ -700,7 +722,7 @@ JNIEXPORT jobjectArray JNICALL Java_calliope_AeseStripper_formats
 	}
 	return ret;
 }
-#else
+#elif COMMANDLINE
 /**
  * Print a simple help message. If we get time we can
  * make a man page later.
@@ -720,6 +742,8 @@ static void print_help()
         "-s style. Specify a style name (default \"TEI\")\n"
 		"-f format. Specify a supported format\n"
 		"-l list supported formats\n"
+        "-e hh_exceptions ensure these space-delimited compound words ARE "
+        "hyphenated\nIF both halves are words and the compound is also, e.g. safeguard\n"
 		"-r recipe-file specifying removals and simplifications in XML or JSON\n"
 		"XML-file the only real argument is the name of an XML "
 			"file to split.\n");
@@ -806,6 +830,9 @@ static int check_args( int argc, char **argv, stripper *s )
                     case 's':
                         s->style = argv[i+1];
                         break;
+                    case 'e':
+                        s->hh_except_string = strdup(argv[i+1]);
+                        break;
 				}
 			}
 			if ( !sane )
@@ -816,7 +843,7 @@ static int check_args( int argc, char **argv, stripper *s )
 			sscanf( argv[argc-1], "%127s", s->src );
 			sane = file_exists( s->src );
 			if ( !sane )
-				fprintf(stderr,"stripper: can't find %s\n",s->src );
+				fprintf(stderr,"stripper: can't find file %s\n",s->src );
             else
             {
                 strncpy(s->barefile, s->src, FILE_NAME_LEN );
@@ -834,7 +861,7 @@ static int check_args( int argc, char **argv, stripper *s )
 static void usage()
 {
 	printf( "usage: stripper [-h] [-v] [-s style] [-l] [-f format] "
-        "[-r recipe] XML-file\n" );
+        "[-r recipe] [-e hh_exceptions] XML-file\n" );
 }
 /**
  * The main entry point
@@ -865,8 +892,9 @@ int main( int argc, char **argv )
             }
             if ( rules != NULL )
             {
+                hh_exceptions *hhe = hh_exceptions_create( s->hh_except_string );
                 s->user_data = userdata_create( s->language, s->barefile, 
-                    rules, &formats[s->selected_format] );
+                    rules, &formats[s->selected_format], hhe );
                 if ( s->user_data == NULL )
                 {
                     fprintf(stderr,"stripper: failed to initialise userdata\n");
@@ -894,12 +922,12 @@ int main( int argc, char **argv )
                         }
                     }
                 }
+                // save the files in a separate step
+                userdata_write_files( s->user_data );
             }
         }
-        else if ( !res )
+        else
             usage();
-        // save the files in a separate step
-        userdata_write_files( s->user_data );
         stripper_dispose( s );
     }
 	return 0;

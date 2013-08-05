@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     calliope_AeseStripper
  * Method:    strip
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
  */
 JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
-  (JNIEnv *, jobject, jstring, jstring, jstring, jstring, jstring, jobject, jobject);
+  (JNIEnv *, jobject, jstring, jstring, jstring, jstring, jstring, jstring, jobject, jobject);
 
 /*
  * Class:     calliope_AeseStripper

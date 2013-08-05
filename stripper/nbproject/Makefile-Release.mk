@@ -44,6 +44,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/error.o \
 	${OBJECTDIR}/src/hashmap.o \
 	${OBJECTDIR}/src/hashset.o \
+	${OBJECTDIR}/src/hh_exceptions.o \
 	${OBJECTDIR}/src/layer.o \
 	${OBJECTDIR}/src/log.o \
 	${OBJECTDIR}/src/milestone.o \
@@ -125,6 +126,11 @@ ${OBJECTDIR}/src/hashset.o: src/hashset.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hashset.o src/hashset.c
+
+${OBJECTDIR}/src/hh_exceptions.o: src/hh_exceptions.c 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/hh_exceptions.o src/hh_exceptions.c
 
 ${OBJECTDIR}/src/layer.o: src/layer.c 
 	${MKDIR} -p ${OBJECTDIR}/src

@@ -14,6 +14,7 @@
       <itemPath>include/format.h</itemPath>
       <itemPath>include/hashmap.h</itemPath>
       <itemPath>include/hashset.h</itemPath>
+      <itemPath>include/hh_exceptions.h</itemPath>
       <itemPath>include/layer.h</itemPath>
       <itemPath>include/log.h</itemPath>
       <itemPath>include/milestone.h</itemPath>
@@ -40,6 +41,7 @@
       <itemPath>src/error.c</itemPath>
       <itemPath>src/hashmap.c</itemPath>
       <itemPath>src/hashset.c</itemPath>
+      <itemPath>src/hh_exceptions.c</itemPath>
       <itemPath>src/layer.c</itemPath>
       <itemPath>src/log.c</itemPath>
       <itemPath>../formatter/src/memwatch.c</itemPath>
@@ -118,6 +120,8 @@
       </item>
       <item path="include/hashset.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/hh_exceptions.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/layer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/log.h" ex="false" tool="3" flavor2="0">
@@ -151,6 +155,8 @@
       <item path="src/hashmap.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/hashset.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/hh_exceptions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/layer.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -218,6 +224,8 @@
       </item>
       <item path="include/hashset.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/hh_exceptions.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/layer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/log.h" ex="false" tool="3" flavor2="0">
@@ -251,6 +259,8 @@
       <item path="src/hashmap.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/hashset.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/hh_exceptions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="src/layer.c" ex="false" tool="0" flavor2="0">
       </item>

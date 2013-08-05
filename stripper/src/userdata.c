@@ -19,6 +19,7 @@
 #include "format.h"
 #include "range.h"
 #include "dest_file.h"
+#include "hh_exceptions.h"
 #include "userdata.h"
 #include "aspell.h"
 #include "utils.h"
@@ -47,6 +48,8 @@ struct userdata_struct
     dest_file **markup_dest;
     /** map of XML names to dest_files */
     hashmap *dest_map;
+    /** hard hyphen exceptions */
+    hh_exceptions *hhe;
     /** spell check object */
     AspellSpeller *spell_checker;
     AspellConfig *spell_config;
@@ -127,13 +130,15 @@ static int open_dest_files( userdata *u, char *barefile, format *fmt )
  * @return a complete userdata object or NULL
  */
 userdata *userdata_create( const char *language, char *barefile, recipe *rules, 
-    format *fmt )
+    format *fmt, hh_exceptions *hhe )
 {
     int err = 0;
     userdata *u = calloc( 1, sizeof(userdata) );
     if ( u != NULL )
     {
         u->rules = rules;
+        if ( hhe != NULL )
+            u->hhe = hhe;
         u->spell_config = new_aspell_config();
         if ( u->spell_config != NULL )
         {
@@ -212,6 +217,7 @@ void userdata_dispose( userdata *u )
             free( u->last_word );
         if ( u->dest_map != NULL )
             hashmap_dispose( u->dest_map );
+        // we don't own the hh_exceptions
         free( u );
     }
 }
@@ -460,6 +466,13 @@ int userdata_hyphen_state( userdata *u )
 void userdata_set_hyphen_state( userdata *u, int hstate )
 {
     u->hyphen_state = hstate;
+}
+int userdata_has_hh_exception( userdata *u, char *combination )
+{
+    if ( u->hhe != NULL )
+        return hh_exceptions_lookup(u->hhe,combination);
+    else
+        return 0;
 }
 /**
  * Duplicate the last word of a text fragment
