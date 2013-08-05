@@ -29,7 +29,11 @@ import calliope.tests.html.HTMLDocSelect;
 import calliope.constants.HTMLNames;
 import calliope.constants.Params;
 import calliope.constants.Globals;
+import calliope.AeseSpeller;
 import java.net.URL;
+import java.util.Locale;
+import java.util.Map;
+import java.util.HashMap;
 import java.net.HttpURLConnection;
 import java.io.BufferedReader;
 import java.io.OutputStream;
@@ -139,6 +143,8 @@ public class TestImport extends Test
     +"group.length > 0 )\n\t\t\t\tgroup += \"-\";\n\t\t\tgroup += "
     +"parts[i];\n\t\t}\n\t\tif ( group.length > 0 )\n\t\t\tgroup +"
     +"= \": \";\n\t\tgroupSpan.textContent = group;\n\t}\n}";
+    private static String LANG_TIP = "Specify a language for intelligent"
+        +" hyphenation";
     private static String STYLE_TIP = "Specify a CSS format name to"
         +" associate with the document";
     private static String FILTER_TIP = "Specify a filter to add "
@@ -383,6 +389,17 @@ public class TestImport extends Test
         cell16.addChild( checkbox );
         cell16.addAttribute("title",LENGTH_TIP);
         row8.addChild( cell16 );
+        
+        Element row9 = new Element( "tr" );
+        table.addChild( row9 );
+        Element cell17 = new Element( "td" );
+        cell17.addText( "Language: " );
+        row9.addChild( cell17 );
+        Element cell18 = new Element("td" );
+        cell18.addChild( makeDictionaryDropdown() );
+        cell18.addAttribute("title",LANG_TIP);
+        row9.addChild( cell18 );
+        
         return div;
     }
     Element makeHeader()
@@ -453,6 +470,35 @@ public class TestImport extends Test
                 HTMLDocSelect sel = new HTMLDocSelect( data, 
                     Params.STYLE, Params.STYLE);
                 sel.addAttribute(HTMLNames.ONCHANGE,"update_group()");
+                return sel;
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace(System.out);
+            return new Text( "Failed to get CorForm catalog: "
+                +e.getMessage() );
+        }
+        return new Element( HTMLNames.SELECT );
+    }
+    /**
+     * Make a dropdown menu of dictionaries available on server
+     * @return a select dropdown (possibly empty if it failed)
+     */
+    Element makeDictionaryDropdown()
+    {
+        try
+        {
+            String dictName = Locale.getDefault().toString();
+            AeseSpeller aes = new AeseSpeller( dictName );
+            String[] dicts = aes.listDicts();
+            if ( dicts != null )
+            {
+                Map<String,String> map = new HashMap<String,String>();
+                for ( int i=0;i<dicts.length;i++ )
+                    map.put( dicts[i], new Locale(dicts[i]).getDisplayName() );
+                HTMLDocSelect sel = new HTMLDocSelect( map, Params.DICT, 
+                    Params.DICT );
                 return sel;
             }
         }

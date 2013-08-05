@@ -54,7 +54,7 @@ public class AeseXMLImportHandler extends AeseImportHandler
                     StageTwo stage2 = new StageTwo( stage1, false );
                     log.append( stage2.process(cortex,corcode) );
                     StageThreeXML stage3Xml = new StageThreeXML( stage2, 
-                        style );
+                        style, dict, hhExceptions );
                     stage3Xml.setStripConfig( getConfig(Config.stripper,
                         stripperName) );
                     stage3Xml.setSplitConfig( getConfig(Config.splitter,

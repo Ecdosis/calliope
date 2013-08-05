@@ -72,7 +72,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                             StageTwo stage2 = new StageTwo( stage1, similarityTest );
                             log.append( stage2.process(cortex,corcode) );
                             StageThreeXML stage3Xml = new StageThreeXML( stage2, 
-                                style );
+                                style, dict, hhExceptions );
                             stage3Xml.setStripConfig( getConfig(Config.stripper,
                                 stripperName) );
                             stage3Xml.setSplitConfig( getConfig(Config.splitter,
@@ -87,7 +87,8 @@ public class AeseMixedImportHandler extends AeseImportHandler
                                     nCorTex.setStyle( style );
                                     Archive nCorCode = new Archive(docID.getWork(), 
                                         docID.getAuthor());
-                                    StageThreeXML s3notes = new StageThreeXML(style);
+                                    StageThreeXML s3notes = new StageThreeXML(
+                                        style,dict, hhExceptions);
                                     s3notes.setStripConfig( 
                                         getConfig(Config.stripper, stripperName) );
                                     s3notes.setSplitConfig( 

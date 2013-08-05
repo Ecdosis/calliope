@@ -77,7 +77,7 @@ public class AeseStripHandler extends AeseHandler
                 JSONResponse text = new JSONResponse();
                 AeseStripper stripper = new AeseStripper();
                 int res = stripper.strip(xml,recipe,format, style, 
-                    "en_GB", text, markup );
+                    "en_GB", null, text, markup );
                 if ( res == 1 )
                 {
                     Multipart mime = new Multipart();

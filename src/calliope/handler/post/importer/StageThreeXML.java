@@ -52,20 +52,35 @@ public class StageThreeXML extends Stage
     String splitConfig;
     String style;
     String xslt;
+    String dict;
+    String hhExcepts;
     boolean hasTEI;
     public StageThreeXML()
     {
         super();
+        this.dict = "en_GB";
     }
-    public StageThreeXML( String style )
+    public StageThreeXML( String style, String dict, String hhExcepts )
     {
         super();
         this.style = style;
+        this.hhExcepts = hhExcepts;
+        this.dict = (dict==null||dict.length()==0)?"en_GB":dict;
     }
-    public StageThreeXML( Stage last, String style )
+    /**
+     * 
+     * @param last
+     * @param style
+     * @param dict name of dictionary e.g. en_GB
+     * @param hhExcepts hard hyphen exceptions list (space delimited)
+     */
+    public StageThreeXML( Stage last, String style, String dict, 
+        String hhExcepts )
     {
         super();
         this.style = style;
+        this.hhExcepts = hhExcepts;
+        this.dict = (dict==null||dict.length()==0)?"en_GB":dict;
         for ( int i=0;i<last.files.size();i++ )
         {
             File f = last.files.get( i );
@@ -367,7 +382,7 @@ public class StageThreeXML extends Stage
                     JSONResponse text = new JSONResponse();
                     AeseStripper stripper = new AeseStripper();
                     int res = stripper.strip( map.get(key), stripConfig, 
-                        Formats.STIL, style, "en_GB", text, markup );
+                        Formats.STIL, style, dict, hhExcepts, text, markup );
                     if ( res == 1 )
                     {
                         String vid = "Base/";

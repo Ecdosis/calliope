@@ -45,7 +45,10 @@ public abstract class AeseImportHandler extends AesePostHandler
     String database;
     String splitterName;
     String stripperName;
+    /** hard hyphen exceptions */
+    String hhExceptions;
     boolean similarityTest;
+    String dict;
     /** uploaded xslt file contents */
     String xslt;
     boolean demo;
@@ -155,6 +158,10 @@ public abstract class AeseImportHandler extends AesePostHandler
                             textName = contents.toLowerCase();
                         else if ( fieldName.equals(Params.XSLT) )
                             xslt = getConfig(Config.xslt,contents);
+                        else if ( fieldName.equals(Params.DICT) )
+                            dict = contents;
+                        else if ( fieldName.equals(Params.HH_EXCEPTIONS) )
+                            hhExceptions = contents;
                         else
                             jsonKeys.put( fieldName, contents );
                     }

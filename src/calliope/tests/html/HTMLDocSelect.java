@@ -3,6 +3,9 @@
  * and open the template in the editor.
  */
 package calliope.tests.html;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.Map;
 
 import calliope.constants.HTMLNames;
 
@@ -27,6 +30,15 @@ public class HTMLDocSelect extends Element
             this.addAttribute( HTMLNames.NAME, name );
         load( docids );
     }
+    public HTMLDocSelect( Map<String,String> map, String name, String id )
+    {
+        super( HTMLNames.SELECT );
+        if ( id != null )
+            this.addAttribute(HTMLNames.ID, id );
+        if ( name != null )
+            this.addAttribute( HTMLNames.NAME, name );
+        load( map );
+    }
     private String makeOptLabel( String[] parts )
     {
         StringBuilder sb = new StringBuilder();
@@ -37,6 +49,20 @@ public class HTMLDocSelect extends Element
             sb.append( parts[i] );
         }
         return sb.toString();
+    }
+    /**
+     * Create a select dropdown from a set of human names and values
+     * @param map of values to human-readable names
+     */
+    private void load( Map<String,String> map )
+    {
+        Set<String> codes = map.keySet();
+        Iterator<String> iter = codes.iterator();
+        while ( iter.hasNext() )
+        {
+            String key = iter.next();
+            addChild( new HTMLOption(map.get(key),key) );
+        }
     }
     /**
      * Load a json document being the output of _all_docs
