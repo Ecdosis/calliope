@@ -478,46 +478,51 @@ int userdata_has_hh_exception( userdata *u, char *combination )
  * Duplicate the last word of a text fragment
  * @param text the text to pop the word off of
  * @param len its length
- * @return an allocated word in UTF8 or NULL
+ * @return an allocated word in UTF8 or the empty string
  */
 static XML_Char *last_word( XML_Char *text, int len )
 {
     int size,i=len-1;
-    int start = 0;
-    // point beyond trailing hyphen
-    if ( text[len-1] == '-' )
+    if ( len > 0 )
     {
-        len--;
-        i--;
-    }
-    else
-    {
-        // point to last non-space
+        int start = 0;
+        // point beyond trailing hyphen
+        if ( text[len-1] == '-' )
+        {
+            len--;
+            i--;
+        }
+        else
+        {
+            // point to last non-space
+            for ( ;i>0;i-- )
+            {
+                if ( !isspace(text[i]) )
+                    break;
+            }
+        }
+        int j = i;
         for ( ;i>0;i-- )
         {
-            if ( !isspace(text[i]) )
+            if ( !isalpha(text[i]) )
+            {
+                start = i+1;
+                size = j-i;
                 break;
+            }
         }
-    }
-    int j = i;
-    for ( ;i>0;i-- )
-    {
-        if ( !isalpha(text[i]) )
+        if ( i==0 )
+            size = (j-i)+1;
+        XML_Char *word = calloc( 1+size, sizeof(XML_Char) );
+        if ( word != NULL )
         {
-            start = i+1;
-            size = j-i;
-            break;
+            int nbytes = size*sizeof(XML_Char);
+            memcpy( word, &text[start], nbytes );
         }
+        return word;
     }
-    if ( i==0 )
-        size = (j-i)+1;
-    XML_Char *word = calloc( 1+size, sizeof(XML_Char) );
-    if ( word != NULL )
-    {
-        int nbytes = size*sizeof(XML_Char);
-        memcpy( word, &text[start], nbytes );
-    }
-    return word;
+    else
+        return "";
 }
 void userdata_update_last_word( userdata *u, char *line, int len )
 {

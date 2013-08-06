@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "hh_exceptions.h"
 struct hh_exceptions_struct
 {
