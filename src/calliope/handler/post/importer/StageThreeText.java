@@ -30,8 +30,11 @@ public class StageThreeText extends Stage
     /**
      * Create an instance and add files later
      * @param filter the name of the text filter to apply
+     * @param dict the name of the dictionary to use for hyphenation
+     * @param hhExceptions the hard hyphen exceptions list
      */
-    public StageThreeText( String filterName ) throws ImportException
+    public StageThreeText( String filterName, String dict, String hhExceptions ) 
+        throws ImportException
     {
         super();
         try
@@ -44,6 +47,11 @@ public class StageThreeText extends Stage
                 Class c = Class.forName("calliope.importer.filters."
                     +filterName+"Filter");
                 filter = (Filter)c.newInstance();
+                if ( filter != null )
+                {
+                    filter.setDict( dict );
+                    filter.setHHExceptions( hhExceptions );
+                }
             }
             else
                 throw new ImportException( "filter name emtpy" );

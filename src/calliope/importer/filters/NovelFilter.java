@@ -7,6 +7,7 @@ package calliope.importer.filters;
 import calliope.exception.ImportException;
 import calliope.importer.Archive;
 import calliope.json.JSONDocument;
+import calliope.constants.CSSStyles;
 import calliope.json.corcode.Range;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,11 +18,14 @@ import java.io.IOException;
 public class NovelFilter extends Filter
 {
     MarkupSet markup;
-    boolean lastWasHyphen=false;
     byte[] CR = {'\n'};
     byte[] HYPHEN = {'-'};
     byte[] SPACE = {' '};
     int written  = 0;
+    public NovelFilter()
+    {
+        super();
+    }
     @Override
     public void configure( JSONDocument config )
     {
@@ -35,42 +39,16 @@ public class NovelFilter extends Filter
     @Override
     public String getDescription()
     {
-        return "Novel chapter with heading, paragraphs qnd quotations";
+        return "Novel chapter with heading, paragraphs and quotations";
     }
     private void writeCurrent( ByteArrayOutputStream txt, byte[] current )
         throws IOException
     {
-        if ( lastWasHyphen )
-        {
-            if ( current.length>0 && Character.isLetter(current[0]) )
-            {
-                txt.write( current );
-                written += current.length;
-            }
-            else
-            {
-                txt.write( HYPHEN );
-                written += HYPHEN.length;
-            }
-        }
-        else
-        {
-            if ( current[current.length-1]=='-' )
-            {
-                txt.write( current, 0, current.length-1 );
-                written += current.length-1;
-            }
-            else
-            {
-                txt.write( current );
-                written += current.length;
-            }
-        }
-        if ( current.length > 0 )
-            lastWasHyphen = ( current[current.length-1]=='-' );    
+        txt.write( current );
+        written += current.length;    
     }
     /**
-     * Work out if this line, which starts with a space is part of a quote
+     * Work out if this line, which starts with a space, is part of a quote
      * @param lines an array of lines
      * @param i the index of the current line
      * @return true if it's a quote else false
@@ -90,6 +68,11 @@ public class NovelFilter extends Filter
         }
         return false;
     }
+    /**
+     * Is this line just a series of digits?
+     * @param line a line of text
+     * @return true if it's a number
+     */
     boolean isNumber( String line )
     {
         boolean res = false;
@@ -124,13 +107,15 @@ public class NovelFilter extends Filter
             int paraStart = 0;
             int quoteStart = 0;
             written = 0;
-            lastWasHyphen = false;
             markup = new MarkupSet();
             int state = 0;
+            String lastWord = "";
+            String firstWord = "";
             for ( int i=0;i<lines.length;i++ )
             {
                 boolean startsWithSpace = lines[i].startsWith(" ");
                 String str = lines[i].trim();
+                firstWord = getFirstWord( str );
                 boolean isPageNumber = str.length()<5&&isNumber(str);
                 byte[] current = str.getBytes("UTF-8");
                 switch ( state )
@@ -160,37 +145,48 @@ public class NovelFilter extends Filter
                             Range r = new Range( "pb", written, 0 );
                             r.addAnnotation( "n", lines[i] );
                             markup.add( r );
-                            writeCurrent( txt, SPACE );
-                        }
-                        else if ( startsWithSpace && isQuote(lines,i) )
-                        {
-                            if ( written>paraStart )
-                            {
-                                markup.add("p",paraStart, written-paraStart);
-                                writeCurrent( txt, CR );
-                            }
-                            quoteStart = written;
-                            writeCurrent( txt, current );
-                            state = 2;
+                            if ( !lastEndsInHyphen )
+                                writeCurrent( txt, SPACE );
+                            continue;
                         }
                         else if ( startsWithSpace )
                         {
-                            if ( written>paraStart )
+                            if ( isQuote(lines,i) )
                             {
-                                markup.add("p",paraStart, written-paraStart);
-                                writeCurrent( txt, CR );
+                                if ( written>paraStart )
+                                {
+                                    markup.add("p",paraStart,written-paraStart);
+                                    writeCurrent( txt, CR );
+                                }
+                                quoteStart = written;
+                                writeCurrent( txt, current );
+                                state = 2;
                             }
-                            paraStart = written;
-                            writeCurrent( txt, current );
+                            else
+                            {
+                                if ( written>paraStart )
+                                {
+                                    markup.add("p",paraStart, written-paraStart);
+                                    writeCurrent( txt, CR );
+                                }
+                                paraStart = written;
+                                writeCurrent( txt, current );
+                            }
                         }
                         else // middle of paragraph
                         {
-                            if ( lastWasHyphen )
+                            if ( lastEndsInHyphen )
                             {
-                                // no dictionary lookup just yet
-                                Range r = new Range( "lb", written, 0 );
-                                r.addAnnotation( "break", "no" );
-                                markup.add( r );
+                                if ( isHardHyphen(lastWord,firstWord) )
+                                {
+                                    Range r = new Range( CSSStyles.STRONG, written-1, 1 );
+                                    markup.add( r );
+                                }
+                                else
+                                {
+                                    Range r = new Range( CSSStyles.WEAK, written-1, 1 );
+                                    markup.add( r );
+                                }
                             }
                             else if ( written > paraStart )
                             {
@@ -212,13 +208,24 @@ public class NovelFilter extends Filter
                         }
                         else
                         {
-                            if ( !lastWasHyphen )
-                                writeCurrent( txt, SPACE );
-                            markup.add( "lb", written, 0 );
+                            if ( lastEndsInHyphen )
+                            {
+                                if ( isHardHyphen(lastWord,firstWord) )
+                                {
+                                    Range r = new Range( "strong", written-1, 1 );
+                                    markup.add( r );
+                                }
+                                else
+                                {
+                                    Range r = new Range( "weak", written-1, 1 );
+                                    markup.add( r );
+                                }
+                            }
                             writeCurrent( txt, current );
                         }
                         break;
                 }
+                lastWord = getLastWord( str );
             }
             if ( state == 1 && paraStart < written )
                 markup.add( "p", paraStart, written-paraStart );
@@ -226,7 +233,6 @@ public class NovelFilter extends Filter
                 markup.add( "quote", quoteStart, written-quoteStart );
             markup.sort();
             byte[] bytes = txt.toByteArray();
-            String text = new String( bytes, "UTF-8");
             cortex.put( name, bytes );
             String json = markup.toSTILDocument().toString();
             corcode.put( name, json.getBytes() );

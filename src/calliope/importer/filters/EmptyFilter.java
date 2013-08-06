@@ -29,6 +29,7 @@ public class EmptyFilter extends Filter
     public static String EMPTY_CORCODE = "{\"style\":\"TEI\",\"ranges\":[]}";
     public EmptyFilter()
     {
+        super();
     }
     /**
      * Get the raw name of this filter e.g. "play"

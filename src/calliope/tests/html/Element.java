@@ -54,11 +54,14 @@ public class Element
      */
     public String getAttribute( String name )
     {
-        for ( int i=0;i<attrs.size();i++ )
+        if ( attrs != null )
         {
-            Attribute a = attrs.get(i);
-            if ( a.key.equals(name) )
-                return a.value;
+            for ( int i=0;i<attrs.size();i++ )
+            {
+                Attribute a = attrs.get(i);
+                if ( a.key.equals(name) )
+                    return a.value;
+            }
         }
         return null;
     }
@@ -217,5 +220,28 @@ public class Element
             }
         }
         return null;
+    }
+    /**
+     * Try to set the default option that has the given value
+     * @param value the default 
+     */
+    public boolean setDefaultValue( String value )
+    {
+        boolean result = false;
+        for ( int i=0;i<children.size();i++ )
+        {
+            Element child = children.get(i);
+            String cValue = child.getAttribute(HTMLNames.VALUE);
+            if ( cValue !=null && cValue.equals(value) )
+            {
+                child.addAttribute(HTMLNames.SELECTED,HTMLNames.SELECTED);
+                result = true;
+            }
+            else if ( child.children != null && child.children.size()>0 )
+                result = child.setDefaultValue( value );
+            if ( result )
+                break;
+        }
+        return result;
     }
 }

@@ -112,7 +112,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                             log.append( stage3Xml.process(cortex,corcode) );
                             // process the text filers
                             StageThreeText stage3Text = new StageThreeText( 
-                                filterName );
+                                filterName, dict, hhExceptions );
                             stage3Text.setConfig( getConfig(Config.text,
                                 filterName+"/"+textName) );
                             ArrayList<File> stage2Files = stage2.getFiles();

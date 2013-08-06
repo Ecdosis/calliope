@@ -496,9 +496,20 @@ public class TestImport extends Test
             {
                 Map<String,String> map = new HashMap<String,String>();
                 for ( int i=0;i<dicts.length;i++ )
-                    map.put( dicts[i], new Locale(dicts[i]).getDisplayName() );
+                {
+                    String[] parts = dicts[i].split("\t");
+                    if ( parts.length==2 )
+                    {
+                        String country = parts[0];
+                        if ( parts[0].contains("_") )
+                            country = parts[0].substring(0,parts[0].indexOf("_"));
+                        String language = new Locale(country).getDisplayName();
+                        map.put( language+" "+ parts[1], parts[1] );
+                    }
+                }
                 HTMLDocSelect sel = new HTMLDocSelect( map, Params.DICT, 
                     Params.DICT );
+                sel.setDefaultValue( "en_GB" );
                 return sel;
             }
         }

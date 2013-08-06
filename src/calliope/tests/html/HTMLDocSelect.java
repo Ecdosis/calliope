@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import calliope.constants.HTMLNames;
+import java.util.ArrayList;
 
 /**
  * Generate a select element from an _all_docs query result from couchdb

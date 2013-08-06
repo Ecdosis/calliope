@@ -13,11 +13,12 @@ public class AeseSpeller
     String lang;
     static 
     {  
-        System.loadLibrary("aspell");
         System.loadLibrary("AeseSpeller");
+        System.loadLibrary("aspell");
     }
     public AeseSpeller( String lang ) throws Exception
     {
+        System.out.println("java.library.path="+System.getProperty("java.library.path"));
         this.lang = lang;
         if ( !initialise(lang) )
             throw new Exception("failed to initialise "+lang );

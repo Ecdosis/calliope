@@ -19,6 +19,8 @@ import calliope.importer.Archive;
 import calliope.exception.ImportException;
 import calliope.exception.AeseException;
 import calliope.json.JSONDocument;
+import calliope.AeseSpeller;
+import java.util.HashSet;
 
 /**
  * Specify how filters interact with the outside world
@@ -26,8 +28,69 @@ import calliope.json.JSONDocument;
  */
 public abstract class Filter 
 {
+    String dict;
+    String hhExceptions;
+    AeseSpeller speller;
+    boolean lastEndsInHyphen;
+    HashSet<String> compounds;
     public Filter()
     {
+        this.dict = "en_GB";
+        this.hhExceptions = "";
+        try
+        {
+            this.speller = new AeseSpeller( dict );
+            this.compounds = new HashSet<String>();
+            if ( hhExceptions != null && hhExceptions.length()>0 )
+            {
+                String[] items = hhExceptions.split( "\n" );
+                for ( int i=0;i<items.length;i++ )
+                    compounds.add( items[i] );
+            }
+        }
+        catch ( Exception e1 )
+        {
+            try
+            {
+                this.speller = new AeseSpeller("en_GB");
+            }
+            catch ( Exception e2 )
+            {
+            }
+        }
+    }
+    /**
+     * We really should cleanup the speller before we go
+     */
+    protected void finalize()
+    {
+        if ( this.speller != null )
+            this.speller.cleanup();
+    }
+    /**
+     * Should we hard-hyphenate two words or part-words?
+     * @param last the previous 'word'
+     * @param next the word on the next line
+     * @return true for a hard hyphen else soft
+     */
+    public boolean isHardHyphen( String last, String next )
+    {
+        String compound = last+next;
+        if ( speller.hasWord(last,dict)
+            &&speller.hasWord(next,dict)
+            &&(!speller.hasWord(compound,dict)
+                ||compounds.contains(compound)))
+            return true;
+        else
+            return false;
+    }
+    public void setDict( String dict )
+    {
+        this.dict = dict;
+    }
+    public void setHHExceptions( String hhExceptions )
+    {
+        this.hhExceptions = hhExceptions;
     }
     /**
      * Get the raw name of this filter e.g. "play"
@@ -42,6 +105,74 @@ public abstract class Filter
             return className.substring(0,pos);
         else
             throw new AeseException("invalid class name: "+className);
+    }
+    /**
+     * Get the first word of a line
+     * @param line the line in question
+     * @return 
+     */
+    protected String getFirstWord( String line )
+    {
+        int i;
+        int len = line.length();
+        for ( i=0;i<line.length();i++ )
+        {
+            if ( !Character.isWhitespace(line.charAt(i)) )
+                break;
+        }
+        int j = i;
+        for ( ;i<len;i++ )
+        {
+            if ( !Character.isLetter(line.charAt(i))||line.charAt(i)=='-' )
+                break;
+        }
+        return line.substring(j,i);
+    }
+    /**
+     * Get the last word of a line excluding punctuation etc
+     * @param line the line in question
+     * @return the word
+     */
+    protected String getLastWord( String text )
+    {
+        int len = text.length();
+        if ( len > 0 )
+        {
+            int start = 0;
+            int size=0,i=len-1;
+            // point beyond trailing hyphen
+            if ( text.charAt(len-1) == '-' )
+            {
+                lastEndsInHyphen = true;
+                len--;
+                i--;
+            }
+            else
+            {
+                lastEndsInHyphen = false;
+                // point to last non-space
+                for ( ;i>0;i-- )
+                {
+                    if ( !Character.isWhitespace(text.charAt(i)) )
+                        break;
+                }
+            }
+            int j = i;
+            for ( ;i>0;i-- )
+            {
+                if ( !Character.isLetter(text.charAt(i)) )
+                {
+                    start = i+1;
+                    size = j-i;
+                    break;
+                }
+            }
+            if ( i==0 )
+                size = (j-i)+1;
+            return text.substring(start,start+size);
+        }
+        else
+            return "";
     }
     public abstract void configure( JSONDocument config );
     /**
