@@ -444,10 +444,10 @@ static void process_hyphen( userdata *u, XML_Char *text, int len )
             || (strlen(next)>0&&isupper(next[0])) )
         {
             force = "strong";
-            printf("strong: %s-%s\n",last,next);
+            //printf("strong: %s-%s\n",last,next);
         }
-        else
-            printf("weak: %s\n",combined);
+        //else
+        //    printf("weak: %s\n",combined);
         // create a range to describe a hard hyphen
         char **atts = calloc(1,sizeof(char*));
         if ( atts != NULL )
@@ -628,7 +628,7 @@ static const char *load_string( JNIEnv *env, jstring jstr, jboolean *copied )
 JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
   (JNIEnv *env, jobject obj, jstring xml, jstring rules, jstring format, 
     jstring style, jstring language, jstring hexcepts, jobject text, 
-    jobject markup);
+    jobject markup)
 {
 	int res = 1;
     jboolean x_copied,r_copied=JNI_FALSE,f_copied,s_copied,h_copied,l_copied=JNI_FALSE;
@@ -644,37 +644,40 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
     if ( s != NULL )
     {
         recipe *ruleset;
-        if ( h_str != NULL && strlen(h_str)>0 )
-            stripper_add_hh_extensions( s, h_str );
+        s->hh_except_string = (h_str==NULL)?NULL:strdup(h_str);
         s->selected_format = lookup_format( f_str );
         // load or initialise rule set
         if ( rules == NULL )
             ruleset = recipe_new();
         else
             ruleset = recipe_load(r_str,strlen(r_str));
-        s->user_data = userdata_create( l_str, "main", ruleset, 
-            &formats[s->selected_format] );
-        if ( s->user_data != NULL )
+        hh_exceptions *hhe = hh_exceptions_create( s->hh_except_string );
+        if ( hhe != NULL )
         {
-            // write header
-            int i=0;
-            while ( res && userdata_markup_dest(s->user_data,i)!= NULL )
+            s->user_data = userdata_create( s->language, s->barefile, 
+                ruleset, &formats[s->selected_format], hhe );
+            if ( s->user_data != NULL )
             {
-                res = formats[s->selected_format].hfunc( NULL, 
-                    dest_file_dst(
-                        userdata_markup_dest(s->user_data,i)), s_str );
-                i++;
-            }
-            // parse XML
-            if ( res )
-            {
-                int xlen = strlen( x_str );
-                res = scan_source( x_str, xlen, s );
+                // write header
+                int i=0;
+                while ( res && userdata_markup_dest(s->user_data,i)!= NULL )
+                {
+                    res = formats[s->selected_format].hfunc( NULL, 
+                        dest_file_dst(
+                            userdata_markup_dest(s->user_data,i)), s_str );
+                    i++;
+                }
+                // parse XML
                 if ( res )
-                    userdata_write_files( env, s->user_data, text, markup );
+                {
+                    int xlen = strlen( x_str );
+                    res = scan_source( x_str, xlen, s );
+                    if ( res )
+                        userdata_write_files( env, s->user_data, text, markup );
+                }
+                else
+                    tmplog("write header failed\n");
             }
-            else
-                tmplog("write header failed\n");
         }
         stripper_dispose( s );
         unload_string( env, xml, x_str, x_copied );
@@ -840,7 +843,7 @@ static int check_args( int argc, char **argv, stripper *s )
 		}
 		if ( !s->doing_help )
 		{
-			sscanf( argv[argc-1], "%127s", s->src );
+			strncpy( s->src, argv[argc-1], FILE_NAME_LEN );
 			sane = file_exists( s->src );
 			if ( !sane )
 				fprintf(stderr,"stripper: can't find file %s\n",s->src );

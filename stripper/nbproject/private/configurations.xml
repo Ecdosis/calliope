@@ -31,8 +31,11 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections" SIL.xml </runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard" SIL.xml</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard underfoot" SIL.xml</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard underfoot" "SIL Palmer Chapter 2.1.xml"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard underfoot" SIL\ Palmer\ Chapter\ 2.1.xml</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" "SIL Palmer Chapter 2.1.xml"</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -e "afterdirections safeguard underfoot" SIL.xml</runcommand>
+        <runcommand>"${OUTPUT_PATH}" "SIL Palmer Chapter 2.1.xml"</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
