@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "hh_exceptions.h"
 struct hh_exceptions_struct
 {
@@ -107,6 +108,7 @@ void hh_exceptions_dispose( hh_exceptions *hhe )
             if ( hhe->hh_array[i] != NULL )
                 free( hhe->hh_array[i] );
         }
+        free( hhe->hh_array );
     }
     free( hhe );
 }

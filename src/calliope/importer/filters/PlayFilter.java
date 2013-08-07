@@ -206,52 +206,55 @@ public class PlayFilter extends Filter
      * @param input the input text
      * @return the log
      */
-    private String identifyStageDirections( String input )
+    private String identifyStageDirections( String input ) 
+        throws ImportException
     {
-        String[] sentences = input.split( sentenceEnd );
-        int offset = 0;
-        int stageStart = -1;
-        int state = 0;
-        int len = 0;
-        for ( int i=0;i<sentences.length;i++ )
+        try
         {
-            String trimmed = sentences[i].trim();
-            String word1 = firstWord(trimmed,true);
-            int extra = (i<sentences.length-1)?1:0;
-            switch ( state )
+            String[] sentences = input.split( sentenceEnd );
+            int offset = 0;
+            int stageStart = -1;
+            int state = 0;
+            int len = 0;
+            for ( int i=0;i<sentences.length;i++ )
             {
-                case 0:
-                    if ( stageKeys.contains(word1) )
-                    {
-                        stageStart = offset + sentences[i].indexOf(trimmed);
-                        state = 1;
-                        len = trimmed.length()+extra;
-                    }
-                    break;
-                case 1:
-                    if ( !isSpeech(trimmed) )
-                        len += sentences[i].length()+extra;
-                    else 
-                    {
-                        if ( trimmed.length()>0 )
-                            markup.add( "stage", stageStart, len );
-                        /*System.out.println("identified stage direction "
-                            +input.substring(stageStart,stageStart+len));*/
-                        state = 0;
-                        len = -1;
-                    }
-                    break;
+                byte[] current = sentences[i].getBytes("UTF-8");
+                String word1 = firstWord(sentences[i],true);
+                int extra = (i<sentences.length-1)?1:0;
+                switch ( state )
+                {
+                    case 0:
+                        if ( stageKeys.contains(word1) )
+                        {
+                            stageStart = offset;
+                            state = 1;
+                            len = current.length+extra;
+                        }
+                        break;
+                    case 1:
+                        if ( !isSpeech(sentences[i]) )
+                            len += current.length+extra;
+                        else 
+                        {
+                            if ( current.length>0 )
+                                markup.add( "stage", stageStart, len );
+                            /*System.out.println("identified stage direction "
+                                +input.substring(stageStart,stageStart+len));*/
+                            state = 0;
+                            len = -1;
+                        }
+                        break;
+                }
+                offset += current.length+1;
             }
-            offset += sentences[i].length()+1;
+            if ( state == 1 && len > 0 )
+                markup.add( "stage", stageStart, len );
+            return "";
         }
-        if ( state == 1 && len > 0 )
+        catch ( Exception e )
         {
-            /*System.out.println("identified stage direction at end"
-                +input.substring(stageStart,stageStart+len));*/
-            markup.addTrimmed( "stage", stageStart, 
-                input.substring(stageStart,stageStart+len) );
+            throw new ImportException( e );
         }
-        return "";
     }
     /**
      * Can the first word of a sentence be a epeaker name?
@@ -268,64 +271,85 @@ public class PlayFilter extends Filter
      * ending in speakerEnd. Lowercase the word. If it does not 
      * appear in the word list calculated in step 1 then it is a speaker.
      */
-    private String identifySpeakers( String input )
+    private String identifySpeakers( String input ) throws ImportException
     {
-        StringBuilder log = new StringBuilder();
-        String[] lines = input.split("\n");
-        int offset = 0;
-        for ( int i=0;i<lines.length;i++ )
+        try
         {
-            int index = 0;
-            for ( int j=0;j<lines[i].length();j++ )
+            StringBuilder log = new StringBuilder();
+            String[] lines = input.split("\n");
+            int offset = 0;
+            for ( int i=0;i<lines.length;i++ )
             {
-                char token = lines[i].charAt(j);
-                if ( token==speakerEnd || j==lines[i].length()-1 )
+                int index = 0;
+                byte[] current = lines[i].getBytes("UTF-8");
+                for ( int j=0;j<lines[i].length();j++ )
                 {
-                    index = j+1;
-                    break;
-                }
-                else if ( token==' '||token=='\t' ) 
-                {
-                    index = j;
-                    break;
-                }
-            }
-            if ( index > 0 )
-            {
-                String speaker = lines[i].substring( 0, index );
-                if ( canBeSpeaker(speaker) )
-                {
-                    String stripped = strip(speaker);
-                    String token = stripped.toLowerCase();
-                    if ( !words.contains(token) && !stageKeys.contains(stripped) )
+                    char token = lines[i].charAt(j);
+                    if ( token==speakerEnd || j==lines[i].length()-1 )
                     {
-                        speakers.add( speaker );
-                        // record speaker in markup set
-                        markup.add( "speaker", offset, speaker.length() );
+                        index = j+1;
+                        break;
+                    }
+                    else if ( token==' '||token=='\t' ) 
+                    {
+                        index = j;
+                        break;
                     }
                 }
+                if ( index > 0 )
+                {
+                    String speaker = lines[i].substring( 0, index );
+                    if ( canBeSpeaker(speaker) )
+                    {
+                        String stripped = strip(speaker);
+                        String token = stripped.toLowerCase();
+                        if ( !words.contains(token) && !stageKeys.contains(stripped) )
+                        {
+                            speakers.add( speaker );
+                            // record speaker in markup set
+                            markup.add( "speaker", 
+                                lines[i].indexOf(stripped)+offset, 
+                                stripped.getBytes("UTF-8").length );
+                        }
+                    }
+                }
+                offset += current.length+1;
             }
-            offset += lines[i].length()+1;
+            return log.toString();
         }
-        return log.toString();
+        catch ( Exception e )
+        {
+            throw new ImportException( e );
+        }
     }
     /**
      * Headings go at the top
      * @param input the input containing just the headings
      * @return the log output if any
      */
-    String identifyHeadings( String input )
+    String identifyHeadings( String input ) throws ImportException
     {
-        int pos = 0;
-        String[] lines = input.split("\n");
-        for ( int i=0;i<lines.length;i++ )
+        try
         {
-            String trimmed = lines[i].trim();
-            int local = lines[i].indexOf( trimmed );
-            markup.add( "head", pos+local, trimmed.length() );
-            pos += lines[i].length()+1;
+            int pos = 0;
+            String[] lines = input.split("\n");
+            for ( int i=0;i<lines.length;i++ )
+            {
+                byte[] current = lines[i].getBytes("UTF-8");
+                String trimmed = lines[i].trim();
+                int local = lines[i].indexOf( trimmed );
+                String leading = lines[i].substring(0,local);
+                byte[] leadBytes = leading.getBytes("UTF-8");
+                byte[] trimBytes = trimmed.getBytes("UTF-8");
+                markup.add( "head", pos+leadBytes.length, trimBytes.length );
+                pos += current.length+1;
+            }
+            return "";
         }
-        return "";
+        catch ( Exception e )
+        {
+            throw new ImportException( e );
+        }
     }
     /**
      * Work out if we have a poetic line by counting syllables
@@ -436,42 +460,68 @@ public class PlayFilter extends Filter
      * @param offset the offset of the speech
      * @return the log
      */
-    String identifySpeech( String input, int offset )
+    String identifySpeech( String input, int offset ) throws ImportException
     {
-        markup.addTrimmed( "sp", offset, input );
-        int speakerOffset=0;
-        String word1 = firstWord(input,false);
-        if ( speakers.contains(word1) )
+        try
         {
-            speakerOffset=input.indexOf(word1)+word1.length();
-            while ( speakerOffset<input.length()-1
-                &&Character.isWhitespace(input.charAt(speakerOffset)) )
-                speakerOffset++;
-        }
-        String[] lines = input.split("\n");
-        for ( int i=0;i<lines.length;i++ )
-        {
-            int origLen = lines[i].length();
-            if ( i>0 )
-                speakerOffset = 0;
-            if ( lines[i].length() > speakerOffset )
+            int speakerOffset=0;
+            byte[] speechBytes = input.getBytes("UTF-8");
+            markup.add( "sp", offset, speechBytes.length );
+            String word1 = firstWord(input,false);
+            if ( speakers.contains(word1) )
             {
-                if ( itsALine(lines[i]) )
+                byte[] spBytes = word1.getBytes("UTF-8");
+                int leadIndex = input.indexOf(word1);
+                if ( leadIndex > 0 )
                 {
-                    if ( speakerOffset > 0 )
-                        markup.addTrimmed( "l", offset+speakerOffset, 
-                            lines[i].substring(speakerOffset) );
-                    else
-                        markup.addTrimmed( "l", offset+speakerOffset, lines[i] );
+                    String leading = input.substring(0,leadIndex);
+                    leadIndex += leading.getBytes("UTF-8").length;
                 }
-                else if ( !isWhitespace(lines[i]) )
-                    markup.addTrimmed( "p", offset+speakerOffset, lines[i] );
+                speakerOffset=+spBytes.length+leadIndex;
+                byte token = speechBytes[speakerOffset];
+                while ( speakerOffset<speechBytes.length-1
+                    &&(token==' '||token=='\t'||token=='\r'||token=='\n') )
+                {
+                    speakerOffset++;
+                    token = speechBytes[speakerOffset];
+                }
             }
-            offset += origLen+1;
+            // speakerOffset points to the first non-speaker UTF-8 byte
+            String[] lines = input.split("\n");
+            for ( int i=0;i<lines.length;i++ )
+            {
+                byte[] current = lines[i].getBytes("UTF-8");
+                // on other than the 1st line read from start of line
+                if ( i>0 )
+                    speakerOffset = 0;
+                if ( current.length > speakerOffset )
+                {
+                    if ( itsALine(lines[i]) )
+                    {
+                        markup.add( "l", offset+speakerOffset, 
+                            current.length-speakerOffset );
+                    }
+                    else if ( !isWhitespace(lines[i]) )
+                        markup.add( "p", offset+speakerOffset, current.length );
+                }
+                // add 1 for removed CR
+                offset += current.length+1;
+            }
+            return "";
         }
-        return "";
+        catch ( Exception e )
+        {
+            throw new ImportException( e );
+        }
     }
-    String identifySpeeches( String input )
+    /**
+     * Having identified the speakers and stage directions now identify the 
+     * intervening speeches
+     * @param input the text of the play
+     * @return the log
+     * @throws ImportException 
+     */
+    String identifySpeeches( String input ) throws ImportException
     {
         StringBuilder log = new StringBuilder();
         Range prev = null;

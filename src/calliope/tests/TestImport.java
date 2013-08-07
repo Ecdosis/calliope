@@ -500,16 +500,13 @@ public class TestImport extends Test
                     String[] parts = dicts[i].split("\t");
                     if ( parts.length==2 )
                     {
-                        String country = parts[0];
-                        if ( parts[0].contains("_") )
-                            country = parts[0].substring(0,parts[0].indexOf("_"));
-                        String language = new Locale(country).getDisplayName();
+                        String language = Utils.languageName(parts[0]);
                         map.put( language+" "+ parts[1], parts[1] );
                     }
                 }
                 HTMLDocSelect sel = new HTMLDocSelect( map, Params.DICT, 
                     Params.DICT );
-                sel.setDefaultValue( "en_GB" );
+                sel.setDefaultValue( Globals.DEFAULT_DICT );
                 return sel;
             }
         }

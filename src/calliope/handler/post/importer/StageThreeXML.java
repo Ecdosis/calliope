@@ -23,6 +23,7 @@ import calliope.AeseStripper;
 import calliope.AeseTransformer;
 import calliope.Utils;
 import calliope.constants.Formats;
+import calliope.constants.Globals;
 import calliope.exception.AeseException;
 import java.io.StringReader;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class StageThreeXML extends Stage
     public StageThreeXML()
     {
         super();
-        this.dict = "en_GB";
+        this.dict = Globals.DEFAULT_DICT;
     }
     public StageThreeXML( String style, String dict, String hhExcepts )
     {

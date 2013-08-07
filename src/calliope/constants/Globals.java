@@ -17,4 +17,6 @@ public class Globals
     public static final boolean DEMO = true;
     /** maximum size of an uploaded file - don't increase unless you have to */
     public static int MAX_UPLOAD_LEN = 64000;
+    /** default dictionary */
+    public static String DEFAULT_DICT = "en_GB";
 }

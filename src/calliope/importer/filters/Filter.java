@@ -20,6 +20,8 @@ import calliope.exception.ImportException;
 import calliope.exception.AeseException;
 import calliope.json.JSONDocument;
 import calliope.AeseSpeller;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashSet;
 
 /**
@@ -28,11 +30,16 @@ import java.util.HashSet;
  */
 public abstract class Filter 
 {
-    String dict;
-    String hhExceptions;
-    AeseSpeller speller;
-    boolean lastEndsInHyphen;
-    HashSet<String> compounds;
+    protected String dict;
+    protected String hhExceptions;
+    protected AeseSpeller speller;
+    protected boolean lastEndsInHyphen;
+    protected HashSet<String> compounds;
+    protected int written;
+    protected byte[] CR = {'\n'};
+    protected byte[] HYPHEN = {'-'};
+    protected byte[] SPACE = {' '};
+    protected byte[] EMPTY = {};
     public Filter()
     {
         this.dict = "en_GB";
@@ -66,6 +73,12 @@ public abstract class Filter
     {
         if ( this.speller != null )
             this.speller.cleanup();
+    }
+    protected void writeCurrent( ByteArrayOutputStream txt, byte[] current )
+        throws IOException
+    {
+        txt.write( current );
+        written += current.length;    
     }
     /**
      * Should we hard-hyphenate two words or part-words?

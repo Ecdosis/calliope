@@ -5,6 +5,7 @@
 package calliope;
 import org.w3c.dom.Document;
 import java.io.StringWriter;
+import java.util.Locale;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -212,4 +213,15 @@ public class Utils
         }
         return urn;
     }
+     /**
+      * Get the display name for a language given its code+country
+      * @param langCode e.g. "it" or "en_GB" etc
+      */
+     public static String languageName( String langCode )
+     {
+         String country = langCode;
+         if ( langCode.contains("_") )
+            country = langCode.substring(0,langCode.indexOf("_"));
+        return new Locale(country).getDisplayName();                 
+     }
 }

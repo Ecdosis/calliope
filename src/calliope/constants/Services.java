@@ -57,4 +57,6 @@ public class Services
     public static String PDEF = "pdef";
     /** individual tests */
     public static String TEST = "test";
+    /** list of dictionaries */
+    public static String DICTS = "dicts";
 }

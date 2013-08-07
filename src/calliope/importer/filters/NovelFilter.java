@@ -10,7 +10,6 @@ import calliope.json.JSONDocument;
 import calliope.constants.CSSStyles;
 import calliope.json.corcode.Range;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 /**
  * A filter to convert novel text
  * @author desmond
@@ -18,10 +17,6 @@ import java.io.IOException;
 public class NovelFilter extends Filter
 {
     MarkupSet markup;
-    byte[] CR = {'\n'};
-    byte[] HYPHEN = {'-'};
-    byte[] SPACE = {' '};
-    int written  = 0;
     public NovelFilter()
     {
         super();
@@ -40,12 +35,6 @@ public class NovelFilter extends Filter
     public String getDescription()
     {
         return "Novel chapter with heading, paragraphs and quotations";
-    }
-    private void writeCurrent( ByteArrayOutputStream txt, byte[] current )
-        throws IOException
-    {
-        txt.write( current );
-        written += current.length;    
     }
     /**
      * Work out if this line, which starts with a space, is part of a quote

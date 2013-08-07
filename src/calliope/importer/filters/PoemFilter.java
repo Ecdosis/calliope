@@ -18,6 +18,7 @@ package calliope.importer.filters;
 import calliope.importer.Archive;
 import calliope.json.JSONDocument;
 import calliope.exception.ImportException;
+import java.io.ByteArrayOutputStream;
 /**
  * Import a poem with stanzas and a title
  * @author desmond
@@ -25,10 +26,14 @@ import calliope.exception.ImportException;
 public class PoemFilter extends Filter
 {
     MarkupSet markup;
-    
+    int minStanzaLength;
+    int maxStanzaLength;
+    int firstStanzaLength;
+    boolean hasHeading;
     public PoemFilter()
     {
         super();
+        minStanzaLength = Integer.MAX_VALUE;
     }
     @Override
     public void configure( JSONDocument config )
@@ -44,6 +49,45 @@ public class PoemFilter extends Filter
     {
         return "Poem with stanzas";
     }
+    boolean isEmpty( String line )
+    {
+        if ( line.length()>0 )
+        {
+            for ( int i=0;i<line.length();i++ )
+                if ( !Character.isWhitespace(line.charAt(i)) )
+                    return false;
+        }
+        return true;
+    }
+    /**
+     * Analyse the stanza lengths
+     * @param lines 
+     */
+    private void analyseStanzas( String[] lines )
+    {
+        int stanzaLength = 0;
+        for ( int i=0;i<lines.length;i++ )
+        {
+            if ( isEmpty(lines[i]) )
+            {
+                if ( stanzaLength>0 )
+                {
+                    if ( stanzaLength < minStanzaLength )
+                        minStanzaLength = stanzaLength;
+                    if ( stanzaLength > maxStanzaLength )
+                        maxStanzaLength = stanzaLength;
+                    if ( firstStanzaLength == 0 )
+                        firstStanzaLength = stanzaLength;
+                    stanzaLength = 0;
+                }
+            }
+            else
+                stanzaLength++;
+        }
+        if ( minStanzaLength < maxStanzaLength/2 && firstStanzaLength<3 
+            && firstStanzaLength==minStanzaLength )
+            hasHeading = true; 
+    }
     /**
      * Convert to standoff properties
      * @param input the raw text input string
@@ -56,99 +100,74 @@ public class PoemFilter extends Filter
     public String convert( String input, String name, Archive cortex, 
         Archive corcode ) throws ImportException
     {
-        StringBuilder txt = new StringBuilder();
-        String[] lines = input.split("\n");
-        String localTitle="";
-        String tempTitle="";
-        int lgStart = 0;
-        markup = new MarkupSet();
-        int state = 0;
-        for ( int i=0;i<lines.length;i++ )
+        try
         {
-            lines[i] = lines[i].trim();
-            switch ( state )
+            ByteArrayOutputStream txt = new ByteArrayOutputStream();
+            String[] lines = input.split("\n");
+            analyseStanzas(lines);
+            byte[] localTitle=EMPTY;
+            byte[] tempTitle=EMPTY;
+            int lgStart = 0;
+            markup = new MarkupSet();
+            int state = (hasHeading)?0:1;
+            int numHeadingLines = 0;
+            int headLength = 0;
+            for ( int i=0;i<lines.length;i++ )
             {
-                case 0:
-                    if ( lines[i].length()>0 )
-                    {
-                        tempTitle = lines[i];
-                        state = 1;
-                    }
-                    break;
-                case 1:
-                    if ( lines[i].length()==0 )
-                    {
-                        localTitle = tempTitle;
-                        //txt.append("<head>");
-                        markup.add("head",0,localTitle.length());
-                        txt.append( localTitle );
-                        txt.append( "\n" );
-                        lgStart = localTitle.length()+1;
-                        //xml.append("</head>\n");
-                        //xml.append( "<lg>" );
-                    }
-                    else    // no title
-                    {
-                        //xml.append( "<lg><l>" );
-                        lgStart = txt.length();
-                        if ( localTitle.length()==0 && tempTitle.length()>0 )
+                String str = lines[i].trim();
+                byte[] current = str.getBytes("UTF-8");
+                switch ( state )
+                {
+                    case 0:
+                        if ( lines[i].length()>0 )
                         {
-                            markup.add("l",txt.length(),tempTitle.length());
-                            txt.append( tempTitle );
+                            writeCurrent( txt, current );
+                            writeCurrent( txt, CR );
+                            numHeadingLines++;
+                            if ( numHeadingLines==minStanzaLength )
+                            {
+                                markup.add("head",0,written);
+                                state = 1;
+                            }
                         }
-                        //xml.append( "</l>\n");
-                        //xml.append( "<l>");
-                        markup.add("l",txt.length(),lines[i].length());
-                        txt.append( lines[i] );
-                        txt.append("\n");
-                        //xml.append( "</l>\n" );
-                    }
-                    state = 2;
-                    break;
-                case 2:
-                    if ( lines[i].length()>0 )
-                    {
-                        markup.add( "l",txt.length(),lines[i].length() );
-                        txt.append( lines[i] );
-                        txt.append( "\n" );
-                    }
-                    else
-                    {
-                        markup.add("lg",lgStart,txt.length()-lgStart);
-                        txt.append("\n");
-                        state = 3;
-                    }
-                    break;
-                case 3: // new stanza
-                    if ( lines[i].length()>0 )
-                    {
-                        lgStart = txt.length();
-                        markup.add( "l",txt.length(),lines[i].length() );
-                        txt.append( lines[i] );
-                        txt.append( "\n" );
+                        break;
+                    case 1: // new stanza
+                        lgStart = written;
+                        markup.add("l",written,current.length);
+                        writeCurrent(txt, current );
+                        writeCurrent(txt, CR);
                         state = 2;
-                    }
-                    break;
+                        break;
+                    case 2: // body of stanza
+                        if ( lines[i].length()>0 )
+                        {
+                            markup.add( "l",written,current.length );
+                            writeCurrent( txt, current );
+                            writeCurrent( txt, CR );
+                        }
+                        else
+                        {
+                            markup.add("lg",lgStart,written-lgStart);
+                            writeCurrent( txt, CR );
+                            state = 1;
+                        }
+                        break;
+                }
             }
+            if ( state == 2 )
+            {
+                markup.add("lg",lgStart,written-lgStart);
+                writeCurrent(txt, CR);
+            }
+            markup.sort();
+            cortex.put( name, txt.toByteArray() );
+            String json = markup.toSTILDocument().toString();
+            corcode.put( name, json.getBytes() );
+            return "";
         }
-        if ( state == 2 )
+        catch ( Exception e )
         {
-            markup.add("lg",lgStart,txt.length()-lgStart);
-            txt.append("\n");
+            throw new ImportException( e );
         }
-        markup.sort();
-        cortex.put( name, txt.toString().getBytes() );
-        corcode.put( name, markup.toSTILDocument().toString().getBytes() );
-        return "";
-    }
-    /**
-     * Do the perl chomp: remove trailing whitespace
-     * @param sb the StringBuilder that's for chomping
-     */
-    private void chomp( StringBuilder sb )
-    {
-        while ( sb.length()>0 
-            && Character.isWhitespace(sb.charAt(sb.length()-1)))
-            sb.setLength( sb.length()-1 );
     }
 }

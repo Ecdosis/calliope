@@ -37,9 +37,9 @@ public class AeseJSONHandler extends AeseGetHandler
     {
         String first = Path.first(urn);
         if ( first.equals(Services.LIST))
-        {
             new AeseJSONListHandler().handle(request,response,Path.pop(urn));
-        }
+        else if ( first.equals(Services.DICTS) )
+            new AeseJSONDictsHandler().handle(request,response,Path.pop(urn));
         else
             throw new AeseException("Unknown service: "+urn);
     }
