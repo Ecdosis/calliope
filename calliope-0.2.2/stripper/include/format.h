@@ -31,7 +31,8 @@
 #define DST_WRITE(p,n,f) fwrite( p, 1, n, f )
 #define DST_PRINT(s,f,...) fprintf( s, f, __VA_ARGS__ )
 #endif
-typedef int (*format_write_header)(void *arg, DST_FILE *dst, const char *format );
+typedef int (*format_write_header)(void *arg, DST_FILE *dst, 
+        const char *format );
 typedef int (*format_write_tail)(void *arg, DST_FILE *dst);
 typedef int (*format_write_range)( char *name, char **atts, int removed,
 	int offset, int len, char *content, int content_len, int final, 

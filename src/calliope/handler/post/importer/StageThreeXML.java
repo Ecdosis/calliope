@@ -98,12 +98,13 @@ public class StageThreeXML extends Stage
                 else
                     this.files.add( f );
             }
-            else
-            {
-                log.append( "excluding from XML set ");
-                log.append( f.name );
-                log.append(", not being valid XML\n" );
-            }
+            // irrelvant files already exceluded by stage 1
+//            else
+//            {
+//                log.append( "excluding from XML set ");
+//                log.append( f.name );
+//                log.append(", not being valid XML\n" );
+//            }
         }
     }               
     /**

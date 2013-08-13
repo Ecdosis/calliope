@@ -45,37 +45,40 @@ static void hh_extensions_sort( char **array, int N )
  */
 static void hh_extensions_load( hh_exceptions *hhe, char *list )
 {
-    int i = 0;
-    int spaces = 0;
-    int hlen = strlen(list);
-    int was_space = 0;
-    for ( i=0;i<hlen;i++ )
+    if ( list != NULL )
     {
-        if ( isspace(list[i]) )
+        int i = 0;
+        int spaces = 0;
+        int hlen = strlen(list);
+        int was_space = 0;
+        for ( i=0;i<hlen;i++ )
         {
-            if ( !was_space )
+            if ( isspace(list[i]) )
             {
-                spaces++;
-                was_space = 1;
+                if ( !was_space )
+                {
+                    spaces++;
+                    was_space = 1;
+                }
             }
+            else
+                was_space = 0;
         }
-        else
-            was_space = 0;
-    }
-    i = 0;
-    hhe->hh_array = calloc( spaces+1, sizeof(char*) );
-    if ( hhe->hh_array != NULL )
-    {
-        hhe->hh_size = spaces+1;
-        char *hh_compound = strtok( list, " \t\n\r" );
-        while ( hh_compound != NULL )
+        i = 0;
+        hhe->hh_array = calloc( spaces+1, sizeof(char*) );
+        if ( hhe->hh_array != NULL )
         {
-            hhe->hh_array[i++] = strdup(hh_compound);
-            hh_compound = strtok( NULL, " \t\n\r");
-            if ( i == spaces+1 )
-                break;
+            hhe->hh_size = spaces+1;
+            char *hh_compound = strtok( list, " \t\n\r" );
+            while ( hh_compound != NULL )
+            {
+                hhe->hh_array[i++] = strdup(hh_compound);
+                hh_compound = strtok( NULL, " \t\n\r");
+                if ( i == spaces+1 )
+                    break;
+            }
+            hh_extensions_sort( hhe->hh_array, hhe->hh_size );
         }
-        hh_extensions_sort( hhe->hh_array, hhe->hh_size );
     }
 }
 /**
