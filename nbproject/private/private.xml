@@ -4,10 +4,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/filters/Filter.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageThreeText.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageOne.java</file>
+=======
+            <file>file:/home/desmond/NetBeansProjects/calliope/nbproject/build-impl.xml</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/filters/Filter.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageThreeText.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/Archive.java</file>
+>>>>>>> 7e642f34b4f5a9c09ac3bb2e3b950337d4b375b1
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/filters/CceFilter.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseHTMLHandler.java</file>
         </group>

@@ -136,7 +136,10 @@ public class CceFilter extends Filter
         formats = new HashMap<String,String>();
         formats.put("cop","dedication");
         formats.put("it","emph");
+<<<<<<< HEAD
         formats.put("oi","emph");
+=======
+>>>>>>> 7e642f34b4f5a9c09ac3bb2e3b950337d4b375b1
         formats.put("bo","bold");
         formats.put("sc","smallcaps");
         formats.put("i","subscript");
@@ -252,19 +255,27 @@ public class CceFilter extends Filter
                         }
                     }
                     else if ( written > 0 )
+<<<<<<< HEAD
                     {
                         writeCurrent( txt, CR );
                         if ( written == paraStart+1 )
                             paraStart = written;
                     }
+=======
+                        writeCurrent( txt, CR );
+>>>>>>> 7e642f34b4f5a9c09ac3bb2e3b950337d4b375b1
                     writeLineContents( str, txt );
                 }
                 if ( !lineCommands.isEmpty() )
                 {
                     for ( int j=lineCommands.size()-1;j>=0;j-- )
                     {
+<<<<<<< HEAD
                         Range r = new Range( lineCommands.get(j), paraStart, 
                             written-paraStart );
+=======
+                        Range r = new Range( lineCommands.get(j), 0, written );
+>>>>>>> 7e642f34b4f5a9c09ac3bb2e3b950337d4b375b1
                         markup.add( r );
                     }
                     lineCommands.clear();
@@ -276,7 +287,10 @@ public class CceFilter extends Filter
             byte[] bytes = txt.toByteArray();
             cortex.put( name, bytes );
             String json = markup.toSTILDocument().toString();
+<<<<<<< HEAD
             //System.out.println(json);
+=======
+>>>>>>> 7e642f34b4f5a9c09ac3bb2e3b950337d4b375b1
             corcode.put( name, json.getBytes() );
         }
         catch ( Exception e )

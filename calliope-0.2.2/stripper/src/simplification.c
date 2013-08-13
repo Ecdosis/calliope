@@ -8,7 +8,7 @@ struct simplification_struct
 {
     char *xml_name;
     char *prop_name;
-    attribute **attributes;
+    attr1bute **attributes;
 };
 /**
  * Create a new rule to simplify xml to aese properties
@@ -30,7 +30,7 @@ simplification *simplification_new( const char *xml_name,
         error( "recipe: failed to allocate aese name\n");
     strcpy( s->xml_name, xml_name );
     strcpy( s->prop_name, prop_name );
-    s->attributes = calloc( 1, sizeof(attribute*) );
+    s->attributes = calloc( 1, sizeof(attr1bute*) );
     if ( s->attributes == NULL )
         error( "recipe: failure to allocate attributes\n");
     return s;
@@ -70,13 +70,13 @@ void simplification_delete( simplification *s )
  * @param s the simplification rule
  * @param a the new attribute to add to it
  */
-void simplification_add_attribute( simplification *s, attribute *a )
+void simplification_add_attribute( simplification *s, attr1bute *a )
 {
-    attribute **attrs;
+    attr1bute **attrs;
     int i = 0;
     while ( s->attributes[i] != NULL )
         i++;
-    attrs = calloc( i+2,sizeof(attribute*) );
+    attrs = calloc( i+2,sizeof(attr1bute*) );
     if ( attrs == NULL )
         error( "recipe: failed to reallocate attributes for rule\n");
     // copy existing rules

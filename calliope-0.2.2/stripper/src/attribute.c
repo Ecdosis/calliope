@@ -14,11 +14,11 @@ struct attribute_struct
  * @param value value of attribute
  * @return the new attribute
  */
-attribute *attribute_new( const char *name, const char *value )
+attr1bute *attribute_new( const char *name, const char *value )
 {
     char *new_name = strdup( name );
     char *new_value = strdup( value );
-    attribute *a = calloc( 1, sizeof(attribute) );
+    attr1bute *a = calloc( 1, sizeof(attr1bute) );
     if ( a == NULL || new_name == NULL || new_value == NULL )
     {
         if( new_name != NULL )
@@ -38,7 +38,7 @@ attribute *attribute_new( const char *name, const char *value )
  * Free a single attribute name-value pair
  * @param attr the attribute to delete
  */
-void attribute_delete( attribute *attr )
+void attribute_delete( attr1bute *attr )
 {
     if ( attr->name != NULL )
         free( attr->name );
@@ -52,7 +52,7 @@ void attribute_delete( attribute *attr )
  * @param attrs the expat list of attributes (name, value pairs)
  * @return 1 if present, else 0
  */
-int attribute_present( attribute *a, char **attrs )
+int attribute_present( attr1bute *a, char **attrs )
 {
     int i = 0;
     int res = 0;
@@ -73,7 +73,7 @@ int attribute_present( attribute *a, char **attrs )
  * @param a the attribute in question
  * @return the attribute value
  */
-char *attribute_get_name( attribute *a )
+char *attribute_get_name( attr1bute *a )
 {
     return a->name;
 }
@@ -82,7 +82,7 @@ char *attribute_get_name( attribute *a )
  * @param a the attribute in question
  * @return the attribute value
  */
-char *attribute_get_value( attribute *a )
+char *attribute_get_value( attr1bute *a )
 {
     return a->value;
 }
@@ -91,7 +91,7 @@ char *attribute_get_value( attribute *a )
  * @param a the attribute to apply to he list
  * @param attrs the copy of the expat attribute list (updated)
  */
-void attribute_remove( attribute *a, char **attrs )
+void attribute_remove( attr1bute *a, char **attrs )
 {
     int i = 0;
     while ( attrs[i] != NULL )
