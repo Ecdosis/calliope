@@ -38,7 +38,6 @@ public class PlayFilter extends Filter
     HashSet<String> words;
     HashSet<String> speakers;
     HashSet<String> stageKeys;
-    MarkupSet markup;
     int maxLineSyllables;
     static String vowels;
     static String trailing;
@@ -50,7 +49,6 @@ public class PlayFilter extends Filter
         super();
         words = new HashSet<String>();
         speakers = new HashSet<String>();
-        markup = new MarkupSet();
         stageKeys = new HashSet<String>();
     }
     /**
@@ -218,7 +216,7 @@ public class PlayFilter extends Filter
             int len = 0;
             for ( int i=0;i<sentences.length;i++ )
             {
-                byte[] current = sentences[i].getBytes("UTF-8");
+                byte[] current = sentences[i].getBytes(ENC);
                 String word1 = firstWord(sentences[i],true);
                 int extra = (i<sentences.length-1)?1:0;
                 switch ( state )
@@ -281,7 +279,7 @@ public class PlayFilter extends Filter
             for ( int i=0;i<lines.length;i++ )
             {
                 int index = 0;
-                byte[] current = lines[i].getBytes("UTF-8");
+                byte[] current = lines[i].getBytes(ENC);
                 for ( int j=0;j<lines[i].length();j++ )
                 {
                     char token = lines[i].charAt(j);
@@ -309,7 +307,7 @@ public class PlayFilter extends Filter
                             // record speaker in markup set
                             markup.add( "speaker", 
                                 lines[i].indexOf(stripped)+offset, 
-                                stripped.getBytes("UTF-8").length );
+                                stripped.getBytes(ENC).length );
                         }
                     }
                 }
@@ -335,12 +333,12 @@ public class PlayFilter extends Filter
             String[] lines = input.split("\n");
             for ( int i=0;i<lines.length;i++ )
             {
-                byte[] current = lines[i].getBytes("UTF-8");
+                byte[] current = lines[i].getBytes(ENC);
                 String trimmed = lines[i].trim();
                 int local = lines[i].indexOf( trimmed );
                 String leading = lines[i].substring(0,local);
-                byte[] leadBytes = leading.getBytes("UTF-8");
-                byte[] trimBytes = trimmed.getBytes("UTF-8");
+                byte[] leadBytes = leading.getBytes(ENC);
+                byte[] trimBytes = trimmed.getBytes(ENC);
                 markup.add( "head", pos+leadBytes.length, trimBytes.length );
                 pos += current.length+1;
             }
@@ -465,17 +463,17 @@ public class PlayFilter extends Filter
         try
         {
             int speakerOffset=0;
-            byte[] speechBytes = input.getBytes("UTF-8");
+            byte[] speechBytes = input.getBytes(ENC);
             markup.add( "sp", offset, speechBytes.length );
             String word1 = firstWord(input,false);
             if ( speakers.contains(word1) )
             {
-                byte[] spBytes = word1.getBytes("UTF-8");
+                byte[] spBytes = word1.getBytes(ENC);
                 int leadIndex = input.indexOf(word1);
                 if ( leadIndex > 0 )
                 {
                     String leading = input.substring(0,leadIndex);
-                    leadIndex += leading.getBytes("UTF-8").length;
+                    leadIndex += leading.getBytes(ENC).length;
                 }
                 speakerOffset=+spBytes.length+leadIndex;
                 byte token = speechBytes[speakerOffset];
@@ -490,7 +488,7 @@ public class PlayFilter extends Filter
             String[] lines = input.split("\n");
             for ( int i=0;i<lines.length;i++ )
             {
-                byte[] current = lines[i].getBytes("UTF-8");
+                byte[] current = lines[i].getBytes(ENC);
                 // on other than the 1st line read from start of line
                 if ( i>0 )
                     speakerOffset = 0;

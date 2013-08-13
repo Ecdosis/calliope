@@ -10,13 +10,14 @@ import calliope.json.JSONDocument;
 import calliope.constants.CSSStyles;
 import calliope.json.corcode.Range;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 /**
  * A filter to convert novel text
  * @author desmond
  */
 public class NovelFilter extends Filter
 {
-    MarkupSet markup;
     public NovelFilter()
     {
         super();
@@ -78,6 +79,82 @@ public class NovelFilter extends Filter
         return res;
     }
     /**
+     * Encode italics ONCE
+     * @param current the byte array with underscores
+     * @param copy the copy without, building it up 
+     * @param offset the offset into current
+     * @return the new offset
+     */
+    int encodeItalics( byte[] current, int offset, ByteBuffer bb )
+    {
+        boolean opening = false;
+        int i=offset;
+        Range r = null;
+        int rLen = 0;
+        for ( ;i<current.length;i++ )
+        {
+            if ( !opening )
+            {
+                if ( current[i]=='_' )
+                {
+                    opening = true;
+                    r = new Range( "emph", written+bb.position(), 0 );
+                    markup.add( r );
+                }
+                else
+                    bb.put( current[i] );
+            }
+            else
+            {
+                if ( current[i] == '_' )
+                {
+                    r.len = rLen;
+                    i++;
+                    break;
+                }
+                else
+                {
+                    bb.put( current[i] );
+                    rLen++;
+                }
+            }
+        }
+        return i;
+    }
+    /**
+     * Override to recognise italics on a per line basis only
+     * @param txt the byte output object
+     * @param current the current line
+     * @throws IOException 
+     */
+    protected void writeCurrent( ByteArrayOutputStream txt, byte[] current )
+        throws IOException
+    {
+        int nUnderscores = 0;
+        for ( int i=0;i<current.length;i++ )
+            if ( current[i]=='_' )
+                nUnderscores++;
+        int matched = (nUnderscores/2)*2;
+        if ( matched > 1 )
+        {
+            ByteBuffer bb = ByteBuffer.allocate(current.length);
+            int offset = 0;
+            for ( int i=0;i<matched/2;i++ )
+            {
+                offset = encodeItalics( current, offset, bb );
+            }
+            // copy over tail
+            if ( offset < current.length )
+                for ( int i=offset;i<current.length;i++ )
+                    bb.put( current[i] );
+            current = new byte[bb.position()];
+            bb.position(0);
+            bb.get( current );
+        }
+        txt.write( current );
+        written += current.length;    
+    }
+    /**
      * Convert to standoff properties
      * @param input the raw text input string
      * @param name the name of the new version
@@ -96,7 +173,6 @@ public class NovelFilter extends Filter
             int paraStart = 0;
             int quoteStart = 0;
             written = 0;
-            markup = new MarkupSet();
             int state = 0;
             String lastWord = "";
             String firstWord = "";
@@ -106,7 +182,7 @@ public class NovelFilter extends Filter
                 String str = lines[i].trim();
                 firstWord = getFirstWord( str );
                 boolean isPageNumber = str.length()<5&&isNumber(str);
-                byte[] current = str.getBytes("UTF-8");
+                byte[] current = str.getBytes(ENC);
                 switch ( state )
                 {
                     case 0: // looking for chapter title
@@ -179,7 +255,7 @@ public class NovelFilter extends Filter
                             }
                             else if ( written > paraStart )
                             {
-                                writeCurrent( txt, SPACE );
+                                writeCurrent( txt, CR );
                             }
                             writeCurrent( txt, current );
                         }

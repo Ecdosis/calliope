@@ -242,6 +242,17 @@ public class AeseHTMLHandler extends AeseGetHandler
                 System.out.println(textString);
             }catch(Exception e){}*/
             // end
+//            if ( text.length==30712 )
+//            {
+//                try
+//                {
+//                    String textStr = new String( text, "UTF-8");
+//                    System.out.println(textStr );
+//                }
+//                catch ( Exception e )
+//                {
+//                }
+//            }
             int res = new AeseFormatter().format( 
                 text, corCodes, styles, formats, html );
             if ( res == 0 )

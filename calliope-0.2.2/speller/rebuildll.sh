@@ -4,7 +4,7 @@ if [ $USER = "root" ]; then
     JDKINC="/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers"
   else
     LIBSUFFIX="so"
-    JDKINC="/usr/lib/jvm/java-6-openjdk/include"
+    JDKINC="/usr/lib/jvm/java-6-openjdk-amd64/include"
   fi
   gcc -c -DJNI -Iinclude -I$JDKINC -O0 -Wall -g3 -fPIC src/*.c 
   gcc *.o -shared -L/usr/local/lib -laspell -o libAeseSpeller.$LIBSUFFIX

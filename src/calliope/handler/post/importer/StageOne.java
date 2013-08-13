@@ -18,14 +18,19 @@ package calliope.handler.post.importer;
 import java.util.ArrayList;
 import calliope.importer.Archive;
 import calliope.constants.Globals;
+import calliope.exception.ImportException;
+import java.io.ByteArrayInputStream;
+import javax.swing.text.rtf.RTFEditorKit;
+import javax.swing.text.Document;
 /**
- * A stage to eliminate over-size and non-text or non-XML files
+ * A stage to eliminate over-size and non-text, non-XML, non-rtf files
  * @author desmond
  */
 public class StageOne extends Stage
 {
     static String XML = "xml";
     static String TEXT = "txt";
+    static String RTF = "rtf";
     public StageOne( ArrayList<File> files )
     {
         super();
@@ -51,7 +56,7 @@ public class StageOne extends Stage
      * @return the log record of the elimination process
      */
     @Override
-    public String process( Archive cortex, Archive corcode )
+    public String process( Archive cortex, Archive corcode ) throws ImportException
     {
         ArrayList<File> newFiles = new ArrayList<File>();
         for ( int i=0;i<files.size();i++ )
@@ -71,13 +76,32 @@ public class StageOne extends Stage
             else if ( suffix.length() == 0 || suffix.equals(XML)
                 || suffix.equals(TEXT) )
                 newFiles.add( item );
+            else if ( suffix.equals(RTF) )
+            {
+                // convert to text
+                try
+                {
+                    RTFEditorKit rtfParser = new RTFEditorKit();
+                    Document document = rtfParser.createDefaultDocument();
+                    ByteArrayInputStream bis = new ByteArrayInputStream(
+                        item.data.getBytes("UTF-8"));
+                    rtfParser.read( bis, document, 0 );
+                    String text = document.getText(0, document.getLength());
+                    String name = item.simpleName()+"."+TEXT;
+                    newFiles.add(new File(name,text) );
+                }
+                catch ( Exception e )
+                {
+                    throw new ImportException( e );
+                }
+            }
             else
             {
                 log.append( "File " );
                 log.append( item.name );
                 log.append( " rejected because suffix is .");
                 log.append(suffix);
-                log.append( " not .xml or .txt or empty\n");
+                log.append( " not .xml or .txt or .rtf or empty\n");
             }
         }
         files = newFiles;

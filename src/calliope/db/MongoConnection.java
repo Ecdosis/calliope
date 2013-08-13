@@ -65,9 +65,9 @@ public class MongoConnection extends Connection implements Test
         {
             MongoClient mongoClient = new MongoClient( host, MONGO_PORT );
             db = mongoClient.getDB("calliope");
-            boolean auth = db.authenticate( user, password.toCharArray() );
-            if ( !auth )
-                throw new AeseException( "MongoDB authentication failed");
+            //boolean auth = db.authenticate( user, password.toCharArray() );
+            //if ( !auth )
+            //    throw new AeseException( "MongoDB authentication failed");
         }
     }
     /**

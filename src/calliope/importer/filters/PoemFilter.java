@@ -25,7 +25,6 @@ import java.io.ByteArrayOutputStream;
  */
 public class PoemFilter extends Filter
 {
-    MarkupSet markup;
     int minStanzaLength;
     int maxStanzaLength;
     int firstStanzaLength;
@@ -105,17 +104,14 @@ public class PoemFilter extends Filter
             ByteArrayOutputStream txt = new ByteArrayOutputStream();
             String[] lines = input.split("\n");
             analyseStanzas(lines);
-            byte[] localTitle=EMPTY;
-            byte[] tempTitle=EMPTY;
             int lgStart = 0;
-            markup = new MarkupSet();
             int state = (hasHeading)?0:1;
             int numHeadingLines = 0;
             int headLength = 0;
             for ( int i=0;i<lines.length;i++ )
             {
                 String str = lines[i].trim();
-                byte[] current = str.getBytes("UTF-8");
+                byte[] current = str.getBytes(ENC);
                 switch ( state )
                 {
                     case 0:

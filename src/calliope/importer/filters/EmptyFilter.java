@@ -60,9 +60,9 @@ public class EmptyFilter extends Filter
     {
         try
         {
-            cortex.put( name,input.getBytes("UTF-8") );
+            cortex.put( name,input.getBytes(ENC) );
             // corcode should have an entry for this version
-            corcode.put( name, EMPTY_CORCODE.getBytes("UTF-8") );
+            corcode.put( name, EMPTY_CORCODE.getBytes(ENC) );
             return "added "+name+" to CorTex\n";
         }
         catch ( Exception e )
