@@ -18,11 +18,6 @@ public class AeseSpeller
     }
     public AeseSpeller( String lang ) throws Exception
     {
-<<<<<<< HEAD
-=======
-        System.out.println("java.library.path="
-            +System.getProperty("java.library.path"));
->>>>>>> 7e642f34b4f5a9c09ac3bb2e3b950337d4b375b1
         this.lang = lang;
         if ( !initialise(lang) )
             throw new Exception("failed to initialise "+lang );
