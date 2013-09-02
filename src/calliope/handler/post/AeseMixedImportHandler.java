@@ -128,6 +128,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                         }
                         catch ( Exception e )
                         {
+                            e.printStackTrace(System.out);
                             log.append( e.getMessage() );
                         }
                     }

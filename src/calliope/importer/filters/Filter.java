@@ -199,6 +199,14 @@ public abstract class Filter
         else
             return "";
     }
+    /**
+     * Reinitiase for a new conversion
+     */
+    protected void init()
+    {
+        written = 0;
+        markup.clear();
+    }
     public abstract void configure( JSONDocument config );
     /**
      * Short description of this filter

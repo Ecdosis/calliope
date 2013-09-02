@@ -360,7 +360,7 @@ public class StageThreeXML extends Stage
             Splitter splitter = new Splitter( jDoc );
             for ( int i=0;i<files.size();i++ )
             {
-                // optinal transform
+                // optional transform
                 File file = files.get(i);
                 String fileText = file.toString();
                 if ( xslt != null )

@@ -18,6 +18,12 @@ import java.nio.ByteBuffer;
  */
 public class NovelFilter extends Filter
 {
+    int paraStart;
+    int quoteStart;
+    int state;
+    String lastWord;
+    String firstWord;
+            
     public NovelFilter()
     {
         super();
@@ -36,6 +42,16 @@ public class NovelFilter extends Filter
     public String getDescription()
     {
         return "Novel chapter with heading, paragraphs and quotations";
+    }
+    @Override
+    protected void init()
+    {
+        super.init();
+        paraStart = 0;
+        quoteStart = 0;
+        state = 0;
+        lastWord = "";
+        firstWord = "";
     }
     /**
      * Work out if this line, which starts with a space, is part of a quote
@@ -168,14 +184,9 @@ public class NovelFilter extends Filter
     {
         try
         {
+            init();
             ByteArrayOutputStream txt = new ByteArrayOutputStream();
             String[] lines = input.split("\n");
-            int paraStart = 0;
-            int quoteStart = 0;
-            written = 0;
-            int state = 0;
-            String lastWord = "";
-            String firstWord = "";
             for ( int i=0;i<lines.length;i++ )
             {
                 boolean startsWithSpace = lines[i].startsWith(" ");

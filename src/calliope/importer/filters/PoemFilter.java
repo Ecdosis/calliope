@@ -29,6 +29,9 @@ public class PoemFilter extends Filter
     int maxStanzaLength;
     int firstStanzaLength;
     boolean hasHeading;
+    int lgStart;
+    int numHeadingLines;
+    int headLength;
     public PoemFilter()
     {
         super();
@@ -87,6 +90,18 @@ public class PoemFilter extends Filter
             && firstStanzaLength==minStanzaLength )
             hasHeading = true; 
     }
+    @Override
+    protected void init()
+    {
+        super.init();
+        lgStart = 0;
+        numHeadingLines = 0;
+        headLength = 0;
+        hasHeading = false;
+        lgStart = 0;
+        numHeadingLines = 0;
+        headLength = 0;
+    }
     /**
      * Convert to standoff properties
      * @param input the raw text input string
@@ -103,11 +118,9 @@ public class PoemFilter extends Filter
         {
             ByteArrayOutputStream txt = new ByteArrayOutputStream();
             String[] lines = input.split("\n");
+            init();
             analyseStanzas(lines);
-            int lgStart = 0;
             int state = (hasHeading)?0:1;
-            int numHeadingLines = 0;
-            int headLength = 0;
             for ( int i=0;i<lines.length;i++ )
             {
                 String str = lines[i].trim();

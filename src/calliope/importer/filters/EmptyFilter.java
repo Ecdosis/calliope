@@ -60,6 +60,7 @@ public class EmptyFilter extends Filter
     {
         try
         {
+            init();
             cortex.put( name,input.getBytes(ENC) );
             // corcode should have an entry for this version
             corcode.put( name, EMPTY_CORCODE.getBytes(ENC) );

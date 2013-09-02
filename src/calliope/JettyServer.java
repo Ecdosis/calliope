@@ -20,6 +20,7 @@ import calliope.handler.put.AesePutHandler;
 import calliope.handler.post.AesePostHandler;
 import calliope.exception.AeseException;
 import calliope.db.*;
+import java.net.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
@@ -90,7 +91,6 @@ public class JettyServer extends AbstractHandler
         boolean sane = true;
         try
         {
-            // set up defaults
             int dbPort = 5984;
             wsPort = 8080;
             host = "localhost";

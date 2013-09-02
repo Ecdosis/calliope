@@ -553,6 +553,7 @@ public class PlayFilter extends Filter
     public String convert( String input, String name, Archive cortex, 
         Archive corcode ) throws ImportException
     {
+        init();
         if ( vowels==null )
             throw new ImportException("configure required before convert");
         StringBuilder log = new StringBuilder();

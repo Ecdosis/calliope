@@ -186,6 +186,14 @@ public class CceFilter extends Filter
             System.out.println("unknown dot command "+line+" ignored");
         }
     }
+    protected void init()
+    {
+        super.init();
+        paraSeen = false;
+        paraStart = 0;
+        lineCommands.clear();
+        nestedCommands.clear();
+    }
     /**
      * Convert all the files in a directory 
      * @param input the raw text input string
@@ -199,12 +207,7 @@ public class CceFilter extends Filter
     {
         try
         {
-            written = 0;
-            paraSeen = false;
-            paraStart = 0;
-            markup.clear();
-            lineCommands.clear();
-            nestedCommands.clear();
+            init();
             ByteArrayOutputStream txt = new ByteArrayOutputStream();
             String lastWord = "";
             String firstWord = "";
