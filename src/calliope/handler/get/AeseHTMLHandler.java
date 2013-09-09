@@ -237,10 +237,10 @@ public class AeseHTMLHandler extends AeseGetHandler
             JSONResponse html = new JSONResponse();
             byte[] text = corTex.getVersion();
     //        // debug
-            try{
-                String textString = new String(text,"UTF-8");
-                System.out.println(textString);
-            }catch(Exception e){}
+//            try{
+//                String textString = new String(text,"UTF-8");
+//                System.out.println(textString);
+//            }catch(Exception e){}
             // end
 //            if ( text.length==30712 )
 //            {
