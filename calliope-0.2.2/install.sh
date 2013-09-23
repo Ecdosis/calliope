@@ -108,7 +108,7 @@ if [ $USER = "root" ]; then
 # build stripper speller and formatter libs
   JDKINCLUDE=`getjdkinclude`
   if [ -d $JDKINCLUDE ]; then
-    gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Istripper/include -I$JDKINCLUDE -O0 -g3 -Wall -fPIC stripper/src/*.c -shared -o libAeseStripper.$LIBSUFFIX
+    gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Istripper/include -I$JDKINCLUDE -O0 -g3 -Wall -fPIC stripper/src/*.c -laspell -shared -o libAeseStripper.$LIBSUFFIX
     gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Iformatter/include -Iformatter/include/AESE -Iformatter/include/STIL -I$JDKINCLUDE -O0 -g3 -Wall -fPIC formatter/src/*.c formatter/src/AESE/*.c formatter/src/STIL/*.c -shared -o libAeseFormatter.$LIBSUFFIX
     gcc -DJNI -Ispeller/include -I$JDKINCLUDE -O0 -Wall -g3 -fPIC speller/src/*.c -shared -L/usr/local/lib -laspell -o libAeseSpeller.$LIBSUFFIX
     if [ -d /usr/local/lib/libAeseSpeller.$LIBSUFFIX.dSYM ]; then
