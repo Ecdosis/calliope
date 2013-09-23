@@ -34,11 +34,19 @@ function install
 }
 HAS_ASPELL=`findhdr aspell`
 if [ -z "$HAS_ASPELL" ]; then
-  install aspell
+  if [ -z "$HAS_BREW" ]; then
+    apt-get install libaspell-dev
+  else
+    brew install aspell
+  fi
 fi
 HAS_EXPAT=`findhdr expat`
 if [ -z "$HAS_EXPAT" ]; then
-  install expat
+  if [ -z "$HAS_BREW" ]; then
+    apt-get install libexpat1-dev
+  else
+    brew install expat
+  fi
 fi
 HAS_GCC=`which gcc`
 if [ -z "$HAS_GCC" ]; then
