@@ -49,7 +49,6 @@ static void checker_dispose( checker *c )
 static checker *checker_create( const char *language )
 {
     int err = 0;
-    printf("entering checker_create\n");
     checker *c = calloc( 1, sizeof(checker) );
     if ( c != NULL )
     {
@@ -57,9 +56,7 @@ static checker *checker_create( const char *language )
         c->spell_config = new_aspell_config();
         if ( c->spell_config != NULL )
         {
-            printf("replacing config\n");
             aspell_config_replace( c->spell_config, "lang", language );
-            printf("possible err\n");
             AspellCanHaveError *possible_err 
                 = new_aspell_speller(c->spell_config);
             c->spell_checker = 0;
@@ -71,7 +68,6 @@ static checker *checker_create( const char *language )
             else
             {
                 c->spell_checker = to_aspell_speller(possible_err);
-                printf("to_aspell_speller\n");
                 if ( c->spell_checker == NULL )
                 {
                     fprintf(stderr,"checker: failed to initialise speller\n");
@@ -80,7 +76,6 @@ static checker *checker_create( const char *language )
             }
             if ( err )
             {
-                printf("checker dispose\n");
                 checker_dispose( c );
                 c = NULL;
             }
@@ -101,7 +96,10 @@ JNIEXPORT void JNICALL Java_calliope_AeseSpeller_cleanup
   (JNIEnv *env, jobject obj)
 {
     if ( checkers != NULL )
+    {
         checker_dispose( checkers );
+        checkers = NULL;
+    }
 }
 JNIEXPORT jboolean JNICALL Java_calliope_AeseSpeller_initialise
   (JNIEnv *env, jobject obj, jstring lang)
