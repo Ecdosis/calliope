@@ -29,5 +29,5 @@ if [ `uname` = "Darwin" ]; then
 else
   pkill -f calliope.jar
 fi
-nohup java -Djava.library.path=$LIBPATH -cp .$JARPATHS:calliope.jar calliope.JettyServer -u admin -p jabberw0cky -i $WEB_ROOT -r MONGO -d 27017 &
+nohup java -Xss8m -Xmx2048m -Xincgc -Djava.library.path=$LIBPATH -cp .$JARPATHS:calliope.jar calliope.JettyServer -u admin -p jabberw0cky -i $WEB_ROOT -r MONGO -d 27017 &
 

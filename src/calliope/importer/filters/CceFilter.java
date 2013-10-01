@@ -60,6 +60,7 @@ public class CceFilter extends Filter
         characters.put("s7","†");
         characters.put("|","|");
         characters.put("prg","\n   ");
+        characters.put("n","ñ");
         // accents
         accents = new HashMap<String,Map<Character,Character>>();
         HashMap<Character,Character> acutes = new HashMap<Character,Character>();

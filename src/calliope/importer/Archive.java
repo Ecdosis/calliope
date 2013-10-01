@@ -15,6 +15,8 @@
  */
 
 package calliope.importer;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -196,6 +198,22 @@ public class Archive extends HashMap<String,byte[]>
         catch ( Exception e )
         {
             throw new AeseException( e );
+        }
+    }
+    public void externalise() throws Exception
+    {
+        Set<String> keys = keySet();
+        Iterator<String> iter = keys.iterator();
+        File dir = new File("archive.mvd");
+        if ( !dir.exists() )
+            dir.mkdir();
+        while ( iter.hasNext() )
+        {
+            String key = iter.next();
+            File  dst = new File( dir, key );
+            FileOutputStream fos = new FileOutputStream( dst );
+            fos.write( get( key ) );
+            fos.close();
         }
     }
 }

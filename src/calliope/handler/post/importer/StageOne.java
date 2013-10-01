@@ -23,7 +23,8 @@ import java.io.ByteArrayInputStream;
 import javax.swing.text.rtf.RTFEditorKit;
 import javax.swing.text.Document;
 /**
- * A stage to eliminate over-size and non-text, non-XML, non-rtf files
+ * A stage to eliminate over-size and non-text, non-XML, non-rtf, 
+ * wrongly encoded files
  * @author desmond
  */
 public class StageOne extends Stage

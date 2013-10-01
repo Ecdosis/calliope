@@ -123,6 +123,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                                     stage3Text.add( f );
                             }
                             log.append( stage3Text.process(cortex,corcode) );
+                            cortex.externalise();
                             addToDBase( cortex, "cortex", suffix );
                             addToDBase( corcode, "corcode", suffix );
                         }
