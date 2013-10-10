@@ -22,13 +22,15 @@ import edu.luc.nmerge.mvd.MVD;
  */
 public class AeseVersion 
 {
-    /** format the text is in */
+    /** format of the MVD if any */
     String format;
+    /** format the text is in */
+    String content;
     /** actual text of the version */
     byte[] version;
     /** if CorCode the default style */
     String defaultStyle;
-    /** the original mvd data */
+    /** the original mvd data or null */
     MVD mvd;
     /**
      * Set the format of this version
@@ -36,7 +38,14 @@ public class AeseVersion
      */
     public void setFormat( String format )
     {
-        this.format = format;
+        int slashPos = format.indexOf("/");
+        if ( slashPos != -1 )
+        {
+            content = format.substring( slashPos+1 );
+            this.format = format.substring(0,slashPos);
+        }
+        else
+            this.content = this.format = format;
     }
     /**
      * Set the default style of this version
@@ -70,6 +79,14 @@ public class AeseVersion
     {
         return format;
     }
+    /**
+     * Set the format of this version's content
+     * @return the name of the format 
+     */
+    public String getContentFormat()
+    {
+        return content;
+    }
      /**
      * Set the mvd used to fetch this version
      * @return the original MVD
@@ -94,7 +111,10 @@ public class AeseVersion
     {
         try
         {
-            return new String( version, mvd.getEncoding());
+            if ( mvd != null )
+                return new String( version, mvd.getEncoding());
+            else    // plain text
+                return new String( version, "UTF-8" );
         }
         catch ( Exception e )
         {

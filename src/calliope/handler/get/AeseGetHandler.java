@@ -194,7 +194,7 @@ public class AeseGetHandler extends AeseHandler
      * @return the CorTex/CorCode version contents or null if not found
      * @throws AeseException if the resource couldn't be found for some reason
      */
-    protected AeseVersion doGetMVDVersion( String db, String docID, 
+    protected AeseVersion doGetResourceVersion( String db, String docID, 
         String vPath ) throws AeseException
     {
         AeseVersion version = new AeseVersion();
@@ -214,35 +214,46 @@ public class AeseGetHandler extends AeseHandler
             doc = JSONDocument.internalise( res );
         if ( doc != null && doc.containsKey(JSONKeys.BODY) )
         {
-            MVD mvd = MVDFile.internalise( (String)doc.get(
-                JSONKeys.BODY) );
-            if ( vPath == null )
-                vPath = (String)doc.get( JSONKeys.VERSION1 );
-            int vId = mvd.getVersionByNameAndGroup(Utils.getShortName(vPath),
-                Utils.getGroupName(vPath) );
-            version.setFormat((String)doc.get(JSONKeys.FORMAT));
+            String format = (String)doc.get(JSONKeys.FORMAT);
+            if ( format == null )
+                throw new AeseException("doc missing format");
+            version.setFormat( format );
             version.setStyle((String)doc.get(JSONKeys.STYLE));
-            version.setMVD(mvd);
-            if ( vId != 0 )
+            if ( version.getFormat().equals(Formats.MVD) )
             {
-                data = mvd.getVersion( vId );
-                if ( data != null )
+                MVD mvd = MVDFile.internalise( (String)doc.get(
+                    JSONKeys.BODY) );
+                if ( vPath == null )
+                    vPath = (String)doc.get( JSONKeys.VERSION1 );
+                String sName = Utils.getShortName(vPath);
+                String gName = Utils.getGroupName(vPath);
+                int vId = mvd.getVersionByNameAndGroup(sName, gName );
+                version.setMVD(mvd);
+                if ( vId != 0 )
                 {
-                    try
-                    {
+                    data = mvd.getVersion( vId );
+                    if ( data != null )
                         version.setVersion( data );
-                    }
-                    catch ( Exception e )
-                    {
-                        throw new AeseException( e );
-                    }
+                    else
+                        throw new AeseException("Version "+vPath+" not found");
                 }
                 else
                     throw new AeseException("Version "+vPath+" not found");
             }
             else
             {
-                throw new AeseException("Version "+vPath+" not found");
+                String body = (String)doc.get( JSONKeys.BODY );
+                if ( body == null )
+                    throw new AeseException("empty body");
+                try
+                {
+                    data = body.getBytes("UTF-8");
+                }
+                catch ( Exception e )
+                {
+                    throw new AeseException( e );
+                }
+                version.setVersion( data );
             }
         }
         return version;

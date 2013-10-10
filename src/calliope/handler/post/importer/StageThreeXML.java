@@ -140,18 +140,6 @@ public class StageThreeXML extends Stage
         this.splitConfig = config;
     }
     /**
-     * Strip the suffix form a file name
-     * @param fileName the filename with a possible suffix
-     * @return the name minus its suffix if any
-     */
-    private String stripSuffix( String fileName )
-    {
-        int index = fileName.lastIndexOf(".");
-        if ( index != -1 )
-            fileName = fileName.substring(0,index);
-        return fileName;
-    }
-    /**
      * Convert ordinary quotes into curly ones
      * @param a char array containing the unicode text
      */

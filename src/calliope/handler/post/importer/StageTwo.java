@@ -26,11 +26,13 @@ import java.util.ArrayList;
 public class StageTwo extends Stage 
 {
     static float CUTOFF = 0.1f;
+    String encoding;
     boolean checkSimilarity;
     public StageTwo( Stage last, boolean checkSimilarity )
     {
         super( last );
         this.checkSimilarity = checkSimilarity;
+        this.encoding = "UTF-8";
     }
     private void accept( String fileName, float percent )
     {
@@ -59,8 +61,8 @@ public class StageTwo extends Stage
     {
         try
         {
-            byte[] data1 = file1.data.getBytes("UTF-8");
-            byte[] data2 = file2.data.getBytes("UTF-8");
+            byte[] data1 = file1.data.getBytes(encoding);
+            byte[] data2 = file2.data.getBytes(encoding);
             Diff[] diffs = Matrix.computeBasicDiffs( data1, data2 );
             float diffLen = 0;
             float totalLen = data1.length;
@@ -132,5 +134,9 @@ public class StageTwo extends Stage
         else
             log.append("Only one file: no diffs computed\n");
         return log.toString();
+    }
+    public void setEncoding( String encoding )
+    {
+        this.encoding = encoding;
     }
 }

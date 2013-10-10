@@ -66,6 +66,8 @@ public void handle( HttpServletRequest request,
                         new AeseUploadHandler().handle(request,response,urn);
                     else if ( second.equals(Services.XML) )
                         new AeseXMLImportHandler().handle(request,response,urn);
+                    else if ( second.equals(Services.HTML) )
+                        new AeseHTMLImportHandler().handle(request,response,urn);
                     else if ( second.equals(Services.TEXT) )
                         new AeseTextImportHandler().handle(request,response,urn);
                     else if ( second.equals(Services.MIXED) )

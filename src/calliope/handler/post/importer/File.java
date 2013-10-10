@@ -25,6 +25,8 @@ import calliope.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.tidy.Tidy;
+import java.io.ByteArrayInputStream;
 /**
  * Represent a loaded file
  * @author desmond
@@ -218,6 +220,31 @@ public class File
     public boolean isTEI()
     {
         return TEI;
+    }
+    /**
+     * Is this file HTML?
+     * @param log
+     * @return true if it is HTML
+     */
+    public boolean isHTML()
+    {
+        Tidy t = new Tidy();
+        try
+        {
+            byte[] bdata = data.getBytes("UTF-8");
+            ByteArrayInputStream bis = new ByteArrayInputStream( bdata );
+            Document dom = t.parseDOM( bis, null );
+            if ( dom != null )
+            {
+                Element root = dom.getDocumentElement();
+                return root != null && root.getNodeName().toLowerCase().equals("html");
+            }
+        }
+        catch ( Exception e )
+        {
+            // some parsing error I suppose
+        }
+        return false;
     }
     @Override
     public String toString()

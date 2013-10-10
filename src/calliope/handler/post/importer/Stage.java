@@ -93,4 +93,16 @@ abstract public class Stage
     {
         return files.size()>0;
     }
+    /**
+     * Strip the suffix from a file name
+     * @param fileName the filename with a possible suffix
+     * @return the name minus its suffix if any
+     */
+    protected String stripSuffix( String fileName )
+    {
+        int index = fileName.lastIndexOf(".");
+        if ( index != -1 )
+            fileName = fileName.substring(0,index);
+        return fileName;
+    }
 }

@@ -10,7 +10,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
+ *  You should have received a copy of the GNU General Pubfiles.get(i).namelic License
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -41,21 +41,25 @@ public class Archive extends HashMap<String,byte[]>
     String style;
     String version1;
     String revid;
+    String format;
+    String encoding;
     HashMap<String,String> nameMap;
     /**
      * Create an archive
      * @param work the work path, after language and author, / delimited
      * @param author the full author's name
-     * @param section the section of the work if any or null
-     * @param subsection the subsection of the section or null
+     * @param format the format (changes to MVD if more than 1 version)
+     * @param encoding defaults to UTF-8
      */
-    public Archive( String work, String author )
+    public Archive( String work, String author, String format, String encoding )
     {
         this.title = work.replace("%20"," ");
         this.author = author;
         this.log = new StringBuilder();
         this.style = "default";
         this.nameMap = new HashMap<String,String>();
+        this.format = format;
+        this.encoding = (encoding==null)?"UTF-8":encoding;
         StringBuilder sb = new StringBuilder();
         String[] parts = work.split("/");
         for ( int i=0;i<parts.length;i++ )
@@ -76,14 +80,6 @@ public class Archive extends HashMap<String,byte[]>
         if ( author.length()>1 )
             sb.append( author.substring(1) );
         description = sb.toString();
-    }
-    /**
-     * Set the revision ID for the JSON document generated from this
-     * @param revid the revid for this resource
-     */
-    public void setRevId( String revid )
-    {
-        this.revid = revid;
     }
     /**
      * Add a long name to our map for later use
@@ -139,59 +135,72 @@ public class Archive extends HashMap<String,byte[]>
         return key;
     }
     /**
-     * Convert this archive to an MVD, wrapped in JSON for storage
+     * Convert this archive to a resource, wrapped in JSON for storage
      * @param mvdName name of the MVD
      * @return a string representation of the MVD as a JSON document
      * @throws AeseException 
      */
-    public String toMVD( String mvdName ) throws AeseException
+    public String toResource( String mvdName ) throws AeseException
     {
         try
         {
+            String body;
             JSONDocument doc = new JSONDocument();
-            doc.add( JSONKeys.FORMAT, Formats.TEXT, false );
-            doc.add( JSONKeys.TITLE, title, false ); 
-            doc.add( JSONKeys.AUTHOR, author, false );
-            Set<String> keys = keySet();
-            Iterator<String> iter = keys.iterator();
-            MVD mvd = new MVD();
-            mvd.setDescription( description );
-            // go through the files, adding versions to the MVD
-            short vId;
-            long startTime = System.currentTimeMillis();
-            while ( iter.hasNext() )
+            if ( size()==1 )
             {
+                Set<String> keys = keySet();
+                Iterator<String> iter = keys.iterator();
                 String key = iter.next();
-                String groups = getGroups( key );
-                String shortKey = getKey( key );
-                if ( version1 == null )
-                    version1 = "/"+groups+"/"+shortKey;
                 byte[] data = get( key );
-                String longName = (groups.length()>0)?shortKey+" of "
-                    +groups:shortKey;
-                vId = (short)mvd.newVersion( shortKey, "Version "+longName, 
-                    groups, Version.NO_BACKUP, false );
-                mvd.update( vId, data, true );
+                body = new String( data, encoding );
+                if ( version1 == null )
+                    version1 = key;
             }
-            long diff = System.currentTimeMillis()-startTime;
-            log.append( "merged " );
-            log.append( title );
-            log.append( ": " );
-            log.append( mvdName );
-            log.append( " in " );
-            log.append( diff );
-            log.append( " milliseconds\n" );
-            String body = mvd.toString();
-            if ( body.length() == 0 )
-                throw new AeseException("failed to create MVD");
+            else
+            {
+                // more than 1 version: make an MVD 
+                Set<String> keys = keySet();
+                Iterator<String> iter = keys.iterator();
+                MVD mvd = new MVD();
+                mvd.setDescription( description );
+                // go through the files, adding versions to the MVD
+                short vId;
+                long startTime = System.currentTimeMillis();
+                while ( iter.hasNext() )
+                {
+                    String key = iter.next();
+                    String groups = getGroups( key );
+                    String shortKey = getKey( key );
+                    if ( version1 == null )
+                        version1 = "/"+groups+"/"+shortKey;
+                    byte[] data = get( key );
+                    String longName = (groups.length()>0)?shortKey+" of "
+                        +groups:shortKey;
+                    vId = (short)mvd.newVersion( shortKey, "Version "+longName, 
+                        groups, Version.NO_BACKUP, false );
+                    // tepmorary hack
+                    mvd.setDirectAlign( true );
+                    mvd.update( vId, data, true );
+                }
+                long diff = System.currentTimeMillis()-startTime;
+                log.append( "merged " );
+                log.append( title );
+                log.append( ": " );
+                log.append( mvdName );
+                log.append( " in " );
+                log.append( diff );
+                log.append( " milliseconds\n" );
+                body = mvd.toString();
+                if ( body.length() == 0 )
+                    throw new AeseException("failed to create MVD");
+                format = Formats.MVD;
+            }
             doc.add( JSONKeys.TITLE, title, false );
-            if ( revid != null )
-                doc.add( JSONKeys.REV, revid, false );
             doc.add( JSONKeys.VERSION1, version1, false );
             doc.add( JSONKeys.DESCRIPTION, description, false );
             doc.add( JSONKeys.AUTHOR, author, false );
             doc.add( JSONKeys.STYLE, style, false );
-            doc.add( JSONKeys.FORMAT, Formats.STIL, false );
+            doc.add( JSONKeys.FORMAT, format, false );
             doc.add( JSONKeys.BODY, body, false );
             return doc.toString();
         }
@@ -200,6 +209,7 @@ public class Archive extends HashMap<String,byte[]>
             throw new AeseException( e );
         }
     }
+    // for testing
     public void externalise() throws Exception
     {
         Set<String> keys = keySet();

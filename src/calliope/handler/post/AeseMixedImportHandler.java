@@ -56,10 +56,10 @@ public class AeseMixedImportHandler extends AeseImportHandler
                 if ( !demo )
                 {
                     Archive cortex = new Archive(docID.getWork(), 
-                        docID.getAuthor());
+                        docID.getAuthor(), Formats.TEXT, encoding);
                     cortex.setStyle( style );
                     Archive corcode = new Archive(docID.getWork(), 
-                        docID.getAuthor());
+                        docID.getAuthor(),Formats.STIL,encoding);
                     corcode.setStyle( style );
                     StageOne stage1 = new StageOne( files );
                     log.append( stage1.process(cortex,corcode) );
@@ -70,6 +70,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                         {
                             String suffix = "";
                             StageTwo stage2 = new StageTwo( stage1, similarityTest );
+                            stage2.setEncoding( encoding );
                             log.append( stage2.process(cortex,corcode) );
                             StageThreeXML stage3Xml = new StageThreeXML( stage2, 
                                 style, dict, hhExceptions );
@@ -83,10 +84,10 @@ public class AeseMixedImportHandler extends AeseImportHandler
                                 if ( notes.size()> 0 )
                                 {
                                     Archive nCorTex = new Archive(docID.getWork(), 
-                                        docID.getAuthor());
+                                        docID.getAuthor(), Formats.TEXT, encoding);
                                     nCorTex.setStyle( style );
                                     Archive nCorCode = new Archive(docID.getWork(), 
-                                        docID.getAuthor());
+                                        docID.getAuthor(),Formats.STIL, encoding);
                                     StageThreeXML s3notes = new StageThreeXML(
                                         style,dict, hhExceptions);
                                     s3notes.setStripConfig( 
@@ -96,7 +97,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                                     for ( int j=0;j<notes.size();j++ )
                                         s3notes.add(notes.get(j));
                                     log.append( s3notes.process(nCorTex,nCorCode) );
-                                    addToDBase(nCorTex, "cortex", "notes" );
+                                    addToDBase( nCorTex, "cortex", "notes" );
                                     addToDBase( nCorCode, "corcode", "notes" );
                                     // differentiate base from notes
                                     suffix = "base";
@@ -123,7 +124,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                                     stage3Text.add( f );
                             }
                             log.append( stage3Text.process(cortex,corcode) );
-                            cortex.externalise();
+                            //cortex.externalise();
                             addToDBase( cortex, "cortex", suffix );
                             addToDBase( corcode, "corcode", suffix );
                         }

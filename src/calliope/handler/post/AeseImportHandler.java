@@ -45,6 +45,7 @@ public abstract class AeseImportHandler extends AesePostHandler
     String database;
     String splitterName;
     String stripperName;
+    String encoding;
     /** hard hyphen exceptions */
     String hhExceptions;
     boolean similarityTest;
@@ -58,11 +59,13 @@ public abstract class AeseImportHandler extends AesePostHandler
     HashMap<String,String> jsonKeys;
     ArrayList<File> files;
     ArrayList<ImageFile> images;
+    static String DEFAULT_STYLE = "TEI/default";
     public AeseImportHandler()
     {
         nameMap = new HashMap<String,String>(); 
         jsonKeys = new HashMap<String,String>();
         filterName = Filters.EMPTY;
+        encoding = "UTF-8";
         stripperName = "default";
         splitterName = "default";
         textName = "default";
@@ -91,7 +94,8 @@ public abstract class AeseImportHandler extends AesePostHandler
                 path = docID.get();
             if ( db.equals("corcode") )
                 path += "/default";
-            Connector.getConnection().putToDb( db, path, archive.toMVD(db) );
+            Connector.getConnection().putToDb( db, path, 
+                archive.toResource(db) );
             log.append( archive.getLog() );
         }
         else
@@ -137,7 +141,7 @@ public abstract class AeseImportHandler extends AesePostHandler
                             nameMap.put( fieldName.substring(
                                 Params.SHORT_VERSION.length()),
                                 item.getString());
-                        else if ( fieldName.equals(Params.STYLE) )
+                        else if ( fieldName.equals(Params.LC_STYLE) )
                             style = contents;
                         else if ( fieldName.equals(Params.DEMO) )
                         {
@@ -160,6 +164,8 @@ public abstract class AeseImportHandler extends AesePostHandler
                             xslt = getConfig(Config.xslt,contents);
                         else if ( fieldName.equals(Params.DICT) )
                             dict = contents;
+                        else if ( fieldName.equals(Params.ENCODING) )
+                            encoding = contents;
                         else if ( fieldName.equals(Params.HH_EXCEPTIONS) )
                             hhExceptions = contents;
                         else
@@ -192,7 +198,7 @@ public abstract class AeseImportHandler extends AesePostHandler
                         else
                         {
                             File f = new File( item.getName(), 
-                                item.getString("UTF-8") );
+                                item.getString(encoding) );
                             files.add( f );
                         }
                     }
@@ -202,6 +208,8 @@ public abstract class AeseImportHandler extends AesePostHandler
                     }
                 }
             }
+            if ( style == null )
+                style = DEFAULT_STYLE;
         }
         catch ( Exception e )
         {

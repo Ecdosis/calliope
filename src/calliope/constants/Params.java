@@ -27,6 +27,8 @@ public class Params
     public final static String CORFORM = "CORFORM";
     /** passed-in form param base name for styles */
     public final static String STYLE = "STYLE";
+    /** config parameter */
+    public final static String LC_STYLE = "style";
     /** passed-in form param base name for formats */
     public final static String FORMAT = "FORMAT";
     /** the contents of an XML recipe file */
@@ -67,6 +69,8 @@ public class Params
     public final static String STRIPPER = "stripper";
     /** chosen plain text filter config  */
     public final static String TEXT = "text";
+    /** encoding of uploaded data */
+    public final static String ENCODING = "encoding";
     /** offset into a version */
     public final static String OFFSET = "OFFSET";
     /** length of a range in the given version */

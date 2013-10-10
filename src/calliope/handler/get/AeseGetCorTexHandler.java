@@ -50,7 +50,7 @@ public class AeseGetCorTexHandler extends AeseGetHandler
             try
             {
                 String version1 = request.getParameter(Params.VERSION1 );
-                AeseVersion hv = doGetMVDVersion( Database.CORTEX, urn, 
+                AeseVersion hv = doGetResourceVersion( Database.CORTEX, urn, 
                     version1 );
                 response.getWriter().println(hv.getVersionString()); 
             }

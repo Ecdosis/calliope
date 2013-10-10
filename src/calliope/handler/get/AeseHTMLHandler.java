@@ -187,7 +187,7 @@ public class AeseHTMLHandler extends AeseGetHandler
             String selectedVersions = request.getParameter( 
                 Params.SELECTED_VERSIONS );
             //System.out.println("version1="+version1);
-            AeseVersion corTex = doGetMVDVersion( Database.CORTEX, urn, version1 );
+            AeseVersion corTex = doGetResourceVersion( Database.CORTEX, urn, version1 );
             // 1. get corcodes and styles
             Map map = request.getParameterMap();
             String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
@@ -201,7 +201,7 @@ public class AeseHTMLHandler extends AeseGetHandler
                 for ( int i=0;i<corCodes.length;i++ )
                 {
                     String ccResource = Utils.canonisePath(urn,corCodes[i]);
-                    AeseVersion hv = doGetMVDVersion( Database.CORCODE, 
+                    AeseVersion hv = doGetResourceVersion( Database.CORCODE, 
                         ccResource, version1 );
                     HTMLComment comment = new HTMLComment();
                     comment.addText( "version-length: "+hv.getVersionLength() );
@@ -209,7 +209,7 @@ public class AeseHTMLHandler extends AeseGetHandler
                     response.getWriter().println( comment.toString() );
                     styleSet.add( hv.getStyle() );
                     corCodes[i] = new String(hv.getVersion(),"UTF-8");
-                    formats[i] = hv.getFormat();
+                    formats[i] = hv.getContentFormat();
                 }
             }
             catch ( Exception e )

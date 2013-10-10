@@ -82,7 +82,7 @@ public class AeseComparisonHandler extends AeseHTMLHandler
         for ( int i=0;i<userCC.length;i++ )
         {
             String ccResource = Utils.canonisePath(docID,userCC[i]);
-            AeseVersion hv = doGetMVDVersion( Database.CORCODE, ccResource, 
+            AeseVersion hv = doGetResourceVersion( Database.CORCODE, ccResource, 
                 version1 );
             try
             {

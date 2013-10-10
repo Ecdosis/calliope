@@ -16,6 +16,7 @@
 
 package calliope.handler.post.importer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import calliope.importer.Archive;
 import calliope.constants.Globals;
 import calliope.exception.ImportException;
@@ -32,10 +33,19 @@ public class StageOne extends Stage
     static String XML = "xml";
     static String TEXT = "txt";
     static String RTF = "rtf";
+    static String HTML = "html";
+    static String HTM = "htm";
+    HashSet<String> suffixes;
     public StageOne( ArrayList<File> files )
     {
         super();
         this.files = files;
+        suffixes = new HashSet<String>();
+        suffixes.add( XML );
+        suffixes.add( TEXT );
+        suffixes.add( HTML );
+        suffixes.add( RTF );
+        suffixes.add( HTM );
     }
     /**
      * Extract the suffix if any from a file name
@@ -74,8 +84,7 @@ public class StageOne extends Stage
                 log.append( Globals.MAX_UPLOAD_LEN );
                 log.append( ".\n" );
             }
-            else if ( suffix.length() == 0 || suffix.equals(XML)
-                || suffix.equals(TEXT) )
+            else if ( suffix.length() == 0 || suffixes.contains(suffix) )
                 newFiles.add( item );
             else if ( suffix.equals(RTF) )
             {
@@ -102,7 +111,7 @@ public class StageOne extends Stage
                 log.append( item.name );
                 log.append( " rejected because suffix is .");
                 log.append(suffix);
-                log.append( " not .xml or .txt or .rtf or empty\n");
+                log.append( " not .xml or .txt or .rtf or .html/htm or empty\n");
             }
         }
         files = newFiles;
