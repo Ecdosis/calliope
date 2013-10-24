@@ -90,6 +90,8 @@ public class AeseGetHandler extends AeseHandler
                     throw new AeseException( e );
                 }
             }
+            else if ( prefix.equals(Services.SEARCH) )
+                new AeseSearchHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Services.JSON) )
                 new AeseJSONHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Services.LIST) )

@@ -59,4 +59,6 @@ public class Services
     public static String TEST = "test";
     /** list of dictionaries */
     public static String DICTS = "dicts";
+    /** search service */
+    public static String SEARCH = "search";
 }

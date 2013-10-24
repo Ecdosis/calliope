@@ -48,6 +48,7 @@ public class Stage3HTML extends Stage
                 byte[] data = files.get(i).data.getBytes(encoding);
                 ByteArrayInputStream bis = new ByteArrayInputStream(data);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                System.out.println("Loading "+files.get(i).name);
                 t.parseDOM( bis, bos );
                 AeseStripper stripper = new AeseStripper();
                 JSONResponse markup = new JSONResponse();
@@ -70,6 +71,7 @@ public class Stage3HTML extends Stage
             }
             catch ( Exception e )
             {
+                e.printStackTrace(System.out);
             }
         }
         return "";
