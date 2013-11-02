@@ -57,5 +57,6 @@ void node_get_attributes( node *n, char *atts, int limit );
 int node_empty( node *n );
 int node_rightmost( node *n );
 int node_is_root( node *n );
+void node_set_end( node *n, int new_end );
 #endif	/* NODE_H */
 

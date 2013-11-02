@@ -1,8 +1,11 @@
 {"format":"CSS","title":"tei-lite","body":"body {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px}
+span.weak { display: none }
+span.strong { display: inline }
 span.italics { font-style: italic } 
 span.emph { font-style: italic } 
 span.foreign { font-style: italic } 
 span.bold { font-weight: bold; } 
+span.smallcaps { font-variant: small-caps; } 
 span.gloss { font-style: normal }
 span.speaker { font-size: 12px; font-weight: bold } 
 span.label { font-style: normal }
@@ -32,6 +35,10 @@ span.val { font-family: Courier, monospace }
 span.docAuthor { font-size: 16px }
 span.docDate { font-style: 12px }
 span.docEdition { font-style: 12px }
+span.subscript { font-size:x-small; vertical-align:bottom; }
+span.subsubscript {font-size:xx-small; vertical-align:bottom;}
+span.superscript { font-size:x-small; vertical-align:top; }
+span.supersuperscript {font-size:xx-small; vertical-align:top;}
 p.p {}
 p.title { font-size: 18px }
 div.preface {}

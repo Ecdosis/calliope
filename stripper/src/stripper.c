@@ -162,8 +162,10 @@ static void XMLCALL end_element_scan(void *userData, const char *name)
 {
 	userdata *u = userData;
 	range *r = stack_pop( userdata_range_stack(u) );
-    range_set_len( r, userdata_toffset(u)-range_get_start(r) );
-	if ( !stack_empty(userdata_ignoring(u)) && strcmp(stack_peek(userdata_ignoring(u)),name)==0 )
+    int rlen = userdata_toffset(u)-range_get_start(r);
+    range_set_len( r, rlen );
+	if ( !stack_empty(userdata_ignoring(u)) 
+        && strcmp(stack_peek(userdata_ignoring(u)),name)==0 )
 		stack_pop( userdata_ignoring(u) );
 }
 /**
@@ -633,13 +635,19 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
 	int res = 1;
     jboolean x_copied,r_copied=JNI_FALSE,f_copied,s_copied,h_copied,l_copied=JNI_FALSE;
     const char *x_str = load_string( env, xml, &x_copied );
+    //fprintf(stderr,"x_str=%s r_str\n",x_str);
     const char *r_str = (rules!=NULL)?load_string(env,rules,&r_copied):NULL;
+    //fprintf(stderr,"r_str=%s\n",r_str);
     const char *f_str = load_string( env, format, &f_copied );
+    //fprintf(stderr,"f_str=%s\n",f_str);
     const char *s_str = load_string( env, style, &s_copied );
+    //fprintf(stderr,"s_str=%s\n",s_str);
     const char *l_str = (language==NULL)?"en_GB"
         :load_string( env, language, &l_copied );
+    //fprintf(stderr,"l_str=%s\n",l_str);
     const char *h_str = (hexcepts==NULL)?NULL
         :load_string( env, hexcepts, &h_copied );
+    //fprintf(stderr,"h_str=%s\n",h_str);
     stripper *s = stripper_create();
     if ( s != NULL )
     {
@@ -685,7 +693,8 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
         unload_string( env, format, f_str, f_copied );
         unload_string( env, style, s_str, s_copied );
         unload_string( env, language, l_str, l_copied );
-        unload_string( env, hexcepts, h_str, h_copied );
+        if ( h_str != NULL )
+            unload_string( env, hexcepts, h_str, h_copied );
     }
     return res;
 }

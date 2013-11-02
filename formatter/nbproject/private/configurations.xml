@@ -24,7 +24,6 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c drama.css</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c drama.css -m deleted.json:formats.json -t F1.txt F1.html</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c kinglear.css -m f1vf2.stil:f1.stil -t F1.txt F1.html</runcommandpicklistitem>
@@ -33,8 +32,10 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode1.json -t test.txt test.html</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode.json -t cortex.txt test.html</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -c default.css -m corcode.json -t cortex.txt test.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c default.css -m "SIL Palmer Chapter 6.3-stil.json" -t "SIL Palmer Chapter 6.3-stil.txt" SIL.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c default.css -m "SIL Palmer Chapter 6.3-stil.json" -t "SIL Palmer Chapter 6.3.txt" SIL.html</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -c default.css -m corcode.json -t cortex.txt test.html</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -c default.css -m "SIL Palmer Chapter 6.3-stil.json" -t "SIL Palmer Chapter 6.3.txt" SIL.html</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

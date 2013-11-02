@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="88">
+<configurationDescriptor version="90">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -71,8 +71,9 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <cTool>
@@ -80,7 +81,7 @@
             <pElem>include</pElem>
             <pElem>../formatter/include/STIL</pElem>
             <pElem>../formatter/include</pElem>
-            <pElem>/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers</pElem>
+            <pElem>/usr/lib/jvm/java-7-openjdk-amd64/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>COMMANDLINE</Elem>
@@ -93,6 +94,7 @@
           <linkerLibItems>
             <linkerLibLibItem>aspell</linkerLibLibItem>
             <linkerLibLibItem>expat</linkerLibLibItem>
+            <linkerLibStdlibItem>Mathematics</linkerLibStdlibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -183,8 +185,9 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <cTool>

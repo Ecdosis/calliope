@@ -329,6 +329,7 @@ void dom_dispose( dom *d )
 /**
  * Build the dom
  * @param d the dom object to build
+ * @return 1 on success
  */
 int dom_build( dom *d )
 {
@@ -339,16 +340,14 @@ int dom_build( dom *d )
         node *r = dom_range_to_node( d, rx );
         if ( r != NULL )
         {
-            if ( node_end(r) <= d->text_len )
-                dom_add_node( d, d->root, r );
-            else
+            if ( node_end(r) > d->text_len )
             {
-                fprintf(stderr,"node range %d:%d > text length (%d)\n",
+                fprintf(stderr,
+                        "node range %d:%d > text length (%d)... shortening.\n",
                     node_offset(r),node_end(r), d->text_len );
-                node_dispose( r );
-                res = 0;
-                break;
+                node_set_end(r,d->text_len);
             }
+            dom_add_node( d, d->root, r );
         }
     }
     //matrix_dump( d->pm );

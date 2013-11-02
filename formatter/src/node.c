@@ -597,3 +597,12 @@ int node_rightmost( node *n )
 {
     return n->rightmost;
 }
+/**
+ * Override length of erroneous node
+ * @param n the node that has the wrong length
+ * @param new_end its new end
+ */
+void node_set_end( node *n, int new_end )
+{
+    n->len = new_end-n->offset;
+}
