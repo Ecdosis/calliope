@@ -106,5 +106,6 @@ public class Params
     public final static String XSLT_DEFAULT = "default";
     public final static String ZIP_TYPE = "zip_type";
     public final static String ADD_REQUIRED = "add_required";
-    public final static String TERMS = "terms";
+    public final static String EXPR = "expr";
+    public static final String HITS_PER_PAGE = "hits_per_page";
 }

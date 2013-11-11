@@ -323,6 +323,82 @@ public class AeseGetHandler extends AeseHandler
         }
         return params;
     }
+    protected String getVersionTableForUrn( String urn ) throws AeseException
+    {
+        try
+        {
+            JSONDocument doc = loadJSONDocument( Database.CORTEX, urn );
+            String fmt = (String)doc.get(JSONKeys.FORMAT);
+            if ( fmt != null && fmt.startsWith(Formats.MVD) )
+            {
+                AeseMVD mvd = loadMVD( Database.CORTEX, urn );
+                return mvd.mvd.getVersionTable();
+            }
+            else if ( fmt !=null && fmt.equals(Formats.TEXT) )
+            {
+                // concoct a version list of length 1
+                StringBuilder sb = new StringBuilder();
+                String version1 = (String)doc.get(JSONKeys.VERSION1);
+                if ( version1 == null )
+                    throw new AeseException("Lacks version1 default");
+                sb.append("Single version\n");
+                String[] parts = version1.split("/");
+                for ( int i=0;i<parts.length;i++ )
+                {
+                    sb.append(parts[i]);
+                    sb.append("\t");
+                }
+                sb.append(parts[parts.length-1]+" version");
+                sb.append("\n");
+                return sb.toString();
+            }
+            else
+                throw new AeseException("Unknown of null Format");
+        }
+        catch ( Exception e )
+        {
+            throw new AeseException(e);
+        }   
+    }
+    /**
+     * Use this method to retrieve the doc just to see its format
+     * @param db the database to fetch from
+     * @param docID the doc's ID
+     * @return a JSON doc as returned by Mongo
+     * @throws AeseException 
+     */
+    JSONDocument loadJSONDocument( String db, String docID ) 
+        throws AeseException
+    {
+        try
+        {
+            String data = Connector.getConnection().getFromDb(db,docID);
+            if ( data.length() > 0 )
+            {
+                JSONDocument doc = JSONDocument.internalise(data);
+                if ( doc != null )
+                    return doc;
+            }
+            throw new AeseException( "Doc not found "+docID );
+        }
+        catch ( Exception e )
+        {
+            throw new AeseException( e );
+        }
+    }     
+    /**
+     * Convert a loaded Mongo doc that IS an MVD to an MVD
+     * @param doc the MOngo doc
+     * @return an MVD
+     */
+    AeseMVD jsonDocToMVD( JSONDocument doc ) throws AeseException
+    {
+        String fmt = (String)doc.get(JSONKeys.FORMAT);
+        if ( fmt != null && fmt.equals(Formats.MVD) )
+            return new AeseMVD( doc );
+        else
+            throw new AeseException( "JSON doc not an MVD" );
+    }
     /**
      * Fetch and load an MVD
      * @param db the database 

@@ -73,12 +73,13 @@ public class TarArchive implements Compressor
             TarEntry entry = new TarEntry( fe, parent + files[i] );
             out.putNextEntry( entry );
             int count;
-            int bc = 0;
-            while (( count = origin.read( data ) ) != -1) 
+            int bc=0;
+            while ( (count=origin.read(data)) != -1 ) 
             {
                 out.write( data, 0, count );
-                bc += count;
+                bc+=count;
             }
+            //System.out.println("Wrote "+bc+" bytes from "+files[i]+" to out");
             out.flush();
             origin.close();
         }
@@ -91,10 +92,10 @@ public class TarArchive implements Compressor
     @Override
     public File compress() throws Exception
     {
-        File dest = File.createTempFile("TMP","tar.gz");
+        File dest = File.createTempFile("TMP",".tar.gz");
         FileOutputStream fos = new FileOutputStream( dest );
-        TarOutputStream out = new TarOutputStream( 
-            new BufferedOutputStream(fos) );
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        TarOutputStream out = new TarOutputStream(bos);
         tarFolder( null, folder.getAbsolutePath(), out );
         out.close();
         return dest;

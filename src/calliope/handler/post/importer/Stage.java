@@ -76,7 +76,8 @@ abstract public class Stage
      * Process the files
      * @return the log output
      */
-    abstract public String process( Archive cortex, Archive corcode ) throws ImportException;
+    abstract public String process( Archive cortex, Archive corcode ) 
+        throws ImportException;
     /**
      * Retrieve the files for merging etc with other lists
      * @return the internal files array

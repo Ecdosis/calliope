@@ -123,7 +123,6 @@ public class AesePDEFHandler extends AeseGetHandler
                 list = conn.listDocuments( Database.CORTEX, exprs[i] );
                 for ( j=0;j<list.length;j++ )
                 {
-                    //System.out.println("Adding corTex "+list[j] );
                     pdef.addCorTex( list[j] );
                 }
             }

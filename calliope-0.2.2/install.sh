@@ -27,7 +27,7 @@ fi
 function install
 {
   if [ -z "$HAS_BREW" ]; then
-    apt-get install "$1-dev"
+    apt-get install "lib$1-dev"
   else
     brew install "$1"
   fi
@@ -37,6 +37,9 @@ if [ -z "$HAS_ASPELL" ]; then
   install aspell
 fi
 HAS_EXPAT=`findhdr expat`
+if [ -z "$HAS_EXPAT" ]; then
+  HAS_EXPAT=`findhdr expat.h`
+fi
 if [ -z "$HAS_EXPAT" ]; then
   install expat
 fi

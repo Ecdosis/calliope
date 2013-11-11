@@ -207,8 +207,7 @@ public class AeseListHandler extends AeseGetHandler
         version1 = request.getParameter( Params.VERSION1 );
         try
         {
-            AeseMVD mvd = loadMVD( Database.CORTEX, urn );
-            String table = mvd.mvd.getVersionTable();
+            String table = getVersionTableForUrn( urn );
             String listName = request.getParameter( Params.NAME );
             if ( listName == null )
                 listName = "versions";

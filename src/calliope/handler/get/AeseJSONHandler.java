@@ -43,5 +43,4 @@ public class AeseJSONHandler extends AeseGetHandler
         else
             throw new AeseException("Unknown service: "+urn);
     }
-    
 }

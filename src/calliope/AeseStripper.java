@@ -20,6 +20,10 @@ import calliope.constants.Libraries;
 /**
  * Strip XML embedded codes from text out into STIL (JSON) format
  * @author desmond
+ * JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
+  (JNIEnv *env, jobject obj, jstring xml, jstring rules, jstring format, 
+    jstring style, jstring language, jstring hexcepts, jobject text, 
+    jobject markup)
  */
 public class AeseStripper 
 {

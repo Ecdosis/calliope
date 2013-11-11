@@ -91,7 +91,7 @@ public class ZipArchive implements Compressor
     @Override
     public File compress() throws Exception
     {
-        File dest = File.createTempFile( "", "" );
+        File dest = File.createTempFile( "ZIP", "zip" );
         zipFolder( srcFolder.getAbsolutePath(), 
             dest.getAbsolutePath() );
         return dest;

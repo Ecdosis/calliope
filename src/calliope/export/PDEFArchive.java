@@ -17,6 +17,7 @@ package calliope.export;
 import calliope.constants.Database;
 import calliope.Connector;
 import calliope.constants.JSONKeys;
+import calliope.constants.Formats;
 import calliope.json.JSONDocument;
 import java.io.File;
 import java.io.FileWriter;
@@ -41,7 +42,8 @@ import edu.luc.nmerge.mvd.MVDFile;
  */
 public class PDEFArchive 
 {
-    public static String CORTEX_NAME = "cortex.mvd";
+    public static String CORTEX_MVD = "cortex.mvd";
+    public static String CORTEX_TXT = "cortex.txt";
     public static String NAME = "archive";
     static String[] IMG_KEYS = { "img","src" };
     final String[] tabooFields = {JSONKeys._ID,JSONKeys.DOCID,JSONKeys.REV};
@@ -303,25 +305,43 @@ public class PDEFArchive
      * Write a cortex to disk
      * @param dir the "%" directory to create it in
      * @param docID the file's docID
+     * @return the dir in which the CorTex resides
      */
-    private void writeRawCortexToDir( File dir, String docID ) 
+    private File writeRawCortexToDir( File dir, String docID ) 
         throws Exception
     {
         FileWriter fw;
         String json = Connector.getConnection().getFromDb( 
             Database.CORTEX, docID );
         JSONDocument jdoc = JSONDocument.internalise( json );
-        File mvdDir = new File( dir, Format.MVD.toString() );
-        if ( !mvdDir.exists() )
-            mvdDir.mkdir();
+        String fmt = (String)jdoc.get(JSONKeys.FORMAT);
+        if ( fmt == null )
+            throw new AeseException("Missing format field for "+docID);
+        File destDir = null;
+        String corTexName = "";
+        if ( fmt.startsWith(Formats.MVD) )
+        {
+            corTexName = CORTEX_MVD;
+            destDir = new File( dir, Format.MVD.toString() );
+        }
+        else if ( fmt.equals(Formats.TEXT) )
+        {
+            corTexName = CORTEX_TXT;
+            destDir = new File( dir, Format.TEXT.toString() );
+        }
+        else
+            throw new AeseException("Unknown format "+fmt );
+        if ( !destDir.exists() )
+            destDir.mkdir();
         writeCorform( jdoc );
-        writeConfigRest( jdoc, "cortex.conf", mvdDir );
-        File cor = new File( mvdDir, CORTEX_NAME );
+        writeConfigRest( jdoc, "cortex.conf", destDir );
+        File cor = new File( destDir, corTexName );
         cor.createNewFile();
         fw = new FileWriter( cor );
         String mvd = (String)jdoc.get(JSONKeys.BODY);
         fw.write( mvd, 0, mvd.length() );
         fw.close();
+        return destDir;
     }
     /**
      * Write the text versions of a cortex to disk
@@ -367,6 +387,8 @@ public class PDEFArchive
     {
         try
         {
+            if ( corcode.charAt(0)==123 )
+                throw new AeseException("Not an MVD");
             MVD mvd = MVDFile.internalise( corcode );
             int nVersions = mvd.numVersions();
             String[] array = new String[nVersions];
@@ -471,7 +493,7 @@ public class PDEFArchive
     }
     /**
      * Write a corcode to the given directory
-     * @param dir the directory to write to
+     * @param dir the directory with the cortex already in it
      * @param docID its docid minus the file name
      * @param name its file name
      * @throws Exception 
@@ -484,11 +506,7 @@ public class PDEFArchive
         String regex = docID+"/[^/]*";
         String[] corcodes = Connector.getConnection().listDocuments( 
             Database.CORCODE, regex );
-        // prepare directory for corcodes
-        File mvdDir = new File( dir, Format.MVD.toString() );
-        if ( !mvdDir.exists() )
-            mvdDir.mkdir();
-        File ccDir = new File( mvdDir, Database.CORCODE );
+        File ccDir = new File( dir, Database.CORCODE );
         if ( !ccDir.exists() )
             ccDir.mkdir();
         // use this to save imageIDs
@@ -502,8 +520,19 @@ public class PDEFArchive
             JSONDocument jdoc = JSONDocument.internalise( json );
             writeCorform( jdoc );
             // now split each corcode MVD into separate STIL files 
-            String mvd = (String)jdoc.get(JSONKeys.BODY);
-            String[] versions = splitVersions( mvd, null, null );
+            String body = (String)jdoc.get(JSONKeys.BODY);
+            String fmt = (String)jdoc.get(JSONKeys.FORMAT);
+            if ( fmt == null || body == null )
+                throw new AeseException("Empty corcode "+docID );
+            String[] versions = null;
+            // we need to extract the image IDs if any
+            if ( fmt.startsWith(Formats.MVD) )
+                versions = splitVersions( body, null, null );
+            else
+            {
+                versions = new String[1];
+                versions[0] = body;
+            }
             // extract the image IDs for each version of the corcode
             for ( int j=0;j<versions.length;j++ )
                 stripFromStil( images, JSONDocument.internalise(versions[j]) );
@@ -513,7 +542,7 @@ public class PDEFArchive
             writeConfigRest( jdoc, tail+".conf", ccDir );
             ccFile.createNewFile();
             fw = new FileWriter( ccFile );
-            fw.write( mvd );
+            fw.write( body );
             fw.close();
         }
         // finally, write out the images from that corcode
@@ -529,7 +558,6 @@ public class PDEFArchive
     private void writeSplitCorcodeToDir( File dir, String docID ) 
         throws Exception
     {
-        FileWriter fw;
         String tail;
         String regex = docID+"/[^/]*";
         String[] corcodes = Connector.getConnection().listDocuments( 
@@ -542,20 +570,26 @@ public class PDEFArchive
             JSONDocument jdoc = JSONDocument.internalise( json );
             writeCorform( jdoc );
             // now split each corcode MVD into separate STIL files 
-            String mvd = (String)jdoc.get(JSONKeys.BODY);
+            String body = (String)jdoc.get(JSONKeys.BODY);
+            String fmt = (String)jdoc.get(JSONKeys.FORMAT);
+            if ( fmt == null || body == null )
+                throw new AeseException("Missing format or body for "+docID);
             ArrayList<String> versionIDs = new ArrayList<String>();
             ArrayList<String> longNames = new ArrayList<String>();
-            String[] versions = splitVersions( mvd, versionIDs, longNames );
+            String[] versions = null;
+            if ( fmt.startsWith(Formats.MVD) )
+                versions = splitVersions( body, versionIDs, longNames );
+            else
+            {
+                versions = new String[1];
+                versions[0] = body;
+            }
             // extract the image IDs for each version of the corcode
             HashSet<String> images = new HashSet<String>();
             for ( int j=0;j<versions.length;j++ )
                 stripFromStil( images, JSONDocument.internalise(versions[j]) );
-            // make a TEXT dir to hold all the corcodes
-            File textDir = new File( dir, Format.TEXT.toString() );
-            if ( !textDir.exists() )
-                textDir.mkdir();
             // make a big dir for all the corcodes
-            File ccDir = new File( textDir, Database.CORCODE );
+            File ccDir = new File( dir, Database.CORCODE );
             if ( !ccDir.exists() )
                 ccDir.mkdir();
             // now create ONE dir for each corcode
@@ -581,8 +615,10 @@ public class PDEFArchive
     {
         try
         {
-            writeRawCortexToDir( dir, docID );
-            writeRawCorcodeToDir( dir, docID );
+            File destDir = writeRawCortexToDir( dir, docID );
+            //System.out.println("wrote cortex");
+            writeRawCorcodeToDir( destDir, docID );
+           // System.out.println("wrote corcode");
         }
         catch ( Exception e )
         {

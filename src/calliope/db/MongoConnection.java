@@ -19,6 +19,7 @@ import calliope.exception.AeseException;
 import calliope.constants.Database;
 import calliope.constants.JSONKeys;
 import java.util.Iterator;
+import java.util.ArrayList;
 import calliope.Test;
 import com.mongodb.MongoClient;
 import com.mongodb.DB;
@@ -184,14 +185,18 @@ public class MongoConnection extends Connection implements Test
                 BasicDBObject q = new BasicDBObject();
                 q.put(JSONKeys.DOCID, Pattern.compile(expr) );
                 DBCursor curs = coll.find( q );
-                String[] docids = new String[curs.length()];
+                ArrayList<String> docids = new ArrayList<String>();
                 Iterator<DBObject> iter = curs.iterator();
                 int i = 0;
                 while ( iter.hasNext() )
                 {
-                    docids[i++] = (String)iter.next().get(JSONKeys.DOCID);
+                    String dId = (String)iter.next().get(JSONKeys.DOCID);
+                    if ( dId.matches(expr) )
+                        docids.add( dId );
                 }
-                return docids;
+                String[] array = new String[docids.size()];
+                docids.toArray( array );
+                return array;
             }
             else
                 throw new AeseException("collection "+collName+" not found");

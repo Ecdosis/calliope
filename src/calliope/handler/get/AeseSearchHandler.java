@@ -4,17 +4,21 @@
  */
 package calliope.handler.get;
 
+import calliope.search.AeseSearch;
 import calliope.constants.Params;
 import calliope.exception.AeseException;
+import calliope.search.HitProfile;
+import calliope.tests.html.HTMLComment;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.lucene.store.RAMDirectory;
 /**
  * Search for an expression in the database contents
  * @author desmond
  */
 public class AeseSearchHandler  extends AeseGetHandler
 {
+    static int DEFAULT_HPP = 20;
     /**
      * Get the JSON for the given path
      * @param request the request to read from
@@ -25,11 +29,35 @@ public class AeseSearchHandler  extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        String terms = request.getParameter( Params.TERMS );
-        if ( terms != null )
+        int hitsPerPage = DEFAULT_HPP;
+        // optional hits per page
+        String hitsPer = request.getParameter( Params.HITS_PER_PAGE );
+        if ( hitsPer != null )
         {
-            if ( index == null )
+            try
             {
+                hitsPerPage = Integer.parseInt(hitsPer);
+            }
+            catch ( Exception e )
+            {
+                // ignore
+            }
+        }
+        // the search expression
+        String expr = request.getParameter( Params.EXPR );
+        if ( expr != null )
+        {
+            HitProfile hp = new HitProfile(0,hitsPerPage-1);
+            String res = AeseSearch.searchIndex( expr, 
+                Locale.getDefault().getLanguage(), hp );
+            response.setContentType("text/html;charset=UTF-8");
+            try
+            {
+                response.getWriter().println(res);   
+            }
+            catch ( Exception e )
+            {
+                throw new AeseException( e );
             }
         }
     }

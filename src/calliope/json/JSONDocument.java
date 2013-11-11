@@ -516,4 +516,8 @@ public class JSONDocument extends HashMap<String,Object>
             System.out.println( e.getMessage() );
         }
     }
+    public void merge( JSONDocument other )
+    {
+        this.putAll( other );
+    }
 }

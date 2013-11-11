@@ -104,8 +104,7 @@ public class AeseJSONListHandler  extends AeseTextListHandler
         {
             if ( urn.length()>0 )
             {
-                AeseMVD mvd = loadMVD( Database.CORTEX, urn );
-                String table = mvd.mvd.getVersionTable();
+                String table = getVersionTableForUrn( urn );
                 response.setContentType("text/plain;charset=UTF-8");
                 String list = formatTable( table );
                 response.getWriter().println( list );

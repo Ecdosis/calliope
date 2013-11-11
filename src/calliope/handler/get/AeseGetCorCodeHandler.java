@@ -14,9 +14,14 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.handler.get;
+import calliope.constants.Database;
+import calliope.constants.Params;
+import calliope.constants.Services;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import calliope.exception.AeseException;
+import calliope.handler.AeseVersion;
+import calliope.path.Path;
 
 /**
  *
@@ -28,6 +33,23 @@ public class AeseGetCorCodeHandler extends AeseGetHandler
     public void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException
     {
-        throw new AeseException("unimplemented");
+        String prefix = Path.first( urn );
+        if ( prefix != null && prefix.equals(Services.VERSION2) )
+            new AeseNextVersionHandler().handle(request,response,urn);
+        else
+        {
+            try
+            {
+                String version1 = request.getParameter(Params.VERSION1 );
+                String docID = request.getParameter(Params.DOC_ID)+"/default";
+                AeseVersion hv = doGetResourceVersion( Database.CORCODE, docID, 
+                    version1 );
+                response.getWriter().println(hv.getVersionString()); 
+            }
+            catch ( Exception e )
+            {
+                throw new AeseException( e );
+            }
+        }
     }
 }

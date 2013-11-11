@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope;
+import calliope.exception.AeseException;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Connector;
 /**
