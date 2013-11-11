@@ -33,4 +33,6 @@ public class Formats
     public static String TEI = "TEI";
     /** MVD format (merged representation) */
     public static String MVD = "MVD";
+    public static String MVD_TEXT = "MVD/TEXT";
+    public static String MVD_STIL = "MVD/STIL";
 }

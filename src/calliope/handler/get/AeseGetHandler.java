@@ -394,7 +394,7 @@ public class AeseGetHandler extends AeseHandler
     AeseMVD jsonDocToMVD( JSONDocument doc ) throws AeseException
     {
         String fmt = (String)doc.get(JSONKeys.FORMAT);
-        if ( fmt != null && fmt.equals(Formats.MVD) )
+        if ( fmt != null && fmt.startsWith(Formats.MVD) )
             return new AeseMVD( doc );
         else
             throw new AeseException( "JSON doc not an MVD" );

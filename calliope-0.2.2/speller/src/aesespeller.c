@@ -49,7 +49,6 @@ static void checker_dispose( checker *c )
 static checker *checker_create( const char *language )
 {
     int err = 0;
-    printf("entering checker_create\n");
     checker *c = calloc( 1, sizeof(checker) );
     if ( c != NULL )
     {
@@ -97,7 +96,10 @@ JNIEXPORT void JNICALL Java_calliope_AeseSpeller_cleanup
   (JNIEnv *env, jobject obj)
 {
     if ( checkers != NULL )
+    {
         checker_dispose( checkers );
+        checkers = NULL;
+    }
 }
 JNIEXPORT jboolean JNICALL Java_calliope_AeseSpeller_initialise
   (JNIEnv *env, jobject obj, jstring lang)
@@ -171,7 +173,6 @@ JNIEXPORT jobjectArray JNICALL Java_calliope_AeseSpeller_listDicts
     AspellDictInfoList *dlist;
     AspellDictInfoEnumeration *dels;
     const AspellDictInfo *entry;
-
     config = new_aspell_config();
     /* the returned pointer should _not_ need to be deleted */
     dlist = get_aspell_dict_info_list(config);

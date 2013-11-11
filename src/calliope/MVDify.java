@@ -72,6 +72,9 @@ public class MVDify
                 doc.put( JSONKeys.FORMAT, Formats.TEXT );
             else if ( cType==ContentType.STIL )
                 doc.put( JSONKeys.FORMAT, Formats.STIL);
+            else
+                System.out.println("Leaving resource "+docs[i]
+                    +" with format "+(String)doc.get(JSONKeys.FORMAT));
             // otherwise leave it alone
             Connector.getConnection().putToDb( collection, 
                 docs[i], doc.toString() );

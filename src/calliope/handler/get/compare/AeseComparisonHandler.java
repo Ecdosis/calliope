@@ -96,7 +96,7 @@ public class AeseComparisonHandler extends AeseHTMLHandler
             {
                 throw new AeseException( e );
             }
-            formats.add( hv.getFormat() );
+            formats.add( hv.getContentFormat() );
         }
         return ccTexts;
     }

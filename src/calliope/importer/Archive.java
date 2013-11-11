@@ -152,6 +152,10 @@ public class Archive extends HashMap<String,byte[]>
                 Iterator<String> iter = keys.iterator();
                 String key = iter.next();
                 byte[] data = get( key );
+                if ( format.equals(Formats.MVD_STIL) )
+                    format = Formats.STIL;
+                else if ( format.equals(Formats.MVD_TEXT) )
+                    format = Formats.TEXT;
                 body = new String( data, encoding );
                 if ( version1 == null )
                     version1 = key;
@@ -193,7 +197,7 @@ public class Archive extends HashMap<String,byte[]>
                 body = mvd.toString();
                 if ( body.length() == 0 )
                     throw new AeseException("failed to create MVD");
-                format = Formats.MVD;
+                //format = Formats.MVD;
             }
             doc.add( JSONKeys.TITLE, title, false );
             doc.add( JSONKeys.VERSION1, version1, false );

@@ -182,7 +182,7 @@ public class AeseSearch
             if ( format == null )
                 throw new AeseException("doc missing format");
             // we just format the plain text 
-            if ( format == Formats.MVD )
+            if ( format.startsWith(Formats.MVD) )
             {
                 MVD mvd = MVDFile.internalise( (String)doc.get(
                     JSONKeys.BODY) );
@@ -286,7 +286,7 @@ public class AeseSearch
             String format = (String)doc.get(JSONKeys.FORMAT);
             if ( format == null )
                 throw new AeseException("doc missing format");
-            if ( format.equals(Formats.MVD) )
+            if ( format.startsWith(Formats.MVD) )
             {
                 MVD mvd = MVDFile.internalise( (String)doc.get(
                     JSONKeys.BODY) );

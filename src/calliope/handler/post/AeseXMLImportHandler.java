@@ -46,9 +46,9 @@ public class AeseXMLImportHandler extends AeseImportHandler
             {
                 parseImportParams( request );
                 Archive cortex = new Archive(docID.getWork(), 
-                    docID.getAuthor(),Formats.TEXT,encoding);
+                    docID.getAuthor(),Formats.MVD_TEXT,encoding);
                 Archive corcode = new Archive(docID.getWork(), 
-                    docID.getAuthor(),Formats.STIL,encoding);
+                    docID.getAuthor(),Formats.MVD_STIL,encoding);
                 cortex.setStyle( style );
                 corcode.setStyle( style );
                 StageOne stage1 = new StageOne( files );
@@ -71,10 +71,10 @@ public class AeseXMLImportHandler extends AeseImportHandler
                         if ( notes.size()> 0 )
                         {
                             Archive nCorTex = new Archive(docID.getWork(), 
-                                docID.getAuthor(),Formats.TEXT,encoding);
+                                docID.getAuthor(),Formats.MVD_TEXT,encoding);
                             nCorTex.setStyle( style );
                             Archive nCorCode = new Archive(docID.getWork(), 
-                                docID.getAuthor(),Formats.STIL,encoding);
+                                docID.getAuthor(),Formats.MVD_STIL,encoding);
                             StageThreeXML s3notes = new StageThreeXML(
                                 style,dict, hhExceptions);
                             s3notes.setStripConfig( 

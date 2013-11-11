@@ -73,11 +73,11 @@ public class TarArchive implements Compressor
             TarEntry entry = new TarEntry( fe, parent + files[i] );
             out.putNextEntry( entry );
             int count;
-            int bc=0;
+            //int bc=0;
             while ( (count=origin.read(data)) != -1 ) 
             {
                 out.write( data, 0, count );
-                bc+=count;
+                //bc+=count;
             }
             //System.out.println("Wrote "+bc+" bytes from "+files[i]+" to out");
             out.flush();
