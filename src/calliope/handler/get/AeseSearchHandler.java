@@ -26,6 +26,7 @@ public class AeseSearchHandler  extends AeseGetHandler
         HttpServletResponse response, String urn ) throws AeseException
     {
         String terms = request.getParameter( Params.TERMS );
+        String index = null;
         if ( terms != null )
         {
             if ( index == null )
