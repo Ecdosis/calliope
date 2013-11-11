@@ -2,15 +2,4 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/handler/get/AeseJSONDictsHandler.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/handler/get/AeseJSONListHandler.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/handler/get/AeseJSONHandler.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/AeseWebApp.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/handler/post/AesePostHandler.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/handler/get/AeseGetHandler.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/exception/AeseExceptionMessage.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/handler/post/AeseMixedImportHandler.java</file>
-        <file>file:/home/uqdayers/austese/calliope/src/calliope/importer/filters/Filter.java</file>
-    </open-files>
 </project-private>
