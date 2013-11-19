@@ -34,14 +34,22 @@ function install
 }
 HAS_ASPELL=`findhdr aspell`
 if [ -z "$HAS_ASPELL" ]; then
-  install aspell
+  if [ -z "$HAS_BREW" ]; then
+    apt-get install libaspell-dev
+  else
+    brew install aspell
+  fi
 fi
 HAS_EXPAT=`findhdr expat`
 if [ -z "$HAS_EXPAT" ]; then
   HAS_EXPAT=`findhdr expat.h`
 fi
 if [ -z "$HAS_EXPAT" ]; then
-  install expat
+  if [ -z "$HAS_BREW" ]; then
+    apt-get install libexpat1-dev
+  else
+    brew install expat
+  fi
 fi
 HAS_GCC=`which gcc`
 if [ -z "$HAS_GCC" ]; then
@@ -111,9 +119,9 @@ if [ $USER = "root" ]; then
 # build stripper speller and formatter libs
   JDKINCLUDE=`getjdkinclude`
   if [ -d $JDKINCLUDE ]; then
-    gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Istripper/include -I$JDKINCLUDE -O0 -g3 -Wall -fPIC stripper/src/*.c -shared -o libAeseStripper.$LIBSUFFIX
+    gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Istripper/include -I$JDKINCLUDE -O0 -g3 -Wall -fPIC stripper/src/*.c -laspell -shared -o libAeseStripper.$LIBSUFFIX
     gcc -DHAVE_EXPAT_CONFIG_H -DJNI -DHAVE_MEMMOVE -Iformatter/include -Iformatter/include/AESE -Iformatter/include/STIL -I$JDKINCLUDE -O0 -g3 -Wall -fPIC formatter/src/*.c formatter/src/AESE/*.c formatter/src/STIL/*.c -shared -o libAeseFormatter.$LIBSUFFIX
-    gcc -DJNI -Ispeller/include -I$JDKINC -O0 -Wall -g3 -fPIC speller/src/*.c -shared -L/usr/local/lib -laspell -o libAeseSpeller.$LIBSUFFIX
+    gcc -DJNI -Ispeller/include -I$JDKINCLUDE -O0 -Wall -g3 -fPIC speller/src/*.c -shared -L/usr/local/lib -laspell -o libAeseSpeller.$LIBSUFFIX
     if [ -d /usr/local/lib/libAeseSpeller.$LIBSUFFIX.dSYM ]; then
       rm -rf libAeseSpeller.$LIBSUFFIX.dSYM
     fi
