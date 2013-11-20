@@ -11,6 +11,7 @@
 #include "dest_file.h"
 #include "log.h"
 #include "hashmap.h"
+#include "memwatch.h"
 /**
  * Manage the contents of an output file in memory or for writing to disk.
  */
@@ -287,6 +288,8 @@ dest_file *dest_file_dispose( dest_file *df )
         free( df->name );
     if ( df->next != NULL )
         dest_file_dispose( df->next );
+    if ( df->midname != NULL )
+        free( df->midname );
     if ( df->queue != NULL )
     {
         range *r = df->queue;
@@ -376,6 +379,7 @@ int dest_file_open( dest_file *df )
             fprintf( stderr,"stripper: couldn't open %s", markup );
         else
             res = 1;
+        free( markup );
     }
     return res;
 #endif

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
+#include "memwatch.h"
 /**
  * Get the file length of the src file
  * @return its length as an int

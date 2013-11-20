@@ -23,6 +23,7 @@
 #include "userdata.h"
 #include "aspell.h"
 #include "utils.h"
+#include "memwatch.h"
 struct userdata_struct
 {
     /** flag to remove multiple white space */

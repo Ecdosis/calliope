@@ -24,6 +24,8 @@
 #include <stdarg.h>
 #include <ctype.h>
 #include <syslog.h>
+#include <tidy/tidy.h>
+#include <tidy/buffio.h>
 #ifdef JNI
 #include <jni.h>
 #include "calliope_AeseStripper.h"
@@ -47,9 +49,9 @@
 #include "dest_file.h"
 #include "hashmap.h"
 #include "log.h"
-#include "memwatch.h"
 #include "hh_exceptions.h"
 #include "userdata.h"
+#include "memwatch.h"
 
 #define FILE_NAME_LEN 128
 #ifdef XML_LARGE_SIZE
@@ -61,7 +63,6 @@
 #else
 #define XML_FMT_INT_MOD "l"
 #endif
-
 /** array of available formats - add more here */
 static format formats[]={{"STIL",STIL_write_header,STIL_write_tail,
     STIL_write_range,".txt",".json","-stil"},
@@ -138,6 +139,7 @@ static void XMLCALL start_element_scan( void *userData,
     userdata *u = userData;
     char **new_atts;
     char *simple_name = (char*)name;
+    //printf("start: %s\n",name);
     if ( recipe_has_removal(userdata_rules(u),(char*)name) )
         stack_push( userdata_ignoring(u), (char*)name );
     new_atts = copy_atts( atts );
@@ -162,6 +164,7 @@ static void XMLCALL end_element_scan(void *userData, const char *name)
 {
 	userdata *u = userData;
 	range *r = stack_pop( userdata_range_stack(u) );
+    //printf("end: %s\n",name);
     int rlen = userdata_toffset(u)-range_get_start(r);
     range_set_len( r, rlen );
 	if ( !stack_empty(userdata_ignoring(u)) 
@@ -549,14 +552,13 @@ static int scan_source( const char *buf, int len, stripper *s )
         XML_SetUserData( s->parser, s->user_data );
         if ( XML_Parse(s->parser,buf,len,1) == XML_STATUS_ERROR )
         {
-            error(
+            warning(
                 "stripper: %s at line %" XML_FMT_INT_MOD "u\n",
                 XML_ErrorString(XML_GetErrorCode(s->parser)),
                 XML_GetCurrentLineNumber(s->parser));
-            return 0;
+            res = 0;
         }
         XML_ParserFree( s->parser );
-        
     }
     else
     {
@@ -611,6 +613,47 @@ stripper *stripper_create()
         fprintf(stderr,"stripper: failed to allocate object\n");
     return s;
 }
+/**
+ * Convert html to XML
+ * @param input the HTML input
+ * @param len VAR param update with length of xhtml string
+ * @return the allocated XML output
+ */
+static char *html2xhtml( const char *input, int *len )
+{
+  TidyBuffer output = {0};
+  int rc = -1;
+  int ok;
+  char *out = NULL;
+
+  TidyDoc tdoc = tidyCreate();
+  ok = tidyOptSetBool( tdoc, TidyXhtmlOut, yes ); 
+  if ( ok )
+    rc = tidyParseString( tdoc, input );
+  if ( rc >= 0 )
+    rc = tidyCleanAndRepair( tdoc );
+  if ( rc > 1 )   
+    rc = ( tidyOptSetBool(tdoc, TidyForceOutput, yes) ? rc : -1 );
+  if ( rc >= 0 )
+    rc = tidySaveBuffer( tdoc, &output );  
+  if ( rc >= 0 )
+  {
+     out = malloc( output.size+1 );
+     if ( out != NULL )
+     {
+         memcpy( out, output.bp, output.size );
+         out[output.size] = 0;
+         //printf("%s\n",&out[output.size-100]);
+         *len = output.size;
+     }
+  }
+  else
+      fprintf(stderr,"tidy failed\n");
+  tidyBufFree( &output );
+  if ( tdoc != NULL )
+      tidyRelease( tdoc );
+  return out;
+}
 #ifdef JNI
 static void unload_string( JNIEnv *env, jstring jstr, const char *cstr, 
     jboolean copied )
@@ -625,12 +668,12 @@ static const char *load_string( JNIEnv *env, jstring jstr, jboolean *copied )
 /*
  * Class:     calliope_AeseStripper
  * Method:    strip
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
  */
 JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
   (JNIEnv *env, jobject obj, jstring xml, jstring rules, jstring format, 
-    jstring style, jstring language, jstring hexcepts, jobject text, 
-    jobject markup)
+    jstring style, jstring language, jstring hexcepts, jboolean is_html,
+    jobject text, jobject markup)
 {
 	int res = 1;
     jboolean x_copied,r_copied=JNI_FALSE,f_copied,s_copied,h_copied,l_copied=JNI_FALSE;
@@ -648,6 +691,7 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
     const char *h_str = (hexcepts==NULL)?NULL
         :load_string( env, hexcepts, &h_copied );
     //fprintf(stderr,"h_str=%s\n",h_str);
+    char *xhtml = NULL;
     stripper *s = stripper_create();
     if ( s != NULL )
     {
@@ -679,6 +723,16 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
                 if ( res )
                 {
                     int xlen = strlen( x_str );
+                    if ( is_html )
+                    {
+                        xhtml = html2xhtml( x_str, &xlen );
+                        if ( xhtml != NULL )
+                        {
+                            unload_string( env, xml, x_str, x_copied );
+                            x_copied = JNI_FALSE;
+                            x_str = xhtml;
+                        }
+                    }
                     res = scan_source( x_str, xlen, s );
                     if ( res )
                         userdata_write_files( env, s->user_data, text, markup );
@@ -688,6 +742,8 @@ JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
             }
         }
         stripper_dispose( s );
+        if ( xhtml != NULL )
+            free( xhtml );
         unload_string( env, xml, x_str, x_copied );
         unload_string( env, rules, r_str, r_copied );
         unload_string( env, format, f_str, f_copied );
@@ -904,9 +960,9 @@ int main( int argc, char **argv )
             }
             if ( rules != NULL )
             {
-                hh_exceptions *hhe = hh_exceptions_create( s->hh_except_string );
+                s->hh_except = hh_exceptions_create( s->hh_except_string );
                 s->user_data = userdata_create( s->language, s->barefile, 
-                    rules, &formats[s->selected_format], hhe );
+                    rules, &formats[s->selected_format], s->hh_except );
                 if ( s->user_data == NULL )
                 {
                     fprintf(stderr,"stripper: failed to initialise userdata\n");
@@ -929,7 +985,18 @@ int main( int argc, char **argv )
                         const char *data = read_file( s->src, &len );
                         if ( data != NULL )
                         {
+                            if ( strstr(s->src,".html") )
+                            {
+                                char *xhtml = html2xhtml( data, &len );
+                                if ( xhtml != NULL )
+                                {
+                                    free( (char*)data );
+                                    data = xhtml;
+                                }
+                            }
                             res = scan_source( data, len, s );
+                            if ( !res )
+                                fprintf(stderr,"scan failed\n");
                             free( (char*)data );
                         }
                     }

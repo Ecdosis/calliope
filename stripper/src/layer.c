@@ -2,6 +2,7 @@
 #include <string.h>
 #include "milestone.h"
 #include "layer.h"
+#include "memwatch.h"
 /**
  * A layer of markup is created from a list of milestones. There may be 
  * several and their fields may overlap etc.

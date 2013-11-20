@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "hh_exceptions.h"
+#include "memwatch.h"
 struct hh_exceptions_struct
 {
     /** hard-hyphen exceptions: e.g. "underfoot" */

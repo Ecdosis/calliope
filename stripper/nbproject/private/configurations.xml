@@ -24,18 +24,18 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" SIL.xml</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" SIL.xml -e "afterdirections"</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections" SIL.xml </runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard" SIL.xml</runcommandpicklistitem>
-          <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard underfoot" SIL.xml</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard underfoot" "SIL Palmer Chapter 2.1.xml"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -e "afterdirections safeguard underfoot" SIL\ Palmer\ Chapter\ 2.1.xml</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" "SIL Palmer Chapter 2.1.xml"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" "SIL Palmer Chapter 6.3.xml"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" "test.xml"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" slider.html -r html.css</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" slider.html -r html.css -f STIL -s html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" slider.html -r recipe-html.json -f STIL -s html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -r recipe-html.json -f STIL -s html slider.html </runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -r recipe-html.json -f STIL -s html slider.html</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" "test.xml"</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -r recipe-html.json -f STIL -s html slider.html</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
