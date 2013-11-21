@@ -6,7 +6,7 @@
 #include "error.h"
 #include "memwatch.h"
 #define BLOCK_SIZE 8096
-#define PRINT_LIMIT 1024
+#define PRINT_LIMIT 32024
 static char buf[PRINT_LIMIT];
 struct ramfile_struct
 {
