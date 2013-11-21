@@ -181,7 +181,8 @@ int STIL_write_range( char *name, char **atts, int removed,
             n = DST_PRINT( dst, fmt5, tmp );
             if ( n != len5+lent-2 )
             {
-                warning("STIL: failed to write the full string\n");
+                warning("STIL: failed to write (%d) the full string (%d)\n",
+                    n,lent+len5-2);
             }
             free( tmp );
         }
