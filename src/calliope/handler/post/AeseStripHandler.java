@@ -15,6 +15,7 @@
  */
 package calliope.handler.post;
 import calliope.AeseStripper;
+import calliope.Utils;
 import calliope.constants.Formats;
 import calliope.constants.JSONKeys;
 import calliope.constants.MIMETypes;
@@ -77,7 +78,7 @@ public class AeseStripHandler extends AeseHandler
                 JSONResponse text = new JSONResponse();
                 AeseStripper stripper = new AeseStripper();
                 int res = stripper.strip(xml,recipe,format, style, 
-                    "en_GB", null, text, markup );
+                    "en_GB", null, Utils.isHtml(xml), text, markup );
                 if ( res == 1 )
                 {
                     Multipart mime = new Multipart();

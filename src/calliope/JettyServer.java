@@ -74,10 +74,11 @@ public class JettyServer extends AbstractHandler
                 new AesePostHandler().handle( request, response, target );
             else
                 throw new AeseException("Unknown http method "+method);
-            //System.out.println(target);
+            response.setStatus(HttpServletResponse.SC_OK);
         }
         catch ( Exception e )
         {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             System.out.println(e.getMessage());
         }
         //response.getWriter().close();

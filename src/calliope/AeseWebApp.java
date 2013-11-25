@@ -104,6 +104,7 @@ public class AeseWebApp extends HttpServlet
         catch ( AeseException e )
         {
             AeseException he;
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             if ( e instanceof AeseException )
                 he = (AeseException) e ;
             else

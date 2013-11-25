@@ -195,6 +195,15 @@ public class CceFilter extends Filter
         lineCommands.clear();
         nestedCommands.clear();
     }
+    String findLineEnding( String text )
+    {
+        if ( text.indexOf("\r\n") != -1 )
+            return "\r\n";
+        else if ( text.indexOf("\n") != -1 )
+            return "\n";
+        else
+            return "\r";            
+    }
     /**
      * Convert all the files in a directory 
      * @param input the raw text input string
@@ -212,7 +221,8 @@ public class CceFilter extends Filter
             ByteArrayOutputStream txt = new ByteArrayOutputStream();
             String lastWord = "";
             String firstWord = "";
-            String[] lines = input.split("\n");
+            String lineEnd = findLineEnding( input );
+            String[] lines = input.split(lineEnd);
             for ( int i=0;i<lines.length;i++ ) 
             {
                 String str = lines[i].trim();

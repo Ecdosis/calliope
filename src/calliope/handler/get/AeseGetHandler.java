@@ -120,60 +120,6 @@ public class AeseGetHandler extends AeseHandler
             throw new PathException("Invalid urn (prefix was null) "+urn );
     }
     /**
-     * Get the document body of the given urn or null
-     * @param db the database where it is
-     * @param docID the docID of the resource
-     * @return the document body or null if not present
-     */
-    protected String getDocumentBody( String db, String docID ) 
-        throws AeseException
-    {
-        try
-        {
-            String jStr = Connector.getConnection().getFromDb(db,docID);
-            if ( jStr != null )
-            {
-                JSONDocument jDoc = JSONDocument.internalise( jStr );
-                if ( jDoc != null )
-                {
-                    Object body = jDoc.get( JSONKeys.BODY );
-                    if ( body != null )
-                        return body.toString();
-                }
-            }
-            throw new AeseException("document "+db+"/"+docID+" not found");
-        }
-        catch ( Exception e )
-        {
-            throw new AeseException( e );
-        }
-    }
-    /**
-     * Fetch a single style text
-     * @param style the path to the style in the corform database
-     * @return the text of the style
-     */
-    protected String fetchStyle( String style ) throws AeseException
-    {
-        // 1. try to get each literal style name
-        String actual = getDocumentBody(Database.CORFORM,style);
-        while ( actual == null )
-        {
-            // 2. add "default" to the end
-            actual = getDocumentBody( Database.CORFORM,
-                URLEncoder.append(style,Formats.DEFAULT) );
-            if ( actual == null )
-            {
-                // 3. pop off last path component and try again
-                if ( style.length()>0 )
-                    style = Path.chomp(style);
-                else
-                    throw new AeseException("no suitable format");
-            }
-        }
-        return actual;
-    }
-    /**
      * Get the actual styles from the database. Make sure we fetch something
      * @param styles an array of style ids
      * @return an array of database contents for those ids
@@ -184,7 +130,7 @@ public class AeseGetHandler extends AeseHandler
         String[] actual = new String[styles.length];
         for ( int i=0;i<styles.length;i++ )
         {
-            actual[i] = fetchStyle( styles[i] );
+            actual[i] = Utils.fetchStyle( styles[i] );
         }
         return actual;
     }
@@ -234,6 +180,11 @@ public class AeseGetHandler extends AeseHandler
                 if ( vId != 0 )
                 {
                     data = mvd.getVersion( vId );
+                    String desc = mvd.getDescription();
+                    System.out.println("description="+desc);
+                    int nversions = mvd.numVersions();
+                    System.out.println("nversions="+nversions);
+                    System.out.println("length of version "+vId+"="+data.length);
                     if ( data != null )
                         version.setVersion( data );
                     else

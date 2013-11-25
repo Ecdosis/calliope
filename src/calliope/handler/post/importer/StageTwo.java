@@ -68,7 +68,7 @@ public class StageTwo extends Stage
             float totalLen = data1.length;
             for ( int j=0;j<diffs.length;j++ )
             {
-                diffLen += diffs[j].newLength();
+                diffLen += diffs[j].newLen();
             }
             float fraction = (totalLen-diffLen)/totalLen;
             if ( fraction < CUTOFF )

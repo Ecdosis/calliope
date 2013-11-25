@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.io.InputStream;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -45,7 +46,6 @@ public abstract class AeseImportHandler extends AesePostHandler
     String database;
     String splitterName;
     String stripperName;
-    String encoding;
     /** hard hyphen exceptions */
     String hhExceptions;
     boolean similarityTest;
@@ -65,6 +65,7 @@ public abstract class AeseImportHandler extends AesePostHandler
         nameMap = new HashMap<String,String>(); 
         jsonKeys = new HashMap<String,String>();
         filterName = Filters.EMPTY;
+        dict = Locale.getDefault().toString();
         encoding = "UTF-8";
         stripperName = "default";
         splitterName = "default";
@@ -197,8 +198,11 @@ public abstract class AeseImportHandler extends AesePostHandler
                         }
                         else
                         {
+                            byte[] rawData = item.get();
+                            guessEncoding( rawData );
+                            //System.out.println(encoding);
                             File f = new File( item.getName(), 
-                                item.getString(encoding) );
+                                new String( rawData, encoding) );
                             files.add( f );
                         }
                     }
@@ -215,6 +219,20 @@ public abstract class AeseImportHandler extends AesePostHandler
         {
             throw new AeseException( e );
         }
+//        System.out.println("Import params received:");
+//        System.out.println("docID="+docID.get());
+//        System.out.println("style="+style);
+//        System.out.println("filterName="+filterName);
+//        System.out.println("database="+database);
+//        System.out.println("splitterName="+splitterName);
+//        System.out.println("stripperName="+stripperName);
+//        System.out.println("encoding="+encoding);
+//        System.out.println("hhExceptions="+hhExceptions);
+//        System.out.println("similarityTest="+similarityTest);
+//        System.out.println("dict="+dict);
+//        System.out.println("xslt="+xslt);
+//        System.out.println("demo="+demo);
+//        System.out.println("textName="+textName);
     }
     /**
      * Wrap the log in some HTML
@@ -239,9 +257,8 @@ public abstract class AeseImportHandler extends AesePostHandler
      * @param kind the config kind: text, xslt or xml
      * @param path the path to the config
      * @return the loaded config document
-     * @throws AeseException 
      */
-    String getConfig( Config kind, String path ) //throws AeseException
+    public static String getConfig( Config kind, String path ) //throws AeseException
     {
         try
         {

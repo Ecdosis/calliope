@@ -3,6 +3,12 @@
  * and open the template in the editor.
  */
 package calliope;
+import calliope.constants.Database;
+import calliope.constants.Formats;
+import calliope.constants.JSONKeys;
+import calliope.exception.AeseException;
+import calliope.json.JSONDocument;
+import calliope.path.Path;
 import org.w3c.dom.Document;
 import java.io.StringWriter;
 import java.util.Locale;
@@ -224,4 +230,100 @@ public class Utils
             country = langCode.substring(0,langCode.indexOf("_"));
         return new Locale(country).getDisplayName();                 
      }
+     /**
+      * Is the given markup file HTML or something else (e.g. XML)?
+      * @param markup
+      * @return 
+      */
+     public static boolean isHtml( String markup )
+     {
+         StringBuilder sb = new StringBuilder();
+         int state = 0;
+         for ( int i=0;i<markup.length();i++ )
+         {
+             char token = markup.charAt(i);
+             switch( state )
+             {
+                 case 0:
+                     if ( token == '<' )
+                         state = 1;
+                     break;
+                 case 1:    // seen '<'
+                     if ( Character.isLetter(token) )
+                     {
+                         sb.append( token );
+                         state = 2;
+                     }
+                     else
+                         state = 0;
+                     break;
+                 case 2:    // seen "<[letter]"
+                     if ( Character.isWhitespace(token) )
+                     {
+                         if ( sb.toString().toLowerCase().equals("html") )
+                             return true;
+                         else
+                             return false;
+                     }
+                     else
+                         sb.append(token);
+                     break;
+             }
+         }
+         return false;
+     }
+     /**
+     * Get the document body of the given urn or null
+     * @param db the database where it is
+     * @param docID the docID of the resource
+     * @return the document body or null if not present
+     */
+    private static String getDocumentBody( String db, String docID ) 
+        throws AeseException
+    {
+        try
+        {
+            String jStr = Connector.getConnection().getFromDb(db,docID);
+            if ( jStr != null )
+            {
+                JSONDocument jDoc = JSONDocument.internalise( jStr );
+                if ( jDoc != null )
+                {
+                    Object body = jDoc.get( JSONKeys.BODY );
+                    if ( body != null )
+                        return body.toString();
+                }
+            }
+            throw new AeseException("document "+db+"/"+docID+" not found");
+        }
+        catch ( Exception e )
+        {
+            throw new AeseException( e );
+        }
+    }
+     /**
+     * Fetch a single style text
+     * @param style the path to the style in the corform database
+     * @return the text of the style
+     */
+    public static String fetchStyle( String style ) throws AeseException
+    {
+        // 1. try to get each literal style name
+        String actual = getDocumentBody(Database.CORFORM,style);
+        while ( actual == null )
+        {
+            // 2. add "default" to the end
+            actual = getDocumentBody( Database.CORFORM,
+                URLEncoder.append(style,Formats.DEFAULT) );
+            if ( actual == null )
+            {
+                // 3. pop off last path component and try again
+                if ( style.length()>0 )
+                    style = Path.chomp(style);
+                else
+                    throw new AeseException("no suitable format");
+            }
+        }
+        return actual;
+    }
 }

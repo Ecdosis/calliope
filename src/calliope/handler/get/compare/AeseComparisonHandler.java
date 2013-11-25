@@ -90,7 +90,7 @@ public class AeseComparisonHandler extends AeseHTMLHandler
                 if ( versionText == null )
                     throw new AeseException("version not found");
                 ccTexts[i+1] = new String(versionText,"UTF-8");
-                styles.add( fetchStyle(hv.getStyle()) );
+                styles.add( Utils.fetchStyle(hv.getStyle()) );
             }
             catch ( Exception e )
             {

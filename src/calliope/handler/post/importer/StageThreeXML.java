@@ -344,57 +344,62 @@ public class StageThreeXML extends Stage
     {
         try
         {
-            JSONDocument jDoc = JSONDocument.internalise( splitConfig );
-            Splitter splitter = new Splitter( jDoc );
-            for ( int i=0;i<files.size();i++ )
+            if ( files.size() > 0 )
             {
-                // optional transform
-                File file = files.get(i);
-                String fileText = file.toString();
-                if ( xslt != null )
-                    fileText = new AeseTransformer().transform(xslt,fileText);
-                long startTime = System.currentTimeMillis();
-                Map<String,String> map = splitter.split( fileText );
-                long diff = System.currentTimeMillis()-startTime;
-                log.append("Split ");
-                log.append( file.name );
-                log.append(" in " );
-                log.append( diff );
-                log.append( " milliseconds into " );
-                log.append( map.size() );
-                log.append( " versions\n" );
-                Set<String> keys = map.keySet();
-                Iterator<String> iter = keys.iterator();
-                while ( iter.hasNext() )
+                JSONDocument jDoc = JSONDocument.internalise( splitConfig );
+                Splitter splitter = new Splitter( jDoc );
+                for ( int i=0;i<files.size();i++ )
                 {
-                    String key = iter.next();
-                    JSONResponse markup = new JSONResponse();
-                    JSONResponse text = new JSONResponse();
-                    AeseStripper stripper = new AeseStripper();
-                    int res = stripper.strip( map.get(key), stripConfig, 
-                        Formats.STIL, style, dict, hhExcepts, text, markup );
-                    if ( res == 1 )
+                    // optional transform
+                    File file = files.get(i);
+                    String fileText = file.toString();
+                    if ( xslt != null )
+                        fileText = new AeseTransformer().transform(xslt,fileText);
+                    long startTime = System.currentTimeMillis();
+                    Map<String,String> map = splitter.split( fileText );
+                    long diff = System.currentTimeMillis()-startTime;
+                    log.append("Split ");
+                    log.append( file.name );
+                    log.append(" in " );
+                    log.append( diff );
+                    log.append( " milliseconds into " );
+                    log.append( map.size() );
+                    log.append( " versions\n" );
+                    Set<String> keys = map.keySet();
+                    Iterator<String> iter = keys.iterator();
+                    while ( iter.hasNext() )
                     {
-                        String vid = "Base/";
-                        vid += stripSuffix(files.get(i).name);
-                        if ( map.size()>1 )
-                            vid += "/"+key;
-                        //char[] chars = text.getBody().toCharArray();
-                        //convertQuotes( chars );
-                        //cortex.put( group+key, new String(chars).getBytes("UTF-8") );
-                        cortex.put( vid, text.getBody().getBytes("UTF-8") );
-                        corcode.put( vid, markup.getBody().getBytes("UTF-8") );
-                        log.append( "Stripped " );
-                        log.append( file.name );
-                        log.append("(");
-                        log.append( key );
-                        log.append(")");
-                        log.append(" successfully\n" );
-                    }
-                    else
-                    {
-                        throw new ImportException("Stripping of "
-                            +files.get(i).name+" XML failed");
+                        String key = iter.next();
+                        JSONResponse markup = new JSONResponse();
+                        JSONResponse text = new JSONResponse();
+                        AeseStripper stripper = new AeseStripper();
+                        String xml = map.get(key);
+                        int res = stripper.strip( xml, stripConfig, 
+                            Formats.STIL, style, dict, hhExcepts, 
+                            Utils.isHtml(xml), text, markup );
+                        if ( res == 1 )
+                        {
+                            String vid = "Base/";
+                            vid += stripSuffix(files.get(i).name);
+                            if ( map.size()>1 )
+                                vid += "/"+key;
+                            //char[] chars = text.getBody().toCharArray();
+                            //convertQuotes( chars );
+                            //cortex.put( group+key, new String(chars).getBytes("UTF-8") );
+                            cortex.put( vid, text.getBody().getBytes("UTF-8") );
+                            corcode.put( vid, markup.getBody().getBytes("UTF-8") );
+                            log.append( "Stripped " );
+                            log.append( file.name );
+                            log.append("(");
+                            log.append( key );
+                            log.append(")");
+                            log.append(" successfully\n" );
+                        }
+                        else
+                        {
+                            throw new ImportException("Stripping of "
+                                +files.get(i).name+" XML failed");
+                        }
                     }
                 }
             }

@@ -24,6 +24,47 @@ import javax.servlet.http.HttpServletResponse;
  */
 abstract public class AeseHandler 
 {
+    protected String encoding;
+    
     public abstract void handle( HttpServletRequest request, 
         HttpServletResponse response, String urn ) throws AeseException;
+    /**
+     * Guess the correct encoding in cases where the user has mislabelled
+     * @param bytes an array of bytes
+     * @return the encoding, defaulting to UTF-8
+     */
+    public String guessEncoding(byte[] bytes) 
+    {
+        org.mozilla.universalchardet.UniversalDetector detector =
+            new org.mozilla.universalchardet.UniversalDetector(null);
+        detector.handleData(bytes, 0, bytes.length);
+        detector.dataEnd();
+        String charset = detector.getDetectedCharset();
+        if ( charset == null )
+            charset = checkForMac(bytes);
+        if ( charset == null )
+            charset = "UTF-8";
+        detector.reset();
+        if ( !charset.equals(encoding) ) 
+            encoding = charset;
+        return encoding;
+    }
+    private String checkForMac( byte[] data )
+    {
+        int macchars = 0;
+        for ( int i=0;i<data.length;i++ )
+        {
+            if ( data[i]>=0xD0 && data[i]<=0xD5 )
+            {
+                macchars++;
+                if ( macchars > 5 )
+                    break;
+            }
+        }
+        if ( macchars > 5 )
+            return "macintosh";
+        else
+            return null;
+    }
+    
 }

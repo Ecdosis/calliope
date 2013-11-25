@@ -6,7 +6,6 @@ package calliope.handler.post.importer;
 import calliope.AeseStripper;
 import calliope.constants.Formats;
 import org.w3c.tidy.Tidy;
-import org.w3c.dom.Document;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import calliope.importer.Archive;
@@ -54,8 +53,8 @@ public class Stage3HTML extends Stage
                 JSONResponse markup = new JSONResponse();
                 JSONResponse text = new JSONResponse();
                 int res = stripper.strip( bos.toString(encoding), 
-                    stripConfig, Formats.STIL, style, dict, hhExcepts, text, 
-                    markup );
+                    stripConfig, Formats.STIL, style, dict, hhExcepts, true,
+                    text, markup );
                 if ( res == 1 )
                 {
                     String vid = "Base/";
