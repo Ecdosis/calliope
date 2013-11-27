@@ -5,12 +5,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/AesePutHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/Selector.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/JettyServerThread.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/AnnotationKind.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseHTMLHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Params.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/Target.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetCorTexHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/json/corcode/STILDocument.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/TextSelector.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Discriminator.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/search/AeseSearch.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageTwo.java</file>
@@ -28,6 +31,7 @@
             <file>file:/home/desmond/NetBeansProjects/calliope/nbproject/build-impl.xml</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseSpeller.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageOne.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/Body.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseStripper.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetCorCodeHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Stage.java</file>
@@ -41,8 +45,10 @@
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseImportHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseSearch.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/XMLPrinter.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/TextBody.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseFormatter.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseVersion.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/ImageBody.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Stage3HTML.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/Archive.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/json/JSONDocument.java</file>

@@ -4,14 +4,13 @@
  * and open the template in the editor.
  */
 
-package calliope.handler.put;
+package calliope.annotation;
 
 /**
- * Distinguish various kinds of annotations
+ * Abstract class for various kinds of body
  * @author desmond
  */
-public enum AnnotationKind 
+public abstract class Body 
 {
-    NOTE,
-    IMAGE;
+    
 }

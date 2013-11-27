@@ -1,6 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* This file is part of calliope.
+ *
+ *  calliope is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  calliope is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.search;
 
@@ -19,6 +30,7 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Locale;
 import java.io.IOException;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -28,7 +40,7 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.util.Version;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.analysis.it.ItalianAnalyzer;
@@ -59,13 +71,14 @@ public class AeseSearch
             ae.printStackTrace( System.out );
         }
     }
-    static RAMDirectory index;
+    static NIOFSDirectory index;
     static int maxHits = 300;
+    static File indexLocation;
     /**
      * Update the index for just ONE docID     
      * @param docID the documents to regenerate
      * @param langCode the language code of the analyzer
-     * @throws AeseException U
+     * @throws AeseException 
      */
     public static void updateIndex( String docID, String langCode ) 
         throws AeseException
@@ -100,7 +113,11 @@ public class AeseSearch
             String[] docIDs = Connector.getConnection().listCollection( 
                 Database.CORTEX );
             Analyzer analyzer = createAnalyzer(langCode);
-            AeseSearch.index = new RAMDirectory();
+            File home = new File( System.getProperty("user.home") );
+            indexLocation = new File(home, ".calliope" );
+            if ( !indexLocation.exists() )
+                indexLocation.mkdir();
+            AeseSearch.index = new NIOFSDirectory( indexLocation );
             IndexWriterConfig config = new IndexWriterConfig(
                 Version.LUCENE_45, analyzer);
             IndexWriter w = new IndexWriter( index, config );

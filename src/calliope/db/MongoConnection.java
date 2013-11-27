@@ -72,7 +72,7 @@ public class MongoConnection extends Connection implements Test
         }
     }
     /**
-     * Get the Mongo db collection object form its name
+     * Get the Mongo db collection object from its name
      * @param collName the collection name
      * @return a DBCollection object
      * @throws AeseException 

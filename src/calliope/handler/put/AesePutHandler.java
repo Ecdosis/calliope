@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.handler.put;
+import calliope.annotation.*;
 import calliope.AeseFormatter;
 import calliope.constants.Formats;
 import calliope.constants.Services;
@@ -37,7 +38,6 @@ import calliope.tests.html.HTMLComment;
 import edu.luc.nmerge.mvd.diff.Diff;
 import edu.luc.nmerge.mvd.diff.Matrix;
 import java.util.Locale;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -191,20 +191,21 @@ public class AesePutHandler extends AeseHandler
         {
             for ( int j=0;j<anns.length;j++ )
             {
-                if ( anns[j].start > diffs[i].oldEnd() )
+                int start = anns[j].start();
+                if ( start > diffs[i].oldEnd() )
                     break;
                 else if ( anns[j].end() < diffs[i].oldOff() )
                 {
                     int delta = diffs[i].newOff()-diffs[i].oldOff();
-                    anns[j].updateOff(anns[j].start+delta);
+                    anns[j].updateOff(start+delta);
                 }
                 else if ( anns[j].end() > diffs[i].oldOff() 
-                    && anns[j].start < diffs[i].oldEnd() )
+                    && start < diffs[i].oldEnd() )
                 {
                     // compute the proportion of the overlap that gets 
                     // carried over to the updated annotation
                     int overlap = Math.min(anns[j].end(),diffs[i].oldEnd())
-                        -Math.max(anns[j].start,diffs[i].oldOff());
+                        -Math.max(start,diffs[i].oldOff());
                     int prop;
                     if ( diffs[i].oldLen()==0 )
                         prop = diffs[i].newLen();
@@ -213,17 +214,17 @@ public class AesePutHandler extends AeseHandler
                     // update the position of the annotation start
                     int newOff;
                     // 1) annotation starts before diff
-                    if ( anns[j].start < diffs[i].oldOff() )
+                    if ( start < diffs[i].oldOff() )
                     {
-                        int dist = diffs[i].oldOff()-anns[j].start;
+                        int dist = diffs[i].oldOff()-start;
                         newOff = diffs[i].newOff()-dist;
                     }
                     // 2) diff starts before annotation
-                    else if ( diffs[i].oldOff() < anns[j].start )
+                    else if ( diffs[i].oldOff() < start )
                     {
                         float ratio = (float)diffs[i].newLen()
                             /(float)diffs[i].oldLen();
-                        int dist = anns[j].start-diffs[i].oldOff();
+                        int dist = start-diffs[i].oldOff();
                         newOff = diffs[i].newOff()+(int)(ratio*dist);
                     }
                     // 3) equal
@@ -233,15 +234,16 @@ public class AesePutHandler extends AeseHandler
                     int newLen = prop;
                     if ( anns[j].end() > diffs[i].oldEnd() )
                         newLen += anns[j].end()-diffs[i].oldEnd();
-                    if ( anns[j].start < diffs[i].oldOff() )
-                        newLen += diffs[i].oldOff()-anns[j].start;
+                    if ( start < diffs[i].oldOff() )
+                        newLen += diffs[i].oldOff()-start;
                     anns[j].updateOff( newOff );
                     anns[j].updateLen( newLen );
                 }
             }
         }
         // in case the last annotation wasn't caught by a diff
-        anns[anns.length-1].updateOff(anns[anns.length-1].start+diffLen);
+        int lastStart = anns[anns.length-1].start();
+        anns[anns.length-1].updateOff(lastStart+diffLen);
         // make the updates really stick
         try
         {

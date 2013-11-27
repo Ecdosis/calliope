@@ -8,7 +8,6 @@ import calliope.search.AeseSearch;
 import calliope.constants.Params;
 import calliope.exception.AeseException;
 import calliope.search.HitProfile;
-import calliope.tests.html.HTMLComment;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,6 +1,14 @@
-{"format":"CSS","title":"tei-lite","body":"body {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px}
-span.weak { display: none }
+{"format":"CSS","title":"tei-lite","body":"body {white-space: pre; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px}
+span.weak { display: inline }
+span.weak:after {
+    content:"\a";
+    white-space: pre;
+}
 span.strong { display: inline }
+span.strong:after {
+    content:"\a";
+    white-space: pre;
+}
 span.italics { font-style: italic } 
 span.emph { font-style: italic } 
 span.foreign { font-style: italic } 
