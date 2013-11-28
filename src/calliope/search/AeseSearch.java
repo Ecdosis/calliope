@@ -125,6 +125,7 @@ public class AeseSearch
             {
                 addCorTextoIndex( docIDs[i], w );
             }
+            w.close();
         }
         catch ( Exception e )
         {
@@ -187,7 +188,7 @@ public class AeseSearch
                     String frag = h.getBestFragment(analyzer,"text",text);
                     sb.append("<span class=\"found\">");
                     sb.append( frag );
-                    sb.append("</span>");
+                    sb.append("</span>\n");
                 }
                 profile.numHits = docs.length;
             }
@@ -222,7 +223,7 @@ public class AeseSearch
             if ( format == null )
                 throw new AeseException("doc missing format");
             // first check if it's an MVD 
-            if ( format == Formats.MVD )
+            if ( format.startsWith(Formats.MVD) )
             {
                 MVD mvd = MVDFile.internalise( (String)doc.get(
                     JSONKeys.BODY) );
@@ -324,7 +325,7 @@ public class AeseSearch
             String format = (String)doc.get(JSONKeys.FORMAT);
             if ( format == null )
                 throw new AeseException("doc missing format");
-            if ( format.equals(Formats.MVD) )
+            if ( format.startsWith(Formats.MVD) )
             {
                 MVD mvd = MVDFile.internalise( (String)doc.get(
                     JSONKeys.BODY) );
