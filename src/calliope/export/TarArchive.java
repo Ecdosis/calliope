@@ -10,6 +10,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import org.xeustechnologies.jtar.*;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Make a tar.gz archive
@@ -92,12 +93,21 @@ public class TarArchive implements Compressor
     @Override
     public File compress() throws Exception
     {
-        File dest = File.createTempFile("TMP",".tar.gz");
+        File dest = File.createTempFile("TMP",".tar");
         FileOutputStream fos = new FileOutputStream( dest );
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         TarOutputStream out = new TarOutputStream(bos);
         tarFolder( null, folder.getAbsolutePath(), out );
         out.close();
-        return dest;
+        FileInputStream fis = new FileInputStream( dest );
+        int len = (int)dest.length();
+        byte[] data = new byte[len];
+        fis.read( data );
+        File gzDest = File.createTempFile("TMP",".tag.gz");
+        fos = new FileOutputStream(gzDest);
+        GZIPOutputStream gz = new GZIPOutputStream(fos);
+        gz.write( data );
+        gz.close();
+        return gzDest;
     }
 }

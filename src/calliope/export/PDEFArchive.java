@@ -50,7 +50,7 @@ public class PDEFArchive
     static String[] IMG_SUFFIXES = {".bmp",".eps",".gif",".jpg",".png",
         ".tif","jpeg","tiff"};
     static String[] requiredCorforms = {"default","diffs/default",
-        "list/default","list/twin-list","table/default"};
+        "html","list/default","list/twin-list","table/default"};
     /** unique wrapper for archive */
     File root;
     /** actual archive directory inside root */
