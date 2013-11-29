@@ -276,6 +276,8 @@ public class AesePutHandler extends AeseHandler
             {
                 Path path = new Path( urn );
                 String docID = path.getResourcePath(false);
+                if ( docID.length()==0 )
+                    throw new AeseException("a DOC_ID parameter is required");
                 try
                 {
                     parseRequest( request );

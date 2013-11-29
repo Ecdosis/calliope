@@ -79,7 +79,8 @@ public class JettyServer extends AbstractHandler
         catch ( Exception e )
         {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            System.out.println(e.getMessage());
+            response.getWriter().write(e.getMessage());
+            response.getWriter().write("\n");
         }
         //response.getWriter().close();
     }

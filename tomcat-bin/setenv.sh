@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 getjarpaths()
 {
   JARPATH=""
@@ -10,9 +10,8 @@ getjarpaths()
   return
 }
 JARPATHS=`getjarpaths lib`
-LIBPATH=`java LibPath`
-if [[ $LIBPATH != */usr/local/lib* ]]
-then
+LIBPATH=`java -cp /usr/local/fedora/tomcat/bin/ LibPath`
+if [ `echo $LIBPATH | grep -c "/usr/local/lib" ` -eq 0 ] ; then
   LIBPATH=$LIBPATH:/usr/local/lib
 fi
 export CATALINA_OPTS="-Djava.library.path=$LIBPATH -cp .$JARPATHS"
