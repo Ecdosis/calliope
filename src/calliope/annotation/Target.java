@@ -43,12 +43,19 @@ public class Target
     {
         return sel.end()>sel.start();
     }
+    public String getId()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"@id\": ");
+        sb.append("\"urn:uuid:");
+        sb.append(UUID.randomUUID());
+        sb.append("\"");
+        return sb.toString();
+    }
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");
-        sb.append("\t\"@id\": ");
-        sb.append("\"urn:uuid:"+UUID.randomUUID()+"\",\n");
         sb.append("\t\"@type\": ");
         sb.append("\"oa:SpecificResource\",\n");
         sb.append("\t\"hasSelector\": ");
@@ -56,7 +63,9 @@ public class Target
         sb.append(",\n");
         sb.append("\t\"hasSource\": {\n");
         sb.append("\t\t\"@id\": ");
-        sb.append("\""+src+"\"\n");
+        sb.append("\"urn:aese:");
+        sb.append(src);
+        sb.append("\"\n");
         sb.append("\t}");
         sb.append("\n}");
         return sb.toString();

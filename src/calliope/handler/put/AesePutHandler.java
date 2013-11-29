@@ -277,7 +277,7 @@ public class AesePutHandler extends AeseHandler
                 Path path = new Path( urn );
                 String docID = path.getResourcePath(false);
                 if ( docID.length()==0 )
-                    throw new AeseException("a DOC_ID parameter is required");
+                    throw new AeseException("the resource path must end in a docid");
                 try
                 {
                     parseRequest( request );
@@ -303,7 +303,7 @@ public class AesePutHandler extends AeseHandler
                             byte[] base = old.getBytes(encoding);
                             byte[] data = text.getBody().getBytes(encoding);
                             Diff[] diffs = Matrix.computeBasicDiffs( data, base );
-                            if ( anns.length > 0 && diffs.length > 0 )
+                            if ( anns != null && anns.length > 0 && diffs.length > 0 )
                             {
                                 updateAnnotations( 
                                     anns, diffs, data.length-base.length );

@@ -5,9 +5,6 @@ package calliope.annotation;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-
 import calliope.annotation.Body;
 import java.util.UUID;
 
@@ -22,14 +19,19 @@ public class TextBody extends Body
     {
         this.text = body;
     }
+    public String getId()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"@id\": ");
+        sb.append("\"urn:uuid:");
+        sb.append(UUID.randomUUID().toString());
+        sb.append("\"");
+        return sb.toString();
+    }
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");
-        sb.append("\t\"@id\": ");
-        sb.append("\"urn:uuid:");
-        sb.append(UUID.randomUUID().toString());
-        sb.append("\",\n"); 
         sb.append("\t\"@type\": [\"cnt:ContentAsText\", \"dctypes:Text\"],\n"); 
         sb.append("\t\"chars\": \"");
         sb.append(text);

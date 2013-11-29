@@ -17,13 +17,12 @@ public class ImageBody extends Body
     {
         this.url = url;
     }
-    public String toString()
+    public String getId()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("{\n");
-        sb.append("\t\"@id\": \"");
+        sb.append("\"@id\": \"");
         sb.append( url.toString() );
-        sb.append("\"\n}");
+        sb.append("\"");
         return sb.toString();
     }
 }

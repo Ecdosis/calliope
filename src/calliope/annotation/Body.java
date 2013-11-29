@@ -12,5 +12,5 @@ package calliope.annotation;
  */
 public abstract class Body 
 {
-    
+    public abstract String getId();
 }
