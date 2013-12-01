@@ -15,7 +15,7 @@ import java.awt.Dimension;
  */
 public class Target 
 {
-    String id;
+    UUID uuid;
     Selector sel;
     String src;
     public Target( Selector sel, String source )
@@ -48,26 +48,35 @@ public class Target
         StringBuilder sb = new StringBuilder();
         sb.append("\"@id\": ");
         sb.append("\"urn:uuid:");
-        sb.append(UUID.randomUUID());
+        uuid = UUID.randomUUID();
+        sb.append(uuid);
         sb.append("\"");
         return sb.toString();
     }
     public String toString()
     {
+        /*"@id": "urn:uuid:182002b1-25d1-41dc-a3ad-53c93704e613",
+            "@type": "http://www.w3.org/ns/oa#SpecificResource",
+            "oa:hasSelector": {
+                "@id": "urn:uuid:14637d42-c647-40cb-a18d-6dbe287011f4"
+            },
+            "oa:hasSource": {
+                "@id": "urn:aese:english/desmond/test"
+            }*/
         StringBuilder sb = new StringBuilder();
-        sb.append("{\n");
-        sb.append("\t\"@type\": ");
-        sb.append("\"oa:SpecificResource\",\n");
-        sb.append("\t\"hasSelector\": ");
-        sb.append(Annotation.indent(sel.toString(),1));
-        sb.append(",\n");
-        sb.append("\t\"hasSource\": {\n");
-        sb.append("\t\t\"@id\": ");
+        sb.append("\"@id\": \"urn:uuid:");
+        sb.append(uuid.toString());
+        sb.append("\",\n");
+        sb.append("\"@type\": ");
+        sb.append("\"http://www.w3.org/ns/oa#SpecificResource\",\n");
+        sb.append("\"oa:hasSelector\": {\n\t");
+        sb.append(sel.getId());
+        sb.append("\n},\n");
+        sb.append("\"oa:hasSource\": {\n");
+        sb.append("\t\"@id\": ");
         sb.append("\"urn:aese:");
         sb.append(src);
-        sb.append("\"\n");
-        sb.append("\t}");
-        sb.append("\n}");
+        sb.append("\"\n}");
         return sb.toString();
     }
     Dimension getRange()

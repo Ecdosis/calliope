@@ -1,0 +1,206 @@
+{
+  "style": "TEI/default",
+  "ranges": [
+  {
+    "name": "TEI",
+    "reloff": 0,
+    "len": 682
+  }
+,
+  {
+    "name": "text",
+    "reloff": 0,
+    "len": 682,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "div",
+    "reloff": 0,
+    "len": 682,
+    "annotations": [ { "_done": "_done" },{ "type": "Hversion" },{ "xml:id": "H385e" } ]
+  }
+,
+  {
+    "name": "div",
+    "reloff": 0,
+    "len": 41,
+    "annotations": [ { "_done": "_done" },{ "type": "source" } ]
+  }
+,
+  {
+    "name": "p",
+    "reloff": 0,
+    "len": 41,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "div",
+    "reloff": 42,
+    "len": 35,
+    "annotations": [ { "_done": "_done" },{ "type": "series" } ]
+  }
+,
+  {
+    "name": "head",
+    "reloff": 0,
+    "len": 33,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 0,
+    "len": 0,
+    "annotations": [ { "_done": "_done" },{ "facs": "C376/00000176.jpg" },{ "n": "345" } ]
+  }
+,
+  {
+    "name": "lb",
+    "reloff": 8,
+    "len": 0,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "head",
+    "reloff": 26,
+    "len": 1,
+    "annotations": [ { "_done": "_done" },{ "type": "number" } ]
+  }
+,
+  {
+    "name": "div",
+    "reloff": 2,
+    "len": 603,
+    "annotations": [ { "_done": "_done" },{ "type": "poem" } ]
+  }
+,
+  {
+    "name": "head",
+    "reloff": 0,
+    "len": 7,
+    "annotations": [ { "_done": "_done" },{ "type": "title" } ]
+  }
+,
+  {
+    "name": "lg",
+    "reloff": 8,
+    "len": 595,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 0,
+    "len": 35,
+    "annotations": [ { "_done": "_done" },{ "n": "1" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 36,
+    "len": 50,
+    "annotations": [ { "_done": "_done" },{ "rend": "indent" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 51,
+    "len": 46,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 47,
+    "len": 47,
+    "annotations": [ { "_done": "_done" },{ "rend": "indent" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 48,
+    "len": 43,
+    "annotations": [ { "_done": "_done" },{ "rend": "indent" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 44,
+    "len": 45,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 46,
+    "len": 24,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 25,
+    "len": 40,
+    "annotations": [ { "_done": "_done" },{ "rend": "indent" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 41,
+    "len": 47,
+    "annotations": [ { "_done": "_done" },{ "rend": "indent" } ]
+  }
+,
+  {
+    "name": "emph",
+    "reloff": 12,
+    "len": 4,
+    "annotations": [ { "_done": "_done" },{ "rend": "ul" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 36,
+    "len": 37,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 38,
+    "len": 38,
+    "annotations": [ { "_done": "_done" },{ "rend": "indent" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 39,
+    "len": 41,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 42,
+    "len": 50,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 51,
+    "len": 39,
+    "annotations": [ { "_done": "_done" },{ "rend": "indent" } ]
+  }
+,
+  {
+    "name": "anchor",
+    "reloff": 40,
+    "len": 0,
+    "annotations": [ { "_done": "_done" },{ "ana": "#If952b0e2-fc16-41b3-a5ec-e02eac6c92c9" } ]
+  }
+  ]
+}

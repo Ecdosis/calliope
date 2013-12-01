@@ -18,6 +18,7 @@ public abstract class Selector
     {
         return super.toString();
     }
+    public abstract String getId();
     abstract int end();
     abstract int start();
     abstract void updateStart( int from );

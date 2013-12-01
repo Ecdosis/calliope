@@ -15,6 +15,7 @@ import java.util.UUID;
 public class TextBody extends Body
 {
     String text;
+    UUID uuid;
     TextBody( String body )
     {
         this.text = body;
@@ -24,19 +25,24 @@ public class TextBody extends Body
         StringBuilder sb = new StringBuilder();
         sb.append("\"@id\": ");
         sb.append("\"urn:uuid:");
-        sb.append(UUID.randomUUID().toString());
+        uuid = UUID.randomUUID();
+        sb.append(uuid.toString());
         sb.append("\"");
         return sb.toString();
     }
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("{\n");
-        sb.append("\t\"@type\": [\"cnt:ContentAsText\", \"dctypes:Text\"],\n"); 
-        sb.append("\t\"chars\": \"");
+        sb.append("\"@id\": \"");
+        sb.append("urn:uuid:");
+        sb.append(uuid.toString());
+        sb.append("\",\n"); 
+        sb.append("\"@type\": [\"http://www.w3.org/2011/content#ContentAsText\", ");
+        sb.append("\"http://purl.org/dc/dcmitype/Text\"],\n"); 
+        sb.append("\"cnt:chars\": \"");
         sb.append(text);
         sb.append("\",\n");
-        sb.append("\t\"cnt:characterEncoding\": \"UTF-8\"\n}");
+        sb.append("\"cnt:characterEncoding\": \"UTF-8\"");
         return sb.toString();
     }
 }

@@ -25,4 +25,8 @@ public class ImageBody extends Body
         sb.append("\"");
         return sb.toString();
     }
+    public String toString()
+    {
+        return "";
+    }
 }

@@ -1,0 +1,31 @@
+{
+  "style": "TEI/default",
+  "ranges": [
+  {
+    "name": "TEI",
+    "reloff": 0,
+    "len": 79
+  }
+,
+  {
+    "name": "text",
+    "reloff": 0,
+    "len": 79,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "body",
+    "reloff": 0,
+    "len": 79,
+    "annotations": [ { "_done": "_done" } ]
+  }
+,
+  {
+    "name": "note",
+    "reloff": 0,
+    "len": 79,
+    "annotations": [ { "_done": "_done" },{ "resp": "MJS" },{ "xml:id": "If952b0e2-fc16-41b3-a5ec-e02eac6c92c9" } ]
+  }
+  ]
+}

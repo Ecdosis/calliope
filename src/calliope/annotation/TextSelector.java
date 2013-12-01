@@ -25,6 +25,7 @@ public class TextSelector extends Selector
     int newStart;
     int delta;
     boolean startUpdated = false;
+    UUID uuid;
     public TextSelector( int start, int end )
     {
         this.start = start;
@@ -42,6 +43,15 @@ public class TextSelector extends Selector
     {
         this.delta += newLen - len;
     }
+    public String getId()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"@id\": \"urn:uuid:");
+        uuid = UUID.randomUUID();
+        sb.append(uuid.toString());
+        sb.append("\"");
+        return sb.toString();
+    }
     void update() throws AnnotationException
     {
         this.len += delta;
@@ -53,19 +63,17 @@ public class TextSelector extends Selector
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("{\n");
-        sb.append("\t\"start\": ");
+        sb.append("\"oa:start\": \"");
         sb.append( start );
-        sb.append( ",\n");
-        sb.append("\t\"@type\": ");
-        sb.append( "\"oa:TextPositionSelector\",\n");
-        sb.append( "\t\"@id\": ");
-        UUID uuid = UUID.randomUUID();
-        sb.append("\"urn:uuid:"+uuid.toString()+"\"");
-        sb.append(",\n");
-        sb.append("\t\"end\": ");
+        sb.append( "\",\n");
+        sb.append("\"@type\": ");
+        sb.append( "\"http://www.w3.org/ns/oa#TextPositionSelector\",\n");
+        sb.append( "\"@id\": \"urn:uuid:");
+        sb.append(uuid.toString());
+        sb.append("\",\n");
+        sb.append("\"oa:end\": \"");
         sb.append( Integer.toString(start+len) );
-        sb.append("\n}");
+        sb.append("\"");
         return sb.toString();
     }
     int end()

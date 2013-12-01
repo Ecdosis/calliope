@@ -1,0 +1,276 @@
+starting...
+2013-11-02 09:02:08.187:INFO:oejs.Server:jetty-8.0.4.v20111024
+2013-11-02 09:02:08.371:INFO:oejs.AbstractConnector:Started SelectChannelConnector@localhost:8080 STARTING
+calliope.exception.AeseException: calliope.exception.AeseException: java.io.FileNotFoundException: failed to find cortex/english/shakespeare/kinglear/act1/scene1
+	at calliope.tests.Test.getDefaultDocID(Test.java:153)
+	at calliope.tests.Test.setDocID(Test.java:193)
+	at calliope.tests.Test.handle(Test.java:317)
+	at calliope.tests.TestHome.handle(TestHome.java:177)
+	at calliope.handler.get.AeseGetHandler.handle(AeseGetHandler.java:86)
+	at calliope.JettyServer.handle(JettyServer.java:67)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:110)
+	at org.eclipse.jetty.server.Server.handle(Server.java:346)
+	at org.eclipse.jetty.server.HttpConnection.handleRequest(HttpConnection.java:442)
+	at org.eclipse.jetty.server.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:924)
+	at org.eclipse.jetty.http.HttpParser.parseNext(HttpParser.java:582)
+	at org.eclipse.jetty.http.HttpParser.parseAvailable(HttpParser.java:218)
+	at org.eclipse.jetty.server.AsyncHttpConnection.handle(AsyncHttpConnection.java:51)
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint.handle(SelectChannelEndPoint.java:586)
+	at org.eclipse.jetty.io.nio.SelectChannelEndPoint$1.run(SelectChannelEndPoint.java:44)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:598)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:533)
+	at java.lang.Thread.run(Thread.java:744)
+Caused by: calliope.exception.AeseException: java.io.FileNotFoundException: failed to find cortex/english/shakespeare/kinglear/act1/scene1
+	at calliope.db.MongoConnection.getFromDb(MongoConnection.java:113)
+	at calliope.tests.Test.getDefaultDocID(Test.java:137)
+	... 17 more
+Caused by: java.io.FileNotFoundException: failed to find cortex/english/shakespeare/kinglear/act1/scene1
+	at calliope.db.MongoConnection.getFromDb(MongoConnection.java:108)
+	... 18 more
+starting...
+2013-11-02 09:06:01.776:INFO:oejs.Server:jetty-8.0.4.v20111024
+2013-11-02 09:06:01.841:INFO:oejs.AbstractConnector:Started SelectChannelConnector@localhost:8080 STARTING
+THE TRAGEDIE OF KING LEAR.
+Actus Primus. Scaena Prima.
+Enter Kent, Gloucester, and Edmond.
+Kent.
+I Thought the King had more affected the Duke of Albany, then Cornwall.
+Glou.
+It did alwayes seeme so to us: But now in the division of the Kingdome, it appears not which of the Dukes hee valewes most, for qualities are so weigh'd, that curiosity in neither, can make choise of eithers moity.
+Kent.
+Is not this your Son, my Lord?
+Glou.
+His breeding Sir, hath bin at my charge. I have so often blush'd to acknowledge him, that now I am braz'd too't.
+Kent.
+I cannot conceive you.
+Glou.
+Sir, this yong Fellowes mother could; whereupon she grew round womb'd, and had indeede (Sir) a Sonne for her Cradle, ere she had a husband for her bed. Do you smell a fault?
+Kent.
+I cannot wish the fault undone, the issue of it, being so proper.
+Glou.
+But I have a Sonne, Sir, by order of the Law, some yeere elder then this; who, yet is no deerer in my account, though this Knave came somthing fawcily to the world before he was sent for: yet was his Mother fayre, there was good sport at his making, and the horson must be acknowledged. Doe you know this Noble Gentleman, Edmond?
+Edm.
+No, my Lord.
+Glou.
+My Lord of Kent:
+Remember him heereafter, as my Honourable Friend.
+Edm.
+My services to your Lordship.
+Kent.
+I must love you, and sue to know you better.
+Edm.
+Sir, I shall study deserving.
+Glou.
+He hath bin out nine yeares, and away he shall againe. The King is comming.
+Sennet. Enter King Lear, Cornwall, Albany, Gonerill, Regan, Cordelia, and attendants.
+Lear.
+Attend the Lords of France &amp; Burgundy, Gloster.
+Glou.
+I shall, my Lord.Exit.
+Lear.
+Meane time we shal expresse our darker purpose.
+Give me the Map there. Know, that we have divided
+In three our Kingdome: and 'tis our fast intent,
+To shake all Cares and Businesse from our Age,
+Conferring them on yonger strengths, while we
+Unburthen'd crawle toward death. Our son of Cornwal,
+And you our no lesse loving Sonne of Albany,
+We have this houre a constant will to publish
+Our daughters severall Dowers, that future strife
+May be prevented now. The Princes, France &amp; Burgundy,
+Great Rivals in our yongest daughters love,
+Long in our Court, have made their amorous sojourne,
+And heere are to be answer'd. Tell me my daughters
+(Since now we will divest us both of Rule,
+Interest of Territory, Cares of State)
+Which of you shall we say doth love us most,
+That we, our largest bountie may extend
+Where Nature doth with merit challenge. Gonerill,
+Our eldest borne, speake first.
+Gon.
+Sir, I love you more then word can weild the matter,
+Deerer then eye-sight, space, and libertie,
+Beyond what can be valewed, rich or rare,
+No lesse then life, with grace, health, beauty, honor:
+As much as Childe ere lov'd, or Father found.
+A love that makes breath poore, and speech unable,
+Beyond all manner of so much I love you.
+Cor.
+What shall Cordelia speake? Love, and be silent.
+Lear.
+Of all these bounds even from this Line, to this,
+With shadowie Forrests, and with Champains rich'd 
+With plenteous Rivers, and wide-skirted Meades
+We make thee Lady. To thine and Albanies issues
+Be this perpetuall. What sayes our second Daughter?
+Our deerest Regan, wife of Cornwall?
+Reg.
+I am made of that selfe-mettle as my Sister,
+And prize me at her worth. In my true heart,
+I find she names my very deede of love:
+Onely she comes too short, that I professe
+My selfe an enemy to all other joyes,
+Which the most precious square of sense professes,
+And finde I am alone felicitate
+In your deere Highnesse love.
+Cor.
+Then poore Cordelia,
+And yet not so, since I am sure my love's
+More ponderous then my tongue.
+Lear.
+To thee, and thine hereditarie ever,
+Remaine this ample third of our faire Kingdome,
+No lesse in space, validitie, and pleasure
+Then that conferr'd on Gonerill. Now our Joy,
+Although our last and least; to whose yong love,
+The Vines of France, and Milke of Burgundie,
+Strive to be interest. What can you say, to draw
+A third, more opilent then your Sisters? Speake.
+Cor.
+Nothing my Lord.
+Lear.
+Nothing?
+
+Cor.
+Nothing.
+Lear.
+Nothing will come of nothing, speake againe.
+Cor.
+Unhappie that I am, I cannot heave
+My heart into my mouth. I love your Majesty
+According to my bond, no more nor lesse.
+Lear.How, how Cordelia? Mend your speech a little,
+Least you may marre your Fortunes.
+Cor.
+Good my Lord.
+You have begot me, bred me, lov'd me.
+I return those duties backe as are right fit,
+Obey you, Love you, and most honour you.
+Why have my Sisters Husbands if they say
+They love you all? Happily when I shall wed,
+That Lord, whose hand must take my plight, shall carry
+Halfe my love with him, halfe my Care, and Dutie,
+Sure I shall never marry like my Sisters.
+Lear.
+But goes thy heart with this?
+Cor.
+I my good Lord.
+Lear.
+So young, and so untender?
+Cor.
+So young my Lord, and true.
+Lear.
+Let it be so, thy truth then shall be thy dowre:
+For by the sacred radience of the Sunne,
+The miseries of Heccat and the night:
+By all operation of the Orbes,
+From whom we do exist and cease to be,
+Heere I desclaime all my Paternall care,
+Propinquity and property of blood,
+And as a stranger to my heart and me,
+Hold thee from this for ever. The barbarous Scythian,
+Or he that makes his generation messes
+To gorge his appetite, shall to my bosome
+Be as well neighbour'd pittied, and releev'd,
+As thou my sometime Daughter.
+Kent.
+Good, my Liege.
+Lear.
+Peace Kent.
+Come not betweene the Dragon and his wrath,
+I lov'd her most, and thought to set my rest
+On her kind nursery. Hence and avoid my sight:
+So be my grave my peace, as here I give
+Her Fathers heart from her: call France, who stirres?
+Call Burgundy, Cornwall, and Albanie,
+With my two daughters Dowres, digest the third,
+Let pride, which she cals plainnesse, marry her:
+I doe invest you jointly with my power,
+Preheminence, and all the large effects
+That troope with Majesty. Our selfe by Monthly course,
+With reservation of an hundred Knights,
+By you to be sustain'd, shall our abode
+Make with you one due turne, onely we shall retaine
+The name, and all th'addition to a King: the Sway,
+Revennew Execution of the rest,
+Beloved Sonnes be yours, which to confirme,
+This Coronet part betweene you.
+Kent.
+Royall Lear,
+Whom I have ever honor'd as my King,
+Lov'd as my Father, as my Master follow'd,
+As my great Patron thought on in my praiers.
+Le.
+The bow is bent &amp; drawne, make from the shaft.
+Kent.
+Let it fall rather, though the forke invade
+The region of my heart, be Kent unmannerly,
+When Lear is mad, what wouldest thou do old man?
+Think'st thou that dutie shall have dread to speake,
+When power to flattery bowes?
+To plainnesse honour's bound,
+When Majesty falls to folly, reserve thy state,
+And in thy best consideration checke
+This hideous rashnesse, answere my life, my judgement:
+Thy yongest Daughter do's not love thee least,
+Nor are those empty hearted, whose low sounds
+Reverbe no hollownesse.
+Lear.
+Kent, on thy life no more.
+Kent.
+My life I never held but as pawne
+To wage against thine enemies, nere feare to loose it,
+Thy safety being motive.
+Lear.
+Out of my sight.
+Kent.
+See better Lear, and let me still remaine
+The true blanke of thine eie.
+Kear.
+Now by Apollo,
+Lent.
+Now by Apollo, King
+Thou swear.st thy Gods in vaine.
+Lear.
+O Vassall! Miscreant.
+Alb. Cor.
+Deare Sir forbeare.
+Kent.
+Kill thy Physition, and thy fee bestow
+Upon the foule disease, revoke thy guift,
+Or whil'st I can vent clamour from my throate,
+Ile tell thee thou dost evill.
+Lea.
+Heare me recreant, on thine allegeance heare me;
+That thou hast fought to make us breake our vowes,
+Which we durst never yet; and with strain'd pride,
+To come betwixt our sentences, and our power.
+Which, nor our nature, nor our place can beare;
+Our potencie made good, take they reward.
+Five dayes we do allot thee for provision,
+To shield thee from disasters of the world,
+And on the sixt to turne thy hated backe
+Upon our kingdome; if on the tenth day following,
+Thy banisht trunke be found in our Dominions,
+The moment is thy death, away. By Jupiter,
+This shall not be revok'd,
+Kent.
+Fare thee well King, sith thus thou wilt appeare,
+Freedome lives hence, and banishment is here;
+The Gods to their deere shelter take thee Maid,
+That justly think'st, and hast most rightly said:
+And your large speeches, may your deedes approve,
+That good effects may spring from words of love:
+Thus Kent, O Princes, bids you all adew,
+Hee'l shape his old course, in a Country new. Exit.
+Length must not be 0
+Length must not be 0
+Length must not be 0
+Length must not be 0
+Length must not be 0
+Length must not be 0
+Length must not be 0
+starting...
+2013-11-02 13:48:34.324:INFO:oejs.Server:jetty-8.0.4.v20111024
+2013-11-02 13:48:34.393:INFO:oejs.AbstractConnector:Started SelectChannelConnector@localhost:8080 STARTING
+entering checker_create

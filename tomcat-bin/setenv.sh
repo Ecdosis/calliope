@@ -14,4 +14,5 @@ LIBPATH=`java -cp /usr/local/fedora/tomcat/bin/ LibPath`
 if [ `echo $LIBPATH | grep -c "/usr/local/lib" ` -eq 0 ] ; then
   LIBPATH=$LIBPATH:/usr/local/lib
 fi
-export CATALINA_OPTS="-Xss8m -Xmx2048m -Xincgc -Djava.library.path=$LIBPATH -cp .$JARPATHS"
+export JAVA_OPTS="-Xss8m -Xmx2048m -Xincgc"
+export CATALINA_OPTS="-Djava.library.path=$LIBPATH -cp .$JARPATHS"
