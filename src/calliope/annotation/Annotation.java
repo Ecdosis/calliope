@@ -5,28 +5,18 @@
  */
 
 package calliope.annotation;
-import calliope.DrupalLogin;
 import calliope.exception.AnnotationException;
 import edu.luc.nmerge.mvd.diff.*;
 import java.util.ArrayList;
 import java.awt.Dimension;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.MalformedURLException;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
-import java.io.StringReader;
-import org.xml.sax.InputSource;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathConstants;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import java.io.StringWriter;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
 
 /**
  * An annotation is a chunk of data with start offset and length
@@ -35,6 +25,7 @@ import org.w3c.dom.Node;
 public class Annotation 
 {
     Target target;
+    String id;
     ArrayList<Body> bodies;
     AnnotationKind kind;
     /**
@@ -53,13 +44,33 @@ public class Annotation
         this.kind = AnnotationKind.NOTE;
         this.target = new Target( new TextSelector(start,end), src );
     }
+    String getId()
+    {
+        return id;
+    }
+    static void printNode( Node node )
+    {
+        StringWriter sw = new StringWriter();
+        try 
+        {
+            Transformer t = TransformerFactory.newInstance().newTransformer();
+            t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            t.setOutputProperty(OutputKeys.INDENT, "yes");
+            t.transform(new DOMSource(node), new StreamResult(sw));
+        }
+        catch (TransformerException te) 
+        {
+            System.out.println("nodeToString Transformer Exception");
+        }
+        System.out.println(sw.toString());
+    }
     /**
      * Create an annotation from an XML document
      * @param doc the doc parsed from the annotation server's response
      */
-    public Annotation( Document doc )
+    public Annotation( Document doc ) throws AnnotationException
     {
-        System.out.println(doc.getTextContent());
+        
     }
     /**
      * Create a text annotation
@@ -197,34 +208,6 @@ public class Annotation
         sb.append("}");
         return sb.toString();
     }
-    String postToService( String host, String cookie ) throws Exception
-    {
-        String query = this.toString();
-        URL url = new URL(host);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Cookie", cookie);
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Content-Length",  
-            String.valueOf(query.getBytes().length));
-        OutputStream os = connection.getOutputStream();
-        os.write(query.getBytes());
-        os.close();
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(
-            new InputStreamReader(connection.getInputStream()));
-        String line;
-        while ( (line = br.readLine()) != null)
-            sb.append(line);
-        br.close();
-        os.close();
-        return sb.toString();
-    }
-    Annotation[] getAnnotations( String docID )
-    {
-        return null;
-    }
     /**
      * Update an array of annotations
      * @param anns an array of annotations sorted on start offset
@@ -310,91 +293,6 @@ public class Annotation
 //          System.out.println(text2.substring(d2.width,d2.height));
         }
     }
-    static Annotation getOneAnnotation( String serviceUrl, String id, String cookie ) throws Exception
-    {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        URL url = new URL(id);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Cookie", cookie);
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(
-            new InputStreamReader(connection.getInputStream()));
-        String anns;
-        while ( (anns = br.readLine()) != null)
-            sb.append(anns);
-        br.close();
-        String sbs = sb.toString();
-        InputSource src = new InputSource(new StringReader(sbs));
-        Document doc = db.parse(src);
-        return new Annotation( doc );
-    }
-    /**
-     * Create an array of Annotation objects that refer to a docID
-     * @param host the domain-name of the host
-     * @param user the user name for login
-     * @param pass the user's password
-     * @param service the service url to query
-     * @param docID the document ID
-     * @return an array of initialised annotations
-     */
-    static Annotation[] getAnnotationsFor( String host, String user, 
-        String pass, String service, String docID )
-        throws Exception
-    {
-        String cookie = null;
-        DrupalLogin dl = null;
-        dl = new DrupalLogin();
-        ArrayList<Annotation> vector = new ArrayList<Annotation>();
-        cookie = dl.login( host, user, pass );
-        if ( cookie != null )
-        {
-            String serviceUrl = "http://"+host+service;
-            NodeList nodes = getDocList( serviceUrl, docID, cookie );
-            for ( int i=0;i<nodes.getLength();i++ )
-            {
-                Node n = nodes.item( i );
-                String id = n.getTextContent();
-                Annotation ann = getOneAnnotation( serviceUrl, id, cookie );
-                vector.add( ann );
-            }
-            dl.logout( host, cookie );
-        }
-        Annotation[] arr = new Annotation[vector.size()];
-        vector.toArray( arr );
-        return arr;
-    }
-    private static void doStore( String host, String user, String pass, 
-        Annotation[] anns )
-    {
-        String serviceUrl = "http://"+host+"/lorestore/oa/";
-        String cookie = null;
-        DrupalLogin dl = null;
-        try
-        {
-            dl = new DrupalLogin();
-            cookie = dl.login( host, user, pass );
-            if ( cookie != null )
-            {
-                for ( int i=0;i<anns.length;i++ )
-                {
-                    String ans = anns[i].postToService( serviceUrl, cookie );
-                    System.out.println(ans );
-                }
-                dl.logout( host, cookie );
-            }
-            else
-                System.out.println("Couldn't login");
-        }
-        catch ( Exception e )
-        {
-            if ( cookie != null && dl != null )
-                try{dl.logout(host,cookie);}
-                catch (Exception f){}
-            e.printStackTrace(System.out);
-        }
-    }
     static Annotation[] fakeAnnotations( String docID ) 
         throws MalformedURLException
     {
@@ -413,98 +311,12 @@ public class Annotation
             438, 445 );
         return anns;
     }
-    static Document getXmlDoc( String serviceUrl, String docID, String cookie ) 
-        throws Exception
-    {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        String urn = docID.replace("/","%2F");
-        URL url = new URL(serviceUrl+"?refersTo=urn:aese:"+urn);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Cookie", cookie);
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = new BufferedReader(
-            new InputStreamReader(connection.getInputStream()));
-        String anns;
-        while ( (anns = br.readLine()) != null)
-            sb.append(anns);
-        br.close();
-        String sbs = sb.toString();
-        InputSource src = new InputSource(new StringReader(sbs));
-        return db.parse(src);
-    }
-    /**
-     * Get a list of all the annotations belonging to a given docID
-     * @param serviceUrl the service to query
-     * @param docID annotations must use this docID
-     * @param cookie already logged in suer cookie
-     * @return a NodeList of matching annotations (with IDs)
-     */
-    static NodeList getDocList( String serviceUrl, String docID, String cookie )
-        throws Exception
-    {
-        Document doc = getXmlDoc( serviceUrl, docID, cookie );
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        XPathExpression expr1 = xpath.compile("//results/result/binding/uri");
-        return (NodeList)expr1.evaluate(doc, 
-            XPathConstants.NODESET);
-    }
-    /**
-     * Delete all annotations we just created
-     * @param host the host where the annotations are stored
-     * @param service the service url running the annotations on host
-     * @param user the name of the user 
-     * @param pass his/her password
-     * @param docID annotations to delete for
-     */
-    public static void deleteByDocID( String host, String service, String user, 
-        String pass, String docID )
-    {
-        String cookie = null;
-        DrupalLogin dl = null;
-        try
-        {
-            dl = new DrupalLogin();
-            cookie = dl.login( host, user, pass );
-            if ( cookie != null )
-            {
-                String serviceUrl = "http://"+host+service;
-                NodeList nodes = getDocList( serviceUrl, docID, cookie );
-                for ( int i=0;i<nodes.getLength();i++ )
-                {
-                    Node n = nodes.item(i);
-                    URL resource = new URL(n.getTextContent());
-                    HttpURLConnection conn = (HttpURLConnection) 
-                        resource.openConnection();
-                    conn.setRequestMethod("DELETE");
-                    conn.setRequestProperty("Cookie", cookie);
-                    if ( conn.getResponseCode()!=204 )
-                        System.out.println("failed to delete "+n.getTextContent());
-                    else
-                        System.out.println("Deleted "+n.getTextContent());
-                }
-                dl.logout( host, cookie);
-            }
-        }
-        catch ( Exception e )
-        {
-            if ( cookie != null && dl != null )
-                try{dl.logout("austese.net",cookie);}
-                catch (Exception f){}
-            e.printStackTrace(System.out);
-        }
-    }
-    /**
+        /**
      * Test annotation updating
      * @param args the arguments - ignored
      */
     public static void main(String[] args )
     {
-        String service = "/lorestore/oa/";
-        String host = "austese.net";
-        String user = "desmond";
-        String pass = "P1nkz3bra";
         String docID = "english/desmond/test";
         String text1 = "Lorem ipsum dolor sit amet, consectetur adipisicing "
             +"elit, sed do eiusmod tempor incididunt ut labore et dolore "
@@ -522,13 +334,16 @@ public class Annotation
             +"qui officia deserunt mollit anim id est pathetic.";
         try
         {
-            //Annotation[] anns = Annotation.fakeAnnotations( docID );
-            //doStore( host, user, pass, anns );
-            //deleteByDocID(host,service,user,pass,"english/desmond/test");
+            AnnotationService as = new AnnotationService("austese.net", 
+                "desmond", "P1nkz3bra", "/lorestore/oa/");
+            as.login();
+            Annotation[] anns = Annotation.fakeAnnotations( docID );
+            as.doStore( anns );
+            //as.deleteByDocID("english/desmond/test");
             //doUpdate();
-            Annotation[] anns = getAnnotationsFor( host, user, pass, 
-                service, docID );
-            System.out.println("Number of annotations="+anns.length);
+            Annotation[] anns2 = as.getAnnotationsFor( docID );
+            System.out.println("Number of annotations="+anns2.length);
+            as.logout();
          }
          catch ( Exception e )
          {
