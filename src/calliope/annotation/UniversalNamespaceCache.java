@@ -1,3 +1,18 @@
+/* This file is part of calliope.
+ *
+ *  calliope is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  calliope is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package calliope.annotation;
 
 import java.util.HashMap;
@@ -13,6 +28,20 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/* Downloaded from IBM: 3-12-13
+http://www.ibm.com/developerworks/library/x-nmspccontext/
+Gets namespaces directly from the XML document
+Original license appears to be permissive and allow sublicensing:
+The party providing the Content (the "Provider") grants You a 
+nonexclusive, worldwide, irrevocable, royalty-free, copyright 
+license to edit, copy, reproduce, publish, publicly display 
+and/or perform, format, modify and/or make derivative works of, 
+translate, re-arrange, and distribute the Content or any portions 
+thereof and to sublicense any or all such rights and to permit 
+sublicensees to further sublicense such rights, for both commercial 
+and non-commercial use, provided You abide by the terms of this 
+Agreement. 
+*/
 public class UniversalNamespaceCache implements NamespaceContext {
 	private static final String DEFAULT_NS = "DEFAULT";
 	private Map<String, String> prefix2Uri = new HashMap<String, String>();

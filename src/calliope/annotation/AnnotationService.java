@@ -48,6 +48,13 @@ public class AnnotationService
     String pass;
     String service;
     String cookie;
+    /**
+     * Create an annotation service object
+     * @param host the raw host domain-name only
+     * @param user the user name used to create a login
+     * @param pass the user's password
+     * @param service the path of the service to combine with the host
+     */
     AnnotationService(String host, String user, String pass, String service )
     {
         this.host = host;
@@ -56,7 +63,7 @@ public class AnnotationService
         this.service = service;
     }
     /**
-     * Login to the host
+     * Login to the host - remember to logout
      * @throws AnnotationException 
      */
     void login() throws AnnotationException
@@ -90,41 +97,7 @@ public class AnnotationService
         }
     }
     /**
-     * Get the full source text of the annotation from a reference to it
-     * @param doc an XML doc that returned by the ore refersTo query
-     * @return the text of the full annotation
-     * @throws AnnotationException 
-     */
-    private String getAnnotationSource( Document doc ) throws AnnotationException
-    {
-        try
-        {
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            XPathExpression expr1 = xpath.compile("//rdf:Description//rdf:type["
-                +"rdf:resource=\"http://www.w3.org/ns/oa#Annotation\"]");
-            NodeList nl = (NodeList) expr1.evaluate(doc, XPathConstants.NODESET );
-            if ( nl.getLength()==1 )
-            {
-                Node n = nl.item(0);
-                Element p = (Element)n.getParentNode();
-                String id = p.getAttribute("rdf:about");
-                if ( id != null )
-                {
-                    return getOneAnnotation( id );
-                }
-                else
-                    throw new Exception("missing rdf:about attribute");
-            }
-            else
-                throw new Exception("annotation missing in response");
-        }
-        catch ( Exception e )
-        {
-            throw new AnnotationException( e );
-        }
-    }
-    /**
-     * Send an annotation to the host
+     * Send an annotation object to the host
      * @param a the annotation to send
      * @return the server's response message
      * @throws Exception 
@@ -139,9 +112,10 @@ public class AnnotationService
         connection.setRequestProperty("Cookie", cookie);
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Content-Length",  
-            String.valueOf(query.getBytes().length));
+            String.valueOf(query.getBytes("UTF-8").length));
+        connection.setRequestProperty("Content-Encoding", "UTF-8");
         OutputStream os = connection.getOutputStream();
-        os.write(query.getBytes());
+        os.write(query.getBytes("UTF-8"));
         os.close();
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(
@@ -156,6 +130,10 @@ public class AnnotationService
             throw new Exception( "Failed to post "+a.getId()+": "+rc );
         return sb.toString();
     }
+    /**
+     * Compose the service URL
+     * @return a String
+     */
     private String getService()
     {
         return "http://"+host+service;
@@ -190,6 +168,7 @@ public class AnnotationService
     Document parseAnnotation( String sbs ) throws Exception
     {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
         DocumentBuilder db = dbf.newDocumentBuilder();
         InputSource src = new InputSource(new StringReader(sbs));
         return db.parse(src);
@@ -280,7 +259,6 @@ public class AnnotationService
     {
         Document doc = getXmlDoc( docID );
         XPath xpath = XPathFactory.newInstance().newXPath();
-        Annotation.printNode( doc );
         UniversalNamespaceCache ctx = new UniversalNamespaceCache(doc,false);
         xpath.setNamespaceContext(ctx);
         XPathExpression expr1 = xpath.compile(

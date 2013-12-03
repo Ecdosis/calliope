@@ -1,7 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* This file is part of calliope.
+ *
+ *  calliope is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  calliope is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package calliope.annotation;
@@ -11,12 +21,19 @@ import java.util.ArrayList;
 import java.awt.Dimension;
 import java.net.URL;
 import java.net.MalformedURLException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.Document;
 import java.io.StringWriter;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
 
 /**
  * An annotation is a chunk of data with start offset and length
@@ -26,8 +43,230 @@ public class Annotation
 {
     Target target;
     String id;
+    String author;
     ArrayList<Body> bodies;
     AnnotationKind kind;
+    static String PERSON = "http://xmlns.com/foaf/0.1/Person";
+    static String ANNOTATION = "http://www.w3.org/ns/oa#Annotation";
+    static String SPECIFIC_RESOURCE = "http://www.w3.org/ns/oa#SpecificResource";
+    static String CONTENT_AS_TEXT = "http://www.w3.org/2011/content#ContentAsText";
+    static String TEXT_POSITION = "http://www.w3.org/ns/oa#TextPositionSelector";
+    /**
+     * Create an annotation from parsed XML
+     * @param doc a DOM document
+     */
+    public Annotation( Document doc )
+    {
+        bodies = new ArrayList<Body>();
+        try
+        {
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            UniversalNamespaceCache ctx = new UniversalNamespaceCache(doc,false);
+            xpath.setNamespaceContext(ctx);
+            XPathExpression expr1 = xpath.compile( "//rdf:Description" );
+            NodeList nl = (NodeList)expr1.evaluate(doc,XPathConstants.NODESET);
+            for ( int i=0;i<nl.getLength();i++ )
+            {
+                Node n = nl.item( i );
+                Node child = n.getFirstChild();
+                while ( child != null )
+                {
+                    // get first element
+                    if ( child.getNodeType()==Node.ELEMENT_NODE )
+                    {
+                        Element e = (Element)child;
+                        String type = e.getAttribute("rdf:resource");
+                        if ( type != null )
+                        {
+                            if ( type.equals(PERSON) )
+                                readPerson(e);
+                            else if ( type.equals(ANNOTATION) )
+                                readAnnotation( e );
+                            else if ( type.equals(SPECIFIC_RESOURCE) )
+                                readSpecificResource( e );
+                            else if ( type.equals(CONTENT_AS_TEXT) )
+                                readBodyText( e );
+                            else if (type.equals(TEXT_POSITION) )
+                                readTextPosition( e );
+                        }
+                        break;
+                    }
+                    else
+                        child = child.getNextSibling();
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace(System.out);
+        }
+    }
+    /**
+     * Read the complex annotation object
+     * @param e the parent of the annotation itself
+     */
+    final void readAnnotation( Element e )
+    {
+        Element p = (Element)e.getParentNode();
+        String attr = p.getAttribute("rdf:about");
+        if ( attr != null )
+            this.id = attr;
+        Node child = e;
+        while ( child != null )
+        {
+            if ( child.getNodeType()==Node.ELEMENT_NODE )
+            {
+                Element elem = (Element) child;
+                if ( elem.getNodeName().equals("hasBody") )
+                {
+                    String attr2 = elem.getAttribute("rdf:resource");
+                    if ( attr2 != null && Annotation.isImage(attr2) )
+                    {
+                        try
+                        {
+                            ImageBody ib = new ImageBody( new URL(attr2) );
+                            bodies.add( ib );
+                        }
+                        catch ( Exception ex )
+                        {
+                        }
+                    }
+                }
+            }
+            child = child.getNextSibling();
+        }
+    }
+    static boolean isImage( String url )
+    {
+        if ( url.endsWith(".png") || url.endsWith(".jpg") 
+            || url.endsWith(".gif") || url.endsWith(".tif") )
+            return true;
+        else
+            return false;
+    }
+    final void readTextPosition( Element e ) throws AnnotationException
+    {
+        int start = -1;
+        int end = -1;
+        Node child = e;
+        try
+        {
+            while ( child != null )
+            {
+                if ( child.getNodeType()==Node.ELEMENT_NODE )
+                {
+                    Element elem = (Element) child;
+                    if ( elem.getNodeName().equals("start") )
+                    {
+                        String value = elem.getTextContent();
+                        start = Integer.parseInt( value );
+                    }
+                    else if ( elem.getNodeName().equals("end") )
+                    {
+                        String value = elem.getTextContent();
+                        end = Integer.parseInt( value );
+                    }
+                }
+                child = child.getNextSibling();
+            }
+            if ( start != -1 && end != -1 )
+            {
+                TextSelector ts = new TextSelector( start, end );
+                if ( target == null )
+                    target = new Target();
+                target.setSelector( ts );
+            }
+            else
+                throw new Exception( "start and/or end of selector unset");
+        }
+        catch ( Exception ex )
+        {
+            throw new AnnotationException( ex );
+        }
+    }
+    final void readSpecificResource( Element e )
+    {
+        /*<rdf:Description rdf:about="urn:uuid:2b112adb-909b-4a8a-8199-ef39d3307afc">	
+        <rdf:type rdf:resource="http://www.w3.org/ns/oa#SpecificResource"/>	
+        <hasSelector xmlns="http://www.w3.org/ns/oa#" rdf:resource="urn:uuid:5991ac71-0311-4654-ac20-ca7068a8c545"/>	
+        <hasSource xmlns="http://www.w3.org/ns/oa#" rdf:resource="urn:aese:english/desmond/test"/>
+        </rdf:Description>*/
+        Node child = e;
+        while ( child != null )
+        {
+            if ( child.getNodeType()==Node.ELEMENT_NODE )
+            {
+                Element elem = (Element) child;
+                if ( elem.getNodeName().equals("hasSource") )
+                {
+                    String attr = elem.getAttribute("rdf:resource");
+                    if ( attr.startsWith("urn:aese:") )
+                    {
+                        if ( target == null )
+                            target = new Target();
+                        target.setSrc( attr.substring(9) );
+                    }
+                }
+            }
+            child = child.getNextSibling();
+        }
+    }
+    /**
+     * Read the textual body of an annotation
+     * @param e the parent element
+     */
+    final void readBodyText( Element e )
+    {
+        /*<rdf:Description rdf:about="urn:uuid:1eaaf6bc-95de-47d8-83bd-5fc74d42d736">	
+        <rdf:type rdf:resource="http://www.w3.org/2011/content#ContentAsText"/>	
+        <rdf:type rdf:resource="http://purl.org/dc/dcmitype/Text"/>	
+        <chars xmlns="http://www.w3.org/2011/content#">This bit is pretty silly</chars>	
+        <characterEncoding xmlns="http://www.w3.org/2011/content#">UTF-8</characterEncoding>
+        </rdf:Description>*/
+        Element p = (Element)e.getParentNode();
+        String uuid = p.getAttribute("rdf:about");
+        Node child = e;
+        while ( child != null )
+        {
+            if ( child.getNodeType()==Node.ELEMENT_NODE )
+            {
+                Element elem = (Element) child;
+                if ( elem.getNodeName().equals("chars") )
+                {
+                    TextBody tb = new TextBody( child.getTextContent() );
+                    if ( uuid != null )
+                        tb.setUuid( uuid );
+                    bodies.add( tb );
+                }
+            }
+            child = child.getNextSibling();
+        }
+    }
+    /**
+     * Read a person specification
+     * @param e the rdf description node contianing him/her
+     */
+    final void readPerson( Element e )
+    {
+        /*<rdf:Description rdf:about="http://austese.net/user/3">
+        <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <name xmlns="http://xmlns.com/foaf/0.1/">desmond</name>
+        </rdf:Description>*/
+        Node child = e;
+        while ( child != null )
+        {
+            if ( child.getNodeType()==Node.ELEMENT_NODE )
+            {
+                Element elem = (Element) child;
+                if ( elem.getNodeName().equals("name") )
+                {
+                    this.author = elem.getTextContent();
+                    break;
+                }
+            }
+            child = child.getNextSibling();
+        }
+    }
     /**
      * Create a text annotation
      * @param src the id/url of the document being encoded
@@ -44,36 +283,8 @@ public class Annotation
         this.kind = AnnotationKind.NOTE;
         this.target = new Target( new TextSelector(start,end), src );
     }
-    String getId()
-    {
-        return id;
-    }
-    static void printNode( Node node )
-    {
-        StringWriter sw = new StringWriter();
-        try 
-        {
-            Transformer t = TransformerFactory.newInstance().newTransformer();
-            t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            t.setOutputProperty(OutputKeys.INDENT, "yes");
-            t.transform(new DOMSource(node), new StreamResult(sw));
-        }
-        catch (TransformerException te) 
-        {
-            System.out.println("nodeToString Transformer Exception");
-        }
-        System.out.println(sw.toString());
-    }
     /**
-     * Create an annotation from an XML document
-     * @param doc the doc parsed from the annotation server's response
-     */
-    public Annotation( Document doc ) throws AnnotationException
-    {
-        
-    }
-    /**
-     * Create a text annotation
+     * Create an image annotation
      * @param src the id/url of the document being encoded
      * @param caption the caption being added to the document
      * @param body the body of the annotation
@@ -95,13 +306,44 @@ public class Annotation
         this.target = new Target( new TextSelector(start,end), src );
     }
     /**
+     * Get the "id" or lorestore url that identifies this annocation
+     * @return a url as a string with an embedded id
+     */
+    String getId()
+    {
+        return id;
+    }
+    /**
+     * Just print an XML node to the console for debugging
+     * @param node the node in question
+     */
+    static void printNode( Node node )
+    {
+        StringWriter sw = new StringWriter();
+        try 
+        {
+            Transformer t = TransformerFactory.newInstance().newTransformer();
+            t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            t.setOutputProperty(OutputKeys.INDENT, "yes");
+            t.transform(new DOMSource(node), new StreamResult(sw));
+        }
+        catch (TransformerException te) 
+        {
+            System.out.println("nodeToString Transformer Exception");
+        }
+        System.out.println(sw.toString());
+    }
+    /**
      * Get the end-offset
      * @return an int
      */
     public int end()
     {
         return target.getSelector().end();
-    }
+    }/**
+     * Get the start offset of the annotation in the target
+     * @return an int
+     */
     public int start()
     {
         return target.getSelector().start();
@@ -114,14 +356,26 @@ public class Annotation
     {
         target.updateStart( from ); 
     }
+    /**
+     * Adjust this annotation's length
+     * @param newLen the new length it is to have
+     */
     public void updateLen( int newLen )
     {
         target.updateLen( newLen );
     }
+    /**
+     * Execute the staged changes
+     * @throws AnnotationException 
+     */
     public void update() throws AnnotationException
     {
         target.update();
     }
+    /**
+     * Get the range in the target 
+     * @return a Dimension as start, end (one after end) pair
+     */
     public Dimension getRange()
     {
         return target.getRange();
@@ -134,6 +388,12 @@ public class Annotation
     {
         return target.isValid();
     }
+    /**
+     * Indent a paragraph of text by tabs
+     * @param text the text to indent
+     * @param nTabs the number of tabs to add
+     * @return the revised string
+     */
     public static String indent( String text, int nTabs )
     {
         StringBuilder sb = new StringBuilder();
@@ -146,6 +406,10 @@ public class Annotation
         }
         return sb.toString();
     }
+    /**
+     * Print the "grtaph" element in the annotation, JSON-LD format
+     * @return the text of the whole @graph element
+     */
     private String printGraph()
     {
         StringBuilder sb = new StringBuilder();
@@ -193,6 +457,10 @@ public class Annotation
         sb.append("\n\t]\n");
         return sb.toString();
     }
+    /**
+     * Convert the whole annotation object to a string
+     * @retun a JSON-LD representation suitable for Lorestore to understand
+     */
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
@@ -293,6 +561,12 @@ public class Annotation
 //          System.out.println(text2.substring(d2.width,d2.height));
         }
     }
+    /**
+     * Create some test annotations
+     * @param docID their docID
+     * @return an array of suitable test annotations
+     * @throws MalformedURLException 
+     */
     static Annotation[] fakeAnnotations( String docID ) 
         throws MalformedURLException
     {
@@ -311,8 +585,8 @@ public class Annotation
             438, 445 );
         return anns;
     }
-        /**
-     * Test annotation updating
+    /**
+     * Test annotations
      * @param args the arguments - ignored
      */
     public static void main(String[] args )
@@ -337,8 +611,8 @@ public class Annotation
             AnnotationService as = new AnnotationService("austese.net", 
                 "desmond", "P1nkz3bra", "/lorestore/oa/");
             as.login();
-            Annotation[] anns = Annotation.fakeAnnotations( docID );
-            as.doStore( anns );
+            //Annotation[] anns = Annotation.fakeAnnotations( docID );
+            //as.doStore( anns );
             //as.deleteByDocID("english/desmond/test");
             //doUpdate();
             Annotation[] anns2 = as.getAnnotationsFor( docID );
