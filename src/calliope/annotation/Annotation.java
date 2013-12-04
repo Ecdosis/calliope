@@ -18,6 +18,7 @@ package calliope.annotation;
 import calliope.exception.AnnotationException;
 import edu.luc.nmerge.mvd.diff.*;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.awt.Dimension;
 import java.net.URL;
 import java.net.MalformedURLException;
@@ -33,7 +34,6 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
-import org.w3c.dom.Attr;
 
 /**
  * An annotation is a chunk of data with start offset and length
@@ -42,7 +42,7 @@ import org.w3c.dom.Attr;
 public class Annotation 
 {
     Target target;
-    String id;
+    String id = "http://www.example.org/annotations/dummyid";
     String author;
     ArrayList<Body> bodies;
     AnnotationKind kind;
@@ -415,8 +415,10 @@ public class Annotation
         StringBuilder sb = new StringBuilder();
         sb.append("\t\"@graph\": [\n");
         sb.append("\t\t{\n");
-        sb.append("\t\t\t\"@id\": ");
-        sb.append("\"http://www.example.org/annotations/dummyid\",\n");
+        sb.append("\t\t\t\"@id\": \"");
+        //sb.append("\"http://www.example.org/annotations/dummyid\",\n");
+        sb.append(id);
+        sb.append("\",\n");
         sb.append("\t\t\t\"@type\": ");
         sb.append("\"http://www.w3.org/ns/oa#Annotation\",\n");
         sb.append("\t\t\t\"oa:annotatedBy\": {\n");
@@ -611,12 +613,17 @@ public class Annotation
             AnnotationService as = new AnnotationService("austese.net", 
                 "desmond", "P1nkz3bra", "/lorestore/oa/");
             as.login();
+//            as.deleteByDocID(docID);
             //Annotation[] anns = Annotation.fakeAnnotations( docID );
+            //System.out.println("original annotations:");
+            //for ( int i=0;i<anns.length;i++ )
+            //    System.out.println(anns[i].toString());
             //as.doStore( anns );
-            //as.deleteByDocID("english/desmond/test");
             //doUpdate();
             Annotation[] anns2 = as.getAnnotationsFor( docID );
-            System.out.println("Number of annotations="+anns2.length);
+            System.out.println("retrieved annotations:");
+            for ( int i=0;i<anns2.length;i++ )
+                System.out.println(anns2[i].toString());
             as.logout();
          }
          catch ( Exception e )

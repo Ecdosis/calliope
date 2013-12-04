@@ -5,8 +5,8 @@ read -p "Password: (jabberw0cky)" PASSWORD
 PASSWORD=${PASSWORD:-jabberw0cky}
 read -p "Repository - COUCH or MONGO: (MONGO)" REPO
 REPO=${REPO:-MONGO}
-read -p "Web root: (/Library/WebServer/Documents)" WEBROOT
-WEBROOT=${WEBROOT:-/Library/WebServer/Documents}
+read -p "Web root: (/var/www)" WEBROOT
+WEBROOT=${WEBROOT:-/var/www}
 if [ ! -d "$WEBROOT" ]; then
   echo "$WEBROOT not found. Exiting"
   exit

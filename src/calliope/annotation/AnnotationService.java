@@ -213,7 +213,7 @@ public class AnnotationService
             for ( int i=0;i<anns.length;i++ )
             {
                 String ans = postToService( anns[i] );
-                System.out.println(ans );
+                //System.out.println(ans );
             }
         }
         catch ( Exception e )

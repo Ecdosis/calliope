@@ -51,7 +51,7 @@ public class TestInternal extends Test
     @Override
     public Element getContent()
     {
-        Element form = formElement("/tests/internal" );
+        Element form = formElement(Service.PREFIX+"/tests/internal" );
         Element outer = new Element( HTMLNames.DIV );
         form.addChild( outer );
         outer.addAttribute( HTMLNames.ID, "centre" );

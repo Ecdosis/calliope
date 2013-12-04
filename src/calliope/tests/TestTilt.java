@@ -64,7 +64,7 @@ public class TestTilt extends Test
     @Override
     public Element getContent()
     {
-        Element form = formElement( "/tests/tilt" );
+        Element form = formElement( Service.PREFIX+"/tests/tilt" );
         form.addChild( docIDHidden(docID) );
         Element outer = new Element( "div" );
         outer.addAttribute( HTMLNames.ID, "centre" );

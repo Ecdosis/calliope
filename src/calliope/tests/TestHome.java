@@ -187,7 +187,7 @@ public class TestHome extends Test
         {
             String[] docs = Connector.getConnection().listCollection(
                 Database.CORTEX);
-            Element form = formElement( "/tests/home" );
+            Element form = formElement( Service.PREFIX+"/tests/home" );
             form.addChild( docIDHidden(docID) );
             HTMLCatalog cata = new HTMLCatalog();
             cata.load( docs );

@@ -267,7 +267,7 @@ public class TestCompare extends Test
     {
         try
         {
-            Element form = formElement( "/tests/compare" );
+            Element form = formElement( Service.PREFIX+"/tests/compare" );
             form.addChild( docIDHidden(docID) );
             Element divCentre = new Element( HTMLNames.DIV );
             divCentre.addAttribute( HTMLNames.ID, "twinCentreColumn" );
