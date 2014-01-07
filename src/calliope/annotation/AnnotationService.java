@@ -15,7 +15,7 @@
  */
 package calliope.annotation;
 
-import calliope.DrupalLogin;
+import calliope.login.DrupalLogin;
 import calliope.exception.AnnotationException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

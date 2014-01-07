@@ -87,4 +87,15 @@ public class JSONKeys
     public static String BASE_URL = "base_url";
     /** docid */
     public static String DOCID = "docid";
+    /** URL for LINKs */
+    public static String URL = "url";
+    /** arguments for LINKs */
+    public static String ARGS = "args";
+    /** the value at the key */
+    public static String VALUE = "value";
+    public static String LOGIN = "login";
+    public static String USER = "user";
+    public static String PASSWORD = "password";
+    public static String TYPE = "type";
+    public static String HOST = "host";
 }

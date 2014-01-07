@@ -31,4 +31,6 @@ public class Database
     public static String CORPIX = "corpix";
     /** config files for import */
     public static String CONFIG = "config";
+    /** paratexts */
+    public static String MISC = "misc";
 }

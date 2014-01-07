@@ -65,7 +65,9 @@ public class AeseUploadHandler extends AeseImportHandler
                                 json, jsonKeys );
                             json = wrapper.toString();
                         }
-                        else if ( database.equals(Database.CORFORM) )
+                        else if ( database.equals(Database.CORFORM)
+                            || database.equals(Database.CONFIG)
+                            || database.equals(Database.MISC))
                             json = Utils.cleanCR( json, true );
                         resp = Connector.getConnection().putToDb( 
                             database, docID.get(), json );

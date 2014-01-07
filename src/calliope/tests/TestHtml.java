@@ -15,6 +15,8 @@
  */
 package calliope.tests;
 import calliope.Service;
+import java.io.PrintStream;
+import java.io.ByteArrayOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import calliope.exception.*;
@@ -78,8 +80,12 @@ public class TestHtml extends Test
         }
         catch ( Exception e )
         {
+            ByteArrayOutputStream bos =  new ByteArrayOutputStream();
+            PrintStream ps = new PrintStream(bos);
+            e.printStackTrace( ps );
             return new Text( "Failed CorCode+CorTex to HTML test: "
-                +e.getMessage());
+                +e.getMessage()+new String(bos.toByteArray()) );
+            
         }
     }
     /**

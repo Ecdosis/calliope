@@ -24,8 +24,11 @@ import calliope.handler.AeseMVD;
 import calliope.json.JSONDocument;
 import calliope.exception.*;
 import calliope.constants.*;
-import calliope.URLEncoder;
 import calliope.Service;
+import java.io.InputStream;
+import java.net.URLConnection;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import edu.luc.nmerge.mvd.MVD;
@@ -34,6 +37,7 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.ArrayList;
+import calliope.login.*;
 /**
  * Handle some get request
  * @param request the original servlet request object
@@ -135,6 +139,78 @@ public class AeseGetHandler extends AeseHandler
         return actual;
     }
     /**
+     * Read a general LINK 
+     * @param json the link in JSON format
+     * @return the data as a byte array. caller should know the format
+     */
+    byte[] readLink( String json ) throws LoginException
+    {
+        try
+        {
+            JSONDocument link = JSONDocument.internalise( json );
+            String rawURL = (String)link.get(JSONKeys.URL);
+            JSONDocument login = (JSONDocument)link.get(JSONKeys.LOGIN);
+            Login  l = null;
+            String cookie = null;
+            String host = null;
+            if ( login != null )
+            {
+                LoginType lt = LoginType.valueOf((String)login.get(JSONKeys.TYPE));
+                l = LoginFactory.createLogin(lt);
+                host = (String)login.get(JSONKeys.HOST);
+                String user = (String)login.get(JSONKeys.USER);
+                String password = (String)login.get(JSONKeys.PASSWORD);
+                cookie = l.login(host, user, password);
+            }
+            StringBuilder sb = new StringBuilder( rawURL );
+            ArrayList args = (ArrayList)link.get( JSONKeys.ARGS );
+            if ( args != null )
+            {
+                for ( int i=0;i<args.size();i++ )
+                {
+                    JSONDocument arg = (JSONDocument)args.get(i);
+                    String name = (String)arg.get(JSONKeys.NAME);
+                    String value = (String)arg.get(JSONKeys.VALUE);
+                    if ( i == 0 )
+                        sb.append("?");
+                    else
+                        sb.append("&");
+                    sb.append( name );
+                    sb.append("=");
+                    sb.append(value);
+                }
+                rawURL = sb.toString();
+            }
+            URL url = new URL( rawURL );
+            URLConnection conn = url.openConnection();
+            InputStream is = conn.getInputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[8192];
+            long time = System.currentTimeMillis();
+            long delay = 0;
+            do 
+            {
+                int nbytes = is.read( buf );
+                if ( nbytes > 0 )
+                {
+                    bos.write( buf, 0, nbytes );
+                    time = System.currentTimeMillis();
+                }
+                delay = System.currentTimeMillis()-time;
+            } while ( is.available()>0 || delay<2000L );
+            if ( l != null && host != null )
+                l.logout( host, cookie );
+            return bos.toByteArray();
+        }
+        catch ( Exception e )
+        {
+            if ( e instanceof LoginException )
+                throw (LoginException)e;
+            else
+                throw new LoginException( e );
+        }
+    }
+    /**
      * Try to retrieve the CorTex/CorCode version specified by the path
      * @param db the database to fetch from
      * @param path the already parsed URN with a valid db name
@@ -167,7 +243,23 @@ public class AeseGetHandler extends AeseHandler
                 throw new AeseException("doc missing format");
             version.setFormat( format );
             version.setStyle((String)doc.get(JSONKeys.STYLE));
-            if ( version.getFormat().equals(Formats.MVD) )
+            // first resolve the link, if any
+            if ( version.getFormat().equals(Formats.LINK) )
+            {
+                String body = (String)doc.get( JSONKeys.BODY );
+                if ( body == null )
+                    throw new AeseException("empty body");
+                try
+                {
+                    data = readLink( body );
+                }
+                catch ( Exception e )
+                {
+                    throw new AeseException( e );
+                }
+                version.setVersion( data );
+            }
+            else if ( version.getFormat().equals(Formats.MVD) )
             {
                 MVD mvd = MVDFile.internalise( (String)doc.get(
                     JSONKeys.BODY) );
@@ -181,10 +273,10 @@ public class AeseGetHandler extends AeseHandler
                 {
                     data = mvd.getVersion( vId );
                     String desc = mvd.getDescription();
-                    System.out.println("description="+desc);
+                    //System.out.println("description="+desc);
                     int nversions = mvd.numVersions();
-                    System.out.println("nversions="+nversions);
-                    System.out.println("length of version "+vId+"="+data.length);
+                    //System.out.println("nversions="+nversions);
+                    //System.out.println("length of version "+vId+"="+data.length);
                     if ( data != null )
                         version.setVersion( data );
                     else

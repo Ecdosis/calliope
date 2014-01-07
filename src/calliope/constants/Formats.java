@@ -35,4 +35,6 @@ public class Formats
     public static String MVD = "MVD";
     public static String MVD_TEXT = "MVD/TEXT";
     public static String MVD_STIL = "MVD/STIL";
+    /** link pseudo-format */
+    public static String LINK = "LINK";
 }
