@@ -6,6 +6,7 @@
 
 package calliope.login;
 import calliope.exception.LoginException;
+
 /**
  * Abstract login services
  * @author desmond

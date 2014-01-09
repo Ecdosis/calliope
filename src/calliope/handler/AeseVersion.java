@@ -96,7 +96,7 @@ public class AeseVersion
         return mvd;
     }
     /**
-     * Set the version data of this version
+     * Get the version data of this version
      * @return the version contents 
      */
     public byte[] getVersion()

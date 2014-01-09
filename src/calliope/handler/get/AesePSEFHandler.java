@@ -35,7 +35,7 @@ import java.io.FileInputStream;
  * Handle downloading of parts of the web-server
  * @author desmond
  */
-public class AesePDEFHandler extends AeseGetHandler
+public class AesePSEFHandler extends AeseGetHandler
 {
     /**
      * Set the zip type based on the passed in parameter

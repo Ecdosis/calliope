@@ -37,4 +37,8 @@ public class Formats
     public static String MVD_STIL = "MVD/STIL";
     /** link pseudo-format */
     public static String LINK = "LINK";
+    /** response formats for miscellaneous docs */
+    public static String JSON = "JSON";
+    public static String HTML = "HTML";
+    public static String XML = "XML";
 }

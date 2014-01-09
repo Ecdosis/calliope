@@ -54,7 +54,7 @@ public class Services
     /** mixed import service */
     public static String MIXED = "mixed";
     /** downloadable export ZIP file format */
-    public static String PDEF = "pdef";
+    public static String PSEF = "psef";
     /** individual tests */
     public static String TEST = "test";
     /** list of dictionaries */

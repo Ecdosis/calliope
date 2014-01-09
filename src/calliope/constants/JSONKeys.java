@@ -98,4 +98,9 @@ public class JSONKeys
     public static String PASSWORD = "password";
     public static String TYPE = "type";
     public static String HOST = "host";
+    public static String FIELDS = "fields";
+    public static String RESULTS = "results";
+    public static String SORTBY = "sortBy";
+    public static String SORTTYPE = "sortType";
+    public static String EXCLUDE = "exclude";
 }
