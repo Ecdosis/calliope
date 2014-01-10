@@ -36,6 +36,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Attr;
 import org.xml.sax.InputSource;
 import java.util.ArrayList;
+import calliope.login.CookieJar;
 
 /**
  * Model an annotation service
@@ -71,7 +72,13 @@ public class AnnotationService
         try
         {
             DrupalLogin dl = new DrupalLogin();
-            cookie = dl.login( host, user, pass );
+            cookie = CookieJar.getCookie( host, user );
+            if ( cookie == null )
+            {
+                cookie = dl.login( host, user, pass );
+                if ( cookie != null )
+                    CookieJar.setCookie( host, user, cookie );
+            }
             if ( cookie == null )
                 throw new Exception("service didn't allow login");
         }
