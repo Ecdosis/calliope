@@ -61,4 +61,6 @@ public class Services
     public static String DICTS = "dicts";
     /** search service */
     public static String SEARCH = "search";
+    /** json timeline service */
+    public static String TIMELINE = "timeline";
 }

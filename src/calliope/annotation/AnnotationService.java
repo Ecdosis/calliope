@@ -80,7 +80,7 @@ public class AnnotationService
                     CookieJar.setCookie( host, user, cookie );
             }
             if ( cookie == null )
-                throw new Exception("service didn't allow login");
+                throw new Exception(host+" denied login to "+user);
         }
         catch (Exception e)
         {

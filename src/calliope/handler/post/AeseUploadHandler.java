@@ -56,18 +56,20 @@ public class AeseUploadHandler extends AeseImportHandler
                     File file = files.get(i);
                     if ( file instanceof File )
                     {
-                        // wrap cortex and corcodes with kosher params
+                        // wrap cortex andkill -9 8220 corcodes with kosher params
                         String json = file.data;
                         if ( database.equals(Database.CORTEX)
                         || database.equals(Database.CORCODE) )
                         {
+                            if ( database.equals(Database.CORCODE) )
+                                System.out.println("corcode");
                             JDocWrapper wrapper = new JDocWrapper( 
                                 json, jsonKeys );
                             json = wrapper.toString();
                         }
                         else if ( database.equals(Database.CORFORM)
                             || database.equals(Database.CONFIG)
-                            || database.equals(Database.MISC))
+                            || database.equals(Database.PARATEXT))
                             json = Utils.cleanCR( json, true );
                         resp = Connector.getConnection().putToDb( 
                             database, docID.get(), json );

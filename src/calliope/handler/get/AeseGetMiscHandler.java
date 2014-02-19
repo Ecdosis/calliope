@@ -35,7 +35,7 @@ public class AeseGetMiscHandler extends AeseGetHandler
         try
         {
             String docID = urn;
-            AeseVersion hv = doGetResourceVersion( Database.MISC, docID, "" );
+            AeseVersion hv = doGetResourceVersion( Database.PARATEXT, docID, "" );
             // write binary data: could be an image
             String contentFormat = hv.getContentFormat();
             if ( contentFormat.equals(Formats.TEXT)

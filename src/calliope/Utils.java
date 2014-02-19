@@ -9,6 +9,9 @@ import calliope.constants.JSONKeys;
 import calliope.exception.AeseException;
 import calliope.json.JSONDocument;
 import calliope.path.Path;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import org.w3c.dom.Document;
 import java.io.StringWriter;
 import java.util.Locale;
@@ -326,4 +329,20 @@ public class Utils
         }
         return actual;
     }
+    /**
+     * Pinched from Tim Bray aerc on GoogleCode
+     * @param in the input stream to read from
+     * @return a byte array containing the read data
+     * @throws IOException 
+     */
+    public static byte[] readStream(InputStream in) throws IOException 
+    {
+        byte[] buf = new byte[1024];
+        int count = 0;
+        ByteArrayOutputStream out = new ByteArrayOutputStream(8096);
+        while ((count = in.read(buf)) != -1)
+            out.write(buf, 0, count);
+        return out.toByteArray();
+    }
+    
 }

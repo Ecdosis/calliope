@@ -143,7 +143,10 @@ public abstract class AeseImportHandler extends AesePostHandler
                                 Params.SHORT_VERSION.length()),
                                 item.getString());
                         else if ( fieldName.equals(Params.LC_STYLE) )
+                        {
+                            jsonKeys.put(fieldName,contents);
                             style = contents;
+                        }
                         else if ( fieldName.equals(Params.DEMO) )
                         {
                             if ( contents!=null&&contents.equals("brillig") )

@@ -14,6 +14,7 @@
  *  along with calliope.  If not, see <http://www.gnu.org/licenses/>.
  */
 package calliope.handler.get;
+import calliope.handler.get.commands.AeseJSONTimelineHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import calliope.constants.*;
@@ -40,6 +41,8 @@ public class AeseJSONHandler extends AeseGetHandler
             new AeseJSONListHandler().handle(request,response,Path.pop(urn));
         else if ( first.equals(Services.DICTS) )
             new AeseJSONDictsHandler().handle(request,response,Path.pop(urn));
+        else if ( first.equals(Services.TIMELINE) )
+            new AeseJSONTimelineHandler().handle(request,response,Path.pop(urn));
         else
             throw new AeseException("Unknown service: "+urn);
     }

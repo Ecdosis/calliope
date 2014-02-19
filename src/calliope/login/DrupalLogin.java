@@ -86,11 +86,11 @@ public class DrupalLogin implements Login
             output.flush();
             output.close();
             String headerName=null;
-            for (int i=1; (headerName = conn.getHeaderFieldKey(i))!=null; i++) 
+            for (int i=1; (headerName = hconn.getHeaderFieldKey(i))!=null; i++) 
             {
                 if (headerName.equals("Set-Cookie"))
                 {
-                    System.out.println("logged in!");
+                    //System.out.println("logged in!");
                     cookie = conn.getHeaderField(i);
                     break;
                 }

@@ -4,91 +4,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/AesePutHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/JettyServerThread.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/JSONKeys.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/tests/TestHome.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/Service.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseHTMLHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/Target.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/login/Login.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Params.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/Body.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/login/LoginType.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetCorTexHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/json/corcode/STILDocument.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/tests/TestTable.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/Selector.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Discriminator.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/search/AeseSearch.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/tests/TestInternal.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageTwo.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Services.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetMiscHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseListHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/exception/AnnotationException.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseJSONDictsHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/File.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseUploadHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseNextVersionHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/AnnotationKind.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/login/DrupalLogin.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/search/HitProfile.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/MVDify.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/ImageBody.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/login/CookieJar.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/db/MongoConnection.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/HTMLNames.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/tests/TestTilt.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/db/Repository.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseXMLImportHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/Annotation.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseTestHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/json/JSONResponse.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/nbproject/build-impl.xml</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Database.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/UniversalNamespaceCache.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseSpeller.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageOne.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseStripper.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetCorCodeHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Stage.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AesePostHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/filters/Filter.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/login/LoginFactory.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/db/Connection.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Formats.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseJSONListHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/TextSelector.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseImportHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseSearch.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/XMLPrinter.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseFormatter.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseVersion.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Stage3HTML.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/AnnotationService.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/Archive.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/json/JSONDocument.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseMixedImportHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/exception/LoginException.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/compare/AeseComparisonHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/AeseWebApp.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Splitter.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseTableHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/annotation/TextBody.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseSearchHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/JettyServer.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/Utils.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageThreeText.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/path/Path.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseLink.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Params.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseJSONHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/tests/TestCompare.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseTextImportHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/filters/CceFilter.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/FuzzyDate.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Formats.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageThreeXML.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/tests/TestHtml.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseHTMLImportHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/tests/Test.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseMVD.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseJSONListHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseImportHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseStripHandler.java</file>
         </group>
     </open-files>
 </project-private>

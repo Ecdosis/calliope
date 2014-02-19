@@ -32,5 +32,5 @@ public class Database
     /** config files for import */
     public static String CONFIG = "config";
     /** paratexts */
-    public static String MISC = "misc";
+    public static String PARATEXT = "paratext";
 }

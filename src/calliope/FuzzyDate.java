@@ -240,6 +240,22 @@ public class FuzzyDate implements Comparable
         sb.append( this.year );
         return sb.toString();
     }
+    /**
+     * Convert to comma-separate format used by TimelineJS
+     * @return a string
+     */
+    public String toCommaSep()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(Integer.toString(year));
+        sb.append(",");
+        String monthStr = (month<=0)?"1":Integer.toString(month);
+        sb.append(monthStr);
+        String dayStr = (day<=0)?"1":Integer.toString(day);
+        sb.append(",");
+        sb.append(dayStr);
+        return sb.toString();
+    }
     public static void main( String[] args )
     {
         FuzzyDate[] fds = new FuzzyDate[12];
