@@ -14,19 +14,29 @@ import org.json.simple.JSONObject;
  */
 class Asset
 {
-    String media;
+    String id;
     String caption;
     String host;
-    Asset(String caption, String uri, String host )
+    boolean scale;
+    Asset(String caption, String host, String id, boolean scale )
     {
-        this.media = uri;
+        this.id = id;
         this.caption = caption;
         this.host= host;
+        this.scale = scale;
     }
     JSONObject toJSONObject()
     {
         JSONObject obj = new JSONObject();
-        obj.put("media", "http://"+host+media);
+        StringBuilder sb = new StringBuilder();
+        sb.append("http://");
+        sb.append(host);
+        if ( !host.endsWith("/") )
+            sb.append("/");
+        sb.append(id);
+        if ( scale )
+            sb.append("?scale=true");
+        obj.put("media", sb.toString());
         obj.put("caption",caption);
         obj.put("credit","");
         return obj;

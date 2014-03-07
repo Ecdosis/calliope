@@ -16,7 +16,6 @@
 package calliope.handler.get;
 import calliope.path.*;
 import calliope.Utils;
-import calliope.FuzzyDate;
 import calliope.tests.Test;
 import calliope.Connector;
 import calliope.handler.AeseHandler;
@@ -26,10 +25,6 @@ import calliope.json.JSONDocument;
 import calliope.exception.*;
 import calliope.constants.*;
 import calliope.Service;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.io.ByteArrayOutputStream;
-import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import edu.luc.nmerge.mvd.MVD;
@@ -37,9 +32,7 @@ import edu.luc.nmerge.mvd.MVDFile;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.ArrayList;
-import calliope.login.*;
 /**
  * Handle some get request
  * @param request the original servlet request object

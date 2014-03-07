@@ -24,9 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.File;
 import org.w3c.dom.Document;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -259,7 +257,7 @@ public class Splitter
     /**
      * Split a TEI-XML file into versions of XML
      * @param tei the TEI file containing versions
-     * @return an array of XML files as strings
+     * @return a map of version names to XML files as strings
      * @throws ImportException if something went wrong
      */
     public Map<String,String> split( String tei ) throws ImportException

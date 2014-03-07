@@ -1,9 +1,10 @@
-package calliope;
+package calliope.date;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 /**
  * An imprecise date object
  * @author desmond
@@ -14,31 +15,9 @@ public class FuzzyDate implements Comparable
     int month;
     int year;
     Qualifier q;
-    enum Qualifier
-    {
-        none,
-        early,
-        late,
-        circa;
-    };
-    private Qualifier parseQualifier( String qualifier )
-    {
-        q = Qualifier.none;
-        if ( qualifier != null && qualifier.length()>0 )
-        {
-            String lcq = qualifier.toLowerCase();
-            try
-            {
-                q = Qualifier.valueOf(lcq);
-            }
-            catch ( Exception e )
-            {
-                if ( lcq.equals("c.")||lcq.equals("c") )
-                    q = Qualifier.circa;
-            }
-        }
-        return q;
-    }
+    /*by 8 March 1850
+    1845?
+    c 1866-68*/
     /**
      *  Try to parse a year
      *  @param year the year as a string
@@ -88,6 +67,12 @@ public class FuzzyDate implements Comparable
                     case late:
                         m = Calendar.DECEMBER+1;
                         break;
+                    case by:
+                        m = Calendar.JANUARY-3;
+                        break;
+                    case perhaps:
+                        m = Calendar.JANUARY-1;
+                        break;
                     case none:
                         break;
                 }
@@ -128,6 +113,12 @@ public class FuzzyDate implements Comparable
                     case late:
                         d = 32;
                         break;
+                    case by:
+                        d = -2;
+                        break;
+                    case perhaps:
+                        d = -1;
+                        break;
                     case none:
                         break;
                 }
@@ -138,22 +129,38 @@ public class FuzzyDate implements Comparable
     /**
      *  Create a fuzzy date object using a restricted spec
      *  @param spec a restricted date format: 
-     *  [Circa|c.|c|Early|Late] year
-     *  or [Circa|c.|c|Early|Late] month year
-     *  or [Circa|c.|c|Early|Late] day month year
+     *  [?|By|Circa|c.|c|Early|Late] year
+     *  or [?|By|Circa|c.|c|Early|Late] month year
+     *  or [?|By|Circa|c.|c|Early|Late] day month year
      */
     public FuzzyDate( String spec )
     {
         int state = 0;
         int y,d,m;
-        int i = 0;
         String[] parts = spec.split(" ");
+        // leading ? not separated from text
+        for ( int i=0;i<parts.length;i++ )
+        {
+            if ( parts[i].startsWith("?") && parts[i].length()>1 )
+            {
+                String[] newParts = new String[parts.length+1];
+                for ( int j=0;j<i;j++ )
+                    newParts[j] = parts[j];
+                newParts[i] = "?";
+                newParts[i+1] = parts[i].substring(1);
+                for ( int j=i+1;j<parts.length;j++ )
+                    newParts[j+1] = parts[j];
+                parts = newParts;
+                break;
+            }
+        }
+        int i = 0;
         while ( i < parts.length && state >= 0 )
         {
             switch ( state )
             {
                 case 0: // look for qualifier
-                    this.q = parseQualifier( parts[i] );
+                    this.q = Qualifier.parse( parts[i] );
                     if ( this.q != Qualifier.none )
                         i++;
                     state = 1;
@@ -218,7 +225,9 @@ public class FuzzyDate implements Comparable
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        if ( this.q != Qualifier.none )
+        if ( this.q == Qualifier.perhaps )
+            sb.append("?");
+        else if ( this.q != Qualifier.none )
             sb.append( this.q );
         if ( this.day > 0 && this.day < 32 )
         {
@@ -241,6 +250,16 @@ public class FuzzyDate implements Comparable
         return sb.toString();
     }
     /**
+     * Get the last day of the month
+     * @return the day 28-31
+     */
+    int lastDay()
+    {
+        int actualMonth = (month<0)?0:(month>11)?12:month;
+        Calendar mycal = new GregorianCalendar(year, actualMonth, 1);
+        return mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+    /**
      * Convert to comma-separate format used by TimelineJS
      * @return a string
      */
@@ -249,16 +268,29 @@ public class FuzzyDate implements Comparable
         StringBuilder sb = new StringBuilder();
         sb.append(Integer.toString(year));
         sb.append(",");
-        String monthStr = (month<=0)?"1":Integer.toString(month);
+        String monthStr;
+        if ( month < 0 )
+            monthStr = "1";
+        else if ( month > Calendar.DECEMBER )
+            monthStr = "12";
+        else
+            monthStr = Integer.toString(month+1);
         sb.append(monthStr);
-        String dayStr = (day<=0)?"1":Integer.toString(day);
+        String dayStr;
+        int last = lastDay();
+        if ( day<=0 )
+            dayStr = "1";
+        else if ( day > last )
+            dayStr = Integer.toString(last);
+        else
+            dayStr = Integer.toString(day);
         sb.append(",");
         sb.append(dayStr);
         return sb.toString();
     }
     public static void main( String[] args )
     {
-        FuzzyDate[] fds = new FuzzyDate[12];
+        FuzzyDate[] fds = new FuzzyDate[14];
         fds[0] = new FuzzyDate("31 December 1832");
         fds[1] = new FuzzyDate("1833");
         fds[2] = new FuzzyDate("Early 1833");
@@ -271,8 +303,10 @@ public class FuzzyDate implements Comparable
         fds[9] = new FuzzyDate("c. January 1890");
         fds[10] = new FuzzyDate("January 1890");
         fds[11] = new FuzzyDate("1 January 1890");
+        fds[12] = new FuzzyDate("By December 1833");
+        fds[13] = new FuzzyDate("?1833");
         Arrays.sort( fds );
         for ( int i=0;i<fds.length;i++ )
-            System.out.println(fds[i]);
+            System.out.println(fds[i].toCommaSep());
     }
 }

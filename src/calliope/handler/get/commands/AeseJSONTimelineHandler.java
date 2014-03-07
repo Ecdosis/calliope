@@ -95,7 +95,9 @@ public class AeseJSONTimelineHandler extends AeseGetHandler
                 }
             }
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().print( jobj.toJSONString() );
+            String jstring = jobj.toJSONString();
+            //System.out.println(jstring);
+            response.getWriter().print( jstring );
         }
         catch ( Exception e )
         {

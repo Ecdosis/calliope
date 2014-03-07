@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 /**
- * Maintain a TimeJS object
+ * Maintain a TimelineJS object
  * @author desmond
  */
 public class TimelineJS extends JSONObject
@@ -26,6 +26,7 @@ public class TimelineJS extends JSONObject
         this.put( "timeline", timeline );
         this.host = host;
         timeline.put("headline", headline );
+        // prevent resorting of equal dates 
         timeline.put("type","default");
         timeline.put("text",text);
         map = new HashSet<String>();
@@ -62,8 +63,8 @@ public class TimelineJS extends JSONObject
         {
             date.add( arr[i].toJSONObject() );
         }
-        if ( arr.length > 0 )
-            timeline.put("startDate", arr[0].startDate.toCommaSep());
+        //if ( arr.length > 0 )
+        //    timeline.put("startDate", arr[0].startDate.toCommaSep());
         timeline.put( "date", date );
     }
     public String toJSONString()

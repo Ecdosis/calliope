@@ -6,7 +6,8 @@
 
 package calliope.handler.get.timeline;
 
-import calliope.FuzzyDate;
+import calliope.date.FuzzyDate;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -17,6 +18,7 @@ class Event implements Comparable<Event>
 {
     FuzzyDate startDate;
     FuzzyDate endDate;
+    JSONArray facsimilies;
     String eventType;
     String description;
     String name;
@@ -25,21 +27,43 @@ class Event implements Comparable<Event>
     Event( JSONObject obj, String host )
     {
         startDate = new FuzzyDate((String)obj.get("startDate") );
-        endDate = new FuzzyDate((String)obj.get("endDate") );
+        String eDate = (String)obj.get("endDate");
+        if ( eDate != null )
+            endDate = new FuzzyDate( eDate );
+        else
+            endDate = startDate;
         eventType = (String)obj.get("eventType");
         description = (String)obj.get("description");
         name = (String)obj.get("name");
-        uri = "";//(String)obj.get("uri");
+        facsimilies = (JSONArray)obj.get("facsimilies");
+        uri = (String)obj.get("uri");
         this.host = host;
     }
+    /**
+     * Convert to a JSON object (string)
+     * @return a JSON object as a string
+     */
     JSONObject toJSONObject()
     {
         JSONObject obj = new JSONObject();
         obj.put("startDate", startDate.toCommaSep() );
         obj.put("endDate", endDate.toCommaSep());
         obj.put("headline", name);
-        obj.put("text",description);
-        //obj.put("asset",new Asset(name,uri,host).toJSONObject());
+        if ( description == null || description.length()==0 )
+            obj.put("text","no description");
+        else
+            obj.put("text",description);
+        if ( uri != null && facsimilies != null && facsimilies.size()>0 )
+        {
+            // only room for one facsimile
+            int lastSlashPos = uri.lastIndexOf("/");
+            if ( lastSlashPos != -1 )
+            {
+                String host = uri.substring(0,lastSlashPos);
+                obj.put("asset",new Asset(name,host,
+                    (String)facsimilies.get(0),true));
+            }
+        }
         return obj;
     }
     /**
