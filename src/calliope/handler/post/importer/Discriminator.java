@@ -230,15 +230,18 @@ public class Discriminator
         while ( n != null )
         {
             n = n.getNextSibling();
-            if ( n.getNodeType()==Node.ELEMENT_NODE )
+            if ( n != null )
             {
-                if ( n == s2 )
-                    return true;
-            }
-            else if ( n.getNodeType()==Node.TEXT_NODE )
-            {
-                if ( !isWhitespace(n.getTextContent()) )
-                    break;
+                if ( n.getNodeType()==Node.ELEMENT_NODE )
+                {
+                    if ( n == s2 )
+                        return true;
+                }
+                else if ( n.getNodeType()==Node.TEXT_NODE )
+                {
+                    if ( !isWhitespace(n.getTextContent()) )
+                        break;
+                }
             }
         }
         return false;

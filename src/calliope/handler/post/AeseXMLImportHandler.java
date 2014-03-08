@@ -56,6 +56,8 @@ public class AeseXMLImportHandler extends AeseImportHandler
                 if ( stage1.hasFiles() )
                 {
                     String suffix = "";
+                    if (stage1.getFiles().get(0).name.equals("A93#H062c.xml"))
+                        System.out.println("aha");
                     StageTwo stage2 = new StageTwo( stage1, false );
                     stage2.setEncoding( encoding );
                     log.append( stage2.process(cortex,corcode) );

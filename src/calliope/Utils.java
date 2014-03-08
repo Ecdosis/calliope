@@ -166,6 +166,8 @@ public class Utils
         if ( node.getNodeType()==Node.TEXT_NODE )
         {
             String content = node.getTextContent();
+            if ( content.contains("&") )
+                content = content.replace("&","&amp;");
             sw.write( content );
         }
         else if ( node.getNodeType()==Node.ELEMENT_NODE )
