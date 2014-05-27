@@ -59,7 +59,8 @@ public class AeseUploadHandler extends AeseImportHandler
                         // wrap cortex andkill -9 8220 corcodes with kosher params
                         String json = file.data;
                         if ( database.equals(Database.CORTEX)
-                        || database.equals(Database.CORCODE) )
+                        || database.equals(Database.CORCODE) 
+                        || database.equals(Database.MISC) )
                         {
                             if ( database.equals(Database.CORCODE) )
                                 System.out.println("corcode");

@@ -201,7 +201,12 @@ public class Utils
         for ( int i=0;i<value.length();i++ )
         {
             if ( value.charAt(i)!='\n'&&value.charAt(i)!='\r' )
-                sb.append(value.charAt(i));
+            {
+                if ( value.charAt(i)=='"' && sb.charAt(sb.length()-1) != '\\')
+                    sb.append("\\\"");
+                else
+                    sb.append(value.charAt(i));
+            }
             else if ( spaces )
                 sb.append( " " );
         }
