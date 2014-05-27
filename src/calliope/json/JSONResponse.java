@@ -24,9 +24,19 @@ public class JSONResponse
 {
     String body;
     static int BLOCK_SIZE = 5;
+    public static int TEXT = 0;
+    public static int HTML = 1;
+    public static int XML = 2;
+    public static int MARKDONW = 3;
+    public static int STIL = 4;
     int nLayers;
     // extra storage for additional strings
     String[] layers;
+    int outputFormat;
+    public JSONResponse( int outputFormat )
+    {
+        this.outputFormat = outputFormat;
+    }
     public String getBody()
     {
         return body;
@@ -47,5 +57,13 @@ public class JSONResponse
             layers = temp;
         }
         layers[nLayers++] = layer;
+    }
+    /**
+     * Get the output format of this response object
+     * @return a simple integer
+     */
+    public int getOutputFormat()
+    {
+        return outputFormat;
     }
 }

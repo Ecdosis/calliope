@@ -101,9 +101,11 @@ public class AeseGetHandler extends AeseHandler
             else if ( prefix.equals(Services.TEST) )
                 new AeseTestHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Database.PARATEXT) )
-                new AeseGetMiscHandler().handle( request, response, 
+                new AeseGetParatextHandler().handle( request, response, 
                     Path.pop(urn) );
-            else if ( prefix.equals(Database.CORTEX) )
+            else if ( prefix.equals(Database.MISC) )
+                new AeseGetMiscHandler().handle( request, response, 
+                    Path.pop(urn) );else if ( prefix.equals(Database.CORTEX) )
                 new AeseGetCorTexHandler().handle( request, response, 
                     Path.pop(urn) );
             else if ( prefix.equals(Database.CORCODE) )

@@ -4,38 +4,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Services.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/timeline/TimelineJS.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/commands/AeseJSONTimelineHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/date/Qualifier.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseLink.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Database.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseVersion.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/put/AesePutHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Stage3HTML.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetMiscHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/importer/Archive.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetParatextHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseUploadHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/json/JSONDocument.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Stage.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/JSONKeys.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseHTMLHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AesePostHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Params.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/constants/Formats.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/date/FuzzyDate.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/timeline/Event.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseJSONListHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseImportHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseStripHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/XMLPrinter.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageTwo.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/AeseHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseListHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseTextListHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseGetMiscHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseJSONDictsHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/timeline/Asset.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/File.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseUploadHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseMixedImportHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/login/DrupalLogin.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/compare/AeseComparisonHandler.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/Splitter.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/Utils.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/JettyServer.java</file>
-            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/get/AeseJSONHandler.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/importer/StageThreeXML.java</file>
             <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseXMLImportHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseImportHandler.java</file>
+            <file>file:/home/desmond/NetBeansProjects/calliope/src/calliope/handler/post/AeseHTMLImportHandler.java</file>
         </group>
     </open-files>
 </project-private>

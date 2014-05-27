@@ -220,7 +220,7 @@ public class AeseListHandler extends AeseGetHandler
             String[] formats = new String[1];
             formats[0] = Formats.STIL;
             String[] css = fetchStyles( styles );
-            JSONResponse html = new JSONResponse();
+            JSONResponse html = new JSONResponse(JSONResponse.HTML );
             //System.out.println("about to format list");
             int res = new AeseFormatter().format( table.getBytes("UTF-8"), 
                 corcodes, css, formats, html );

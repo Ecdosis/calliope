@@ -40,7 +40,7 @@ public class File
     private char UTF8_BOM = 65279;
     public File( String name, String data )
     {
-        this.name = name;
+        this.name = name.replaceAll("#", "-");
         this.data = data;
         if ( data.length()>0&&data.charAt(0)==UTF8_BOM )
             this.data = data.substring(1);

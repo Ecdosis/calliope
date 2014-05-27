@@ -281,8 +281,8 @@ public class AesePutHandler extends AeseHandler
                 try
                 {
                     parseRequest( request );
-                    JSONResponse text = new JSONResponse();
-                    JSONResponse markup = new JSONResponse();
+                    JSONResponse text = new JSONResponse(JSONResponse.TEXT);
+                    JSONResponse markup = new JSONResponse(JSONResponse.STIL);
                     AeseStripper stripper = new AeseStripper();
                     String config = AeseImportHandler.getConfig( 
                         Config.stripper, stripperName );
@@ -325,7 +325,7 @@ public class AesePutHandler extends AeseHandler
                             docID+"/default", Formats.STIL );
                         // format using default+annotation corcode
                         // return formatted HTML
-                        JSONResponse html = new JSONResponse();
+                        JSONResponse html = new JSONResponse(JSONResponse.HTML);
                         int nCCs = (anns !=null &&anns.length>0)?2:1;
                         // 1. create corCodes array
                         String[] corCodes = new String[nCCs];

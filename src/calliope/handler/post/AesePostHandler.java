@@ -79,7 +79,7 @@ public void handle( HttpServletRequest request,
                     new AeseMixedImportHandler().handle(request,response,urn);
             }
             else if ( prefix.equals(Services.UPLOAD) )
-                new AeseUploadHandler().handle(request,response,urn);
+                new AeseUploadHandler().handle(request,response,Path.pop(urn));
         }
         else
             throw new PathException("Invalid urn "+urn );

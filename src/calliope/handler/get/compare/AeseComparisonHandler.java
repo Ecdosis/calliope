@@ -159,7 +159,7 @@ public class AeseComparisonHandler extends AeseHTMLHandler
             String[] formatTexts = new String[formats.size()];
             formats.toArray( formatTexts );
             // call the native library
-            JSONResponse html = new JSONResponse();
+            JSONResponse html = new JSONResponse(JSONResponse.HTML);
             byte[] mvdVersionText = text.mvd.getVersion(v1);
             int res = new AeseFormatter().format( mvdVersionText, 
                 ccTexts, styleTexts, formatTexts, html );

@@ -20,6 +20,8 @@ import calliope.Connector;
 import calliope.constants.Database;
 import calliope.exception.AeseException;
 import javax.servlet.ServletOutputStream;
+import java.io.ByteArrayInputStream;
+import java.net.URLConnection;
 
 /**
  * Fetch an image from the corpix collection
@@ -36,11 +38,19 @@ public class AeseGetCorPixHandler extends AeseGetHandler
         {
             byte[] data = Connector.getConnection().getImageFromDb( 
                 Database.CORPIX, urn );
-            /*Either remove the setContentType(), or send the response using 
-response.getOutputStream() method. That should solve the problem. */
-            ServletOutputStream sos = response.getOutputStream();
-            sos.write( data );
-            sos.close();
+            if ( data != null)
+            {
+                ByteArrayInputStream bis = new ByteArrayInputStream(data);
+                String mimeType = URLConnection.guessContentTypeFromStream(bis);
+                response.setContentType(mimeType);
+                ServletOutputStream sos = response.getOutputStream();
+                sos.write( data );
+                sos.close();
+            }
+            else
+            {
+                response.getOutputStream().println("image "+urn+" not found");
+            }
         }
         catch ( Exception e )
         {

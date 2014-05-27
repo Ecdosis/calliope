@@ -16,7 +16,7 @@ import calliope.exception.AeseException;
  */
 public class Connector 
 {
-    static Connection connection;
+    static Connection connection = null;
     /**
      * Initialise once per instantiation
      * @param repository the repository type

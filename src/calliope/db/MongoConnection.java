@@ -270,6 +270,7 @@ public class MongoConnection extends Connection implements Test
     {
         try
         {
+            connect();
             GridFS gfs = new GridFS( db, collName );
             GridFSDBFile file = gfs.findOne( docID );
             if ( file != null )

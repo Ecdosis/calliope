@@ -18,27 +18,17 @@ package calliope.handler.post;
 
 import calliope.constants.Config;
 import calliope.constants.Formats;
-import calliope.constants.JSONKeys;
-import calliope.constants.Params;
 import calliope.exception.AeseException;
-import calliope.handler.post.importer.File;
 import calliope.handler.post.importer.StageOne;
 import calliope.handler.post.importer.Stage3HTML;
-import calliope.handler.post.importer.StageThreeXML;
 import calliope.handler.post.importer.StageTwo;
 import calliope.importer.Archive;
-import calliope.json.JSONDocument;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
- * Handle importation of a set of plain text files form a tool like mmpupload.
+ * Handle importation of a set of plain text files from a tool like psef-tool.
  * @author desmond 23-7-2012
  */
 public class AeseHTMLImportHandler extends AeseImportHandler

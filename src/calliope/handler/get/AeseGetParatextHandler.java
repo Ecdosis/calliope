@@ -7,6 +7,7 @@
 package calliope.handler.get;
 
 import calliope.constants.Database;
+import calliope.constants.Params;
 import calliope.constants.Formats;
 import calliope.exception.AeseException;
 import calliope.handler.AeseVersion;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * Get a file in the misc collection. No versions, but maybe links.
  * @author desmond
  */
-public class AeseGetMiscHandler extends AeseGetHandler
+public class AeseGetParatextHandler extends AeseGetHandler
 {
     /**
      * Get a miscellaneous paratextual document, image (binary) or text
@@ -34,7 +35,7 @@ public class AeseGetMiscHandler extends AeseGetHandler
         try
         {
             String docID = urn;
-            AeseVersion hv = doGetResourceVersion( Database.MISC, docID, "" );
+            AeseVersion hv = doGetResourceVersion( Database.PARATEXT, docID, "" );
             // write binary data: could be an image
             String contentFormat = hv.getContentFormat();
             if ( contentFormat.equals(Formats.TEXT)

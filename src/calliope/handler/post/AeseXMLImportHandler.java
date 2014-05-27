@@ -16,14 +16,12 @@
 
 package calliope.handler.post;
 
-import calliope.Connector;
 import calliope.exception.AeseException;
 import calliope.handler.post.importer.*;
 import calliope.constants.Formats;
 import calliope.importer.Archive;
 import calliope.constants.Config;
 import calliope.json.JSONDocument;
-import calliope.constants.Database;
 import calliope.constants.Params;
 import calliope.constants.JSONKeys;
 import java.util.ArrayList;
@@ -45,9 +43,9 @@ public class AeseXMLImportHandler extends AeseImportHandler
             if (ServletFileUpload.isMultipartContent(request) )
             {
                 parseImportParams( request );
-                Archive cortex = new Archive(docID.getWork(), 
+                Archive cortex = new Archive(title, 
                     docID.getAuthor(),Formats.MVD_TEXT,encoding);
-                Archive corcode = new Archive(docID.getWork(), 
+                Archive corcode = new Archive(title, 
                     docID.getAuthor(),Formats.MVD_STIL,encoding);
                 cortex.setStyle( style );
                 corcode.setStyle( style );
@@ -56,8 +54,6 @@ public class AeseXMLImportHandler extends AeseImportHandler
                 if ( stage1.hasFiles() )
                 {
                     String suffix = "";
-                    if (stage1.getFiles().get(0).name.equals("A93#H062c.xml"))
-                        System.out.println("aha");
                     StageTwo stage2 = new StageTwo( stage1, false );
                     stage2.setEncoding( encoding );
                     log.append( stage2.process(cortex,corcode) );

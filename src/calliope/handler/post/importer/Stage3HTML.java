@@ -50,8 +50,8 @@ public class Stage3HTML extends Stage
                 System.out.println("Loading "+files.get(i).name);
                 t.parseDOM( bis, bos );
                 AeseStripper stripper = new AeseStripper();
-                JSONResponse markup = new JSONResponse();
-                JSONResponse text = new JSONResponse();
+                JSONResponse markup = new JSONResponse(JSONResponse.STIL);
+                JSONResponse text = new JSONResponse(JSONResponse.TEXT);
                 int res = stripper.strip( bos.toString(encoding), 
                     stripConfig, Formats.STIL, style, dict, hhExcepts, true,
                     text, markup );

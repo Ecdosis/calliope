@@ -370,8 +370,8 @@ public class StageThreeXML extends Stage
                     while ( iter.hasNext() )
                     {
                         String key = iter.next();
-                        JSONResponse markup = new JSONResponse();
-                        JSONResponse text = new JSONResponse();
+                        JSONResponse markup = new JSONResponse(JSONResponse.STIL);
+                        JSONResponse text = new JSONResponse(JSONResponse.TEXT);
                         AeseStripper stripper = new AeseStripper();
                         String xml = map.get(key);
                         int res = stripper.strip( xml, stripConfig, 

@@ -46,34 +46,21 @@ public class Archive extends HashMap<String,byte[]>
     HashMap<String,String> nameMap;
     /**
      * Create an archive
-     * @param work the work path, after language and author, / delimited
+     * @param title the title of the work
      * @param author the full author's name
      * @param format the format (changes to MVD if more than 1 version)
      * @param encoding defaults to UTF-8
      */
-    public Archive( String work, String author, String format, String encoding )
+    public Archive( String title, String author, String format, String encoding )
     {
-        this.title = work.replace("%20"," ");
+        this.title = title;
         this.author = author;
         this.log = new StringBuilder();
         this.style = "default";
         this.nameMap = new HashMap<String,String>();
         this.format = format;
         this.encoding = (encoding==null)?"UTF-8":encoding;
-        StringBuilder sb = new StringBuilder();
-        String[] parts = work.split("/");
-        for ( int i=0;i<parts.length;i++ )
-        {
-            if ( sb.length()==0 )
-                sb.append( parts[i].replace("%20"," ") );
-            else
-            {
-                sb.append(", ");
-                sb.append( parts[i].replace("%20"," ") );
-            }
-        }
-        if ( sb.length()>0 )
-            sb.setCharAt( 0, Character.toUpperCase(sb.charAt(0)) );
+        StringBuilder sb = new StringBuilder(title);
         sb.append( " by ");
         if ( author.length()>0 )
             sb.append( Character.toUpperCase(author.charAt(0)) );

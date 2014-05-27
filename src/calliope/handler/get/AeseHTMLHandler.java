@@ -234,7 +234,7 @@ public class AeseHTMLHandler extends AeseGetHandler
             // 4. convert style names to actual corforms
             styles = fetchStyles( styles );
             // 5. call the native library to format it
-            JSONResponse html = new JSONResponse();
+            JSONResponse html = new JSONResponse(JSONResponse.HTML);
             byte[] text = corTex.getVersion();
     //        // debug
 //            try{

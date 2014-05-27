@@ -33,4 +33,6 @@ public class Database
     public static String CONFIG = "config";
     /** paratexts */
     public static String PARATEXT = "paratext";
+    /** miscellaneous */
+    public static String MISC = "misc";
 }

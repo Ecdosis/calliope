@@ -62,7 +62,7 @@ public class AeseJSONTimelineHandler extends AeseGetHandler
                 userName = "harpur-dev";
             password = request.getParameter(JSONKeys.PASSWORD);
             if ( password == null )
-                password = "austese9875!";
+                password = "J*bb5rW0ckY";
             String[] names = new String[4];
             String[] values = new String[4];
             names[0] = "project";

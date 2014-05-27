@@ -55,6 +55,8 @@ public abstract class AeseImportHandler extends AesePostHandler
     boolean demo;
     /** text filter config */
     String textName;
+    /** title of work */
+    String title;
     HashMap<String,String> nameMap;
     HashMap<String,String> jsonKeys;
     ArrayList<File> files;
@@ -74,6 +76,7 @@ public abstract class AeseImportHandler extends AesePostHandler
         images = new ArrayList<ImageFile>();
         log = new StringBuilder();
         similarityTest = false;
+        title = "untitled";
     }
     /**
      * Add the archive to the database
@@ -154,6 +157,8 @@ public abstract class AeseImportHandler extends AesePostHandler
                             else
                                 demo = true;
                         }
+                        else if ( fieldName.equals(Params.TITLE) )
+                            title = contents;
                         else if ( fieldName.equals(Params.FILTER) )
                             filterName = contents.toLowerCase();
                         else if ( fieldName.equals(Params.SIMILARITY) )
