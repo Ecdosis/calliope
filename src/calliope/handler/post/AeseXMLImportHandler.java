@@ -82,10 +82,10 @@ public class AeseXMLImportHandler extends AeseImportHandler
                             for ( int j=0;j<notes.size();j++ )
                                 s3notes.add(notes.get(j));
                             log.append( s3notes.process(nCorTex,nCorCode) );
-                            addToDBase(nCorTex, "cortex", "notes" );
+                            addToDBase( nCorTex, "cortex", "notes" );
                             addToDBase( nCorCode, "corcode", "notes" );
                             // differentiate base from notes
-                            suffix = "base";
+                            //suffix = "base";
                         }
                         if ( xslt == null )
                             xslt = Params.XSLT_DEFAULT;

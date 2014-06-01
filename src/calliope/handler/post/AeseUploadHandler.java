@@ -62,8 +62,6 @@ public class AeseUploadHandler extends AeseImportHandler
                         || database.equals(Database.CORCODE) 
                         || database.equals(Database.MISC) )
                         {
-                            if ( database.equals(Database.CORCODE) )
-                                System.out.println("corcode");
                             JDocWrapper wrapper = new JDocWrapper( 
                                 json, jsonKeys );
                             json = wrapper.toString();

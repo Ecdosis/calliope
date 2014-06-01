@@ -202,7 +202,7 @@ public class Utils
         {
             if ( value.charAt(i)!='\n'&&value.charAt(i)!='\r' )
             {
-                if ( value.charAt(i)=='"' && sb.charAt(sb.length()-1) != '\\')
+                if ( value.charAt(i)=='"' && sb.length()>0 && sb.charAt(sb.length()-1) != '\\')
                     sb.append("\\\"");
                 else
                     sb.append(value.charAt(i));

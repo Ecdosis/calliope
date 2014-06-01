@@ -13,6 +13,9 @@ import calliope.handler.AeseVersion;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 /**
  * Get a file in the misc collection. No versions, but maybe links.
@@ -41,7 +44,10 @@ public class AeseGetMiscHandler extends AeseGetHandler
                 ||contentFormat.equals(Formats.HTML)
                 ||contentFormat.equals(Formats.JSON)
                 ||contentFormat.equals(Formats.XML) )
-                response.getWriter().print(hv.getVersionString());
+            {
+                String content = hv.getVersionString();
+                response.getWriter().print(content);
+            }
             else
                 response.getOutputStream().write(hv.getVersion()); 
         }

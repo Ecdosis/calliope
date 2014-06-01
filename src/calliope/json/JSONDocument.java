@@ -358,7 +358,7 @@ public class JSONDocument extends HashMap<String,Object>
         else if ( value instanceof String )
         {
             sb.append( "\"" );
-            sb.append( value );
+            sb.append( (String)value );
             sb.append( "\"" );
         }
         else if ( value == null )
