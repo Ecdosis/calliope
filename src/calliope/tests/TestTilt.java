@@ -74,7 +74,7 @@ public class TestTilt extends Test
             +"this page to operate properly.");
         Element script1 = new Element(HTMLNames.SCRIPT);
         script1.addAttribute(HTMLNames.SRC,
-            "http://www.java.com/js/deployJava.js");
+            "https://www.java.com/js/deployJava.js");
         outer.addChild( script1 );
         Element script2 = new Element(HTMLNames.SCRIPT);
         script2.addText("var attributes = {code:'tilt.applet.TILTApplet',\n"

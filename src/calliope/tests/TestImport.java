@@ -64,7 +64,7 @@ public class TestImport extends Test
     +"0 )\n\t\t{\n\t\t\tdocid += \"/\"+section.value;\n\t\t\tif ( "
     +"subsection.value.length>0 )\n\t\t\t\tdocid += \"/\"+subsecti"
     +"on.value;\n\t\t}\n\t\tvar hidden = document.getElementById(\""
-    +"DOC_ID\");\n\t\thidden.value =docid;\n\t\t\tvar demo = docu"
+    +"docid\");\n\t\thidden.value =docid;\n\t\t\tvar demo = docu"
     +"ment.getElementById(\"demo\");\n\t\tif ( demo != null )\n\t\t"
     +"{\n\t\t\tvar password=prompt(\"Password\",\"\");\n\t\t\tdem"
     +"o.value = password;\n\t\t}\n\t\treturn true;\n\t}\n\telse\n\t"
@@ -420,15 +420,15 @@ public class TestImport extends Test
         return div;
     }
     /**
-     * Add a hidden DOC_ID parameter to the form
+     * Add a hidden DOCID parameter to the form
      * @return the prebuilt element
      */
     Element makeDocID()
     {
         Element docid = new Element( HTMLNames.INPUT );
         docid.addAttribute( HTMLNames.TYPE, HTMLNames.HIDDEN );
-        docid.addAttribute( HTMLNames.NAME, Params.DOC_ID );
-        docid.addAttribute( HTMLNames.ID, Params.DOC_ID );
+        docid.addAttribute( HTMLNames.NAME, Params.DOCID );
+        docid.addAttribute( HTMLNames.ID, Params.DOCID );
         return docid;
     }
     /**

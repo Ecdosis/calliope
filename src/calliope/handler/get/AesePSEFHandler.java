@@ -101,7 +101,7 @@ public class AesePSEFHandler extends AeseGetHandler
         boolean addRequired = false;
         Format[] formats = readFormats( request );
         Map map = request.getParameterMap();
-        String[] exprs = (String[])map.get( Params.DOC_ID );
+        String[] exprs = (String[])map.get( Params.DOCID );
         Connection conn = Connector.getConnection();
         String name = request.getParameter( Params.NAME );
         if ( name == null )

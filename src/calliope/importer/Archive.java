@@ -61,11 +61,11 @@ public class Archive extends HashMap<String,byte[]>
         this.format = format;
         this.encoding = (encoding==null)?"UTF-8":encoding;
         StringBuilder sb = new StringBuilder(title);
-        sb.append( " by ");
-        if ( author.length()>0 )
-            sb.append( Character.toUpperCase(author.charAt(0)) );
-        if ( author.length()>1 )
-            sb.append( author.substring(1) );
+//        sb.append( " by ");
+//        if ( author.length()>0 )
+//            sb.append( Character.toUpperCase(author.charAt(0)) );
+//        if ( author.length()>1 )
+//            sb.append( author.substring(1) );
         description = sb.toString();
     }
     /**

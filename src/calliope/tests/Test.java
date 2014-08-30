@@ -187,8 +187,8 @@ public abstract class Test extends AeseHandler
     void setDocID( HttpServletRequest request ) throws AeseException
     {
         //String prevDocID = docID;
-        if ( request.getParameter(Params.DOC_ID) != null )
-            docID = request.getParameter(Params.DOC_ID);
+        if ( request.getParameter(Params.DOCID) != null )
+            docID = request.getParameter(Params.DOCID);
         else
             docID = getDefaultDocID();
         String paramValue = request.getParameter(Params.VERSION1);
@@ -250,15 +250,15 @@ public abstract class Test extends AeseHandler
         return length;
     }
     /**
-     * Generate a default DOC_ID input element 
+     * Generate a default DOCID input element 
      * @return the Element object for easy adding to the test page
      */
     protected Element defaultDocIDElem()
     {
         Element docIDElem = new Element( HTMLNames.INPUT );
         docIDElem.addAttribute( HTMLNames.TYPE, HTMLNames.HIDDEN );
-        docIDElem.addAttribute( HTMLNames.ID, Params.DOC_ID );
-        docIDElem.addAttribute( HTMLNames.NAME, Params.DOC_ID );
+        docIDElem.addAttribute( HTMLNames.ID, Params.DOCID );
+        docIDElem.addAttribute( HTMLNames.NAME, Params.DOCID );
         docIDElem.addAttribute( HTMLNames.VALUE, 
             "english/shakespeare/kinglear/act1/scene1" );
         return docIDElem;
@@ -272,8 +272,8 @@ public abstract class Test extends AeseHandler
     {
         Element input = new Element(HTMLNames.INPUT);
         input.addAttribute( HTMLNames.TYPE, HTMLNames.HIDDEN);
-        input.addAttribute( HTMLNames.NAME, Params.DOC_ID );
-        input.addAttribute( HTMLNames.ID, Params.DOC_ID );
+        input.addAttribute( HTMLNames.NAME, Params.DOCID );
+        input.addAttribute( HTMLNames.ID, Params.DOCID );
         input.addAttribute( HTMLNames.VALUE, docID );
         return input;
     }
@@ -327,7 +327,7 @@ public abstract class Test extends AeseHandler
             //if ( version1 != null )
             //    rememberParam( doc, Params.VERSION1, version1 );
             if ( docID != null )
-                rememberParam( doc, Params.DOC_ID, docID );
+                rememberParam( doc, Params.DOCID, docID );
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().println(doc.toString());
         }

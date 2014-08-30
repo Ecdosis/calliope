@@ -41,7 +41,7 @@ public class AeseGetCorCodeHandler extends AeseGetHandler
             try
             {
                 String version1 = request.getParameter(Params.VERSION1 );
-                String docID = request.getParameter(Params.DOC_ID)+"/default";
+                String docID = request.getParameter(Params.DOCID)+"/default";
                 AeseVersion hv = doGetResourceVersion( Database.CORCODE, docID, 
                     version1 );
                 response.getWriter().println(hv.getVersionString()); 

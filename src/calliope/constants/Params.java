@@ -46,7 +46,7 @@ public class Params
     /** calling name of javascript function */
     public final static String FUNCTION = "FUNCTION";
     /** ID for currently chosen document */
-    public final static String DOC_ID = "DOC_ID";
+    public final static String DOCID = "docid";
     /** language for uploads */
     public final static String LANGUAGE = "LANGUAGE";
     /** author for uploads */

@@ -111,7 +111,7 @@ public class JettyServer extends AbstractHandler
                         else if ( args[i].charAt(1) == 'p' )
                             password = args[i+1];
                         else if ( args[i].charAt(1) == 'h' )
-                            password = args[i+1];
+                            host = args[i+1];
                         else if ( args[i].charAt(1) == 'd' )
                             dbPort = Integer.parseInt(args[i+1]);
                         else if ( args[i].charAt(1) == 'w' )

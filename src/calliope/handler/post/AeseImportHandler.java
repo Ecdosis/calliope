@@ -127,7 +127,7 @@ public abstract class AeseImportHandler extends AesePostHandler
                     if ( fieldName != null )
                     {
                         String contents = item.getString();
-                        if ( fieldName.equals(Params.DOC_ID) )
+                        if ( fieldName.equals(Params.DOCID) )
                         {
                             if ( contents.startsWith("/") )
                             {

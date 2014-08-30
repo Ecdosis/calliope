@@ -57,10 +57,6 @@ public class File
     {
         return this.name.endsWith(".json");
     }
-    private boolean isBom( char token )
-    {
-        return token == UTF8_BOM;
-    }
     /**
      * Is this file a TEI Corpus (a collection of TEI files)?
      * @return true if it is

@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.HashMap;
 import java.util.UUID;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -56,6 +57,14 @@ public class StageThreeXML extends Stage
     String dict;
     String hhExcepts;
     boolean hasTEI;
+    static HashMap<String,String> humanKeyMap;
+    static
+    {
+        humanKeyMap = new HashMap<String,String>();
+        humanKeyMap.put("add0","level 1 addition");
+        humanKeyMap.put("del1","level 2 deletion");
+        humanKeyMap.put("add1","level 2 addition");
+    }
     public StageThreeXML()
     {
         super();
@@ -332,6 +341,18 @@ public class StageThreeXML extends Stage
         }
         return notes;
     }
+    /** 
+     * Convert the cryptic "add0" "del1" names into something intelligible
+     * @param key the cryptic key
+     * @return the human-readable version
+     */
+    private String translateKey( String key )
+    {
+        if ( humanKeyMap.containsKey(key) )
+            return humanKeyMap.get(key);
+        else
+            return key;
+    }
     /**
      * Process the files
      * @param cortex the cortext MVD to accumulate files into
@@ -382,7 +403,7 @@ public class StageThreeXML extends Stage
                             String vid = "Base/";
                             vid += stripSuffix(files.get(i).name);
                             if ( map.size()>1 )
-                                vid += "/"+key;
+                                vid += "/"+translateKey(key);
                             //char[] chars = text.getBody().toCharArray();
                             //convertQuotes( chars );
                             //cortex.put( group+key, new String(chars).getBytes("UTF-8") );
