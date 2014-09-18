@@ -1,0 +1,23 @@
+span.underlined { text-decoration: underline }
+	h3.epithet { text-align: center }
+	h4.title { text-align: center }
+	h5.subtitle { text-align: center; font-style: italic }
+	p.dedication {text-align: right }
+	p.sp { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px }
+	span.speaker { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold }
+	br.l {}
+	p.half-line-right { text-align: right }
+	p.half-line-left {text-align: left }
+	p.date {}
+	p.time {}
+	p.note { font-style: italic }
+    div.dedication-div {}
+    p.signed { font-style: italic }
+    div.titlePage {}
+    p.roleName { font-style: italic }
+    p.place {}
+    p.editor {}
+    p.date { font-weight: bold }
+    div.preface {}
+    h3.head {}
+    p.p {}

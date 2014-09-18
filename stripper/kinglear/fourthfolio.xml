@@ -1,0 +1,255 @@
+<TEI>
+ <teiHeader>
+  <fileDesc>
+   <titleStmt>
+    <title>The Tragedy of King Lear</title>
+   </titleStmt>
+   <publicationStmt>
+    <publisher>Desmond Schmidt</publisher>
+    <date>2009</date>
+    <availability>GNU Free Documentation License 1.3</availability>
+   </publicationStmt>
+   <sourceDesc>
+    <bibl>
+      <title>Mr. Willaim Shakespeares Comedies, Histories, &amp; Tragedies. Published according to the True Originall Copies.</title>
+      <author>William Shakespeare</author>
+      <publisher>R. Bentley, E. Brewster, R. Chiswell, and H. Herringman, London</publisher>
+      <date>1685</date>.
+    </bibl>
+   </sourceDesc>
+  </fileDesc>
+ </teiHeader>
+<text><body>
+<head>THE TRAGEDIE OF KING LEAR</head>
+<head rend="italic">Actus Primus. Scena Prima.</head>
+<stage><hi rend="italic">Enter</hi> Kent, Gloucester, <hi rend="italic">and</hi> Edmond.</stage>
+<sp><speaker>Kent.</speaker>
+I Thought the King had more affected the Duke of <hi rend="italic">Albany</hi>, than <hi rend="italic">Cornwall.</hi></sp>
+<sp><speaker>Glou.</speaker>
+It did always seem to us: But now in the division of the Kingdom, it appears not which of the Dukes hee values most, for qualities are so weigh'd, that curiosity in neither, can make choice of eithers moiety.</sp>
+<sp><speaker>Kent.</speaker>
+Is not this your son, my Lord?</sp>
+<sp><speaker>Glou.</speaker>
+His breeding, Sir, hath been at my charge. I have so often blush'd to ackowledge him, that now I am braz'd to't.</sp>
+<sp><speaker>Kent.</speaker>
+I cannot conceive you.</sp>
+<sp><speaker>Glou.</speaker>
+Sir, this young Fellows mother could; whereupon she grew round womb'd, and had indeed (Sir) a Son for her Cradle, e're she had a Husband for her bed. Do you smell a fault?</sp>
+<sp><speaker>Kent.</speaker>
+I cannot wish the fault undone, the issue of it, being so proper.</sp>
+<sp><speaker>Glou.</speaker>
+But I have a Son, Sir, by order of the Law, some Year elder than this; who, yet is no dearer in my account, though this Knave came somewhat fawcily to the World before he was sent for: yet was his Mother fair, there was good sport at his making, and the whorson must be acknowledged. Do you know this Nobleman, <hi rend="italic">Edmond?</hi></sp>
+<sp><speaker>Edm.</speaker>
+No, my Lord.</sp>
+<sp><speaker>Glou.</speaker>
+<l>My Lord of Kent:</l>
+<l>Remember him hereafter, as my honourable Friend.</l></sp>
+<sp><speaker>Edm.</speaker>
+My services to your Lordship.</sp>
+<sp><speaker>Kent.</speaker>
+I must love you, and sue to know you better.</sp>
+<sp><speaker>Edm.</speaker>
+Sir, I shall study deserving.</sp>
+<sp><speaker>Glou.</speaker>
+He hath been out nine years, and away he shall again. The King is coming.</sp>
+<stage><hi rend="italic">Sennet. Enter King</hi> Lear, Cornwall, Albany, Gonerill, Regan, Cordelia, <hi rend="italic">and</hi> Attendants.</stage>
+<sp><speaker>Lear.</speaker>
+<l>Attend the Lords of <hi rend="italic">France</hi> &amp; <hi rend="italic">Burgundy, Gloster.</hi></l></sp>
+<sp><speaker>Glou.</speaker>
+<l>I shall, my Lord.</l></sp><stage rend="italic">Exit.</stage>
+<sp><speaker>Lear.</speaker>
+<l>Mean time we shall express our darker purpose.</l>
+<l>Give me the Map there. Know, that we have divided</l>
+<l>In three our Kingdom: and 'tis our fast intent,</l>
+<l>To shake all cares and businesse from our Age,</l>
+<l>Conferring them on younger strengths, while we</l>
+<l>Unburthen'd crawl toward death. Our son of <hi rend="italic">Cornwall,</hi></l>
+<l>And you our no lesse loving Son of <hi rend="italic">Albany,</hi></l>
+<l>We have this hour a constant will to publish</l>
+<l>Our Daughter's several Dowers, that future strife</l>
+<l>May be prevented now. The Prince, <hi rend="italic">France</hi> &amp; <hi rend="italic">Burgundy,</hi></l>
+<l>Great Rivals in our yongest Daughter's love,</l>
+<l>Long in our Court, have made their amorous sojourn,</l>
+<l>And here are to be answer'd. Tell me my Daughters</l>
+<l>(Since now we will divest us both of Rule,</l>
+<l>Interest of Territory, Cares of State)</l>
+<l>Which of you shall we say doth love us most,</l>
+<l>That we, our largest bounty may extend</l>
+<l>Where nature doth with merit challenge. <hi rend="italic">Gonerill,</hi></l>
+<l>Our eldest borne, speake first.</l></sp>
+<sp><speaker>Gon.</speaker>
+<l>Sir, I love you more than word can wield the matter,</l>
+<l>Dearer then Eye-sight, space, and liberty,</l>
+<l>Beyond what can be valued, rich or rare,</l>
+<l>No lesse than life, with grace, health, beauty, honour:</l>
+<l>As much as Child e're lov'd, or Father found.</l>
+<l>A love that makes breath poor, and speech unable,</l>
+<l>Beyond all manner of so much I love you.</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>What shall <hi rend="italic">Cordelia</hi> speak? Love, and be silent.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Of all these bounds even from this Line, to this,</l>
+<l>With shadowy Forrests, and with Champions rich'd </l>
+<l>With plenteous Rivers, and wide-skirted Meads</l>
+<l>We make thee Lady. To thine and <hi rend="italic">Albany's</hi> Issues</l>
+<l>Be this perpetual. What sayes our second Daughter?</l>
+<l>Our dearest <hi rend="italic">Regan,</hi> wife of <hi rend="italic">Cornwall?</hi></l></sp>
+<sp><speaker>Reg.</speaker>
+<l>I am made of that self-metal as my Sister,</l>
+<l>And prize me at her worth. In my true heart,</l>
+<l>I find she names my very deed of love:</l>
+<l>Only she comes too short, that I profess</l>
+<l>My self an Enemy to all other joyes,</l>
+<l>Which the most precious square of sense professes,</l>
+<l>And find I am alone felicitate</l>
+<l>In your dear Highnesse love.</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>Then poor <hi rend="italic">Cordelia</hi>,</l>
+<l>And yet not so, since I am sure my love's</l>
+<l>More ponderous than my tongue.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>To thee, and thine hereditary ever,</l>
+<l>Remain this ample third of our fair Kingdom,</l>
+<l>No less in space, validity, and pleasure</l>
+<l>Than that conferr'd on <hi rend="italic">Gonerill.</hi> Now our Joy,</l>
+<l>Although our last and least; to whose young love,</l>
+<l>The Vines of <hi rend="italic">France</hi>, and Milke of <hi rend="italic">Burgundy</hi>,</l>
+<l>Strive to be interest. What can you say, to draw</l>
+<l>A third, more opulent then your Sisters? speak.</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>Nothing, my Lord.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Nothing?</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>Nothing.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Nothing will come of nothing, speak again.</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>Unhappy that I am, I cannot have</l>
+<l>My heart into my mouth. I love your Majesty</l>
+<l>According to my bond, no more nor less.</l></sp>
+<sp><speaker>Lear.</speaker><l>How, how <hi rend="italic">Cordelia?</hi> Mend your speech a little,</l>
+<pb n="284"/>
+<l>Last you may marr your fortunes.</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>Good, my Lord.</l>
+<l>You have begot me, bred me, lov'd me.</l>
+<l>I return those duties back as are right fit,</l>
+<l>Obey you, love you, and most honour you.</l>
+<l>Why have my Sisters husbands, if they say</l>
+<l>They love you all? Happily when I shall wed,</l>
+<l>That Lord, whose hand must take my plight, shall carry</l>
+<l>Half my love with him, half my Care, and Duty,</l>
+<l>Sure I shall never marry like my Sisters.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>But goes thy heart with this?</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>I my good Lord.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>So young, and so untender?</l></sp>
+<sp><speaker>Cor.</speaker>
+<l>So young, my Lord, and true?</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Let it be so, the truth then shall be thy dowre:</l>
+<l>For by the sacred radiance of the Sun,</l>
+<l>The mysteries of <hi rend="italic">Hecate,</hi> and the night:</l>
+<l>By all the operations of the Orbs,</l>
+<l>From whom we do exist, and cease to be,</l>
+<l>Here I desclaim all my Paternal care,</l>
+<l>Propinquity and property of blood,</l>
+<l>And as a stranger to my heart and me,</l>
+<l>Hold thee from this for ever. The Barbarous <hi rend="italic">Scythian,</hi></l>
+<l>Or he that makes his Generation Messes</l>
+<l>To gorge his appetite, shall to my bosom</l>
+<l>Be as well neighbour'd, pitied, and reliev'd,</l>
+<l>As thou my sometime Daughter.</l></sp>
+<sp><speaker>Kent.</speaker>
+<l>Good my Liege.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Peace, <hi rend="italic">Kent.</hi></l>
+<l>Come not between the Dragon and his wrath,</l>
+<l>I lov'd her most, and thought to set my rest</l>
+<l>On her kind nursery. Hence and avoid my sight:</l>
+<l>So be my grave my peace, as here I give</l>
+<l>Her Father's heart from her: call <hi rend="italic">France,</hi> who stirs?</l>
+<l>Call <hi rend="italic">Burgundy, Cornwall,</hi> and <hi rend="italic">Albany,</hi></l>
+<l>With my two Daughters Dowres, digest the third,</l>
+<l>Let pride, which she calls plainness, marry her:</l>
+<l>I do invest you jointly with my power,</l>
+<l>Preheminence, and all the large effects</l>
+<l>That troop with Majesty. Our self by monthly course,</l>
+<l>With reservation of an hundred Knights,</l>
+<l>By you to be sustain'd, shall our abode</l>
+<l>Make with you by due turne, only we shall retain</l>
+<l>The name, and all th'addition to a King: the Sway,</l>
+<l>Revenue, Execution of the rest,</l>
+<l>Beloved Sons be yours, which to confirm,</l>
+<l>This Coronet part between you.</l></sp>
+<sp><speaker>Kent.</speaker>
+<l>Royal <hi rend="italic">Lear,</hi></l>
+<l>Whom I have ever honour'd as a King,</l>
+<l>Lov'd as my Father, as my Master follow'd,</l>
+<l>As my Patron, thought on in my prayers.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>The bow is bent and drawn, make from the shaft.</l></sp>
+<sp><speaker>Kent.</speaker>
+<l>Let it fall rather, though the fork invade</l>
+<l>The region of my heart, be <hi rend="italic">Kent</hi> unmannerly,</l>
+<l>When <hi rend="italic">Lear</hi> is mad, what wouldest thou do, old man?</l>
+<l>Think'st thou that Duty shall have dread to speak,</l>
+<l>When Power to Flattery bows?</l>
+<l>To plainness honour's bound,</l>
+<l>When Majesty falls to folly, reserve thy state,</l>
+<l>And thy best consideration, check</l>
+<l>This hideous rashness, answer my life, my judgement:</l>
+<l>Thy youngest Daughter do's not love thee least,</l>
+<l>Nor are those empty hearted, whose low sounds</l>
+<l>Reverb no hollowness.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l><hi rend="italic">Kent,</hi> on thy life no more.</l></sp>
+<sp><speaker>Kent.</speaker>
+<l>My life I never held but as a pawn</l>
+<l>To wage against thine enemies, ne'er fear to lose it,</l>
+<l>Thy safety being motive.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Out of my sight.</l></sp>
+<sp><speaker>Kent.</speaker>
+<l>See better <hi rend="italic">Lear,</hi> and let me still remain</l>
+<l>The true blank of thine eye.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Now by <hi rend="italic">Apollo.</hi></l></sp>
+<sp><speaker>Kent.</speaker>
+<l>Now by <hi rend="italic">Apollo,</hi> King,</l>
+<l>Thou swear'st thy gods in vain.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>O Vassal! Miscreant.</l></sp>
+<sp><speaker>Alb. Cor.</speaker>
+<l>Dear Sir, forbear.</l></sp>
+<sp><speaker>Kent.</speaker>
+<l>Kill thy Physician, and they Fee bestow</l>
+<l>Upon the foul disease, revoke the gift,</l>
+<l>Or whil'st I can vent clamour from my throat,</l>
+<l>I'll tell thee thou do'st evil.</l></sp>
+<sp><speaker>Lear.</speaker>
+<l>Hear me Recreant, on thine allegiance hear me;</l>
+<l>That thou hast fought to make us break our vows,</l>
+<l>Which we durst never yet; and with strain'd pride,</l>
+<l>To come betwixt our sentence and our power.</l>
+<l>Which, nor our nature, nor our place can bear;</l>
+<l>Our potency made good, take they reward.</l>
+<l>Five days we do allot thee for provision,</l>
+<l>To shield thee from disasters of the world,</l>
+<l>And on the sixth to turn thy hated back</l>
+<l>Upon our Kingdom; if on the tenth day following,</l>
+<l>Thy banisht Trunk be found in our Dominions,</l>
+<l>The moment is thy death, away. By <hi rend="italic">Jupiter,</hi></l>
+<l>This shall not be revok'd.</l></sp>
+<sp><speaker>Kent.</speaker>
+<l>Fare thee well King, sith thus thou wilt appear,</l>
+<l>Freedom lives hence, and banishment is here;</l>
+<l>The gods to their dear shelter take thee, Maid,</l>
+<l>That justly thinks, and hast most rightly said:</l>
+<l>And your large speeches may your deeds approve,</l>
+<l>That good effects may spring from words of love:</l>
+<l>Thus <hi rend="italic">Kent,</hi> O Princes, bids you all adieu,</l>
+<l>He'll shape his old course in a Countrey new.</l></sp> <stage rend="italic">Exit</stage></body></text></TEI>

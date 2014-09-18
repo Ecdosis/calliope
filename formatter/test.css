@@ -1,0 +1,14 @@
+h3.head {}
+h3.head-italic { text-align: center; font-family: Times, serif; font-weight: bold; font-styl$
+p.stage-italic { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-s$
+p.stage { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; }
+span.speaker { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-wei$
+br.l {}
+p.sp { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px }
+span.italics { font-style: italic }
+span.bold { font-weight: bold; }
+span.deleted { color: red }
+span.added { color: blue }
+span.merged { -hrit-mergeid: id }
+a.parent { color: grey; -hrit-childid: href }
+a.child { color: grey; -hrit-parentid: href }

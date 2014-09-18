@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TEI>
+<teiHeader>
+<fileDesc>
+<titleStmt>
+
+<title>Depretis all'inferno</title>
+
+<author>Luigi Capuana</author>
+<respStmt>
+<resp>Codifica manoscritto versione III</resp>
+<name>Daniela Buresta, Marco Di Caprio, Gabriele Li Mandri</name>
+</respStmt>
+</titleStmt>
+<publicationStmt>
+<publisher>Facoltà di Lettere e Filosofia, Università di Roma Tre</publisher>
+<pubPlace>Roma</pubPlace>
+<date>2012</date>
+</publicationStmt>
+<seriesStmt>
+<title>Ricerca 2012</title>
+</seriesStmt>
+
+<sourceDesc>
+<bibl>
+
+<title>Depretis all'inferno</title>
+<author>Luigi Capuana</author>
+
+<editor/>
+<publisher/>
+<pubPlace/>
+<date/>
+</bibl>
+</sourceDesc>
+</fileDesc>
+<profileDesc>
+
+<langUsage>
+<language id="codice">italiano</language>
+
+</langUsage>
+</profileDesc>
+
+<revisionDesc>
+<change>
+<date>22 - 05 - 2012</date>
+<respStmt>
+<name>Daniela Buresta, Marco Di Caprio, Gabriele Li Mandri</name>
+</respStmt>
+<item>Codifica manoscritto versione III</item>
+</change>
+</revisionDesc>
+</teiHeader>
+<text>
+<front>
+<titlePage>
+<roleName type="epithet">Aristofanuncolos</roleName>
+<titlePart type="main">Commedia</titlePart>
+<titlePart type="sub">Le Nuove Rane</titlePart>
+</titlePage>
+</front>
+
+<body>
+<div>
+<note type="sinistra">Stampati nel Corriere di Roma nei numeri del 12 e 22 agosto 1882</note>
+<salute>Ad Augusto Franchetti</salute>
+<sp><speaker>Caronte</speaker>
+<lg><l>Per di qua! Per di qua!</l>
+<l>Per di qua! Per di qua!</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Che fiume è questo?</l></lg></sp>
+<sp><speaker>Un morto</speaker>
+<lg><l>E’ il Lete. Bevi ed obblia.</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Acqua eccellente.</l>
+<l>Eccellente davver! Perciò non havvi</l>
+<l>Uomo di Stato che parecchie botti</l>
+<l>Non ne serbi in cantina: ogni promessa</l>
+<l>Obblia così tosto che è fatta: havvi</l>
+<l>Così soverchio il rituffar questa mia barba</l>
+<l>In cotest’acqua, ne sono ubbriaco.</l>
+<l>Abusar ne dovetti alla Consulta.</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Per di qua! Per di qua! Su, fate presto...</l>
+<l>Tal barbone ha costui che si direbbe</l>
+<l>Il mio ritratto. Fate presto...</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Hai fretta?</l>
+<l>Fretta non ebbi mai mentre ch’io vissi…</l>
+<l>Soffro di gotta, il vedi.</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Se ti immagini</l>
+<l>Che io somigli la Camera o il Senato</l>
+<l>Ti inganni. Qui non c’è più finzioni</l>
+<l>Né motivi per fingere.</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Fu forse giornalista...</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Io son Caronte</l>
+<l>T’attendevo da un pezzo: hai fatto il morto</l>
+<l>Parecchie volte: or sei morto davvero.</l>
+<l>Spicciati o passerai quest’altro giorno.</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Che importa? Un altro giorno. Io non mi sono</l>
+<l>Mai risoluto (su due piedi)...E’ saggio</l>
+<l>Il riflettere un pochino.</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Riunito</l>
+<l>E’ il gran consiglio di Minosse: in terra</l>
+<l>Tu potevi a tuo aggio far attendere</l>
+<l>Qui non usa così...Sbrigati.</l></lg></sp>
+<sp><speaker>Un morto</speaker>
+<lg><l>Andiamo.</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Come deve essere brutto questo loco</l>
+<l>Se non c’è verso di darla ad intendere<stage type="business">(entra nella barca).</stage></l>
+<l>Qui stiam come sardelle.</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>E c’è ancora posto.</l>
+<l>In centinaia! anime di morti...</l>
+<l>Non vedi che la barca, benché carica</l>
+<l>Pesca poc’acqua?</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>E’ vero. Tanto poco</l>
+<l>Pesiamo dopo morti?</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Tanto meno</l>
+<l>Quanto più voi pesate su la terra!</l></lg></sp>
+<sp><speaker>Agostino<stage type="business">(ridendo)</stage></speaker>
+<lg><l>E Alfredo allora che peserà? Neppure</l>
+<l>Un milligrammo.</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Bada a te, compare!</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>E si va così lenti! Ora mi piaci….</l></lg></sp>
+<sp><speaker>Un morto</speaker>
+<lg><l>Eccellenza perdoni: le ho pestato</l>
+<l>Un callo...</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Fate pure: io non ho calli…</l>
+<l>O ci ho già fatto il callo, non saprei.</l></lg></sp>
+<sp><speaker>Coro di Rane</speaker>
+<lg><l>Coax! coax! coax!</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Pieno di rane</l>
+<l>È questo fiume! Cari animaletti,</l>
+<l>Erano in terra la mia passione</l>
+<l>Le amavo da girini, e le aiutavo</l>
+<l>A sbarazzarsi della coda e a mettere</l>
+<l>Fuori le zampe…insomma a trasformarsi.</l></lg></sp>
+<sp><speaker>Coro</speaker>
+<lg><l>Brechechec croax croax-chechec croax.</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Salute cari animaletti! A voi</l>
+<l>Io diedi ora un ministro travicello</l>
+<l>Ora un ministro serpente e talora</l>
+<l>Di travicello o di serpente io stesso</l>
+<l>Vi recitai la farsa…..Non credevo</l>
+<l>Di ritrovarvi qui: Montecitorio</l>
+<l>N’è così pieno che, ingenuamente,</l>
+<l>Al mio solito va, mi figuravo</l>
+<l>Vi si fosser colà raccolti tutti quanti</l>
+<l>Gl’italici ranocchi…. È Sanguinetti…</l>
+<l>Quel ranocchio lì che or ora ha fatto un tuffo..?.....</l>
+<l>Forse egli crede ch'io sia ancora vivo</l>
+<l>Ed ha paura....Ranocchino, vieni</l>
+<l>Vieni su, Sanguinetti! vieni! vieni</l></lg></sp>
+<sp><speaker>Coro</speaker>
+<lg><l>Cheche croax croax cheche croax</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Tu ami la burletta, compare mio...</l>
+<l>Or ora comincia già l'alato coro</l>
+<l>Che intoneranno le rane: presta orecchio.</l></lg></sp>
+<sp><speaker>Coro</speaker>
+<lg><l>Croax!croax!croax!</l>
+<l>O ombre che venite</l>
+<l>Dall'altra sponda dite:</l>
+<l>Se sempre va del solito</l>
+<l>Passo il mondo birbone</l>
+<l>Se chi vivo fu un asino</l>
+<l>Diventa un dottore</l>
+<l>Appena morto?Croax</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Si, si miei animaletti, infatti</l>
+<l>Da vivo ero un girella, un imbroglione,</l>
+<l>Un imbecille e peggio: or qui mi arriva</l>
+<l>L'eco dei loro così detti articoli</l>
+<l>(che poi non sono di fede)...I giornalisti</l>
+<l>Mi proclamano politicone tutti, un gran pilota</l>
+<l>Che dello stato la sbattuta nave </l>
+<l>Con abil mano condussi! Non sanno</l>
+<l>Aqual santo votarsi per qualcuno</l>
+<l>Che valga un pelo almen della mia barba.</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Ti piace la burletta, compare mio!</l></lg></sp>
+<sp><speaker>Coro</speaker>
+<lg><l>Croax!Croax!Croax!</l>
+<l>O ombre che venite </l>
+<l>Dall'altro mondo dite</l>
+<l>Se gl'imbroglioni al solito</l> 
+<l>Se i ciarlatani vanno</l>
+<l>In alto sempre e il popolo</l>
+<l>Ha la beffa e il danno</l>
+<l>Come una volta?Croax</l></lg></sp>
+<sp><speaker>Agostino</speaker>
+<lg><l>Precisamente, cari animaletti;</l>
+<l>Precisamente, come quando vivi</l>
+<l>Forse imbroglioni e ciarlatani foste</l>
+<l>Voi, pur con gli altri, e più nol rammentate!</l>
+<l>Ma la filosofia dell'uom di stato</l>
+<l>Consiste appunto nell'usar di tutti</l>
+<l>Come strumenti; perchè infin lo seppi</l>
+<l>Per mia propria esperienza più cogliona</l>
+<l>Razza di quella non si può trovare</l>
+<l>Son pesciolini che mordono all'amo...</l>
+<l>Mostrategli (mostrar dico) da lungi</l>
+<l>L'amo coll'esca ed ecco i pesciolini</l>
+<l>Che vi vengono dietro cheti cheti.</l>
+<l>Io, cari miei, mettevo all'amo un'esca</l>
+<l>Nuova, di mia invenzione: i portafogli!</l>
+<l>Cinquecento ministri in un sol giorno</l>
+<l>Avrei tirato su!</l></lg></sp>
+<sp><speaker>Caronte</speaker>
+<lg><l>Ve la passate allegra! Bravo, compare!</l></lg></sp>
+<sp><speaker>Un morto</speaker>
+<lg><l>Cinquecento</l>
+<l>Ministri, meglio assai le cavallette!</l></lg></sp>
+<date>Mineo, 5 agosto 1885 10 a.m.</date>
+<note type="destra">Traduzione dal greco di un amico al cugino del nipote dello zio di A. Franchetti.</note>
+</div>
+
+</body>
+</text>
+</TEI>
+

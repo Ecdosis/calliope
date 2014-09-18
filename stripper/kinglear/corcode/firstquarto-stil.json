@@ -1,0 +1,1758 @@
+{
+  "style": "TEI/drama",
+  "ranges": [
+  {
+      "name": "TEI",
+      "reloff": 0,
+      "len": 7965
+    }
+,
+  {
+      "name": "teiHeader",
+      "reloff": 0,
+      "len": 0,
+      "removed": true
+    }
+,
+  {
+      "name": "fileDesc",
+      "reloff": 0,
+      "len": 0,
+      "removed": true
+    }
+,
+  {
+      "name": "titleStmt",
+      "reloff": 0,
+      "len": 0,
+      "removed": true
+    }
+,
+  {
+      "name": "title",
+      "reloff": 0,
+      "len": 0,
+      "content": "The Tragedy of King Lear",
+      "removed": true
+    }
+,
+  {
+      "name": "publicationStmt",
+      "reloff": 0,
+      "len": 0,
+      "removed": true
+    }
+,
+  {
+      "name": "publisher",
+      "reloff": 0,
+      "len": 0,
+      "content": "Desmond Schmidt",
+      "removed": true
+    }
+,
+  {
+      "name": "date",
+      "reloff": 0,
+      "len": 0,
+      "content": "2009",
+      "removed": true
+    }
+,
+  {
+      "name": "availability",
+      "reloff": 0,
+      "len": 0,
+      "content": "GNU Free Documentation License 1.3",
+      "removed": true
+    }
+,
+  {
+      "name": "sourceDesc",
+      "reloff": 0,
+      "len": 0,
+      "removed": true
+    }
+,
+  {
+      "name": "bibl",
+      "reloff": 0,
+      "len": 0,
+      "content": ".",
+      "removed": true
+    }
+,
+  {
+      "name": "title",
+      "reloff": 0,
+      "len": 0,
+      "content": "Mr. William Shake-speare, His True Cronicle History of the life and death of King Lear and his three daughters.",
+      "removed": true
+    }
+,
+  {
+      "name": "author",
+      "reloff": 0,
+      "len": 0,
+      "content": "William Shake-speare",
+      "removed": true
+    }
+,
+  {
+      "name": "publisher",
+      "reloff": 0,
+      "len": 0,
+      "content": "Nathaniel Butter",
+      "removed": true
+    }
+,
+  {
+      "name": "date",
+      "reloff": 0,
+      "len": 0,
+      "content": "1608",
+      "removed": true
+    }
+,
+  {
+      "name": "text",
+      "reloff": 0,
+      "len": 7965
+    }
+,
+  {
+      "name": "body",
+      "reloff": 0,
+      "len": 7965
+    }
+,
+  {
+      "name": "head",
+      "reloff": 0,
+      "len": 50
+    }
+,
+  {
+      "name": "stage-italic",
+      "reloff": 51,
+      "len": 33
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 34,
+      "len": 77
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 55,
+      "len": 6
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 13,
+      "len": 9
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 10,
+      "len": 224
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 6
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 225,
+      "len": 38
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 39,
+      "len": 118
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 6
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 119,
+      "len": 28
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 29,
+      "len": 180
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 6
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 181,
+      "len": 70
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 71,
+      "len": 338
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 6
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 331,
+      "len": 6
+    }
+,
+  {
+      "name": "pb",
+      "reloff": 8,
+      "len": 0,
+      "annotations": [ { "n": "4" } ]
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 1,
+      "len": 17
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 18,
+      "len": 72
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 6
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 73,
+      "len": 35
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 36,
+      "len": 50
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 51,
+      "len": 35
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 36,
+      "len": 86
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 6
+    }
+,
+  {
+      "name": "stage-italic",
+      "reloff": 87,
+      "len": 143
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 144,
+      "len": 55
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 49
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 50,
+      "len": 25
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 6
+    }
+,
+  {
+      "name": "l",
+      "reloff": 7,
+      "len": 18
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 19,
+      "len": 574
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 48
+    }
+,
+  {
+      "name": "l",
+      "reloff": 49,
+      "len": 35
+    }
+,
+  {
+      "name": "l",
+      "reloff": 36,
+      "len": 48
+    }
+,
+  {
+      "name": "l",
+      "reloff": 49,
+      "len": 46
+    }
+,
+  {
+      "name": "l",
+      "reloff": 47,
+      "len": 34
+    }
+,
+  {
+      "name": "l",
+      "reloff": 35,
+      "len": 43
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 23,
+      "len": 6
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 11,
+      "len": 9
+    }
+,
+  {
+      "name": "l",
+      "reloff": 10,
+      "len": 43
+    }
+,
+  {
+      "name": "l",
+      "reloff": 44,
+      "len": 51
+    }
+,
+  {
+      "name": "l",
+      "reloff": 52,
+      "len": 49
+    }
+,
+  {
+      "name": "l",
+      "reloff": 50,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 40
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 35
+    }
+,
+  {
+      "name": "l",
+      "reloff": 36,
+      "len": 40
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 0,
+      "len": 8
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 41,
+      "len": 335
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 4
+    }
+,
+  {
+      "name": "l",
+      "reloff": 5,
+      "len": 52
+    }
+,
+  {
+      "name": "l",
+      "reloff": 53,
+      "len": 43
+    }
+,
+  {
+      "name": "l",
+      "reloff": 44,
+      "len": 39
+    }
+,
+  {
+      "name": "l",
+      "reloff": 40,
+      "len": 55
+    }
+,
+  {
+      "name": "l",
+      "reloff": 56,
+      "len": 45
+    }
+,
+  {
+      "name": "l",
+      "reloff": 46,
+      "len": 50
+    }
+,
+  {
+      "name": "l",
+      "reloff": 51,
+      "len": 40
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 41,
+      "len": 49
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 4
+    }
+,
+  {
+      "name": "l",
+      "reloff": 5,
+      "len": 44
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 11,
+      "len": 8
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 34,
+      "len": 246
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 49
+    }
+,
+  {
+      "name": "l",
+      "reloff": 50,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 47
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 32,
+      "len": 8
+    }
+,
+  {
+      "name": "pb",
+      "reloff": 16,
+      "len": 0,
+      "annotations": [ { "n": "5" } ]
+    }
+,
+  {
+      "name": "l",
+      "reloff": 1,
+      "len": 51
+    }
+,
+  {
+      "name": "l",
+      "reloff": 52,
+      "len": 44
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 12,
+      "len": 6
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 15,
+      "len": 9
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 18,
+      "len": 335
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 4
+    }
+,
+  {
+      "name": "l",
+      "reloff": 5,
+      "len": 59
+    }
+,
+  {
+      "name": "l",
+      "reloff": 60,
+      "len": 43
+    }
+,
+  {
+      "name": "l",
+      "reloff": 44,
+      "len": 61
+    }
+,
+  {
+      "name": "l",
+      "reloff": 62,
+      "len": 53
+    }
+,
+  {
+      "name": "l",
+      "reloff": 54,
+      "len": 50
+    }
+,
+  {
+      "name": "l",
+      "reloff": 51,
+      "len": 59
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 60,
+      "len": 95
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 51
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 11,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 37
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 38,
+      "len": 295
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 34
+    }
+,
+  {
+      "name": "l",
+      "reloff": 35,
+      "len": 47
+    }
+,
+  {
+      "name": "l",
+      "reloff": 48,
+      "len": 42
+    }
+,
+  {
+      "name": "l",
+      "reloff": 43,
+      "len": 49
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 23,
+      "len": 8
+    }
+,
+  {
+      "name": "l",
+      "reloff": 27,
+      "len": 47
+    }
+,
+  {
+      "name": "l",
+      "reloff": 48,
+      "len": 46
+    }
+,
+  {
+      "name": "l",
+      "reloff": 47,
+      "len": 18
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 19,
+      "len": 22
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 16
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 17,
+      "len": 54
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 48
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 49,
+      "len": 124
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 125,
+      "len": 82
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 5,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 32
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 33,
+      "len": 397
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 13
+    }
+,
+  {
+      "name": "l",
+      "reloff": 14,
+      "len": 37
+    }
+,
+  {
+      "name": "l",
+      "reloff": 38,
+      "len": 46
+    }
+,
+  {
+      "name": "l",
+      "reloff": 47,
+      "len": 40
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 60
+    }
+,
+  {
+      "name": "l",
+      "reloff": 61,
+      "len": 46
+    }
+,
+  {
+      "name": "l",
+      "reloff": 47,
+      "len": 55
+    }
+,
+  {
+      "name": "l",
+      "reloff": 56,
+      "len": 42
+    }
+,
+  {
+      "name": "l",
+      "reloff": 43,
+      "len": 44
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 45,
+      "len": 35
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 29
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 30,
+      "len": 21
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 15
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 16,
+      "len": 30
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 24
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 25,
+      "len": 31
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 4
+    }
+,
+  {
+      "name": "l",
+      "reloff": 5,
+      "len": 26
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 27,
+      "len": 516
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 47
+    }
+,
+  {
+      "name": "l",
+      "reloff": 48,
+      "len": 40
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 38
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 17,
+      "len": 6
+    }
+,
+  {
+      "name": "l",
+      "reloff": 22,
+      "len": 29
+    }
+,
+  {
+      "name": "l",
+      "reloff": 30,
+      "len": 40
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 40
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 35
+    }
+,
+  {
+      "name": "l",
+      "reloff": 36,
+      "len": 36
+    }
+,
+  {
+      "name": "l",
+      "reloff": 37,
+      "len": 54
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 45,
+      "len": 9
+    }
+,
+  {
+      "name": "l",
+      "reloff": 10,
+      "len": 31
+    }
+,
+  {
+      "name": "l",
+      "reloff": 32,
+      "len": 28
+    }
+,
+  {
+      "name": "l",
+      "reloff": 29,
+      "len": 51
+    }
+,
+  {
+      "name": "l",
+      "reloff": 52,
+      "len": 29
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 30,
+      "len": 20
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 14
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 15,
+      "len": 805
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 55
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 6,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 50,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 48
+    }
+,
+  {
+      "name": "l",
+      "reloff": 49,
+      "len": 39
+    }
+,
+  {
+      "name": "l",
+      "reloff": 40,
+      "len": 53
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 33,
+      "len": 7
+    }
+,
+  {
+      "name": "l",
+      "reloff": 21,
+      "len": 36
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 5,
+      "len": 19
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 24,
+      "len": 7
+    }
+,
+  {
+      "name": "l",
+      "reloff": 8,
+      "len": 46
+    }
+,
+  {
+      "name": "l",
+      "reloff": 47,
+      "len": 47
+    }
+,
+  {
+      "name": "l",
+      "reloff": 48,
+      "len": 37
+    }
+,
+  {
+      "name": "l",
+      "reloff": 38,
+      "len": 39
+    }
+,
+  {
+      "name": "l",
+      "reloff": 40,
+      "len": 54
+    }
+,
+  {
+      "name": "l",
+      "reloff": 55,
+      "len": 39
+    }
+,
+  {
+      "name": "l",
+      "reloff": 40,
+      "len": 39
+    }
+,
+  {
+      "name": "l",
+      "reloff": 40,
+      "len": 51
+    }
+,
+  {
+      "name": "l",
+      "reloff": 52,
+      "len": 41
+    }
+,
+  {
+      "name": "l",
+      "reloff": 42,
+      "len": 41
+    }
+,
+  {
+      "name": "l",
+      "reloff": 42,
+      "len": 43
+    }
+,
+  {
+      "name": "l",
+      "reloff": 44,
+      "len": 30
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 31,
+      "len": 143
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 12
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 7,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 36
+    }
+,
+  {
+      "name": "l",
+      "reloff": 37,
+      "len": 42
+    }
+,
+  {
+      "name": "l",
+      "reloff": 43,
+      "len": 44
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 45,
+      "len": 55
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 49
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 50,
+      "len": 502
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 19
+    }
+,
+  {
+      "name": "l",
+      "reloff": 20,
+      "len": 47
+    }
+,
+  {
+      "name": "l",
+      "reloff": 48,
+      "len": 36
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 3,
+      "len": 4
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 21,
+      "len": 4
+    }
+,
+  {
+      "name": "l",
+      "reloff": 13,
+      "len": 53
+    }
+,
+  {
+      "name": "l",
+      "reloff": 54,
+      "len": 59
+    }
+,
+  {
+      "name": "l",
+      "reloff": 60,
+      "len": 55
+    }
+,
+  {
+      "name": "l",
+      "reloff": 56,
+      "len": 48
+    }
+,
+  {
+      "name": "l",
+      "reloff": 49,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 60
+    }
+,
+  {
+      "name": "l",
+      "reloff": 61,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 21
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 22,
+      "len": 31
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 25
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 0,
+      "len": 4
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 26,
+      "len": 119
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 35
+    }
+,
+  {
+      "name": "l",
+      "reloff": 36,
+      "len": 49
+    }
+,
+  {
+      "name": "l",
+      "reloff": 50,
+      "len": 27
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 28,
+      "len": 22
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 16
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 17,
+      "len": 77
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 41
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 11,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 31,
+      "len": 29
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 30,
+      "len": 21
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 15
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 7,
+      "len": 8
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 9,
+      "len": 59
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 53
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 7,
+      "len": 8
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 47,
+      "len": 24
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 18
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 19,
+      "len": 166
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 23
+    }
+,
+  {
+      "name": "l",
+      "reloff": 24,
+      "len": 42
+    }
+,
+  {
+      "name": "l",
+      "reloff": 43,
+      "len": 46
+    }
+,
+  {
+      "name": "l",
+      "reloff": 47,
+      "len": 46
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 47,
+      "len": 569
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 37
+    }
+,
+  {
+      "name": "l",
+      "reloff": 38,
+      "len": 49
+    }
+,
+  {
+      "name": "l",
+      "reloff": 50,
+      "len": 49
+    }
+,
+  {
+      "name": "l",
+      "reloff": 50,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 45
+    }
+,
+  {
+      "name": "l",
+      "reloff": 46,
+      "len": 40
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 42
+    }
+,
+  {
+      "name": "l",
+      "reloff": 43,
+      "len": 40
+    }
+,
+  {
+      "name": "l",
+      "reloff": 41,
+      "len": 49
+    }
+,
+  {
+      "name": "l",
+      "reloff": 50,
+      "len": 45
+    }
+,
+  {
+      "name": "l",
+      "reloff": 46,
+      "len": 42
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 34,
+      "len": 8
+    }
+,
+  {
+      "name": "l",
+      "reloff": 9,
+      "len": 25
+    }
+,
+  {
+      "name": "sp",
+      "reloff": 26,
+      "len": 386
+    }
+,
+  {
+      "name": "speaker",
+      "reloff": 0,
+      "len": 5
+    }
+,
+  {
+      "name": "l",
+      "reloff": 6,
+      "len": 54
+    }
+,
+  {
+      "name": "l",
+      "reloff": 55,
+      "len": 47
+    }
+,
+  {
+      "name": "l",
+      "reloff": 48,
+      "len": 44
+    }
+,
+  {
+      "name": "l",
+      "reloff": 45,
+      "len": 48
+    }
+,
+  {
+      "name": "l",
+      "reloff": 49,
+      "len": 48
+    }
+,
+  {
+      "name": "l",
+      "reloff": 49,
+      "len": 48
+    }
+,
+  {
+      "name": "l",
+      "reloff": 49,
+      "len": 39
+    }
+,
+  {
+      "name": "italics",
+      "reloff": 5,
+      "len": 4
+    }
+,
+  {
+      "name": "l",
+      "reloff": 35,
+      "len": 45
+    }
+
+  ]
+}

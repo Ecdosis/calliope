@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="88">
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>4</platform>
+      </toolsSet>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c drama.css</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c drama.css -m deleted.json:formats.json -t F1.txt F1.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c kinglear.css -m f1vf2.stil:f1.stil -t F1.txt F1.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c eden.css -m eden-v1.json:eden-v1-v2-diffs.json -t eden-v1.txt eden.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode1.json: -t test.txt test.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode1.json -t test.txt test.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c style.css -m corcode.json -t cortex.txt test.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c default.css -m corcode.json -t cortex.txt test.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c default.css -m "SIL Palmer Chapter 6.3-stil.json" -t "SIL Palmer Chapter 6.3-stil.txt" SIL.html</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -c default.css -m "SIL Palmer Chapter 6.3-stil.json" -t "SIL Palmer Chapter 6.3.txt" SIL.html</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}" -c default.css -m "SIL Palmer Chapter 6.3-stil.json" -t "SIL Palmer Chapter 6.3.txt" SIL.html</runcommand>
+        <rundir></rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>4</platform>
+      </toolsSet>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir></rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>

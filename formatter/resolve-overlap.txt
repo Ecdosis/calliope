@@ -1,0 +1,9 @@
+The queue of ranges has these properties
+a) the start-positions are monotonically increasing or equal
+b) there is no overlap among the ranges in the queue
+c) a range that precedes another range with the same start and end-point contains it
+d) all other containments i.e. explicit ones, are correct
+Lemma 1: if we add a range to the end of the queue that starts after the end of the first range on the queue, we can output that first range. This ensures that the queue never gets too long.
+Lemma 2: If we add a new range at the end of the queue only those ranges that intersect with its start or end can be altered.
+Algorithm:
+Add r to the queue. Find an overlapping range. Split them as per matrices H and then P.

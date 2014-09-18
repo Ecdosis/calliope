@@ -1,0 +1,198 @@
+<TEI>
+ <teiHeader>
+  <fileDesc>
+   <titleStmt>
+    <title>The Tragedy of King Lear</title>
+   </titleStmt>
+   <publicationStmt>
+    <publisher>Desmond Schmidt</publisher>
+    <date>2009</date>
+    <availability>GNU Free Documentation License 1.3</availability>
+   </publicationStmt>
+   <sourceDesc>
+    <bibl>
+      <title>Mr. Willaim Shakespeares Comedies, Histories, &amp; Tragedies. Published according to the True Originall Copies.</title>
+      <author>William Shakespeare</author>
+      <publisher>Isaac Jaggard and Ed. Blount, London</publisher>
+      <date>1623</date>.
+    </bibl>
+   </sourceDesc>
+  </fileDesc>
+ </teiHeader>
+<text><body><head rend="italic">Scena Secunda.</head>
+<stage rend="italic">Enter Bastard.</stage>
+<sp><speaker>Bast.</speaker> <l>Thou Nature art my Goddesse, to thy Law</l>
+<l>My seruices are bound, wherefore should I</l>
+<l>Stand in the plague of custome, and permit</l>
+<l>The curiosity of Nations, to depriue me?</l>
+<l>For that I am some twelue, or fourteene Moonshines</l>
+<l>Lag of a Brother? Why Bastard? Wherefore base?</l>
+<l>When my Dimensions are as well compact,</l>
+<l>My minde as generous, and my shape as true</l>
+<l>As honest Madams issue? Why brand they vs</l>
+<l>With Base? With basenes Bastardie? Base, Base?</l>
+<l>Who in the lustie stealth of Nature, take</l>
+<l>More composition, and fierce qualitie,</l>
+<l>Then doth within a dull stale tyred bed</l>
+<l>Goe to th' creating a whole tribe of Fops</l>
+<l>Got 'tweene a sleepe, and wake? Well then,</l>
+<l>Legitimate <hi rend="italic">Edgar</hi>, I must haue your land,</l>
+<l>Our Fathers loue, is to the Bastard <hi rend="italic">Edmond</hi>,</l>
+<l>As to th' legitimate: fine word: Legitimate.</l>
+<pb n="286" ed="F1"></pb><pb n="306" ed="F2"></pb>
+<l>Well, my Legittimate, if this Letter speed,</l>
+<l>And my inuention thriue, <hi rend="italic">Edmond</hi> the base</l>
+<l>Shall to'th' Legitimate: I grow, I prosper:</l>
+<l>Now Gods, stand vp for Bastards.</l></sp>
+<stage rend="italic">Enter Gloucester.</stage>
+<sp><speaker>Glo.</speaker> Kent banish'd thus? and France in choller parted?
+And the King gone to night? Prescrib'd his powre,
+Confin'd to exhibition? All this done
+Vpon the gad? <hi rend="italic">Edmond</hi>, how now? What newes?</sp>
+<sp><speaker>Bast.</speaker> So please your Lordship, none.</sp>
+<sp><speaker>Glou.</speaker> Why so earnestly seeke you to put vp y Letter?</sp>
+<sp><speaker>Bast.</speaker> I know no newes, my Lord.</sp>
+<sp><speaker>Glou.</speaker> What Paper were you reading?</sp>
+<sp><speaker>Bast.</speaker> Nothing my Lord.</sp>
+<sp><speaker>Glou.</speaker> No? what needed then that terrible dispatch of
+it into your Pocket? The quality of nothing, hath not
+such neede to hide it selfe. Let's see: come, if it bee no-
+thing, I shall not neede Spectacles.</sp>
+<sp><speaker>Bast.</speaker> I beseech you Sir, pardon mee; it is a Letter
+from my Brother, that I haue not all ore-read; and for so
+much as I haue perus'd, I finde it not fit for your ore-loo-
+king.</sp>
+<sp><speaker>Glou.</speaker> Giue me the Letter, Sir.</sp>
+<sp><speaker>Bast.</speaker> I shall offend, either to detaine, or giue it:
+The Contents, as in part I vnderstand them,
+Are too blame.</sp>
+<sp><speaker>Glou.</speaker> Let's see, let's see.</sp>
+<sp><speaker>Bast.</speaker> I hope for my Brothers iustification, hee wrote
+this but as an essay, or taste of my Vertue.</sp>
+<sp><speaker>Glou.</speaker> <stage rend="italic">reads.</stage><hi rend="italic">This policie, and reuerence of Age, makes the
+world bitter to the best of our times: keepes our Fortunes from
+vs, till our oldnesse cannot rellish them. I begin to finde an idle
+and fond bondage, in the oppression of aged tyranny, who swayes
+not as it hath power, but as it is suffer'd. Come to me, that of
+this I may speake more. If our Father would sleepe till I wak'd
+him, you should enioy halfe his Reuennew for euer, and liue the
+beloued of your Brother.</hi> Edgar.
+Hum? Conspiracy? Sleepe till I wake him, you should
+enioy halfe his Reuennew: my Sonne <hi rend="italic">Edgar</hi>, had hee a
+hand to write this? A heart and braine to breede it in?
+When came you to this? Who brought it?</sp>
+<sp><speaker>Bast.</speaker> It was not brought mee, my Lord; there's the
+cunning of it. I found it throwne in at the Casement of
+my Closset.</sp>
+<sp><speaker>Glou.</speaker> You know the character to be your Brothers?</sp>
+<sp><speaker>Bast.</speaker> If the matter were good my Lord, I durst swear
+it were his: but in respect of that, I would faine thinke it
+were not.</sp>
+<sp><speaker>Glou.</speaker> It is his.</sp>
+<sp><speaker>Bast.</speaker> It is his hand, my Lord: but I hope his heart is
+not in the Contents.</sp>
+<sp><speaker>Glo.</speaker> Has he neuer before sounded you in this busines?</sp>
+<sp><speaker>Bast.</speaker> Neuer my Lord. But I haue heard him oft main-
+taine it to be fit, that Sonnes at perfect age, and Fathers
+declin'd, the Father should bee as Ward to the Son, and
+the Sonne manage his Reuennew.</sp>
+<sp><speaker>Glou.</speaker> O Villain, villain: his very opinion in the Let-
+ter. Abhorred Villaine, unnaturall, detested, brutish
+Villaine; worse then brutish: Go sirrah, seeke him: Ile
+apprehend him. Abhominable Villaine, where is he?</sp>
+<sp><speaker>Bast.</speaker> I do not well know my <choice><abbr>L.</abbr><expan>Lord</expan></choice> If it shall please you to
+suspend your indignation against my Brother, til you can
+deriue from him better testimony of his intent, you shold
+run a certaine course: where, if you violently proceed a-
+gainst him, mistaking his purpose, it would make a great
+gap in your owne Honor, and shake in peeces, the heart of
+his obedience. I dare pawne downe my life for him, that
+he hath writ this to feele my affection to your Honor, &amp;
+to no other pretence of danger.</sp>
+<sp><speaker>Glou.</speaker> Thinke you so?</sp>
+<sp><speaker>Bast.</speaker> If your Honor iudge it meete, I will place you
+where you shall heare vs confere of this, and by an Auri-
+cular assurance haue your satisfaction, and that without
+any further delay, then this very Euening.</sp>
+<sp><speaker>Glou.</speaker> He cannot bee such a Monster. <hi rend="italic">Edmond</hi> seeke
+him out: winde me into him, I pray you: frame the Bu-
+sinesse after your owne wisedome. I would vnstate my
+selfe, to be in a due resolution.</sp>
+<sp><speaker>Bast.</speaker> I will seeke him Sir, presently: conuey the bu-
+sinesse as I shall find meanes, and acquaint you withall.</sp>
+<sp><speaker>Glou.</speaker> These late Eclipses in the Sun and Moone por-
+tend no good to vs: though the wisedome of Nature can
+reason it thus, and thus, yet Nature finds it selfe scourg'd
+by the sequent effects. Loue cooles, friendship falls off,
+Brothers diuide. In Cities, mutinies; in Countries, dis-
+cord; in Pallaces, Treason; and the Bond crack'd, 'twixt
+Sonne and Father. This villaine of mine comes vnder the
+prediction; there's Son against Father, the King fals from
+byas of Nature, there's Father against Childe. We haue
+seene the best of our time. Machinations, hollownesse,
+treacherie, and all ruinous disorders follow vs disquietly
+to our Graues. Find out this Villain, <hi rend="italic">Edmond</hi>, it shall lose
+thee nothing, do it carefully: and the Noble &amp; true-har-
+ted Kent banish'd; his offence, honesty. 'Tis strange.</sp>
+<stage rend="italic">Exit</stage>
+<sp><speaker>Bast.</speaker> This is the excellent foppery of the world, that
+when we are sicke in fortune, often the surfets of our own
+behauiour, we make guilty of our disasters, the Sun, the
+Moone, and Starres, as if we were villaines on necessitie,
+Fooles by heauenly compulsion, Knaues, Theeves, and
+Treachers by Spericall predominance. Drunkards, Ly-
+ars, and Adulterers by an inforc'd obedience of Planatary
+influence; and all that we are euill in, by a diuine thru-
+sting on. An admirable euasion of Whore-master-man,
+to lay his Goatish disposition on the charge of a Starre,
+My father compounded with my mother vnder the Dra-
+gons taile, and my Natiuity was vnder <hi rend="italic">Vrsa Maior</hi>, so
+that it followes, I am rough and Leacherous. I should
+haue bin that I am, had the maidenlest Starre in the Fir-
+mament twinkled on my bastardizing.
+<stage rend="italic">Enter Edgar.</stage>
+Pat: he comes like the Catastrophe of the old Comedie:
+my Cue is villanous Melancholly, with a sighe like <hi rend="italic">Tom</hi>
+o' Bedlam. --- O these Eclipses do portend these diui-
+sions. Fa, Sol, La, Me.</sp>
+<sp><speaker>Edg.</speaker> How now Brother <hi rend="italic">Edmond</hi>, what serious con-
+templation are you in?</sp>
+<sp><speaker>Bast.</speaker> I am thinking Brother of a prediction I read this
+other day, what should follow these Eclipses.</sp>
+<sp><speaker>Edg.</speaker> Do you busie your selfe with that?</sp>
+<sp><speaker>Bast.</speaker> I promise you, the effects he writes of, succeede
+vnhappily.
+When saw you my Father last?</sp>
+<sp><speaker>Edg.</speaker> The night gone by.</sp>
+<sp><speaker>Bast.</speaker> Spake you with him?</sp>
+<sp><speaker>Edg.</speaker> I, two houres together.</sp>
+<sp><speaker>Bast.</speaker> Parted you in good termes? Found you no dis-
+pleasure in him, by word, nor countenance?</sp>
+<sp><speaker>Edg.</speaker> None at all,</sp>
+<sp><speaker>Bast.</speaker> Bethink your selfe wherein you may haue offen-
+ded him: and at my entreaty forbeare his presence, vuntill
+some little time hath qualified the heat of his displeasure,
+which at this instant so rageth in him, that with the mis-
+<pb ed="F1" n="287"></pb><pb ed="F2" n="307"></pb><pb ed="F3" n="765"></pb>
+chiefe of your person, it would scarsely alay.</sp>
+<sp><speaker>Edg.</speaker> Some Villaine hath done me wrong.</sp>
+<sp><speaker>Edm.</speaker> That's my feare, I pray you haue a continent
+forbearance till the speed of his rage goes slower: and as
+I say, retire with me to my lodging, from whence I will
+fitly bring you to heare my Lord speake: pray ye goe,
+there's my key: if you do stirre abroad, goe arm'd.</sp>
+<sp><speaker>Edg.</speaker> Arm'd, Brother?</sp>
+<sp><speaker>Edm.</speaker> Brother, I aduise you to the best, I am no honest
+man, if ther be any good meaning toward you: I haue told
+you what I haue seene, and heard: But faintly. Nothing
+like the image, and horror of it, pray you away.</sp>
+<sp><speaker>Edg.</speaker> Shall I heare from you anon?</sp>
+<stage rend="italic">Exit.</stage>
+<sp><speaker>Edm.</speaker> I do serue you in this businesse:
+A Credulous Father, and a Brother Noble,
+Whose nature is so farre from doing harmes,
+That he suspects none: on whose foolish honestie
+My practises ride easie: I see the businesse.
+Let me, if not by birth, haue lands by wit,
+All with me's meete, that I can fashion fit.</sp>
+<stage rend="italic">Exit.</stage></body></text></TEI>

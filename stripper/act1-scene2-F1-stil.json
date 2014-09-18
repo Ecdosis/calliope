@@ -1,0 +1,964 @@
+{
+  "style": "TEI",
+  "ranges": [
+  {
+    "name": "TEI",
+    "reloff": 0,
+    "len": 8324
+  }
+,
+  {
+    "name": "teiHeader",
+    "reloff": 0,
+    "len": 257
+  }
+,
+  {
+    "name": "fileDesc",
+    "reloff": 0,
+    "len": 257
+  }
+,
+  {
+    "name": "titleStmt",
+    "reloff": 0,
+    "len": 25
+  }
+,
+  {
+    "name": "title",
+    "reloff": 0,
+    "len": 24
+  }
+,
+  {
+    "name": "publicationStmt",
+    "reloff": 25,
+    "len": 56
+  }
+,
+  {
+    "name": "publisher",
+    "reloff": 0,
+    "len": 15
+  }
+,
+  {
+    "name": "date",
+    "reloff": 16,
+    "len": 4
+  }
+,
+  {
+    "name": "availability",
+    "reloff": 5,
+    "len": 34
+  }
+,
+  {
+    "name": "sourceDesc",
+    "reloff": 35,
+    "len": 176
+  }
+,
+  {
+    "name": "bibl",
+    "reloff": 0,
+    "len": 176
+  }
+,
+  {
+    "name": "title",
+    "reloff": 0,
+    "len": 112
+  }
+,
+  {
+    "name": "author",
+    "reloff": 113,
+    "len": 19
+  }
+,
+  {
+    "name": "publisher",
+    "reloff": 20,
+    "len": 36
+  }
+,
+  {
+    "name": "date",
+    "reloff": 37,
+    "len": 4
+  }
+,
+  {
+    "name": "text",
+    "reloff": 6,
+    "len": 8067
+  }
+,
+  {
+    "name": "body",
+    "reloff": 0,
+    "len": 8067
+  }
+,
+  {
+    "name": "head",
+    "reloff": 0,
+    "len": 14,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "stage",
+    "reloff": 15,
+    "len": 14,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 15,
+    "len": 939
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "l",
+    "reloff": 6,
+    "len": 39
+  }
+,
+  {
+    "name": "l",
+    "reloff": 40,
+    "len": 41
+  }
+,
+  {
+    "name": "l",
+    "reloff": 42,
+    "len": 42
+  }
+,
+  {
+    "name": "l",
+    "reloff": 43,
+    "len": 40
+  }
+,
+  {
+    "name": "l",
+    "reloff": 41,
+    "len": 50
+  }
+,
+  {
+    "name": "l",
+    "reloff": 51,
+    "len": 46
+  }
+,
+  {
+    "name": "l",
+    "reloff": 47,
+    "len": 39
+  }
+,
+  {
+    "name": "l",
+    "reloff": 40,
+    "len": 42
+  }
+,
+  {
+    "name": "l",
+    "reloff": 43,
+    "len": 41
+  }
+,
+  {
+    "name": "l",
+    "reloff": 42,
+    "len": 46
+  }
+,
+  {
+    "name": "l",
+    "reloff": 47,
+    "len": 41
+  }
+,
+  {
+    "name": "l",
+    "reloff": 42,
+    "len": 38
+  }
+,
+  {
+    "name": "l",
+    "reloff": 39,
+    "len": 39
+  }
+,
+  {
+    "name": "l",
+    "reloff": 40,
+    "len": 41
+  }
+,
+  {
+    "name": "l",
+    "reloff": 42,
+    "len": 42
+  }
+,
+  {
+    "name": "l",
+    "reloff": 43,
+    "len": 40
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 11,
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 30,
+    "len": 43
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 36,
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 8,
+    "len": 44
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 45,
+    "len": 0,
+    "annotations": [ { "n": "286" },{ "ed": "F1" } ]
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 0,
+    "len": 0,
+    "annotations": [ { "n": "306" },{ "ed": "F2" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 0,
+    "len": 43
+  }
+,
+  {
+    "name": "l",
+    "reloff": 44,
+    "len": 40
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 25,
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "l",
+    "reloff": 16,
+    "len": 43
+  }
+,
+  {
+    "name": "l",
+    "reloff": 44,
+    "len": 32
+  }
+,
+  {
+    "name": "stage",
+    "reloff": 33,
+    "len": 17,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 18,
+    "len": 185
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 157,
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 29,
+    "len": 36
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 37,
+    "len": 52
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 53,
+    "len": 31
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 32,
+    "len": 34
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 35,
+    "len": 22
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 23,
+    "len": 203
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 204,
+    "len": 176
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 177,
+    "len": 30
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 31,
+    "len": 111
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 112,
+    "len": 27
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 28,
+    "len": 98
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 99,
+    "len": 677
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "stage",
+    "reloff": 6,
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 6,
+    "len": 459,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 554,
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 112,
+    "len": 118
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 119,
+    "len": 49
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 50,
+    "len": 123
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 124,
+    "len": 16
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 17,
+    "len": 75
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 76,
+    "len": 53
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 54,
+    "len": 198
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 199,
+    "len": 214
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 215,
+    "len": 497
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "choice",
+    "reloff": 28,
+    "len": 6
+  }
+,
+  {
+    "name": "abbr",
+    "reloff": 0,
+    "len": 2
+  }
+,
+  {
+    "name": "expan",
+    "reloff": 2,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 468,
+    "len": 20
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 21,
+    "len": 210
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 211,
+    "len": 189
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 36,
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 154,
+    "len": 111
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 112,
+    "len": 799
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 662,
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "stage",
+    "reloff": 138,
+    "len": 4,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 5,
+    "len": 1014
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 650,
+    "len": 10,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "stage",
+    "reloff": 163,
+    "len": 12,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 119,
+    "len": 3,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 83,
+    "len": 69
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "hi",
+    "reloff": 21,
+    "len": 6,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 49,
+    "len": 101
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 102,
+    "len": 39
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 40,
+    "len": 95
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 96,
+    "len": 23
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 24,
+    "len": 25
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 26,
+    "len": 28
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 29,
+    "len": 93
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 94,
+    "len": 17
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 18,
+    "len": 278
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 5
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 232,
+    "len": 0,
+    "annotations": [ { "ed": "F1" },{ "n": "287" } ]
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 0,
+    "len": 0,
+    "annotations": [ { "ed": "F2" },{ "n": "307" } ]
+  }
+,
+  {
+    "name": "pb",
+    "reloff": 0,
+    "len": 0,
+    "annotations": [ { "ed": "F3" },{ "n": "765" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 47,
+    "len": 38
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 39,
+    "len": 270
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 271,
+    "len": 20
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 21,
+    "len": 215
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 216,
+    "len": 33
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "stage",
+    "reloff": 34,
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
+  }
+,
+  {
+    "name": "sp",
+    "reloff": 6,
+    "len": 307
+  }
+,
+  {
+    "name": "speaker",
+    "reloff": 0,
+    "len": 4
+  }
+,
+  {
+    "name": "stage",
+    "reloff": 308,
+    "len": 5,
+    "annotations": [ { "rend": "italic" } ]
+  }
+  ]
+}
