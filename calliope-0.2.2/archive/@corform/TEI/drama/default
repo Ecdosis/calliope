@@ -1,1 +1,0 @@
-{"format":"CSS","title":"TEI","body":"h3.head {} h3.head-italic { text-align: center; font-family: Times, serif; font-weight: bold; font-style: italic; font-size: 18px } p.stage-italic { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-style: italic } p.stage { } br.l {} div.sp { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px } "}

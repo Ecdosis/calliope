@@ -62,7 +62,7 @@ public class TestHome extends Test
     +"window.attachEvent('onload', execute);\n\t}\n\t}();";
     static String LIST_SCRIPT = 
     "var CollapsibleLists =\nnew function(){\nthis.reopen = functi"
-    +"on()\n{\n\tvar elem = document.getElementById(\"DOC_ID\");\n"
+    +"on()\n{\n\tvar elem = document.getElementById(\"docid\");\n"
     +"\tvar components = elem.value.split(\"/\");\n\tvar lis = doc"
     +"ument.getElementsByTagName('li');\n\tfor ( var i=0;i<compone"
     +"nts.length;i++ )\n\t{\n\t\tfor ( var j=0;j<lis.length;j++ )\n"
@@ -127,7 +127,7 @@ public class TestHome extends Test
     +"list-item-last-open.png'); }";
     static String CATALOG_SCRIPT = 
     "function setPath( link )\n{\n\tvar elem = document.getElement"
-    +"ById(\"DOC_ID\");\n\telem.value=link;\n\tdocument.forms.defa"
+    +"ById(\"docid\");\n\telem.value=link;\n\tdocument.forms.defa"
     +"ult.setAttribute('action','"+Service.PREFIX+"/tests/html');\n\tdocument.forms."
     +"default.submit();\n}\nfunction toggle(node)\n{\n\tvar open ="
     +" node.className.match(/(^| )collapsibleListClosed( |$)/);\n\t"

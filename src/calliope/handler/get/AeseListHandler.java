@@ -81,6 +81,14 @@ public class AeseListHandler extends AeseGetHandler
         }
         return nTopGroups;
     }
+    private String unescape( String str)
+    {
+        if ( str.contains("%2f") )
+            str = str.replace("%2f","/");
+        else if (str.contains("%2F") )
+            str = str.replace("%2F","/");
+        return str;
+    }
     /**
      * Annotate a raw text table with standoff properties suitable for a list
      * @param table the raw text table returned by nmerge
@@ -164,6 +172,7 @@ public class AeseListHandler extends AeseGetHandler
                     // add long name as description
                     shortName.addAnnotation( JSONKeys.DESCRIPTION, 
                         cols[cols.length-1] ); 
+                    //System.out.println(cols[cols.length-1]);
                     // add group-path+version as ID
                     shortName.addAnnotation( JSONKeys.VERSION1, versionId );
                     doc.add( shortName );
@@ -208,6 +217,7 @@ public class AeseListHandler extends AeseGetHandler
         try
         {
             String table = getVersionTableForUrn( urn );
+            table = unescape(table);
             String listName = request.getParameter( Params.NAME );
             if ( listName == null )
                 listName = "versions";
