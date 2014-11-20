@@ -26,10 +26,10 @@ class Event implements Comparable<Event>
     String host;
     Event( JSONObject obj, String host )
     {
-        startDate = new FuzzyDate((String)obj.get("startDate") );
+        startDate = new FuzzyDate((String)obj.get("startDate"),null );
         String eDate = (String)obj.get("endDate");
         if ( eDate != null )
-            endDate = new FuzzyDate( eDate );
+            endDate = new FuzzyDate( eDate,null );
         else
             endDate = startDate;
         eventType = (String)obj.get("eventType");

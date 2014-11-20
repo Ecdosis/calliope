@@ -63,4 +63,6 @@ public class Services
     public static String SEARCH = "search";
     /** json timeline service */
     public static String TIMELINE = "timeline";
+    /** cut-down json timeline service using events collection */
+     public static String TIMELINENEW = "timelinenew";
 }

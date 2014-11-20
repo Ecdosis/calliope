@@ -109,6 +109,7 @@ public class Params
     public final static String EXPR = "expr";
     public static final String HITS_PER_PAGE = "hits_per_page";
     public final static String TITLE = "title";
+    public final static String SUBTITLE = "subtitle";
     public final static String DESCRIPTION = "description";
     public static String PROJECT = "project";
     public static String EVENT_TYPE = "event_type";

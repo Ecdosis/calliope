@@ -35,4 +35,5 @@ public class Database
     public static String PARATEXT = "paratext";
     /** miscellaneous */
     public static String MISC = "misc";
+    public static String EVENTS = "events";
 }

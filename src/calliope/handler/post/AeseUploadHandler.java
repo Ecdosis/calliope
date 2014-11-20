@@ -50,6 +50,10 @@ public class AeseUploadHandler extends AeseImportHandler
                         database, docID.get(), 
                         iFile.getData() );
                 }
+                if ( Connector.getConnection()== null)
+                    System.out.println("connection was null");
+                if ( this.docID == null )
+                    System.out.println("docIDwasnull");
                 for ( int i=0;i<files.size();i++ )
                 {
                     String resp = "";

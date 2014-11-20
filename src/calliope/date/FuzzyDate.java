@@ -14,6 +14,7 @@ public class FuzzyDate implements Comparable
     int day;
     int month;
     int year;
+    Locale locale;
     Qualifier q;
     /*by 8 March 1850
     1845?
@@ -51,7 +52,7 @@ public class FuzzyDate implements Comparable
         {
             try
             {
-                Date date = new SimpleDateFormat("MMM").parse(month);
+                Date date = new SimpleDateFormat("MMM",this.locale).parse(month);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
                 m = cal.get(Calendar.MONTH);
@@ -132,11 +133,15 @@ public class FuzzyDate implements Comparable
      *  [?|By|Circa|c.|c|Early|Late] year
      *  or [?|By|Circa|c.|c|Early|Late] month year
      *  or [?|By|Circa|c.|c|Early|Late] day month year
+     * @param locale null if default desired else a locale
      */
-    public FuzzyDate( String spec )
+    public FuzzyDate( String spec, Locale locale )
     {
         int state = 0;
         int y,d,m;
+        if ( locale == null)
+            locale = Locale.getDefault();
+        this.locale = locale;
         String[] parts = spec.split(" ");
         // leading ? not separated from text
         for ( int i=0;i<parts.length;i++ )
@@ -291,22 +296,27 @@ public class FuzzyDate implements Comparable
     public static void main( String[] args )
     {
         FuzzyDate[] fds = new FuzzyDate[14];
-        fds[0] = new FuzzyDate("31 December 1832");
-        fds[1] = new FuzzyDate("1833");
-        fds[2] = new FuzzyDate("Early 1833");
-        fds[3] = new FuzzyDate("January 1833");
-        fds[4] = new FuzzyDate("1 January 1833");
-        fds[5] = new FuzzyDate("2 January 1833"); 
-        fds[6] = new FuzzyDate("31 December 1833");
-        fds[7] = new FuzzyDate("Late December 1833");
-        fds[8] = new FuzzyDate("1834");
-        fds[9] = new FuzzyDate("c. January 1890");
-        fds[10] = new FuzzyDate("January 1890");
-        fds[11] = new FuzzyDate("1 January 1890");
-        fds[12] = new FuzzyDate("By December 1833");
-        fds[13] = new FuzzyDate("?1833");
+        
+        fds[0] = new FuzzyDate("by 8 March 1857",null);
+        fds[1] = new FuzzyDate("1833",null);
+        fds[2] = new FuzzyDate("Early 1833",null);
+        fds[3] = new FuzzyDate("January 1833",null);
+        fds[4] = new FuzzyDate("1 January 1833",null);
+        fds[5] = new FuzzyDate("2 January 1833",null); 
+        fds[6] = new FuzzyDate("31 December 1833",null);
+        fds[7] = new FuzzyDate("Late December 1833",null);
+        fds[8] = new FuzzyDate("1834",null);
+        fds[9] = new FuzzyDate("c. January 1890",null);
+        fds[10] = new FuzzyDate("January 1890",null);
+        fds[11] = new FuzzyDate("1 January 1890",null);
+        fds[12] = new FuzzyDate("By December 1833",null);
+        fds[13] = new FuzzyDate("?1833",null);
         Arrays.sort( fds );
         for ( int i=0;i<fds.length;i++ )
             System.out.println(fds[i].toCommaSep());
+    }
+    public int getYear()
+    {
+        return this.year;
     }
 }
