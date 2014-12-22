@@ -11,6 +11,7 @@ import calliope.exception.AeseException;
 import calliope.tests.html.Element;
 import calliope.tests.html.HTML;
 import calliope.constants.HTMLNames;
+import calliope.JettyServer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -61,7 +62,7 @@ public class TestInternal extends Test
         try
         {
             TestGetURL basicUrl = new TestGetURL(
-                "http://localhost:8080"+Service.PREFIX+"/test/basic/");
+                "http://localhost:"+JettyServer.wsPort+Service.PREFIX+"/test/basic/");
             String basic = calliope.URLEncoder.getResponseForUrl( 
                 basicUrl.toString() );
             textArea.addText( basic );

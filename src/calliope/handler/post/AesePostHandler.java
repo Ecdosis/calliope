@@ -61,7 +61,10 @@ public void handle( HttpServletRequest request,
                 if ( second.length() > 0 )
                 {
                     int pos = urn.indexOf(second);
-                    urn = urn.substring(pos+second.length()+1);
+                    if ( urn.length() > pos+second.length() )
+                        urn = urn.substring(pos+second.length()+1);
+                    else 
+                        urn = "";
                     if ( second.equals(Services.LITERAL) )
                         new AeseUploadHandler().handle(request,response,urn);
                     else if ( second.equals(Services.XML) )

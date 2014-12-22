@@ -53,7 +53,9 @@ public class HTMLCatalog extends Element
         boolean found = false;
         for ( int i=0;i<docids.length;i++ )
         {
-            digest( docids[i] );
+            // temporary fix: should never be null!
+            if ( docids[i] != null )
+                digest( docids[i] );
             found = true;
         }
         return found;

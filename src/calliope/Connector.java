@@ -41,6 +41,7 @@ public class Connector
             case MONGO:
                 connection = new MongoConnection(
                     user,password,host, dbPort,wsPort );
+                System.out.println("connection="+connection);
                 break;
             default:
                 throw new AeseException( "Unknown repository type "

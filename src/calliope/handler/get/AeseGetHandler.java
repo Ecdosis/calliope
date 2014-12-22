@@ -96,6 +96,9 @@ public class AeseGetHandler extends AeseHandler
             else if ( prefix.equals(Services.LIST) )
                 new AeseTextListHandler().handle( request, response, 
                     Path.pop(urn) );
+            else if ( prefix.equals(Services.COLLECTION) )
+                new AeseListCollectionHandler().handle( request, response, 
+                    Path.pop(urn) );
             else if ( prefix.equals(Services.PSEF) )
                 new AesePSEFHandler().handle( request, response, Path.pop(urn) );
             else if ( prefix.equals(Services.TEST) )
@@ -105,7 +108,8 @@ public class AeseGetHandler extends AeseHandler
                     Path.pop(urn) );
             else if ( prefix.equals(Database.MISC) )
                 new AeseGetMiscHandler().handle( request, response, 
-                    Path.pop(urn) );else if ( prefix.equals(Database.CORTEX) )
+                    Path.pop(urn) );
+            else if ( prefix.equals(Database.CORTEX) )
                 new AeseGetCorTexHandler().handle( request, response, 
                     Path.pop(urn) );
             else if ( prefix.equals(Database.CORCODE) )
@@ -117,8 +121,8 @@ public class AeseGetHandler extends AeseHandler
             else if ( prefix.equals(Database.CORPIX) )
                 new AeseGetCorPixHandler().handle( request, response, 
                     Path.pop(urn) );
-            else 
-                throw new AeseException("invalid urn: "+urn );
+            //else 
+              //  throw new AeseException("invalid urn: "+urn );
         }
         else
             throw new PathException("Invalid urn (prefix was null) "+urn );

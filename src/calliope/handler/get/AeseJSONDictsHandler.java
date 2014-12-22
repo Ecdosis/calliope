@@ -23,7 +23,7 @@ public class AeseJSONDictsHandler extends AeseGetHandler
         try
         {
             StringBuilder jdoc = new StringBuilder();
-            jdoc.append("[\n");
+            jdoc.append("[ ");
             AeseSpeller aes = new AeseSpeller(Globals.DEFAULT_DICT);
             String[] dicts = aes.listDicts();
             for ( int i=0;i<dicts.length;i++ )
@@ -46,8 +46,10 @@ public class AeseJSONDictsHandler extends AeseGetHandler
                         jdoc.append(",\n");
                 }
             }
-            jdoc.append("\n]");
+            jdoc.append(" ]");
             aes.cleanup();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
             response.getWriter().println( jdoc.toString() );
         }
         catch ( Exception e )

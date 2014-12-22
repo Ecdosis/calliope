@@ -16,6 +16,7 @@
 package calliope.handler.get;
 import calliope.handler.get.commands.AeseJSONTimelineHandler;
 import calliope.handler.get.commands.AeseJSONTimelineNewHandler;
+import calliope.handler.get.commands.AeseJSONBiographyHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import calliope.constants.*;
@@ -46,6 +47,8 @@ public class AeseJSONHandler extends AeseGetHandler
             new AeseJSONTimelineHandler().handle(request,response,Path.pop(urn));
         else if ( first.equals(Services.TIMELINENEW) )
             new AeseJSONTimelineNewHandler().handle(request,response,Path.pop(urn));
+        else if ( first.equals(Services.BIOGRAPHY) )
+            new AeseJSONBiographyHandler().handle(request,response,Path.pop(urn));
         else
             throw new AeseException("Unknown service: "+urn);
     }

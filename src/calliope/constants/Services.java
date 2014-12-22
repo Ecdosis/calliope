@@ -33,6 +33,8 @@ public class Services
     public static String IMG = "img";
     /** list versions for MVD */
     public static String LIST = "list";
+    /** list collection docids */
+    public static String COLLECTION = "collection";
     /** test GUI */
     public static String TESTS = "tests";
     /** import stuff */
@@ -64,5 +66,7 @@ public class Services
     /** json timeline service */
     public static String TIMELINE = "timeline";
     /** cut-down json timeline service using events collection */
-     public static String TIMELINENEW = "timelinenew";
+    public static String TIMELINENEW = "timelinenew";
+    /** cut-down json timeline service using events collection */
+    public static String BIOGRAPHY = "biography";
 }

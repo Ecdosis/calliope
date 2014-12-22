@@ -15,9 +15,7 @@
  */
 package calliope.handler.get;
 
-import calliope.constants.Database;
 import calliope.exception.AeseException;
-import calliope.handler.AeseMVD;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;

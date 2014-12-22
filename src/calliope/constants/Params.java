@@ -25,6 +25,8 @@ public class Params
     public final static String CORCODE = "CORCODE";
     /** passed-in form param base name for corforms */
     public final static String CORFORM = "CORFORM";
+    /** passed-in collection name */
+    public final static String COLLECTION = "collection";
     /** passed-in form param base name for styles */
     public final static String STYLE = "STYLE";
     /** config parameter */

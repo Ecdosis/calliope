@@ -30,6 +30,7 @@ import calliope.constants.HTMLNames;
 import calliope.constants.Params;
 import calliope.constants.Globals;
 import calliope.AeseSpeller;
+import calliope.JettyServer;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
@@ -193,7 +194,8 @@ public class TestImport extends Test
         try
         {
             StringBuilder sb = new StringBuilder();
-            URL mixedImport = new URL("http://localhost"+Service.PREFIX+"/import/mixed/");
+            URL mixedImport = new URL("http://localhost:"+JettyServer.wsPort+Service.PREFIX
+                +"/import/mixed/");
             HttpURLConnection connection = null;
             connection = (HttpURLConnection) mixedImport.openConnection();
             connection.setRequestMethod("POST");
@@ -535,7 +537,7 @@ public class TestImport extends Test
             Element form = new Element( HTMLNames.FORM );
             form.addAttribute( HTMLNames.NAME, HTMLNames.DEFAULT );
             form.addAttribute( HTMLNames.METHOD, "POST" );
-            form.addAttribute( HTMLNames.ACTION, "/tests/import/" );
+            form.addAttribute( HTMLNames.ACTION, "/calliope/tests/import/" );
             form.addAttribute( HTMLNames.ENCTYPE, "multipart/form-data" );
             form.addAttribute( HTMLNames.ONSUBMIT, "return checkform()" );
             Element outer = new Element("div");

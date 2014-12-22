@@ -24,6 +24,7 @@ import calliope.tests.html.Element;
 import calliope.tests.html.HTMLLiteral;
 import calliope.tests.html.Text;
 import calliope.tests.html.HTML;
+import calliope.JettyServer;
 import calliope.constants.*;
 import calliope.Utils;
 import calliope.URLEncoder;
@@ -66,7 +67,7 @@ public class TestHtml extends Test
     {
         try
         {
-            String url = "http://localhost:8080"+Service.PREFIX+"/html";
+            String url = "http://localhost:"+JettyServer.wsPort+Service.PREFIX+"/html";
             String urn = Utils.escape( docID );
             url = URLEncoder.append( url, urn );
             url = URLEncoder.addGetParam(url,Params.VERSION1,
@@ -97,7 +98,7 @@ public class TestHtml extends Test
         try
         {
             TestGetURL rawUrl = new TestGetURL(
-                "http://localhost:8080"+Service.PREFIX+"/html/list/");
+                "http://localhost:"+JettyServer.wsPort+Service.PREFIX+"/html/list/");
             rawUrl.append( docID );
             rawUrl.addParam( Params.NAME, Params.VERSION1 );
             rawUrl.addParam( Params.VERSION1, version1 );

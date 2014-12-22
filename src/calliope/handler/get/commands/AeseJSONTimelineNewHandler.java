@@ -81,7 +81,6 @@ public class AeseJSONTimelineNewHandler extends AeseGetHandler
             if ( docid==null||docid.length()==0)
                 docid ="english/harpur";
             eventType = readEventType(request);
-            System.out.println("event type="+eventType.toString());
             lang = languageFromDocId();
             Connection conn = Connector.getConnection();
             String[] docs = conn.listDocuments( Database.EVENTS, docid+"/.*" );
@@ -99,6 +98,7 @@ public class AeseJSONTimelineNewHandler extends AeseGetHandler
             TimelineJSNew jobj = new TimelineJSNew(title,subtitle,eventType,
                 array,lang);
             response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json");
             String jstring = jobj.toJSONString();
             //System.out.println(jstring);
             response.getWriter().print( jstring );

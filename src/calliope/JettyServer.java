@@ -31,7 +31,7 @@ public class JettyServer extends AbstractHandler
 {
     /** needed by AeseServerThread */
     static String host;
-    static int wsPort;
+    public static int wsPort=8081;
     JettyServer()
     {
         super();
@@ -94,7 +94,6 @@ public class JettyServer extends AbstractHandler
         try
         {
             int dbPort = 5984;
-            wsPort = 8080;
             host = "localhost";
             String webRoot = "/var/www";
             String password = "";

@@ -625,12 +625,10 @@ static const char *load_string( JNIEnv *env, jstring jstr, jboolean *copied )
 /*
  * Class:     calliope_AeseStripper
  * Method:    strip
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcalliope/json/JSONResponse;Lcalliope/json/JSONResponse;)I
  */
 JNIEXPORT jint JNICALL Java_calliope_AeseStripper_strip
-  (JNIEnv *env, jobject obj, jstring xml, jstring rules, jstring format, 
-    jstring style, jstring language, jstring hexcepts, jobject text, 
-    jobject markup)
+  (JNIEnv *env, jobject obj, jstring xml, jstring rules, jstring format, jstring style, jstring language, jstring hexcepts, jboolean html, jobject text, jobject markup)
 {
 	int res = 1;
     jboolean x_copied,r_copied=JNI_FALSE,f_copied,s_copied,h_copied,l_copied=JNI_FALSE;

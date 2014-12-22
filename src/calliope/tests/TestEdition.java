@@ -6,6 +6,7 @@ package calliope.tests;
 import calliope.Service;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import calliope.JettyServer;
 import calliope.exception.*;
 import calliope.tests.html.Element;
 import calliope.tests.html.HTMLLiteral;
@@ -311,7 +312,7 @@ public class TestEdition extends Test
     {
         try
         {
-            String url = "http://localhost:8080"+Service.PREFIX+"/html";
+            String url = "http://localhost:"+JettyServer.wsPort+Service.PREFIX+"/html";
             String urn = Utils.escape( docID );
             url = URLEncoder.append( url, urn );
             url = URLEncoder.addGetParam(url,Params.VERSION1,
@@ -332,7 +333,7 @@ public class TestEdition extends Test
     }
     private String getVersions() throws Exception
     {
-        String rawURL = "http://localhost:8080"+Service.PREFIX+"/list";
+        String rawURL = "http://localhost:"+JettyServer.wsPort+Service.PREFIX+"/list";
         String urn = Utils.escape( docID );
         rawURL = URLEncoder.append( rawURL, urn );
         URL url = new URL( rawURL );
@@ -367,7 +368,7 @@ public class TestEdition extends Test
         try
         {
             TestGetURL rawUrl = new TestGetURL(
-                "http://localhost:8080"+Service.PREFIX+"/html/list/");
+                "http://localhost:"+JettyServer.wsPort+Service.PREFIX+"/html/list/");
             String urn = Utils.escape( docID );
             rawUrl.append( urn );
             rawUrl.addParam( Params.NAME, Params.VERSION1 );
@@ -540,7 +541,7 @@ public class TestEdition extends Test
      */
     private String fetchTable()
     {
-        String rawURL = "http://localhost:8080"+Service.PREFIX+"/html/table";
+        String rawURL = "http://localhost:"+JettyServer.wsPort+Service.PREFIX+"/html/table";
         String urn = Utils.escape( docID );
         rawURL = URLEncoder.append( rawURL, urn );
         // add required params to get table

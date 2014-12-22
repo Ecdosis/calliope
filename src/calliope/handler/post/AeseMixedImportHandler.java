@@ -38,6 +38,16 @@ public class AeseMixedImportHandler extends AeseImportHandler
         super();
         style = Formats.TEI+"/default";
     }
+    private String addCRs( String log )
+    {
+        StringBuilder sb = new StringBuilder(log);
+        for ( int i=log.length()-1;i>0;i-- )
+        {
+            if ( log.charAt(i)=='\n')
+                sb.insert(i,"<br>");
+        }
+        return sb.toString();
+    }
     /**
      * Handle posted files from the input dialog. Can be mixed TEXT etc files
      * @param request the request object
@@ -137,7 +147,7 @@ public class AeseMixedImportHandler extends AeseImportHandler
                     else
                         log.append("No cortex/corcode created\n");
                     response.setContentType("text/html;charset=UTF-8");
-                    response.getWriter().println( wrapLog() );
+                    response.getWriter().println( addCRs(log.toString()) );
                 }
                 else
                 {
