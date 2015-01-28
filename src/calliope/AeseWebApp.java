@@ -62,9 +62,9 @@ public class AeseWebApp extends HttpServlet
         //String dbPortValue = getParameter( config, DBPORT, "5984" );
         String webRoot = getParameter( config, WEBROOT, "/var/www" );
         int dbPort = Integer.valueOf( dbPortValue );
-        String host = req.getServerName();
+        //String host = req.getServerName();
         int wsPort = req.getServerPort();
-        Connector.init( repository, user, password, host, dbPort, wsPort, 
+        Connector.init( repository, user, password, "localhost", dbPort, wsPort, 
             webRoot );
     }
     @Override

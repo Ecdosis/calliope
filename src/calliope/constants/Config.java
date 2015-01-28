@@ -14,5 +14,6 @@ public enum Config
     xml,
     xslt,
     splitter,
-    stripper
+    stripper,
+    sanitiser
 }

@@ -36,4 +36,5 @@ public class Database
     /** miscellaneous */
     public static String MISC = "misc";
     public static String EVENTS = "events";
+    public static String SANITISERS = "sanitisers";
 }

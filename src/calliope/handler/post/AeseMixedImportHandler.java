@@ -22,9 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import calliope.exception.AeseException;
 import calliope.constants.Config;
-import calliope.constants.Params;
-import calliope.constants.JSONKeys;
-import calliope.json.JSONDocument;
+import calliope.handler.post.annotate.Annotation;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import java.util.ArrayList;
 /**
@@ -46,6 +44,10 @@ public class AeseMixedImportHandler extends AeseImportHandler
             if ( log.charAt(i)=='\n')
                 sb.insert(i,"<br>");
         }
+        sb.insert(0, "<!doctype html><head><meta charset=\"UTF-8\">"
+            +"<style type=\"text/css\">body { font: 12px ariel, "
+            +"sans-serif }</style></head><body>");
+        sb.append("</body></html>");
         return sb.toString();
     }
     /**
@@ -88,39 +90,13 @@ public class AeseMixedImportHandler extends AeseImportHandler
                                 stripperName) );
                             stage3Xml.setSplitConfig( getConfig(Config.splitter,
                                 splitterName) );
-                            if ( stage3Xml.hasTEI() )
-                            {
-                                ArrayList<File> notes = stage3Xml.getNotes();
-                                if ( notes.size()> 0 )
-                                {
-                                    Archive nCorTex = new Archive(docID.getWork(), 
-                                        docID.getAuthor(), Formats.MVD_TEXT, encoding);
-                                    nCorTex.setStyle( style );
-                                    Archive nCorCode = new Archive(docID.getWork(), 
-                                        docID.getAuthor(),Formats.MVD_STIL, encoding);
-                                    StageThreeXML s3notes = new StageThreeXML(
-                                        style,dict, hhExceptions);
-                                    s3notes.setStripConfig( 
-                                        getConfig(Config.stripper, stripperName) );
-                                    s3notes.setSplitConfig( 
-                                        getConfig(Config.splitter, splitterName) );
-                                    for ( int j=0;j<notes.size();j++ )
-                                        s3notes.add(notes.get(j));
-                                    log.append( s3notes.process(nCorTex,nCorCode) );
-                                    addToDBase( nCorTex, "cortex", "notes" );
-                                    addToDBase( nCorCode, "corcode", "notes" );
-                                    // differentiate base from notes
-                                    suffix = "base";
-                                }
-                                if ( xslt == null )
-                                    xslt = Params.XSLT_DEFAULT;
-                                String transform = getConfig(Config.xslt,xslt);
-                                JSONDocument jDoc = JSONDocument.internalise( 
-                                    transform );      
-                                stage3Xml.setTransform( (String)
-                                    jDoc.get(JSONKeys.BODY) );
-                            }
+                            String sanitiser = getConfig(Config.sanitiser,
+                                docID.shortID());
+                            stage3Xml.setSanitiseConfig( sanitiser.equals("{}")?null:sanitiser );
                             log.append( stage3Xml.process(cortex,corcode) );
+                            ArrayList<Annotation> notes = stage3Xml.getAnnotations();
+                            if ( notes != null && notes.size()>0 )
+                                addAnnotations( notes, true );
                             // process the text filers
                             StageThreeText stage3Text = new StageThreeText( 
                                 filterName, dict, hhExceptions );

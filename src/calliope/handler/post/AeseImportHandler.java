@@ -20,13 +20,17 @@ import calliope.Connector;
 import calliope.constants.*;
 import calliope.ByteHolder;
 import calliope.exception.AeseException;
+import calliope.db.Connection;
 import calliope.handler.post.importer.*;
 import calliope.importer.Archive;
+import calliope.handler.post.annotate.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -77,6 +81,38 @@ public abstract class AeseImportHandler extends AesePostHandler
         log = new StringBuilder();
         similarityTest = false;
         title = "untitled";
+    }
+    /**
+     * Add a batch of annotations to the database
+     * @param notes an array of annotation objects
+     * @param clean if true remove old annotations for this docid
+     * @throws AeseException 
+     */
+    protected void addAnnotations( ArrayList<Annotation> notes, boolean clean ) 
+        throws AeseException
+    {
+        String path = docID.get(); 
+        Connection conn = Connector.getConnection();
+        if ( clean )
+        {
+            // remove all existing annotations for this document
+            String[] docids = conn.listDocuments("annotations",path+"/.*");
+            for ( int i=0;i<docids.length;i++ )
+                conn.removeFromDb( "annotations", docids[i] );
+        }
+        // ensure that the annotations are all unique
+        HashSet<String> unique = new HashSet<String>();
+        String[] docids = conn.listDocuments("annotations",path+"/.*");
+        for ( int i=0;i<docids.length;i++ )
+            unique.add( docids[i] );
+        for ( int i=0;i<notes.size();i++ )
+        {
+            String docid = path + "/" + UUID.randomUUID().toString();
+            while ( unique.contains(docid) )
+                docid = path + "/" + UUID.randomUUID().toString();
+            conn.putToDb( "annotations", docid, notes.get(i).toString() );
+            unique.add( docid );
+        }
     }
     /**
      * Add the archive to the database
@@ -145,9 +181,10 @@ public abstract class AeseImportHandler extends AesePostHandler
                             nameMap.put( fieldName.substring(
                                 Params.SHORT_VERSION.length()),
                                 item.getString());
-                        else if ( fieldName.equals(Params.LC_STYLE) )
+                        else if ( fieldName.equals(Params.LC_STYLE)
+                            ||fieldName.equals(Params.STYLE) )
                         {
-                            jsonKeys.put(fieldName,contents);
+                            jsonKeys.put(fieldName.toLowerCase(),contents);
                             style = contents;
                         }
                         else if ( fieldName.equals(Params.DEMO) )

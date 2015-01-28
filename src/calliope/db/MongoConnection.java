@@ -229,6 +229,8 @@ public class MongoConnection extends Connection implements Test
             BasicDBObject keys = new BasicDBObject();
             keys.put( JSONKeys.DOCID, 1 );
             DBCursor cursor = coll.find( new BasicDBObject(), keys );
+            System.out.println("Found "+cursor.count()+" documents");
+            cursor.count();
             if ( cursor.length() > 0 )
             {
                 String[] docs = new String[cursor.length()];
@@ -239,7 +241,9 @@ public class MongoConnection extends Connection implements Test
                 return docs;
             }
             else
-                throw new AeseException( "no docs in collection "+collName );
+            {
+                return new String[0];
+            }
         }
         else
         {

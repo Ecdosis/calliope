@@ -68,6 +68,10 @@ public class Archive extends HashMap<String,byte[]>
 //            sb.append( author.substring(1) );
         description = sb.toString();
     }
+    public String getEncoding()
+    {
+        return this.encoding;
+    }
     /**
      * Add a long name to our map for later use
      * @param key the groups+version short name key

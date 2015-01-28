@@ -179,4 +179,12 @@ public class DocID
         }
         return sb.toString();
     }
+    /**
+     * Get the language/author form of the docID only
+     * @return a shortened docID
+     */
+    public String shortID()
+    {
+        return this.language+"/"+this.author;
+    }
 }

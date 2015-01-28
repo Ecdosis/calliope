@@ -122,12 +122,12 @@ public class StageTwo extends Stage
                     log.append( ") too different\n");
                     continue;
                 }
-                float percent = similar(first,files.get(i));
-                if ( !checkSimilarity || percent/100.0f>CUTOFF )
-                {
+                //float percent = similar(first,files.get(i));
+                //if ( !checkSimilarity || percent/100.0f>CUTOFF )
+                //{
                     newFiles.add( files.get(i) );
-                    accept( files.get(i).name, percent );
-                }
+                    accept( files.get(i).name, 100.0f/*percent*/ );
+                //}
             }
             files = newFiles;
         }
