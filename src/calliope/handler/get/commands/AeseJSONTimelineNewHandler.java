@@ -6,13 +6,13 @@
 
 package calliope.handler.get.commands;
 import calliope.Connector;
+import calliope.Utils;
 import calliope.constants.Database;
 import calliope.exception.AeseException;
 import calliope.constants.Params;
 import calliope.handler.get.AeseGetHandler;
 import calliope.db.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import calliope.handler.get.timeline.TimelineJSNew;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,26 +28,6 @@ public class AeseJSONTimelineNewHandler extends AeseGetHandler
     String subtitle;
     EventType eventType;
     String lang;
-    static HashMap<String,String> map;
-    static
-    {
-        map = new HashMap<String,String>();
-        map.put("english","en");
-        map.put("italian","it");
-        map.put("spanish","es");
-    }
-    /**
-     * Extract the language code from the docid
-     * @return a 2-char language code
-     */
-    String languageFromDocId( )
-    {
-        String[] parts = docid.split("/");
-        if ( map.containsKey(parts[0]) )
-            return map.get(parts[0]);
-        else
-            return "en";
-    }
     private EventType readEventType( HttpServletRequest request )
     {
         EventType result = EventType.all;
@@ -81,7 +61,7 @@ public class AeseJSONTimelineNewHandler extends AeseGetHandler
             if ( docid==null||docid.length()==0)
                 docid ="english/harpur";
             eventType = readEventType(request);
-            lang = languageFromDocId();
+            lang = Utils.languageFromDocId(docid);
             Connection conn = Connector.getConnection();
             String[] docs = conn.listDocuments( Database.EVENTS, docid+"/.*" );
             ArrayList<String> events = new ArrayList<String>();

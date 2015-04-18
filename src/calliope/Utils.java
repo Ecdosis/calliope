@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.w3c.dom.Document;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Locale;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
@@ -24,6 +25,14 @@ import org.w3c.dom.NamedNodeMap;
  */
 public class Utils 
 {
+    static HashMap<String,String> map;
+    static
+    {
+        map = new HashMap<String,String>();
+        map.put("english","en");
+        map.put("italian","it");
+        map.put("spanish","es");
+    }
     /**
      * Join two paths together with a single slash
      * @param part1 the first path perhaps ending in a slash
@@ -339,5 +348,17 @@ public class Utils
             out.write(buf, 0, count);
         return out.toByteArray();
     }
-    
+    /**
+     * Extract the language code from the docid
+     * @param docid the document identifier
+     * @return a 2-char language code
+     */
+    public static String languageFromDocId( String docid )
+    {
+        String[] parts = docid.split("/");
+        if ( map.containsKey(parts[0]) )
+            return map.get(parts[0]);
+        else
+            return "en";
+    }
 }
