@@ -392,7 +392,7 @@ public class FuzzyDate implements Comparable
             spec.append((String)dateObj.get("qualifier"));
             spec.append(" ");
         }
-        if ( dateObj.get("day") != null && day > 0 )
+        if ( dateObj.get("day") != null && day > 0 && day < 32 )
         {
             spec.append(((Number)dateObj.get("day")).toString());
             spec.append(" ");

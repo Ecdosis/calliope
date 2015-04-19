@@ -38,7 +38,8 @@ public class NewEvent implements Comparable<NewEvent>
         this.itemType = itemType;
         StringBuilder spec= new StringBuilder();
         String qualifier = (String)dateObj.get("qualifier");
-        int day = ((Number)dateObj.get("day")).intValue();
+        Number dayNum = ((Number)dateObj.get("day"));
+        int day = (dayNum==null)?0:dayNum.intValue();
         if ( qualifier != null && !qualifier.equals("none") )
         {
             spec.append((String)dateObj.get("qualifier"));
