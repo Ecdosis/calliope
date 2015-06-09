@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.HashMap;
 import calliope.handler.post.annotate.Annotation;
 import calliope.handler.post.annotate.NoteStripper;
 
@@ -46,16 +45,8 @@ public class StageThreeXML extends Stage
     String dict;
     String hhExcepts;
     boolean hasTEI;
-    static HashMap<String,String> humanKeyMap;
     ArrayList<Annotation> notes;
-    static
-    {
-        humanKeyMap = new HashMap<String,String>();
-        humanKeyMap.put("add0","level 1 addition");
-        humanKeyMap.put("del1","level 2 deletion");
-        humanKeyMap.put("del2","level 3 deletion");
-        humanKeyMap.put("add1","level 2 addition");
-    }
+    
     public StageThreeXML()
     {
         super();
@@ -181,18 +172,6 @@ public class StageThreeXML extends Stage
             prev = chars[i];
         }
     }
-    /** 
-     * Convert the cryptic "add0" "del1" names into something intelligible
-     * @param key the cryptic key
-     * @return the human-readable version
-     */
-    private String translateKey( String key )
-    {
-        if ( humanKeyMap.containsKey(key) )
-            return humanKeyMap.get(key);
-        else
-            return key;
-    }
     /**
      * Get the version name from a standard file name
      * @param fileName the raw file name
@@ -203,9 +182,17 @@ public class StageThreeXML extends Stage
         String stripped = fileName;
         int index = stripped.lastIndexOf("/");
         if ( index != -1 )
-            return stripped.substring(index+1);
-        else
-            return stripped;
+            stripped = stripped.substring(index+1);
+        index = stripped.lastIndexOf(".");
+        if ( index != -1 )
+            stripped = stripped.substring(0,index);
+        index = stripped.indexOf("#");
+        if ( index != -1 )
+            stripped = stripped.substring(index+1);
+        index = stripped.indexOf("-");
+        if ( index != -1 )
+            stripped = stripped.substring(index+1);
+        return stripped;
     }
     /**
      * Process the files
@@ -259,7 +246,7 @@ public class StageThreeXML extends Stage
                         if ( res == 1 )
                         {
                             if ( map.size()>1 )
-                                vid += "/"+translateKey(key);
+                                vid += "/"+key;
                             //char[] chars = text.getBody().toCharArray();
                             //convertQuotes( chars );
                             //cortex.put( group+key, new String(chars).getBytes("UTF-8") );

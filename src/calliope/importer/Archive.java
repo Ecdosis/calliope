@@ -44,6 +44,19 @@ public class Archive extends HashMap<String,byte[]>
     String format;
     String encoding;
     HashMap<String,String> nameMap;
+    static HashMap<String,String> humanKeyMap;
+    static
+    {
+        humanKeyMap = new HashMap<String,String>();
+        humanKeyMap.put("add0","level 1 addition");
+        humanKeyMap.put("del1","level 2 deletion");
+        humanKeyMap.put("del2","level 3 deletion");
+        humanKeyMap.put("add1","level 2 addition");
+        humanKeyMap.put("del3","level 4 deletion");
+        humanKeyMap.put("add2","level 3 addition");
+        humanKeyMap.put("rdg1","layer 2");
+        humanKeyMap.put("rdg2","layer 3");
+    }
     /**
      * Create an archive
      * @param title the title of the work
@@ -101,16 +114,12 @@ public class Archive extends HashMap<String,byte[]>
     private String getGroups( String key )
     {
         String[] parts = key.split("/");
-        String groups = "Base";
-        if ( parts.length > 1 )
+        String groups = "";
+        for ( int i=0;i<parts.length-1;i++ )
         {
-            groups = "";
-            for ( int i=0;i<parts.length-1;i++ )
-            {
-                groups = parts[i];
-                if ( i < parts.length-2 )
-                    groups += "/";
-            }
+            groups = parts[i];
+            if ( i < parts.length-2 )
+                groups += "/";
         }
         return groups;
     }
@@ -124,6 +133,18 @@ public class Archive extends HashMap<String,byte[]>
         String[] parts = key.split("/");
         key = parts[parts.length-1];
         return key;
+    }
+    /** 
+     * Convert the cryptic "add0" "del1" names into something intelligible
+     * @param key the cryptic key
+     * @return the human-readable version
+     */
+    private String translateKey( String key )
+    {
+        if ( humanKeyMap.containsKey(key) )
+            return humanKeyMap.get(key);
+        else
+            return key;
     }
     /**
      * Convert this archive to a resource, wrapped in JSON for storage
@@ -167,9 +188,13 @@ public class Archive extends HashMap<String,byte[]>
                     String groups = getGroups( key );
                     String shortKey = getKey( key );
                     if ( version1 == null )
-                        version1 = "/"+groups+"/"+shortKey;
+                    {
+                        version1 = "/"+shortKey;
+                        if ( groups != null && groups.length()>0 )
+                            version1 = "/"+groups+version1;
+                    }
                     byte[] data = get( key );
-                    String longName = (groups.length()>0)?shortKey+" of "
+                    String longName = (groups.length()>0)?translateKey(shortKey)+" of "
                         +groups:shortKey;
                     vId = (short)mvd.newVersion( shortKey, "Version "+longName, 
                         groups, Version.NO_BACKUP, false );
