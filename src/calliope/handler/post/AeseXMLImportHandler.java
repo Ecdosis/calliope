@@ -57,12 +57,14 @@ public class AeseXMLImportHandler extends AeseImportHandler
                     log.append( stage2.process(cortex,corcode) );
                     StageThreeXML stage3Xml = new StageThreeXML( stage2, 
                         style, dict, hhExceptions );
-                    stage3Xml.setStripConfig( getConfig(Config.stripper,
-                        stripperName) );
+                    stage3Xml.setEncoding( encoding );
+                    stage3Xml.setDocId( this.docID.get() );
+                    //stage3Xml.setStripConfig( getConfig(Config.stripper,
+                    //    stripperName) );
                     stage3Xml.setSplitConfig( getConfig(Config.splitter,
                         splitterName) );
-                    String sanitiser = getConfig(Config.sanitiser, docID.shortID());
-                    stage3Xml.setSanitiseConfig((sanitiser.equals("{}")?null:sanitiser));
+                    /*String sanitiser = getConfig(Config.sanitiser, docID.shortID());
+                    stage3Xml.setSanitiseConfig((sanitiser.equals("{}")?null:sanitiser));*/
                     log.append( stage3Xml.process(cortex,corcode) );
                     ArrayList<Annotation> notes = stage3Xml.getAnnotations();
                     if ( notes != null && notes.size()>0 )

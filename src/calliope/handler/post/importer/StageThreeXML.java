@@ -19,7 +19,6 @@ import calliope.importer.Archive;
 import calliope.exception.ImportException;
 import calliope.json.JSONDocument;
 import calliope.json.JSONResponse;
-import calliope.handler.post.sanitise.Sanitiser;
 import calliope.AeseStripper;
 import calliope.Utils;
 import calliope.constants.Formats;
@@ -30,7 +29,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import calliope.handler.post.annotate.Annotation;
 import calliope.handler.post.annotate.NoteStripper;
-
+import mml.filters.Filter;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 /**
  * Process the XML files for import
  * @author desmond
@@ -39,12 +40,13 @@ public class StageThreeXML extends Stage
 {
     String stripConfig;
     String splitConfig;
-    String sanitiseConfig;
     String style;
     String xslt;
     String dict;
     String hhExcepts;
     boolean hasTEI;
+    String docid;
+    String encoding;
     ArrayList<Annotation> notes;
     
     public StageThreeXML()
@@ -135,14 +137,6 @@ public class StageThreeXML extends Stage
         this.splitConfig = config;
     }
     /**
-     * Set the sanitise recipe for the XML filter
-     * @param json a json document from the database
-     */
-    public void setSanitiseConfig( String json )
-    {
-        this.sanitiseConfig = json;
-    }
-    /**
      * Convert ordinary quotes into curly ones
      * @param a char array containing the unicode text
      */
@@ -194,6 +188,89 @@ public class StageThreeXML extends Stage
             stripped = stripped.substring(index+1);
         return stripped;
     }
+    /**
+     * Reduce the length of the package name of the filter being sought
+     * @param className the classname of the filter that wasn't there
+     * @return a shorted path e.g. mml.filters.english.harpur.Filter 
+     * instead of mml.filters.english.harpur.h642.Filter
+     */
+    String popClassName( String className )
+    {
+        String[] parts = className.split("\\.");
+        StringBuilder sb = new StringBuilder();
+        if ( parts.length > 1 )
+        {
+            for ( int i=0;i<parts.length;i++ )
+            {
+                if ( i != parts.length-2 )
+                {
+                    if ( sb.length()>0 )
+                        sb.append(".");
+                    sb.append(parts[i]);
+                }
+            }
+        }
+        return sb.toString();
+    }
+    public void setEncoding( String encoding )
+    {
+        this.encoding = encoding;
+    }
+    public void setDocId( String docid )
+    {
+        this.docid = docid;
+    }
+    /**
+     * Convert the corcode using the filter corresponding to its docid
+     * @param pair the stil and its corresponding text - return result here
+     * @param docID the docid of the document
+     * @param enc the encoding
+     */
+    void convertCorcode( StandoffPair pair )
+    {
+        String[] parts = this.docid.split("/");
+        StringBuilder sb = new StringBuilder("mml.filters");
+        for ( String part : parts )
+        {
+            if ( part.length()>0 )
+            {
+                sb.append(".");
+                sb.append(part);
+            }
+        }
+        sb.append(".Filter");
+        String className = sb.toString();
+        Filter f = null;
+        while ( className.length() > "mml.filters".length() )
+        {
+            try
+            {
+                Class fClass = Class.forName(className);
+                f = (Filter) fClass.newInstance();
+                break;
+            }
+            catch ( Exception e )
+            {
+                className = popClassName(className);
+            }
+        }
+        if ( f != null )
+        {
+            // woo hoo! we have a filter baby!
+            try
+            {
+                JSONObject cc = (JSONObject)JSONValue.parse(pair.stil);
+                cc = f.translate( cc, pair.text.getBytes(encoding) );
+                pair.stil = cc.toJSONString();
+                pair.text = f.getText();
+            }
+            catch ( Exception e )
+            {
+                //OK it didn't work
+                System.out.println(e.getMessage());
+            }
+        }
+    }    
     /**
      * Process the files
      * @param cortex the cortext MVD to accumulate files into
@@ -250,15 +327,11 @@ public class StageThreeXML extends Stage
                             //char[] chars = text.getBody().toCharArray();
                             //convertQuotes( chars );
                             //cortex.put( group+key, new String(chars).getBytes("UTF-8") );
-                            cortex.put( vid, text.getBody().getBytes("UTF-8") );
-                            String stil = markup.getBody();
-                            // apply sanitiser if set
-                            if ( this.sanitiseConfig != null )
-                            {
-                                Sanitiser st = new Sanitiser( this.sanitiseConfig );
-                                stil = st.translate( stil );
-                            }
-                            corcode.put( vid, stil.getBytes("UTF-8") );
+                            StandoffPair pair = new StandoffPair(
+                                markup.getBody(),text.getBody());
+                            convertCorcode( pair );
+                            cortex.put( vid, pair.text.getBytes("UTF-8") );
+                            corcode.put( vid, pair.stil.getBytes("UTF-8") );
                             log.append( "Stripped " );
                             log.append( file.name );
                             log.append("(");

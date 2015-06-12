@@ -40,7 +40,6 @@ public class Archive extends HashMap<String,byte[]>
     StringBuilder log;
     String style;
     String version1;
-    String revid;
     String format;
     String encoding;
     HashMap<String,String> nameMap;
