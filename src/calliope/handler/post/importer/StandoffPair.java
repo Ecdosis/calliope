@@ -12,9 +12,11 @@ package calliope.handler.post.importer;
 public class StandoffPair {
     public String text;
     public String stil;
-    StandoffPair( String stil, String text )
+    public String vid;
+    StandoffPair( String stil, String text, String vid )
     {
         this.stil = stil;
         this.text = text;
+        this.vid = vid;
     }
 }

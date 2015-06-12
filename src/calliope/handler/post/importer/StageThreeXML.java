@@ -256,6 +256,7 @@ public class StageThreeXML extends Stage
         }
         if ( f != null )
         {
+            System.out.println("Applying filter "+className+" to "+pair.vid );
             // woo hoo! we have a filter baby!
             try
             {
@@ -267,9 +268,12 @@ public class StageThreeXML extends Stage
             catch ( Exception e )
             {
                 //OK it didn't work
-                System.out.println(e.getMessage());
+                System.out.println("It failed for "+pair.vid+e.getMessage());
+                e.printStackTrace(System.out);
             }
         }
+        else
+            System.out.println("Couldn't find filter for "+this.docid);
     }    
     /**
      * Process the files
@@ -312,11 +316,8 @@ public class StageThreeXML extends Stage
                         // extract the notes from the xml
                         String vid = extractVersionName(files.get(i).name);
                         NoteStripper ns = new NoteStripper();
-                        xml = ns.strip( vid, xml.getBytes(cortex.getEncoding()) ); 
-                        if ( notes == null )
-                            notes = ns.getNotes();
-                        else
-                            notes.addAll(ns.getNotes());
+                        // just remove all notes for now
+                        xml = ns.strip( xml ); 
                         int res = stripper.strip( xml, stripConfig, 
                             Formats.STIL, style, dict, hhExcepts, 
                             Utils.isHtml(xml), text, markup );
@@ -328,7 +329,8 @@ public class StageThreeXML extends Stage
                             //convertQuotes( chars );
                             //cortex.put( group+key, new String(chars).getBytes("UTF-8") );
                             StandoffPair pair = new StandoffPair(
-                                markup.getBody(),text.getBody());
+                                markup.getBody(),text.getBody(),vid);
+                            //System.out.println("text len="+text.getBody().length()+" xml length ="+xml.length());
                             convertCorcode( pair );
                             cortex.put( vid, pair.text.getBytes("UTF-8") );
                             corcode.put( vid, pair.stil.getBytes("UTF-8") );

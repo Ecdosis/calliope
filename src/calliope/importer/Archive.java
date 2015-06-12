@@ -199,6 +199,7 @@ public class Archive extends HashMap<String,byte[]>
                         groups, Version.NO_BACKUP, false );
                     // tepmorary hack
                     mvd.setDirectAlign( true );
+                    //System.out.println(new String(data,"UTF-8"));
                     mvd.update( vId, data, true );
                 }
                 long diff = System.currentTimeMillis()-startTime;
@@ -221,6 +222,7 @@ public class Archive extends HashMap<String,byte[]>
             doc.add( JSONKeys.STYLE, style, false );
             doc.add( JSONKeys.FORMAT, format, false );
             doc.add( JSONKeys.BODY, body, false );
+            //externalise(mvdName);
             return doc.toString();
         }
         catch ( Exception e )
@@ -229,17 +231,18 @@ public class Archive extends HashMap<String,byte[]>
         }
     }
     // for testing
-    public void externalise() throws Exception
+    public void externalise(String name) throws Exception
     {
         Set<String> keys = keySet();
         Iterator<String> iter = keys.iterator();
-        File dir = new File("archive.mvd");
+        File dir = new File("/tmp/"+name+".mvd");
         if ( !dir.exists() )
             dir.mkdir();
         while ( iter.hasNext() )
         {
             String key = iter.next();
-            File  dst = new File( dir, key );
+            String replacement = key.replace("/","_");
+            File  dst = new File( dir, replacement );
             FileOutputStream fos = new FileOutputStream( dst );
             fos.write( get( key ) );
             fos.close();

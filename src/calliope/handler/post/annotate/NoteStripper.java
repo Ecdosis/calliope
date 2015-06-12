@@ -4,56 +4,58 @@
  * and open the template in the editor.
  */
 package calliope.handler.post.annotate;
-import java.io.FileInputStream;
-import java.io.File;
-import java.util.ArrayList;
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
+import java.io.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
+import org.xml.sax.InputSource;
+
 /**
  * Strip notes from a TEI-XML file 
  * @author desmond
  */
-public class NoteStripper {
-    SaxParser sp;
-    public String strip( String vid, byte[] data ) throws Exception
-    {
-        sp = new SaxParser( vid );
-        sp.digest( data );
-        return sp.getBody();
-        //System.out.println( sp.toString() );
-    }
-    public ArrayList<Annotation> getNotes()
-    {
-        return sp.getNotes();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        if ( args.length==3 )
+public class NoteStripper 
+{
+   /*
+    * filter all elements whose tag name = note
+    */
+   private void filterElements( Node parent, String filter )
+   {
+        NodeList children = parent.getChildNodes();
+        for ( int i=0; i<children.getLength(); i++ )
         {
-            try
+            Node child = children.item( i );
+            if ( child.getNodeType() == Node.ELEMENT_NODE )
             {
-                NoteStripper ns = new NoteStripper();
-                File f = new File( args[1] );
-                if ( f.exists() )
-                {
-                    FileInputStream fis = new FileInputStream(f);
-                    byte[] data = new byte[(int)f.length()];
-                    fis.read(data);
-                    fis.close();
-                    ns.strip(args[0], data);
-                }
-                else
-                    System.out.println("File "+args[0]+" not found");
-            }
-            catch ( Exception e )
-            {
-                e.printStackTrace(System.out);
+                 if ( child.getNodeName().equals(filter) )
+                     parent.removeChild( child );
+                 else 
+                     filterElements( child, filter );
             }
         }
-        else
-            System.out.println("usage: java NoteStripper <vid> <xml-file>\n"
-                + "e.g. java NoteStripper /Base/F1 "
-                +"/act1/scene1 kinglear.xml");
+    }
+    //method to convert Document to String
+    private String getStringFromDocument(Document doc) throws Exception
+    {
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(domSource, result);
+        return writer.toString();
+    } 
+    public String strip( String xml ) throws Exception
+    {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        Document document = null;
+        builder = factory.newDocumentBuilder();
+        InputSource is = new InputSource(new StringReader(xml));
+        document = builder.parse( is );
+        filterElements( document, "note" );
+        return getStringFromDocument(document);
     }
 }
