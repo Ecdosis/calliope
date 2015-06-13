@@ -23,6 +23,7 @@ import calliope.AeseStripper;
 import calliope.Utils;
 import calliope.constants.Formats;
 import calliope.constants.Globals;
+import calliope.constants.JSONKeys;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.Iterator;
 import calliope.handler.post.annotate.Annotation;
 import calliope.handler.post.annotate.NoteStripper;
 import mml.filters.Filter;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 /**
@@ -261,7 +263,7 @@ public class StageThreeXML extends Stage
             try
             {
                 JSONObject cc = (JSONObject)JSONValue.parse(pair.stil);
-                cc = f.translate( cc, pair.text.getBytes(encoding) );
+                cc = f.translate( cc, pair.text );
                 pair.stil = cc.toJSONString();
                 pair.text = f.getText();
             }
@@ -334,6 +336,8 @@ public class StageThreeXML extends Stage
                             convertCorcode( pair );
                             cortex.put( vid, pair.text.getBytes("UTF-8") );
                             corcode.put( vid, pair.stil.getBytes("UTF-8") );
+                            if ( !verifyCorCode(pair.stil,pair.text) )
+                                System.out.println("corcode of "+pair.vid+" was invalid");
                             log.append( "Stripped " );
                             log.append( file.name );
                             log.append("(");
@@ -358,5 +362,20 @@ public class StageThreeXML extends Stage
                 throw new ImportException( e );
         }
         return log.toString();
+    }
+    boolean verifyCorCode(String stil, String text )
+    {
+        JSONObject jObj = (JSONObject)JSONValue.parse(stil);
+        JSONArray ranges = (JSONArray)jObj.get(JSONKeys.RANGES);
+        int offset = 0;
+        for ( int i=0;i<ranges.size();i++ )
+        {
+            JSONObject range = (JSONObject)ranges.get(i);
+            offset += ((Number)range.get("reloff")).intValue();
+            int len = ((Number)range.get("len")).intValue();
+            if ( offset+len > text.length() )
+                return false;
+        }
+        return true;
     }
 }
