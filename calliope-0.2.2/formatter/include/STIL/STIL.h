@@ -10,7 +10,7 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-int load_stil_markup( const char *data, int len, range_array *ranges, hashset *props );
+int load_stil_markup( const UChar *data, int len, range_array *ranges, hashset *props );
 #ifdef	__cplusplus
 }
 #endif

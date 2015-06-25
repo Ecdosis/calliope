@@ -222,7 +222,7 @@ public class Archive extends HashMap<String,byte[]>
             doc.add( JSONKeys.STYLE, style, false );
             doc.add( JSONKeys.FORMAT, format, false );
             doc.add( JSONKeys.BODY, body, false );
-            //externalise(mvdName);
+            externalise(mvdName);
             return doc.toString();
         }
         catch ( Exception e )

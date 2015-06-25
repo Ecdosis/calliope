@@ -19,6 +19,10 @@
         <param-value>admin</param-value>
       </init-param>
       <init-param>
+        <param-name>webport</param-name>
+        <param-value>80880</param-value>
+      </init-param>
+      <init-param>
         <param-name>password</param-name>
         <param-value>jabberw0cky</param-value>
       </init-param>

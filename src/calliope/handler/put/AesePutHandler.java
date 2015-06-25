@@ -289,7 +289,7 @@ public class AesePutHandler extends AeseHandler
                     if ( config == null )
                         config = HTML_RECIPE;
                     int res = stripper.strip( fileContent, config, 
-                        Formats.STIL, "html", language, null, 
+                        "html", language, null, 
                         Utils.isHtml(fileContent), text, markup );
                     Annotation[] anns = getAnnotations( docID );
                     String annCorCode = null;
@@ -335,13 +335,8 @@ public class AesePutHandler extends AeseHandler
                         // 2. create styles array
                         String[] styles = new String[1];
                         styles[0] = Utils.fetchStyle(style);
-                        String[] formats = new String[nCCs];
-                        formats[0] = Formats.STIL;
-                        if ( nCCs > 1 )
-                            formats[1] = Formats.STIL;
                         res = new AeseFormatter().format( 
-                            text.getBody().getBytes(encoding), 
-                            corCodes, styles, formats, html );
+                            text.getBody(), corCodes, styles, html );
                         if ( res == 0 )
                             throw new NativeException("formatting failed");
                         else

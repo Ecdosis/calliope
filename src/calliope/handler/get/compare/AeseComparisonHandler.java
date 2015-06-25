@@ -52,7 +52,7 @@ public class AeseComparisonHandler extends AeseHTMLHandler
             return urn+path;
     }
     /**
-     * Get an array of CorCodes, and their styles and formats too
+     * Get an array of CorCodes, and their styles 
      * @param db the database
      * @param docID the docID for the resource
      * @param version1 the group-path+version name
@@ -60,18 +60,16 @@ public class AeseComparisonHandler extends AeseHTMLHandler
      * @param diffCC the CorCode of the diffs
      * @param styleNamess an array of predefined style-names
      * @param styles an empty arraylist of style names to be filled
-     * @param formats an empty array of CorCode formats to be filled
-     * @return a simple array of CorCode texts in their corresponding formats
+     * @return a simple array of CorCode texts 
      */
     String[] getCorCodes( String db, String docID, String version1, 
         String[] userCC, 
-        CorCode diffCC, String[] styleNames, ArrayList<String> styles, 
-        ArrayList<String> formats ) throws AeseException
+        CorCode diffCC, String[] styleNames, ArrayList<String> styles ) 
+        throws AeseException
     {
         String[] ccTexts = new String[userCC.length+1];
         // add diffCC entries to corcodes and formats but not styles
         ccTexts[0] = diffCC.toString();
-        formats.add( Formats.STIL );
         // load user-defined styles
         if ( styleNames.length>0 )
         {
@@ -96,7 +94,6 @@ public class AeseComparisonHandler extends AeseHTMLHandler
             {
                 throw new AeseException( e );
             }
-            formats.add( hv.getContentFormat() );
         }
         return ccTexts;
     }
@@ -147,22 +144,29 @@ public class AeseComparisonHandler extends AeseHTMLHandler
             String[] styles = getEnumeratedParams( Params.STYLE, 
                 request.getParameterMap(), false );
             ArrayList<String> styleNames = new ArrayList<String>();
-            ArrayList<String> formats = new ArrayList<String>();
             // add diff styles
             String[] newStyles = new String[styles.length+1];
             System.arraycopy( styles, 0, newStyles, 0, styles.length );
             newStyles[styles.length] = "diffs/default";
             String[] ccTexts = getCorCodes( Database.CORTEX, urn, 
-                version1, corCodes, cc, newStyles, styleNames, formats );
+                version1, corCodes, cc, newStyles, styleNames );
             String[] styleTexts = new String[styleNames.size()];
             styleNames.toArray( styleTexts );
-            String[] formatTexts = new String[formats.size()];
-            formats.toArray( formatTexts );
             // call the native library
             JSONResponse html = new JSONResponse(JSONResponse.HTML);
-            byte[] mvdVersionText = text.mvd.getVersion(v1);
+            byte[] mvdVersionBytes = text.mvd.getVersion(v1);
+            String mvdVersionText;
+            try
+            {
+                mvdVersionText = new String(mvdVersionBytes, 
+                    text.mvd.getEncoding());
+            }
+            catch ( Exception e )
+            {
+                throw new AeseException(e);
+            }
             int res = new AeseFormatter().format( mvdVersionText, 
-                ccTexts, styleTexts, formatTexts, html );
+                ccTexts, styleTexts, html );
             if ( res == 0 )
                 throw new NativeException("formatting failed");
             else

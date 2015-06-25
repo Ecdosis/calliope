@@ -18,6 +18,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "hashmap.h"
 #include "attribute.h"
 #include "annotation.h"
@@ -26,14 +29,17 @@
 #include "css_rule.h"
 #include "error.h"
 #include "memwatch.h"
+#include "utils.h"
 
+static UChar U_NAME[] = {'n','a','m','e'};
+static UChar U_VALUE[] = {'v','a','l','u','e'};
 /**
  * An annotation is a former XML attribute, applied to a range.
  */
 struct annotation_struct
 {
-    char *name;
-    char *value;
+    UChar *name;
+    UChar *value;
     annotation *next;
 };
 /**
@@ -42,13 +48,13 @@ struct annotation_struct
  * @param value the annotation value
  * @return the annotation
  */
-annotation *annotation_create_simple( char *name, char *value )
+annotation *annotation_create_simple( UChar *name, UChar *value )
 {
     annotation *a = calloc( 1, sizeof(annotation) );
     if ( a != NULL )
     {
-        a->name = strdup( name );
-        a->value = strdup( value );
+        a->name = u_strdup( name );
+        a->value = u_strdup( value );
     }
     else
         warning("annotation: failed to allocate annotation\n");
@@ -57,9 +63,9 @@ annotation *annotation_create_simple( char *name, char *value )
 /**
  * Create a new annotation
  * @param atts a NULL-terminated list of a single name-value pair
- * @return a list of annotation object or NULL
+ * @return a list of annotation objects or NULL
  */
-annotation *annotation_create( const char **atts )
+annotation *annotation_create( const UChar **atts )
 {
     annotation *head = calloc( 1, sizeof(annotation) );
     annotation *a = head;
@@ -68,9 +74,9 @@ annotation *annotation_create( const char **atts )
         int i = 0;
         while ( atts[i] != NULL )
         {
-            if ( strcmp(atts[i],"name")==0 )
+            if ( u_strcmp(atts[i],U_NAME)==0 )
             {
-                a->name = strdup( (char*)atts[i+1] );
+                a->name = u_strdup( (UChar*)atts[i+1] );
                 if ( a->name == NULL )
                 {
                     annotation_dispose( a );
@@ -80,9 +86,9 @@ annotation *annotation_create( const char **atts )
                     break;
                 }
             }
-            else if ( strcmp(atts[i],"value")==0 )
+            else if ( u_strcmp(atts[i],U_VALUE)==0 )
             {
-                a->value = strdup( (char*)atts[i+1] );
+                a->value = u_strdup( (UChar*)atts[i+1] );
                 if ( a->value == NULL )
                 {
                     annotation_dispose( a );
@@ -111,8 +117,8 @@ annotation *annotation_clone( annotation *a )
     annotation *b = calloc( 1, sizeof(annotation) );
     if ( b != NULL )
     {
-        b->name = strdup( a->name );
-        b->value = strdup( a->value );
+        b->name = u_strdup( a->name );
+        b->value = u_strdup( a->value );
         if ( b->value == NULL || b->name == NULL )
         {
             annotation_dispose( b );
@@ -149,7 +155,7 @@ void annotation_dispose( annotation *a )
  * @param a the annotation in question
  * @return a string being its name
  */
-char *annotation_get_name( annotation *a )
+UChar *annotation_get_name( annotation *a )
 {
     return a->name;
 }
@@ -158,7 +164,7 @@ char *annotation_get_name( annotation *a )
  * @param a the annotation in question
  * @return a string being its value
  */
-char *annotation_get_value( annotation *a )
+UChar *annotation_get_value( annotation *a )
 {
     return a->value;
 }
@@ -177,7 +183,7 @@ annotation *annotation_get_next( annotation *a )
  */
 void annotation_print( annotation *a )
 {
-    fprintf( stderr,"   name: %s value: %s\n",a->name,a->value);
+    u_printf( "   name: %S value: %S\n",a->name,a->value);
 }
 /**
  * Add one annotation onto the end of this one
@@ -198,8 +204,7 @@ void annotation_append( annotation *a, annotation *b )
  * @param css_rules the css rules to use for transformation
  * @return a shiny new attribute or NULL if we failed
  */
-attribute *annotation_to_attribute( annotation *a, char *xml_name, 
-    hashmap *css_rules )
+attribute *annotation_to_attribute( annotation *a, UChar *xml_name, hashmap *css_rules )
 {
     css_rule *rule = hashmap_get( css_rules, xml_name );
     if ( rule != NULL )
@@ -207,7 +212,7 @@ attribute *annotation_to_attribute( annotation *a, char *xml_name,
         css_property *prop = css_rule_get_property( rule, a->name );
         if ( prop != NULL )
         {
-            char *html_name = css_property_get_html_name( prop );
+            UChar *html_name = css_property_get_html_name( prop );
             //warning("annotation: creating attribute %s:%s\n",html_name,a->value);
             return attribute_create( html_name, annotation_get_name(a), a->value );
         }
@@ -217,6 +222,8 @@ attribute *annotation_to_attribute( annotation *a, char *xml_name,
         //        xml_name,a->name,a->value);
     }
     else
-        warning("annotation: failed to find css rule %s\n",xml_name);
+    {
+        u_printf("annotation: failed to find css rule %S\n",xml_name);
+    }
     return NULL;
 }

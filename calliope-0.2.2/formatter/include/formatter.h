@@ -2,7 +2,8 @@
  * formatter.h
  *
  *  Created on: 26/10/2010
- *  (c) Desmond Schmidt 2010
+ * Converted to UTF-16 22/6/2015
+ *  (c) Desmond Schmidt 2010,2015
  */
 /* This file is part of formatter.
  *
@@ -21,29 +22,29 @@
  */
 #ifndef FORMATTER_H_
 #define FORMATTER_H_
-#define NAME_LEN 16
+#define NAME_LEN 4
 #define FILE_NAME_LEN 64
 #ifdef	__cplusplus
 extern "C" {
 #endif
 
-typedef int (*load_markup_func)(const char *data, int len, range_array *ranges,
+typedef int (*load_markup_func)(const UChar *data, int len, range_array *ranges,
     hashset *props );
 typedef struct
 {
-        char name[NAME_LEN];
-        load_markup_func lm;
+    UChar *name;
+    load_markup_func lm;
 } format;
 typedef struct formatter_struct formatter;
 formatter *formatter_create( int len );
 void formatter_dispose( formatter *f );
-int formatter_css_parse( formatter *f, const char *data, int len );
+int formatter_css_parse( formatter *f, const UChar *data, int len );
 int formatter_load_markup( formatter *f, load_markup_func mfunc, 
-    const char *data, int len );
-int formatter_make_html( formatter *f, const char *text, int len );
+    const UChar *data, int len );
+int formatter_make_html( formatter *f, const UChar *text, int len );
 int formatter_save_html( formatter *f, char *file );
-char *formatter_get_html( formatter *f, int *len );
-int formatter_cull_ranges( formatter *f, char *text, int *len );
+UChar *formatter_get_html( formatter *f, int *len );
+int formatter_cull_ranges( formatter *f, UChar *text, int *len );
 #ifdef	__cplusplus
 }
 #endif

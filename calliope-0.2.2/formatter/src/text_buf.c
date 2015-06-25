@@ -23,13 +23,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "text_buf.h"
 #include "error.h"
 #include "memwatch.h"
 /** a dynamically resizeable text buffer to hold output */
 struct text_buf_struct
 {
-    char *buf;
+    UChar *buf;
     int len;
     int allocated;
 };
@@ -44,7 +46,7 @@ text_buf *text_buf_create( int initial_size )
     text_buf *tb = calloc( 1, sizeof(text_buf) );
     if ( tb != NULL )
     {
-        tb->buf = malloc( initial_size );
+        tb->buf = calloc( initial_size,sizeof(UChar) );
         if ( tb->buf == NULL )
         {
             text_buf_dispose( tb );
@@ -80,25 +82,25 @@ void text_buf_dispose( text_buf *tb )
  * @param len the length of the text
  * @return 1 if it worked, else 0
  */
-int text_buf_concat( text_buf *tb, char *text, int len )
+int text_buf_concat( text_buf *tb, UChar *text, int len )
 {
     if ( len+tb->len+1 > tb->allocated )
     {
         int new_size = (tb->len+len+1)*3/2;
-        char *temp = malloc( new_size );
+        UChar *temp = calloc( new_size, sizeof(UChar) );
         if ( temp == NULL )
         {
             return 0;
         }
         else
         {
-            memcpy( temp, tb->buf, tb->len );
+            u_strncpy( temp, tb->buf, tb->len );
             free( tb->buf );
             tb->allocated = new_size;
             tb->buf = temp;
         }
     }
-    memcpy( &tb->buf[tb->len], text, len );
+    u_strncpy( &tb->buf[tb->len], text, len );
     tb->len += len;
     tb->buf[tb->len] = 0;
     return 1;
@@ -108,7 +110,7 @@ int text_buf_concat( text_buf *tb, char *text, int len )
  * @param tb the text buf in question
  * @return the buffer
  */
-char *text_buf_get_buf( text_buf *tb )
+UChar *text_buf_get_buf( text_buf *tb )
 {
     return tb->buf;
 }

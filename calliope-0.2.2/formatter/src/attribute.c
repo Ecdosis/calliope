@@ -19,15 +19,21 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "attribute.h"
 #include "error.h"
+#include "utils.h"
 #include "memwatch.h"
+
+static UChar U_ID[] = {'i','d'};
+static UChar U_A[] = {'a'};
 struct attribute_struct
 {
-    char *name;
-    char *value;
+    UChar *name;
+    UChar *value;
     // needed to convert back to annotation
-    char *prop_name;
+    UChar *prop_name;
     attribute *next;
 };
 /**
@@ -37,14 +43,14 @@ struct attribute_struct
  * @param value its value
  * @return the finished attribute or NULL
  */
-attribute *attribute_create( char *name, char *prop_name, char *value )
+attribute *attribute_create( UChar *name, UChar *prop_name, UChar *value )
 {
     attribute *attr = calloc( 1, sizeof(attribute) );
     if ( attr != NULL )
     {
         // don't duplicate or dispose of this
         attr->prop_name = prop_name;
-        attr->name = strdup( name );
+        attr->name = u_strdup( name );
         if ( attr->name == NULL )
         {
             attribute_dispose( attr );
@@ -53,7 +59,7 @@ attribute *attribute_create( char *name, char *prop_name, char *value )
         }
         else
         {
-            attr->value = strdup( value );
+            attr->value = u_strdup( value );
             if ( attr->value == NULL )
             {
                 attribute_dispose( attr );
@@ -71,7 +77,7 @@ attribute *attribute_create( char *name, char *prop_name, char *value )
  * @param attr the attribute
  * @return its property (xml) name
  */
-char *attribute_prop_name( attribute *attr )
+UChar *attribute_prop_name( attribute *attr )
 {
     return attr->prop_name;
 }
@@ -81,14 +87,14 @@ char *attribute_prop_name( attribute *attr )
  * @param suffix the suffix
  * @return 1 if it worked else 0
  */
-int attribute_append_value( attribute *attr, char *suffix )
+int attribute_append_value( attribute *attr, UChar *suffix )
 {
-    int vlen = strlen(attr->value);
-    char *val1 = malloc( vlen+2 );
+    int vlen = u_strlen(attr->value);
+    UChar *val1 = calloc( vlen+2,sizeof(UChar) );
     if ( val1 != NULL )
     {
-        strcpy( val1, attr->value );
-        strcat( val1, suffix );
+        u_strcpy( val1, attr->value );
+        u_strcat( val1, suffix );
         free( attr->value );
         attr->value = val1;
         return 1;
@@ -104,10 +110,10 @@ int attribute_append_value( attribute *attr, char *suffix )
  * @param str the string
  * @return its value
  */
-static int from_base_24( char *str )
+static int from_base_24( UChar *str )
 {
     int value = 0;
-    int i,len = strlen( str );
+    int i,len = u_strlen( str );
     for ( i=0;i<len;i++ )
     {
         value *= 24;
@@ -116,7 +122,7 @@ static int from_base_24( char *str )
     return value;
 }
 /**
- * Compute the length of a=the string representing a base 24 number (a=0,aa=24)
+ * Compute the length of the string representing a base 24 number (a=0,aa=24)
  * @param value the int value
  * @return its string length
  */
@@ -136,9 +142,9 @@ static int base_24_len( int value )
  * @param value the number
  * @param dst the location for the string (must be large enough)
  */
-static void to_base_24( int value, char *dst )
+static void to_base_24( int value, UChar *dst )
 {
-	int len = base_24_len(value);
+    int len = base_24_len(value);
     int i = len-1;
     do
     {
@@ -153,9 +159,9 @@ static void to_base_24( int value, char *dst )
  * @param attr the attribute in question
  * @return its value allocated (to be freed) with a new suffix
  */
-char *attribute_inc_value( attribute *attr )
+UChar *attribute_inc_value( attribute *attr )
 {
-    int i=strlen(attr->value)-1;
+    int i=u_strlen(attr->value)-1;
     while ( i>0 )
     {
         if ( attr->value[i-1]>='a'&&attr->value[i-1]<='z' )
@@ -164,12 +170,12 @@ char *attribute_inc_value( attribute *attr )
             break;
     }
     // so we're pointing to the first suffix char
-    char *suffix = &attr->value[i];
-    int base_len = strlen(attr->value)-strlen(suffix);
+    UChar *suffix = &attr->value[i];
+    int base_len = u_strlen(attr->value)-u_strlen(suffix);
     int old = from_base_24( suffix );
     int new_suffix_len = base_24_len( old+1 );
-    char *new_value = malloc( base_len+new_suffix_len+1 );
-    strncpy( new_value, attr->value, base_len );
+    UChar *new_value = calloc( base_len+new_suffix_len+1,sizeof(UChar) );
+    u_strncpy( new_value, attr->value, base_len );
     to_base_24( old+1, &new_value[base_len] );
     new_value[base_len+new_suffix_len] = 0;
     return new_value;
@@ -182,19 +188,19 @@ char *attribute_inc_value( attribute *attr )
 attribute *attribute_clone( attribute *attr )
 {
     attribute *new_attr = NULL;
-    if ( strcmp(attr->name,"id")==0 )
+    if ( u_strcmp(attr->name,U_ID)==0 )
     {
         // inc suffix
-        int vlen = strlen(attr->value);
+        int vlen = u_strlen(attr->value);
         int i = vlen-1;
         while ( i > 0 && isalpha(attr->value[i]) )
             i--;
         int res = 1;
         if ( i == vlen-1 )
-            res = attribute_append_value( attr, "a" );
+            res = attribute_append_value( attr, U_A );
         if ( res )
         {
-            char *value = attribute_inc_value( attr );
+            UChar *value = attribute_inc_value( attr );
             if ( value != NULL )
             {
                 new_attr = attribute_create( attr->name, attr->prop_name, value );
@@ -242,11 +248,11 @@ void attribute_append( attribute *attrs, attribute *attr )
         attrs = attrs->next;
     attrs->next = attr;
 }
-char *attribute_get_name( attribute *attr )
+UChar *attribute_get_name( attribute *attr )
 {
     return attr->name;
 }
-char *attribute_get_value( attribute *attr )
+UChar *attribute_get_value( attribute *attr )
 {
     return attr->value;
 }

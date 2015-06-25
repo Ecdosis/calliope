@@ -11,9 +11,9 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-void *dbg_malloc(size_t a,const char *f,int l);
+void *dbg_malloc(size_t a,const UChar *f,int l);
 void dbg_free(void *a);
-char *dbg_strdup(char *a,const char *f,int l);
+UChar *dbg_strdup(char *a,const UChar *f,int l);
 void *dbg_calloc(size_t a,size_t b,const char *f,int l);
 void memory_print();
 void vp( void *p );

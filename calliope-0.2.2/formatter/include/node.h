@@ -21,7 +21,7 @@
 #define	NODE_H
 
 typedef struct node_struct node;
-node *node_create( char *name, char *html_name, int offset, int len, 
+node *node_create( UChar *name, UChar *html_name, int offset, int len, 
      int empty, int rightmost );
 void node_dispose( node *n );
 void node_add_child( node *n, node *c );
@@ -37,12 +37,12 @@ void node_split( node *n, int pos );
 int node_end( node *n );
 node *node_parent( node *n );
 int node_has_next_sibling( node *n );
-attribute *node_get_attribute( node *n, char *name );
+attribute *node_get_attribute( node *n, UChar *name );
 node *node_next_sibling( node *n );
 node *node_prec_sibling( node *n );
 node *node_split_off_left( node *n, int rhs_start );
-char *node_name( node *n );
-char *node_html_name( node *n );
+UChar *node_name( node *n );
+UChar *node_html_name( node *n );
 int node_precedes( node *n, node *m );
 int node_follows( node *n, node *r );
 int node_overlaps_on_left( node *r, node *n );
@@ -53,7 +53,7 @@ void node_detach_sibling( node *n, node *prev );
 void node_debug_check_siblings( node *first );
 node *node_first( node *n );
 void node_add_attribute( node *n, attribute *a );
-void node_get_attributes( node *n, char *atts, int limit );
+void node_get_attributes( node *n, UChar *atts, int limit );
 int node_empty( node *n );
 int node_rightmost( node *n );
 int node_is_root( node *n );

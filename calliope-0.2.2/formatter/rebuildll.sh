@@ -12,7 +12,7 @@ if [ $USER = "root" ]; then
     else
       echo "need readlink. please install."
     fi
-    return 
+    return
   }
   if [ `uname` = "Darwin" ]; then
     LIBSUFFIX="dylib"
@@ -22,8 +22,9 @@ if [ $USER = "root" ]; then
     JDKINCLUDEDIRNAME="include"
   fi
   JDKINC=`getjdkinclude`
-  gcc -c -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DJNI -I$JDKINC -Iinclude -Iinclude/STIL -Iinclude/AESE -O0 -Wall -g3 -fPIC src/*.c src/AESE/*.c src/STIL/*.c 
-  gcc *.o -shared -o libAeseFormatter.$LIBSUFFIX
+  gcc -c -DHAVE_EXPAT_CONFIG_H -DHAVE_MEMMOVE -DJNI -I$JDKINC -I$JDKINC/linux -Iinclude -Iinclude/STIL \
+      -O0 -Wall -g3 -fPIC src/*.c src/STIL/*.c 
+  gcc *.o -shared -licuuc -licuio -o libAeseFormatter.$LIBSUFFIX
   mv libAeseFormatter.$LIBSUFFIX /usr/local/lib/
   rm *.o
 else

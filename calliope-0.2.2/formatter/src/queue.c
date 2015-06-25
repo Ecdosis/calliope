@@ -17,6 +17,9 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "hashmap.h"
 #include "attribute.h"
 #include "annotation.h"
@@ -131,7 +134,7 @@ void queue_print( queue *q )
     struct queue_element *qe = q->head;
     while ( qe != NULL )
     {
-        fprintf( stderr,"name=%s start=%d len=%d\n",range_name(qe->r),
+        u_printf( "name=%S start=%d len=%d\n",range_name(qe->r),
             range_start(qe->r),range_len(qe->r));
         qe = qe->next;
     }

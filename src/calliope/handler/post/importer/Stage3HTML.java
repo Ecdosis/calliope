@@ -53,7 +53,7 @@ public class Stage3HTML extends Stage
                 JSONResponse markup = new JSONResponse(JSONResponse.STIL);
                 JSONResponse text = new JSONResponse(JSONResponse.TEXT);
                 int res = stripper.strip( bos.toString(encoding), 
-                    stripConfig, Formats.STIL, style, dict, hhExcepts, true,
+                    stripConfig, style, dict, hhExcepts, true,
                     text, markup );
                 if ( res == 1 )
                 {

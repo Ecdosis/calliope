@@ -192,7 +192,6 @@ public class AeseHTMLHandler extends AeseGetHandler
             Map map = request.getParameterMap();
             String[] corCodes = getEnumeratedParams( Params.CORCODE, map, true );
             String[] styles = getEnumeratedParams( Params.STYLE, map, false );
-            String[] formats = new String[corCodes.length];
             HashSet<String> styleSet = new HashSet<String>();
             for ( int i=0;i<styles.length;i++ )
                 styleSet.add( styles[i] );
@@ -209,7 +208,6 @@ public class AeseHTMLHandler extends AeseGetHandler
                     response.getWriter().println( comment.toString() );
                     styleSet.add( hv.getStyle() );
                     corCodes[i] = new String(hv.getVersion(),"UTF-8");
-                    formats[i] = hv.getContentFormat();
                 }
             }
             catch ( Exception e )
@@ -223,10 +221,6 @@ public class AeseHTMLHandler extends AeseGetHandler
                 corCodes = addMergeIds( corCodes, corTex.getMVD(), version1, 
                     selectedVersions );
                 styleSet.add( "diffs/default" );
-                String[] newFormats = new String[formats.length+1];
-                System.arraycopy( formats, 0, newFormats, 0, formats.length );
-                newFormats[formats.length] = "STIL";
-                formats = newFormats;
             }
             // 3. recompute styles array (docids)
             styles = new String[styleSet.size()];
@@ -235,7 +229,7 @@ public class AeseHTMLHandler extends AeseGetHandler
             styles = fetchStyles( styles );
             // 5. call the native library to format it
             JSONResponse html = new JSONResponse(JSONResponse.HTML);
-            byte[] text = corTex.getVersion();
+            String text = corTex.getVersionString();
     //        // debug
 //            try{
 //                String textString = new String(text,"UTF-8");
@@ -254,7 +248,7 @@ public class AeseHTMLHandler extends AeseGetHandler
 //                }
 //            }
             int res = new AeseFormatter().format( 
-                text, corCodes, styles, formats, html );
+                text, corCodes, styles, html );
             if ( res == 0 )
                 throw new NativeException("formatting failed");
             else

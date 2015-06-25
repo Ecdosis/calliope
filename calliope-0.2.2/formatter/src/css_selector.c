@@ -19,8 +19,11 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "css_selector.h"
 #include "error.h"
+#include "utils.h"
 #include "memwatch.h"
 
 /**
@@ -29,9 +32,9 @@
 struct css_selector_struct
 {
     /** the html element name */
-	char *element;
+	UChar *element;
     /** the html class name or xml property name */
-	char *class;
+	UChar *class;
 };
 /**
  * Create a css selector manually
@@ -39,14 +42,14 @@ struct css_selector_struct
  * @param xml_name the class name
  * @param kind the rule kind
  */
-css_selector *css_selector_create( char *html_name, char *xml_name )
+css_selector *css_selector_create( UChar *html_name, UChar *xml_name )
 {
     css_selector *s = calloc( 1, sizeof(css_selector) );
     if ( s != NULL )
     {
         if ( html_name != NULL )
-            s->element = strdup(html_name);
-        s->class = strdup(xml_name);
+            s->element = u_strdup(html_name);
+        s->class = u_strdup(xml_name);
         if ( s->class == NULL )
         {
             css_selector_dispose(s);
@@ -90,7 +93,7 @@ css_selector *css_selector_clone( css_selector *s )
     {
         if ( s->element != NULL )
         {
-            copy->element = strdup(s->element);
+            copy->element = u_strdup(s->element);
             if ( copy->element == NULL )
             {
                 warning("css_selector: failed to copy selector element\n" );
@@ -100,7 +103,7 @@ css_selector *css_selector_clone( css_selector *s )
         }
         if ( s->class != NULL )
         {
-            copy->class = strdup(s->class);
+            copy->class = u_strdup(s->class);
             if ( copy->class == NULL )
             {
                 warning("css_selector: failed to copy selector class\n" );
@@ -116,7 +119,7 @@ css_selector *css_selector_clone( css_selector *s )
  * @param s the selector in question
  * @return a string
  */
-char *css_selector_get_element( css_selector *s )
+UChar *css_selector_get_element( css_selector *s )
 {
     return s->element;
 }
@@ -125,7 +128,7 @@ char *css_selector_get_element( css_selector *s )
  * @param s the selector in question
  * @return a string
  */
-char *css_selector_get_class( css_selector *s )
+UChar *css_selector_get_class( css_selector *s )
 {
     return s->class;
 }
@@ -137,14 +140,14 @@ char *css_selector_get_class( css_selector *s )
  * @param len its length
  * @return the finished selector
  */
-css_selector *css_selector_parse( const char *data, int len )
+css_selector *css_selector_parse( const UChar *data, int len )
 {
 	int i,end = len-1;
     int start = 0;
 	// ignore leading white-space
-	while ( isspace(data[start]) )
+	while ( u_isspace(data[start]) )
 		start++;
-    while ( isspace(data[end]) )
+    while ( u_isspace(data[end]) )
         end--;
 	for ( i=start;i<end;i++ )
 	{
@@ -154,13 +157,13 @@ css_selector *css_selector_parse( const char *data, int len )
             if ( sel_temp != NULL )
             {
                 //replaced strndup (unavailable BSD)
-                sel_temp->element = malloc( (i-start)+1 );
+                sel_temp->element = calloc( (i-start)+1,sizeof(UChar) );
                 if ( sel_temp->element != NULL )
                 {
-					strncpy( sel_temp->element, &data[start], i-start );
+					u_strncpy( sel_temp->element, &data[start], i-start );
                     sel_temp->element[(i-start)] = 0;
                 }
-                sel_temp->class = malloc( (end-i)+1 );
+                sel_temp->class = calloc( (end-i)+1, sizeof(UChar) );
                 if ( sel_temp->element == NULL || sel_temp->class == NULL )
                 {
                     warning("css_selector: failed to allocate memory for "
@@ -170,7 +173,7 @@ css_selector *css_selector_parse( const char *data, int len )
                 }
                 else
                 {
-                    strncpy( sel_temp->class, &data[i+1], end-i );
+                    u_strncpy( sel_temp->class, &data[i+1], end-i );
                     sel_temp->class[end-i] = 0;
                 }
             }

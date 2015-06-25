@@ -22,6 +22,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "css_property.h"
 #include "css_selector.h"
 #include "hashmap.h"
@@ -29,6 +32,7 @@
 #include "annotation.h"
 #include "css_rule.h"
 #include "error.h"
+#include "utils.h"
 #include "memwatch.h"
 
 struct css_rule_struct
@@ -143,7 +147,7 @@ int css_rule_add_selector( css_rule *rule, css_selector *sel )
 	int i,res=1;
 	css_selector **new_sels;
 	css_selector **s = rule->selectors;
-	new_sels = malloc( sizeof(css_selector*)*(rule->num_selectors+1) );
+	new_sels = calloc( rule->num_selectors+1,sizeof(css_selector*) );
 	if ( new_sels == NULL )
     {
 		warning( "css_rule: failed to allocate new selectors in css rule\n" );
@@ -173,12 +177,12 @@ int css_rule_add_selector( css_rule *rule, css_selector *sel )
  * @param xml_name the xml name of the attribute
  * @return NULL (usually) unless you find a matching property
  */
-css_property *css_rule_get_property( css_rule *r, char *xml_name )
+css_property *css_rule_get_property( css_rule *r, UChar *xml_name )
 {
     int i=0;
     for ( i=0;i<r->num_properties;i++ )
     {
-        if ( strcmp(xml_name,css_property_get_xml_name(r->properties[i]))==0 )
+        if ( u_strcmp(xml_name,css_property_get_xml_name(r->properties[i]))==0 )
             return r->properties[i];
     }
     return NULL;
@@ -189,13 +193,13 @@ css_property *css_rule_get_property( css_rule *r, char *xml_name )
  * @param name the xml_name to match
  * @return 1 if a match, 0 otherwise
  */
-int css_rule_match( css_rule *rule, char *name )
+int css_rule_match( css_rule *rule, UChar *name )
 {
 	int i;
 	for ( i=0;i<rule->num_selectors;i++ )
 	{
-        char *class_name = css_selector_get_class( rule->selectors[i] );
-		if ( strcmp(class_name,name)==0 )
+        UChar *class_name = css_selector_get_class( rule->selectors[i] );
+		if ( u_strcmp(class_name,name)==0 )
 		{
 			rule->index = i;
 			return 1;
@@ -208,7 +212,7 @@ int css_rule_match( css_rule *rule, char *name )
  * @param rule the rule in question
  * @return a string
  */
-char *css_rule_get_element( css_rule *rule )
+UChar *css_rule_get_element( css_rule *rule )
 {
 	return css_selector_get_element(rule->selectors[rule->index]);
 }
@@ -217,7 +221,7 @@ char *css_rule_get_element( css_rule *rule )
  * @param rule the rule in question
  * @return a string
  */
-char *css_rule_get_class( css_rule *rule )
+UChar *css_rule_get_class( css_rule *rule )
 {
 	return css_selector_get_class(rule->selectors[rule->index]);
 }
@@ -251,7 +255,7 @@ int css_rule_get_num_properties( css_rule *r )
  */
 static void css_rule_print_property( css_property *p )
 {
-	fprintf( stderr, "    -aese-%s: %s;\n", css_property_get_xml_name(p),
+    u_printf( "    -aese-%S: %S;\n", css_property_get_xml_name(p),
         css_property_get_html_name(p) );
 }
 /**
@@ -261,10 +265,10 @@ static void css_rule_print_property( css_property *p )
  */
 static void css_rule_print_selector( css_selector *s )
 {
-	if ( strlen(css_selector_get_element(s)) > 0 )
-		fprintf( stderr, "%s",css_selector_get_element(s) );
-	if ( strlen(css_selector_get_class(s))>0 )
-		fprintf( stderr,".%s",css_selector_get_class(s) );
+    if ( u_strlen(css_selector_get_element(s)) > 0 )
+		u_printf( "%S",css_selector_get_element(s) );
+	if ( u_strlen(css_selector_get_class(s))>0 )
+		u_printf( ".%S",css_selector_get_class(s) );
 }
 /**
  * Print a single css rule to stdout.
@@ -292,7 +296,7 @@ void css_rule_print( css_rule *rule )
  */
 int css_rule_compare( void *key1, void *key2 )
 {
-    char *class1 = css_rule_get_class( key1 );
-    char *class2 = css_rule_get_class( key2 );
-    return strcmp( class1, class2 );
+    UChar *class1 = css_rule_get_class( key1 );
+    UChar *class2 = css_rule_get_class( key2 );
+    return u_strcmp( class1, class2 );
 }

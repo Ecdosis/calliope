@@ -28,17 +28,17 @@ typedef struct hashmap_struct hashmap;
 typedef void (*print_value)( void *value );
 hashmap *hashmap_create();
 void hashmap_dispose( hashmap *map );
-int hashmap_put( hashmap *map, char *key, void *value );
-int hashmap_contains( hashmap *map, char *key );
-void *hashmap_get( hashmap *map, char *key );
+int hashmap_put( hashmap *map, UChar *key, void *value );
+int hashmap_contains( hashmap *map, UChar *key );
+void *hashmap_get( hashmap *map, UChar *key );
 int hashmap_size( hashmap *map );
 void hashmap_print( hashmap *map, print_value pv );
-int hashmap_remove( hashmap *map, char *key );
+int hashmap_remove( hashmap *map, UChar *key );
 // iterator methods
 typedef struct hashmap_iterator_struct hashmap_iterator;
 hashmap_iterator *hashmap_iterator_create( hashmap *map );
 void hashmap_iterator_dispose( hashmap_iterator *iter );
-char *hashmap_iterator_next( hashmap_iterator *iter );
+UChar *hashmap_iterator_next( hashmap_iterator *iter );
 int hashmap_iterator_has_next( hashmap_iterator *iter );
 #ifdef	__cplusplus
 }

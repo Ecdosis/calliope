@@ -15,7 +15,7 @@ file_list *file_list_create( const char *file_names );
 void file_list_delete( file_list *fl );
 int file_list_add_name( file_list *fl, const char *name );
 int file_list_check( file_list *fl, char **missing );
-int file_list_load( file_list *fl, int index, char **data, int *len );
+int file_list_load( file_list *fl, int index, UChar **data, int *len );
 int file_list_contains( file_list *fl, const char *name );
 int file_list_size( file_list *fl );
 char *file_list_get( file_list *fl, int index );

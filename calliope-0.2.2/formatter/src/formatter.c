@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "hashmap.h"
 #include "attribute.h"
 #include "annotation.h"
@@ -37,6 +39,7 @@
 #include "error.h"
 #include "memwatch.h"
 
+static UChar U_ROOT[] = {'r','o','o','t'};
 
 #define RANGES_BLOCK_SIZE 256
 
@@ -71,7 +74,7 @@ formatter *formatter_create( int len )
         else
         {
             css_rule *root = css_rule_create();
-            css_selector *sel = css_selector_create( NULL, "root");
+            css_selector *sel = css_selector_create( NULL, U_ROOT);
             if ( root==NULL || sel==NULL || !css_rule_add_selector(root,sel) )
             {
                 warning("could not add root selector to css rules\n");
@@ -79,7 +82,7 @@ formatter *formatter_create( int len )
                 return NULL;
             }
             else
-                hashmap_put( f->css_rules, "root", root );
+                hashmap_put( f->css_rules, U_ROOT, root );
         }
         f->properties = hashset_create();
         if ( f->properties == NULL )
@@ -88,7 +91,7 @@ formatter *formatter_create( int len )
             return NULL;
         }
         else
-            hashset_put( f->properties, "root" );
+            hashset_put( f->properties, U_ROOT );
     }
     else
         warning("formatter: failed to allocate formatter\n");
@@ -109,7 +112,7 @@ void formatter_dispose( formatter *f )
         {
             while ( hashmap_iterator_has_next(iter) )
             {
-                char *key = hashmap_iterator_next( iter );
+                UChar *key = hashmap_iterator_next( iter );
                 css_rule *rule = hashmap_get( f->css_rules, key );
                 css_rule_dispose( rule );
             }
@@ -130,7 +133,7 @@ void formatter_dispose( formatter *f )
  * @param len its length
  * @return 1 if it succeeded, else 0
  */
-int formatter_css_parse( formatter *f, const char *data, int len )
+int formatter_css_parse( formatter *f, const UChar *data, int len )
 {
     return css_parse( data, len, f->properties, f->css_rules );
 }
@@ -143,7 +146,7 @@ int formatter_css_parse( formatter *f, const char *data, int len )
  * @return 1 if it succeeded, else 0
  */
 int formatter_load_markup( formatter *f, load_markup_func mfunc, 
-    const char *data, int len )
+    const UChar *data, int len )
 {
     int res = (mfunc)( data, len, f->ranges, f->properties );
     if ( res )
@@ -157,7 +160,7 @@ int formatter_load_markup( formatter *f, load_markup_func mfunc,
  * @param len its length
  * @return 1 if it worked, else 0
  */
-int formatter_make_html( formatter *f, const char *text, int len )
+int formatter_make_html( formatter *f, const UChar *text, int len )
 {
     int res = 0;
     f->tree = dom_create( text, len, f->ranges, f->css_rules, f->properties );
@@ -190,7 +193,7 @@ int formatter_save_html( formatter *f, char *file )
  * @param VAR param for HTML length
  * @return the HTML or NULL
  */
-char *formatter_get_html( formatter *f, int *len )
+UChar *formatter_get_html( formatter *f, int *len )
 {
     dom_print( f->tree );
     text_buf *tb = dom_get_text_buf( f->tree );
@@ -229,7 +232,7 @@ static int overlap( range *a, range *b )
  * @param len its length on entry; its new length on exit
  * @return the modified text (not a copy)
  */
-static char *remove_text( range_array *removals, char *text, int *len )
+static UChar *remove_text( range_array *removals, UChar *text, int *len )
 {
     int from = 0;
     int to = 0;
@@ -252,7 +255,7 @@ static char *remove_text( range_array *removals, char *text, int *len )
     // copy bit left over at end
     if ( from > to )
     {
-        memcpy( &text[to], &text[from], *len-from );
+        u_strncpy( &text[to], &text[from], *len-from );
         to += *len-from;
         *len = to;
         text[*len] = 0;
@@ -275,7 +278,6 @@ static char *remove_text( range_array *removals, char *text, int *len )
             printf(",");
     }
     printf("\n");
-        
 }*/
 /**
  * Add the root range at the start of the range array
@@ -286,7 +288,7 @@ static char *remove_text( range_array *removals, char *text, int *len )
 static int formatter_add_root_range( formatter *f, int tlen )
 {
     int res = 1;
-    range *root = range_create( "root", NULL, 0, tlen );
+    range *root = range_create( U_ROOT, NULL, 0, tlen );
     if ( root == NULL )
     {
         fprintf(stderr,"formatter: failed to create document root\n");
@@ -306,7 +308,7 @@ static int formatter_add_root_range( formatter *f, int tlen )
  * @param len its length
  * @return 1 if it succeeded else 0
  */
-static int formatter_remove_ranges( formatter *f, char *text, int *len )
+static int formatter_remove_ranges( formatter *f, UChar *text, int *len )
 {
     range_array *removals = range_array_create();
     if ( removals != NULL )
@@ -382,7 +384,7 @@ static int formatter_remove_ranges( formatter *f, char *text, int *len )
  * @param len the text's length, updated on exit
  * @return 1 for success else 0
  */
-int formatter_cull_ranges( formatter *f, char *text, int *len )
+int formatter_cull_ranges( formatter *f, UChar *text, int *len )
 {
     if ( !range_array_has_removed(f->ranges) )
         return formatter_add_root_range( f, *len );

@@ -23,12 +23,12 @@
 typedef struct matrix_struct matrix;
 matrix *matrix_create();
 void matrix_dispose( matrix *m );
-int matrix_inside( matrix *m, char *name1, char *name2 );
+int matrix_inside( matrix *m, UChar *name1, UChar *name2 );
 void matrix_init( matrix *m, range_array *ranges );
 void matrix_update_html( matrix *m );
 hashset *matrix_get_lookup( matrix *m );
 void matrix_dump( matrix *m );
-void matrix_record( matrix *m, char *prop1, char *prop2 );
+void matrix_record( matrix *m, UChar *prop1, UChar *prop2 );
 
 #endif	/* MATRIX_H */
 

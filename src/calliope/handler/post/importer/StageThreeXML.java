@@ -34,6 +34,7 @@ import mml.filters.Filter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import java.io.FileOutputStream;
 /**
  * Process the XML files for import
  * @author desmond
@@ -254,15 +255,21 @@ public class StageThreeXML extends Stage
             catch ( Exception e )
             {
                 className = popClassName(className);
+                e.printStackTrace(System.out);
             }
         }
         if ( f != null )
         {
-            System.out.println("Applying filter "+className+" to "+pair.vid );
+            System.out.println("Applying filter to "+pair.vid );
             // woo hoo! we have a filter baby!
             try
             {
                 JSONObject cc = (JSONObject)JSONValue.parse(pair.stil);
+//                if ( pair.vid.equals("A") )
+//                {
+//                    printFile(pair.stil,"/tmp/A-stil.json");
+//                    printFile(pair.text,"/tmp/A.txt");
+//                }
                 cc = f.translate( cc, pair.text );
                 pair.stil = cc.toJSONString();
                 pair.text = f.getText();
@@ -275,8 +282,24 @@ public class StageThreeXML extends Stage
             }
         }
         else
-            System.out.println("Couldn't find filter for "+this.docid);
+            System.out.println("Couldn't find filter "+className+" for "+this.docid);
     }    
+    void printFile( String str, String path )
+    {
+        try
+        {
+            java.io.File f = new java.io.File(path);
+            if ( f.exists() )
+                f.delete();
+            FileOutputStream fos = new FileOutputStream(f);
+            byte[] data = str.getBytes("UTF-8");
+            fos.write( data );
+            fos.close();
+        }
+        catch ( Exception e )
+        {
+        }
+    }
     /**
      * Process the files
      * @param cortex the cortext MVD to accumulate files into
@@ -321,7 +344,7 @@ public class StageThreeXML extends Stage
                         // just remove all notes for now
                         xml = ns.strip( xml ); 
                         int res = stripper.strip( xml, stripConfig, 
-                            Formats.STIL, style, dict, hhExcepts, 
+                            style, dict, hhExcepts, 
                             Utils.isHtml(xml), text, markup );
                         if ( res == 1 )
                         {

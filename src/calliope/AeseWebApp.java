@@ -37,6 +37,7 @@ public class AeseWebApp extends HttpServlet
     static final String PASSWORD = "password";
     static final String DBPORT = "dbport";
     static final String WEBROOT = "webroot";
+    static final String WEBPORT = "webport";
     private String getParameter( ServletConfig config, String key, 
         String defValue )
     {
@@ -47,10 +48,9 @@ public class AeseWebApp extends HttpServlet
     }
     /**
      * Open a shared connection
-     * @param req the HttpServlet request
      * @throws AeseException 
      */
-    private void openConnection( HttpServletRequest req ) throws AeseException
+    private void openConnection() throws AeseException
     {
         ServletConfig config = getServletConfig();
         String repoName = getParameter( config, REPOSITORY, "MONGO" );
@@ -63,9 +63,12 @@ public class AeseWebApp extends HttpServlet
         String webRoot = getParameter( config, WEBROOT, "/var/www" );
         int dbPort = Integer.valueOf( dbPortValue );
         //String host = req.getServerName();
-        int wsPort = req.getServerPort();
-        Connector.init( repository, user, password, "localhost", dbPort, wsPort, 
-            webRoot );
+        String webPort = getParameter( config, WEBPORT, "8080" );
+        if ( webPort == null || webPort.length()==0 )
+            webPort = "8080";
+        JettyServer.wsPort = Integer.valueOf(webPort);
+        Connector.init( repository, user, password, "localhost", dbPort, 
+            JettyServer.wsPort, webRoot );
     }
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp)
@@ -87,7 +90,7 @@ public class AeseWebApp extends HttpServlet
             //    +"</p></body></html>");
             AeseHandler handler;
             if ( !Connector.isOpen() )
-                openConnection( req );
+                openConnection();
             if ( method.equals("GET") )
                 handler = new AeseGetHandler();
             else if ( method.equals("PUT") )

@@ -22,8 +22,8 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-int html_is_inside( char *tag1, char *tag2 );
-int html_is_empty( char *tag );
+int html_is_inside( UChar *tag1, UChar *tag2 );
+int html_is_empty( UChar *tag );
 #ifdef	__cplusplus
 }
 #endif

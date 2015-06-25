@@ -21,21 +21,28 @@
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "hashmap.h"
 #include "attribute.h"
 #include "annotation.h"
 #include "range.h"
 #include "node.h"
 #include "error.h"
+#include "utils.h"
 #include "memwatch.h"
 #define MAX_TAGLEN 128
 #define MIN_TEXTLEN 512
+static UChar U_RELOFF[] = {'r','e','l','o','f','f'};
+static UChar U_NAME[] = {'n','a','m','e'};
+static UChar U_LEN[] = {'l','e','n'};
+static UChar U_REMOVED[] = {'r','e','m','o','v','e','d'};
 struct range_struct
 {
     /** the name of the range's property */
-	char *name;
+	UChar *name;
     /** the mapped html tag name */
-    char *html_name;
+    UChar *html_name;
     /** absolute start offset in the text */
 	int start;
     /** relative offset */
@@ -55,7 +62,7 @@ struct range_struct
  * @param atts a NULL-terminated array of attribute name/value pairs
  * @return a range object or NULL
  */
-range *range_create_atts( const char **atts )
+range *range_create_atts( const UChar **atts )
 {
     range *r = calloc( 1, sizeof(range) );
     if ( r != NULL )
@@ -64,11 +71,11 @@ range *range_create_atts( const char **atts )
         r->rightmost = 1;
         while ( atts[i] != NULL )
         {
-            if ( strcmp(atts[i],"reloff")== 0 )
-                r->reloff = atoi(atts[i+1]);
-            else if ( strcmp(atts[i],"name")==0 )
+            if ( u_strcmp(atts[i],U_RELOFF)== 0 )
+                r->reloff = u_atoi((UChar*)atts[i+1]);
+            else if ( u_strcmp(atts[i],U_NAME)==0 )
             {
-                r->name = strdup((char*)atts[i+1]);
+                r->name = u_strdup((UChar*)atts[i+1]);
                 if ( r->name == NULL )
                 {
                     warning("range: failed to duplicate name %s\n",
@@ -78,9 +85,9 @@ range *range_create_atts( const char **atts )
                     break;
                 }
             }
-            else if ( strcmp(atts[i],"len")==0 )
-                r->len = atoi( atts[i+1] );
-            else if ( strcmp(atts[i],"removed")==0 )
+            else if ( u_strcmp(atts[i],U_LEN)==0 )
+                r->len = u_atoi( (UChar*)atts[i+1] );
+            else if ( u_strcmp(atts[i],U_REMOVED)==0 )
             {
                 warning( "range: attempt to create removed range\n");
                 free( r );
@@ -140,14 +147,14 @@ range *range_copy( range *r )
  * @param len its length
  * @return the finished range
  */
-range *range_create( char *name, char *html_name, int start, int len )
+range *range_create( UChar *name, UChar *html_name, int start, int len )
 {
     range *r = calloc( 1, sizeof(range) );
 	if ( r != NULL )
     {
-        r->name = strdup(name);
+        r->name = u_strdup(name);
         if ( html_name != NULL )
-            r->html_name = strdup( html_name );
+            r->html_name = u_strdup( html_name );
         r->start = start;
         r->len = len;
         r->rightmost = 1;
@@ -243,7 +250,7 @@ void range_set_len( range *r, int len )
  * @param r the range in question
  * @return the name as a string
  */
-char *range_name( range *r )
+UChar *range_name( range *r )
 {
     return r->name;
 }
@@ -252,7 +259,7 @@ char *range_name( range *r )
  * @param r the range in question
  * @return the name as a string
  */
-char *range_html_name( range *r )
+UChar *range_html_name( range *r )
 {
     return r->html_name;
 }
@@ -262,7 +269,7 @@ char *range_html_name( range *r )
  * @param html_name name of the range in html
  * @return 1 if it worked, else 0
  */
-int range_set_html_name( range *r, char *html_name )
+int range_set_html_name( range *r, UChar *html_name )
 {
     if ( r->html_name != NULL )
     {
@@ -270,7 +277,7 @@ int range_set_html_name( range *r, char *html_name )
         r->html_name = NULL;
     }
     if ( html_name != NULL )
-        r->html_name = strdup( html_name );
+        r->html_name = u_strdup( html_name );
     return r->html_name != NULL;
 }
 /**
@@ -299,14 +306,14 @@ int range_equals( range *r1, range *r2 )
  * @param name the new name (maybe like the old one)
  * @return 1 if it worked, else 0
  */
-int range_set_name( range *r, char *name )
+int range_set_name( range *r, UChar *name )
 {
     if ( r->name == NULL )
-        r->name = strdup( name );
-    else if ( strcmp(r->name,name)!= 0 )
+        r->name = u_strdup( name );
+    else if ( u_strcmp(r->name,name)!= 0 )
     {
         free( r->name );
-        r->name = strdup( name );
+        r->name = u_strdup( name );
     }
     return r->name != NULL;
 }

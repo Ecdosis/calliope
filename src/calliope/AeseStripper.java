@@ -17,6 +17,8 @@ package calliope;
 
 import calliope.json.JSONResponse;
 import calliope.constants.Libraries;
+import java.io.FileInputStream;
+import java.io.File;
 /**
  * Strip XML embedded codes from text out into STIL (JSON) format
  * @author desmond
@@ -27,7 +29,7 @@ import calliope.constants.Libraries;
  */
 public class AeseStripper 
 {
-    public native int strip( String xml, String recipe, String format, 
+    public native int strip( String xml, String recipe, 
         String style, String language, String hhExcepts, boolean html,
         JSONResponse text, JSONResponse markup );
 	public native String[] formats();
@@ -42,4 +44,32 @@ public class AeseStripper
             System.out.println(e.getMessage());
         }
 	}
+    public static void main( String[] args )
+    {
+        try
+        {
+            if ( args.length==1 )
+            {
+                File input = new File(args[0]);
+                if ( input.exists() )
+                {
+                    FileInputStream fis = new FileInputStream(input);
+                    byte[] data = new byte[(int)input.length()];
+                    fis.read(data);
+                    fis.close();
+                    String xml = new String(data,"UTF-8");
+                    JSONResponse stil = new JSONResponse(JSONResponse.STIL);
+                    JSONResponse text = new JSONResponse(JSONResponse.TEXT);
+                    new AeseStripper().strip(xml,null,"TEI","en_GB",null,false,text,stil);
+                    System.out.println(stil.getBody());
+                }
+            }
+            else
+                System.out.println("usage: java calliope.AeseStripper <xml-file>");
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace(System.out);
+        }
+    }
 }

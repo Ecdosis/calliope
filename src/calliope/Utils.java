@@ -308,7 +308,7 @@ public class Utils
             throw new AeseException( e );
         }
     }
-     /**
+    /**
      * Fetch a single style text
      * @param style the path to the style in the corform database
      * @return the text of the style

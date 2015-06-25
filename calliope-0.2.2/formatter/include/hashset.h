@@ -25,11 +25,11 @@ extern "C" {
 typedef struct hashset_struct hashset;
 hashset *hashset_create();
 void hashset_dispose( hashset *hs );
-int hashset_get( hashset *hs, char *prop );
-int hashset_put( hashset *hs, char *prop );
+int hashset_get( hashset *hs, UChar *prop );
+int hashset_put( hashset *hs, UChar *prop );
 int hashset_size( hashset *hs );
-void hashset_to_array( hashset *hs, char **items );
-int hashset_contains( hashset *hs, char *key );
+void hashset_to_array( hashset *hs, UChar **items );
+int hashset_contains( hashset *hs, UChar *key );
 void hashset_print( hashset *hs );
 #ifdef	__cplusplus
 }

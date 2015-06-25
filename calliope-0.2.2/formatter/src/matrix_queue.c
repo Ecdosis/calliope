@@ -17,6 +17,8 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "hashmap.h"
 #include "attribute.h"
 #include "annotation.h"

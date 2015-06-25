@@ -24,6 +24,8 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "css_selector.h"
 #include "css_property.h"
 #include "attribute.h"
@@ -46,30 +48,30 @@
  * @param start the offset at which the selector starts in data
  * @param len the length of the selector's data
  * @param rule the rule to fill in with selectors
- * @return 1 if 
+ * @return 1 if
  */
-static int get_selectors( const char *data, int start, int len, css_rule *rule )
+static int get_selectors( const UChar *data, int start, int len, css_rule *rule )
 {
     int res = 0;
-	int i = start;
-	int end = start + len;
-	int last_sel_start = start;
-	while ( i < end )
-	{
-		if ( data[i] == ',' || i == end-1 )
-		{
-			css_selector *s = css_selector_parse( &data[last_sel_start],
-				(i-last_sel_start)+1 );
+    int i = start;
+    int end = start + len;
+    int last_sel_start = start;
+    while ( i < end )
+    {
+        if ( data[i] == ',' || i == end-1 )
+        {
+            css_selector *s = css_selector_parse( &data[last_sel_start],
+                (i-last_sel_start)+1 );
             if ( s != NULL )
             {
-				res = css_rule_add_selector( rule, s );
+                res = css_rule_add_selector( rule, s );
                 if ( !res )
                     break;
             }
-			last_sel_start = i+1;
-		}
-		i++;
-	}
+            last_sel_start = i+1;
+        }
+        i++;
+    }
     return res;
 }
 /**
@@ -80,27 +82,27 @@ static int get_selectors( const char *data, int start, int len, css_rule *rule )
  * @param rule the rule to fill out
  * @return 1 if it succeeded, else 0
  */
-static int get_properties( const char *data, int len, css_rule *rule )
+static int get_properties( const UChar *data, int len, css_rule *rule )
 {
-	int res = 1,i = 0;
-	int end = len;
-	int last_prop_start = 0;
-	while ( i < end )
-	{
-		if ( data[i] == ';' || i == end-1 )
-		{
-			css_property *p = css_property_parse( &data[last_prop_start],
+    int res = 1,i = 0;
+    int end = len;
+    int last_prop_start = 0;
+    while ( i < end )
+    {
+        if ( data[i] == ';' || i == end-1 )
+        {
+            css_property *p = css_property_parse( &data[last_prop_start],
                 i-last_prop_start );
             if ( p != NULL )
-			{
-				res = css_rule_add_property( rule, p );
+            {
+                res = css_rule_add_property( rule, p );
                 if ( !res )
                     break;
-			}
-			last_prop_start = i+1;
-		}
-		i++;
-	}
+            }
+            last_prop_start = i+1;
+        }
+        i++;
+    }
     return res;
 }
 /**
@@ -109,43 +111,43 @@ static int get_properties( const char *data, int len, css_rule *rule )
  * @param offset VAR param of the offset into data to read from
  * @return the rule or NULL
  */
-static css_rule *get_css_rule( const char *data, int *offset )
+static css_rule *get_css_rule( const UChar *data, int *offset )
 {
-	int pos = *offset;
-	int state = 0;
-	int bodyStart=-1,bodyEnd=-1;
-	css_rule *rule = NULL;
-	while ( state >= 0 && data[pos] != 0 )
-	{
-		switch ( state )
-		{
-			case 0:	// collecting selector
-				if ( data[pos] == '{' )
-				{
-					bodyStart = pos;
-					state = 1;
-				}
-				pos++;
-				break;
-			case 1:	// collecting body
-				if ( data[pos] == '}' )
-				{
-					bodyEnd = pos;
-					state = -1;
-				}
-				pos++;
-				break;
-		}
-	}
-	if ( (bodyStart == -1 || bodyEnd == -1)&&state!=0 )
-	{
-		warning("failed to find css rule body", 0 );
-		return NULL;
-	}
-	else
-	{
-		rule = css_rule_create();
-		if ( rule != NULL )
+    int pos = *offset;
+    int state = 0;
+    int bodyStart=-1,bodyEnd=-1;
+    css_rule *rule = NULL;
+    while ( state >= 0 && data[pos] != 0 )
+    {
+        switch ( state )
+        {
+            case 0:    // collecting selector
+                if ( data[pos] == '{' )
+                {
+                    bodyStart = pos;
+                    state = 1;
+                }
+                pos++;
+                break;
+            case 1:    // collecting body
+                if ( data[pos] == '}' )
+                {
+                    bodyEnd = pos;
+                    state = -1;
+                }
+                pos++;
+                break;
+        }
+    }
+    if ( (bodyStart == -1 || bodyEnd == -1)&&state!=0 )
+    {
+        warning("failed to find css rule body", 0 );
+        return NULL;
+    }
+    else
+    {
+        rule = css_rule_create();
+        if ( rule != NULL )
         {
             int res = get_selectors( data, *offset, bodyStart-(*offset), rule );
             if ( res )
@@ -159,7 +161,7 @@ static css_rule *get_css_rule( const char *data, int *offset )
         else if ( rule != NULL )
             css_rule_dispose( rule );
         return NULL;
-	}
+    }
 }
 /**
  * Print a css-node
@@ -181,15 +183,15 @@ static void print_css_rule( void *key )
  * @param css store the css rules in here
  * @return 1 if it succeeded, else 0
  */
-int css_parse( const char *data, int len, hashset *props, hashmap *css )
+int css_parse( const UChar *data, int len, hashset *props, hashmap *css )
 {
-	int offset = 0;
+    int offset = 0;
     do
     {
         css_rule *rule = get_css_rule( data, &offset );
         if ( rule != NULL )
         {
-            char *class_name = css_rule_get_class(rule);
+            UChar *class_name = css_rule_get_class(rule);
             // only put into the css properties seen in the markup
             if ( hashset_contains(props,class_name) )
             {

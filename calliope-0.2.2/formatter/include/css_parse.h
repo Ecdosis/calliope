@@ -22,5 +22,5 @@
 
 #ifndef CSS_PARSE_H_
 #define CSS_PARSE_H_
-int css_parse( const char *data, int len, hashset *props, hashmap *css );
+int css_parse( const UChar *data, int len, hashset *props, hashmap *css );
 #endif /* CSS_PARSE_H_ */

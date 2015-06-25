@@ -23,6 +23,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <limits.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "HTML.h"
 #include "error.h"
 #include "memwatch.h"
@@ -37,21 +40,116 @@
 #define FLOW {0xdf66eeff,0xb8ff77fd,0x9adfcecf,0x788}
 #define STYLE_PLUS_FLOW {0xdf66eeff,0xb8ff77fd,0x9bdfcecf,0x788}
 /* all 107 HTML5 tags */
-static const char *tags[107] = {
-"a","abbr","address","area","article","aside","audio","b",
-"base","bdi","bdo","blockquote","body","br","button","canvas",
-"caption","cite","code","col","colgroup","command","datalist",
-"dd","del","details","dfn","div","dl","dt","em","embed",
-"fieldset","figcaption","figure","footer","form","h1","h2",
-"h3","h4","h5","h6","head","header","hgroup","hr","html",
-"i","iframe","img","input","ins","kbd","keygen","label",
-"legend","li","link","map","mark","menu","meta","meter",
-"nav","noscript","object","ol","optgroup","option","output",
-"p","param","pre","progress","q","rp","rt","ruby","s","samp",
-"script","section","select","small","source","span","strong",
-"style","sub","summary","sup","table","tbody","td","textarea",
-"tfoot","th","thead","time","title","tr","track","ul","var",
-"video","wbr"};
+static const UChar *tags[107] = {
+(UChar[]){'a'},
+(UChar[]){'a','b','b','r'},
+(UChar[]){'a','d','d','r','e','s','s'},
+(UChar[]){'a','r','e','a'},
+(UChar[]){'a','r','t','i','c','l','e'},
+(UChar[]){'a','s','i','d','e'},
+(UChar[]){'a','u','d','i','o'},
+(UChar[]){'b'},
+(UChar[]){'b','a','s','e'},
+(UChar[]){'b','d','i'},
+(UChar[]){'b','d','o'},
+(UChar[]){'b','l','o','c','k','q','u','o','t','e'},
+(UChar[]){'b','o','d','y'},
+(UChar[]){'b','r'},
+(UChar[]){'b','u','t','t','o','n'},
+(UChar[]){'c','a','n','v','a','s'},
+(UChar[]){'c','a','p','t','i','o','n'},
+(UChar[]){'c','i','t','e'},
+(UChar[]){'c','o','d','e'},
+(UChar[]){'c','o','l'},
+(UChar[]){'c','o','l','g','r','o','u','p'},
+(UChar[]){'c','o','m','m','a','n','d'},
+(UChar[]){'d','a','t','a','l','i','s','t'},
+(UChar[]){'d','d'},
+(UChar[]){'d','e','l'},
+(UChar[]){'d','e','t','a','i','l','s'},
+(UChar[]){'d','f','n'},
+(UChar[]){'d','i','v'},
+(UChar[]){'d','l'},
+(UChar[]){'d','t'},
+(UChar[]){'e','m'},
+(UChar[]){'e','m','b','e','d'},
+(UChar[]){'f','i','e','l','d','s','e','t'},
+(UChar[]){'f','i','g','c','a','p','t','i','o','n'},
+(UChar[]){'f','i','g','u','r','e'},
+(UChar[]){'f','o','o','t','e','r'},
+(UChar[]){'f','o','r','m'},
+(UChar[]){'h','1'},
+(UChar[]){'h','2'},
+(UChar[]){'h','3'},
+(UChar[]){'h','4'},
+(UChar[]){'h','5'},
+(UChar[]){'h','6'},
+(UChar[]){'h','e','a','d'},
+(UChar[]){'h','e','a','d','e','r'},
+(UChar[]){'h','g','r','o','u','p'},
+(UChar[]){'h','r'},
+(UChar[]){'h','t','m','l'},
+(UChar[]){'i'},
+(UChar[]){'i','f','r','a','m','e'},
+(UChar[]){'i','m','g'},
+(UChar[]){'i','n','p','u','t'},
+(UChar[]){'i','n','s'},
+(UChar[]){'k','b','d'},
+(UChar[]){'k','e','y','g','e','n'},
+(UChar[]){'l','a','b','e','l'},
+(UChar[]){'l','e','g','e','n','d'},
+(UChar[]){'l','i'},
+(UChar[]){'l','i','n','k'},
+(UChar[]){'m','a','p'},
+(UChar[]){'m','a','r','k'},
+(UChar[]){'m','e','n','u'},
+(UChar[]){'m','e','t','a'},
+(UChar[]){'m','e','t','e','r'},
+(UChar[]){'n','a','v'},
+(UChar[]){'n','o','s','c','r','i','p','t'},
+(UChar[]){'o','b','j','e','c','t'},
+(UChar[]){'o','l'},
+(UChar[]){'o','p','t','g','r','o','u','p'},
+(UChar[]){'o','p','t','i','o','n'},
+(UChar[]){'o','u','t','p','u','t'},
+(UChar[]){'p'},
+(UChar[]){'p','a','r','a','m'},
+(UChar[]){'p','r','e'},
+(UChar[]){'p','r','o','g','r','e','s','s'},
+(UChar[]){'q'},
+(UChar[]){'r','p'},
+(UChar[]){'r','t'},
+(UChar[]){'r','u','b','y'},
+(UChar[]){'s'},
+(UChar[]){'s','a','m','p'},
+(UChar[]){'s','c','r','i','p','t'},
+(UChar[]){'s','e','c','t','i','o','n'},
+(UChar[]){'s','e','l','e','c','t'},
+(UChar[]){'s','m','a','l','l'},
+(UChar[]){'s','o','u','r','c','e'},
+(UChar[]){'s','p','a','n'},
+(UChar[]){'s','t','r','o','n','g'},
+(UChar[]){'s','t','y','l','e'},
+(UChar[]){'s','u','b'},
+(UChar[]){'s','u','m','m','a','r','y'},
+(UChar[]){'s','u','p'},
+(UChar[]){'t','a','b','l','e'},
+(UChar[]){'t','b','o','d','y'},
+(UChar[]){'t','d'},
+(UChar[]){'t','e','x','t','a','r','e','a'},
+(UChar[]){'t','f','o','o','t'},
+(UChar[]){'t','h'},
+(UChar[]){'t','h','e','a','d'},
+(UChar[]){'t','i','m','e'},
+(UChar[]){'t','i','t','l','e'},
+(UChar[]){'t','r'},
+(UChar[]){'t','r','a','c','k'},
+(UChar[]){'u','l'},
+(UChar[]){'v','a','r'},
+(UChar[]){'v','i','d','e','o'},
+(UChar[]){'w','b','r'}
+};
+
 static unsigned empty[4] = {277091328,143906,8389632,0};
 /* bit-vector of permitted contents for each (down index) HTML element's
  * allowed content of other elements, specified by an index into a
@@ -171,14 +269,14 @@ static unsigned int matrix[107][4] = {
  * @param tag the tag to get the index of
  * @return the index or -1
  */
-static int tag2index( char *tag )
+static int tag2index( UChar *tag )
 {
 	int top=0,bottom=106;
-	char lctag[12];
-	int i,taglen = strlen(tag);
+	UChar lctag[12];
+	int i,taglen = u_strlen(tag);
 	if ( taglen >= 12 )
 	{
-		warning( "html: tag %s too long!\n",tag );
+		u_printf( "html: tag %s too long!\n",tag );
         return -1;
 	}
 	for ( i=0;i<taglen;i++ )
@@ -187,7 +285,7 @@ static int tag2index( char *tag )
 	while ( top <= bottom )
 	{
 		int middle = (top+bottom)/2;
-		int res = strcmp(lctag,tags[middle]);
+		int res = u_strcmp(lctag,tags[middle]);
 		if ( res > 0 )
 			top = middle+1;
 		else if ( res < 0 )
@@ -205,7 +303,7 @@ static int tag2index( char *tag )
  * @return 1 if tag1 is inside tag2, -1 if tag2 is inside tag1,
  * 0 if either, -2 if neither
  */
-int html_is_inside( char *tag1, char *tag2 )
+int html_is_inside( UChar *tag1, UChar *tag2 )
 {
     if ( tag2==NULL )
         return 1;
@@ -238,7 +336,7 @@ int html_is_inside( char *tag1, char *tag2 )
  * @param tag the tag in question
  * @return 1 if it is empty, else 0
  */
-int html_is_empty( char *tag )
+int html_is_empty( UChar *tag )
 {
     if ( tag == NULL )
         printf("tag is NULL!\n");

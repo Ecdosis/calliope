@@ -23,8 +23,8 @@
 typedef struct text_buf_struct text_buf;
 text_buf *text_buf_create( int initial_size );
 void text_buf_dispose( text_buf *tb );
-int text_buf_concat( text_buf *tb, char *text, int len );
-char *text_buf_get_buf( text_buf *tb );
+int text_buf_concat( text_buf *tb, UChar *text, int len );
+UChar *text_buf_get_buf( text_buf *tb );
 int text_buf_len( text_buf *tb );
 
 #endif	/* TEXT_BUF_H */

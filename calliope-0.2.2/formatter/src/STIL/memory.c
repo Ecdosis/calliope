@@ -3,12 +3,15 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <syslog.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include "utils.h"
 #include "hashmap.h"
 
 #ifdef DEBUG_MEMORY
 #define STRING_BLOCK_SIZE 100000
 static hashmap *allocations = NULL;
-static char *strings = NULL;
+static UChar *strings = NULL;
 static int highwater = 0;
 static int allocated = 0;
 /**
@@ -32,13 +35,13 @@ static void debug_report( const char *fmt, ... )
 #endif
     va_end( ap );
 }
-static char *string_store( char *str )
+static UChar *string_store( UChar *str )
 {
-    int len = strlen( str );
+    int len = u_strlen( str );
     if ( strings==NULL )
     {
         strings = malloc(STRING_BLOCK_SIZE);
-        if ( strings != NULL && len<STRING_BLOCK_SIZE )
+        if ( strings != NULL && len*sizeof(UChar)<STRING_BLOCK_SIZE )
         {
             allocated = STRING_BLOCK_SIZE;
         }
@@ -50,7 +53,7 @@ static char *string_store( char *str )
     }
     else if ( len+highwater >= allocated )
     {
-        char *copy = malloc( allocated+len+STRING_BLOCK_SIZE );
+        UChar *copy = malloc( allocated+len*sizeof(UChar)+STRING_BLOCK_SIZE );
         if ( copy != NULL )
         {
             memcpy( copy, strings, highwater );
@@ -66,7 +69,7 @@ static char *string_store( char *str )
     }
     if ( strings != NULL )
     {
-        char *orig = &strings[highwater];
+        UChar *orig = &strings[highwater];
         strcpy( &strings[highwater], str );
         highwater += len+1;
         return orig;
@@ -95,8 +98,10 @@ static void memory_free( void *block )
     if ( allocations != NULL )
     {
         char block_addr[32];
-        snprintf( block_addr, 31, "%ld", (long) block );
-        if ( !hashmap_remove(allocations,block_addr) )
+        UChar u_block_addr[32];
+            snprintf( block_addr, 31, "%ld", (long) block );
+        str2ustr( block_addr,u_block_addr,32);
+        if ( !hashmap_remove(allocations,u_block_addr) )
             debug_report("double free!\n");
         else
             free( block );
@@ -113,8 +118,10 @@ void vp( void *p )
             debug_report("NULL pointer!\n");
         else
         {
+            UChar u_block_addr[32];
             snprintf( block_addr, 31, "%ld", (long) p );
-            if ( !hashmap_contains(allocations,block_addr) )
+            str2ustr( block_addr,u_block_addr,32);
+            if ( !hashmap_contains(allocations,u_block_addr) )
             {
                 debug_report("invalid pointer %s!\n",block_addr);
             }
@@ -132,8 +139,8 @@ void memory_print()
         hashmap_iterator *iter = hashmap_iterator_create( allocations );
         while ( hashmap_iterator_has_next(iter) )
         {
-            char *key = hashmap_iterator_next( iter );
-            char *value = hashmap_get( allocations, key );
+            UChar *key = hashmap_iterator_next( iter );
+            UChar *value = hashmap_get( allocations, key );
             debug_report("unfreed block %s at %s \n", key, value );
             unfreed++;
         }
@@ -144,7 +151,7 @@ void memory_print()
         strings = NULL;
     }
 }
-void *dbg_malloc(size_t a,const char *f,int l)
+void *dbg_malloc(size_t a,const Uhar *f,int l)
 {
     void *b = malloc( a );
     memory_store( b, f, l );
@@ -154,13 +161,13 @@ void dbg_free(void *a)
 {
     memory_free( a );
 }
-char *dbg_strdup(char *a,const char *f,int l)
+char *dbg_strdup(UChar *a,const Uhar *f,int l)
 {
-    char *b = strdup( a );
+    Uhar *b = u_strdup( a );
     memory_store( b, f, l );
     return b;
 }
-void *dbg_calloc(size_t a,size_t b,const char *f,int l)
+void *dbg_calloc(size_t a,size_t b,const UChar *f,int l)
 {
     void *c = calloc( a, b );
     memory_store( c, f, l );

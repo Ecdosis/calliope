@@ -27,6 +27,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "css_property.h"
 #include "css_selector.h"
 #include "hashmap.h"
@@ -40,8 +42,10 @@
 #include "cJSON.h"
 #include "STIL/STIL.h"
 #include "plain_text.h"
+#include "utils.h"
 #include "memwatch.h"
 #include "error.h"
+#include "encoding.h"
 
 #ifdef XML_LARGE_SIZE
 #if defined(XML_USE_MSC_EXTENSIONS) && _MSC_VER < 1400
@@ -81,7 +85,9 @@ void stil_parse( cJSON *root, struct userdata_struct *u )
                 {
                     if ( strcmp(field->string,"name")==0 )
                     {
-                        range_set_name( u->current, field->valuestring );
+                        UChar u_valuestring[32];
+                        str2ustr(field->valuestring,u_valuestring,32);
+                        range_set_name( u->current, u_valuestring );
                     }
                     else if ( strcmp(field->string,"len")==0 )
                     {
@@ -102,11 +108,31 @@ void stil_parse( cJSON *root, struct userdata_struct *u )
                         struct cJSON *sibling = field->child;
                         while ( sibling != NULL )
                         {
-                            annotation *a = annotation_create_simple(
-                                sibling->child->string,
-                                sibling->child->valuestring );
+                            int child_len = measure_from_encoding( 
+                                sibling->child->string, 
+                                strlen(sibling->child->string), "UTF-8" );
+                            int value_len = measure_from_encoding( 
+                                sibling->child->valuestring, 
+                                strlen(sibling->child->valuestring), "UTF-8" );
+                            UChar *child = calloc(child_len,sizeof(UChar));
+                            UChar *value = calloc(value_len,sizeof(UChar));
+                            int res1 = convert_from_encoding(
+                                sibling->child->string, 
+                                strlen(sibling->child->string),
+                                child, child_len, "UTF-8" );
+                            int res2 = convert_from_encoding(
+                                sibling->child->valuestring, 
+                                strlen(sibling->child->valuestring),
+                                value, value_len, "UTF-8" );
+                            annotation *a = NULL;
+                            if ( res1 > 0 && res2 > 0 && child != NULL && value != NULL )
+                                a = annotation_create_simple(child, value );
                             if ( a != NULL )
                                 range_add_annotation( u->current, a );
+                            if ( value != NULL )
+                                free( value );
+                            if ( child != NULL )
+                                free( child );
                             sibling = sibling->next;
                         }
                     }
@@ -116,7 +142,7 @@ void stil_parse( cJSON *root, struct userdata_struct *u )
                 range = range->next;
                 if ( u->current != NULL )
                 {
-                    char *r_name = range_name(u->current);
+                    UChar *r_name = range_name(u->current);
                     if ( !hashset_contains(u->props, r_name) )
                         hashset_put( u->props, r_name );
                     //fprintf(stderr,"adding range %s\n",r_name);
@@ -130,31 +156,45 @@ void stil_parse( cJSON *root, struct userdata_struct *u )
     }
 }
 /**
- * Load the markup file with NON-overlapping ranges, reading it using expat.
+ * Load the markup file with NON-overlapping ranges, reading it using cJSON.
  * @param mdata the overlapping markup data
  * @param mlen its length
  * @param ranges the loaded standoff ranges sorted on absolute offsets
  * @param props store in here the names of all the properties
  * @return 1 if it loaded successfully, else 0
  */
-int load_stil_markup( const char *mdata, int mlen, range_array *ranges, 
+int load_stil_markup( const UChar *mdata, int mlen, range_array *ranges, 
     hashset *props )
 {
-    cJSON *root = cJSON_Parse( mdata );
-    if ( root != NULL )
+    int res = 0;
+    int cdata_len = measure_to_encoding( (UChar*)mdata, mlen, "UTF-8");
+    char *cdata = malloc( cdata_len );
+    if ( cdata != NULL )
     {
-        struct userdata_struct u;
-        u.props = props;
-        u.ranges = ranges;
-        u.absolute_off = 0;
-        u.current = NULL;
-        stil_parse( root, &u );
-        cJSON_Delete( root );
-        return 1;
+        int nbytes = convert_to_encoding( (UChar*)mdata, mlen, cdata, 
+            cdata_len, "UTF-8" );
+        if ( nbytes == cdata_len )
+        {
+            cJSON *root = cJSON_Parse( cdata );
+            if ( root != NULL )
+            {
+                struct userdata_struct u;
+                u.props = props;
+                u.ranges = ranges;
+                u.absolute_off = 0;
+                u.current = NULL;
+                stil_parse( root, &u );
+                cJSON_Delete( root );
+                res = 1;
+            }
+            else
+                warning("failed to parse JSON. mdata len=%d\n",mlen);
+        }
+        else
+            warning("failed to convert to UTF-8\n");
+        free( cdata );
     }
     else
-    {
-        warning("failed to parse JSON. mdata len=%d\n",mlen);
-        return 0;
-    }
+        warning("failed to allocate UTF-8 buffer\n");
+    return res;
 }

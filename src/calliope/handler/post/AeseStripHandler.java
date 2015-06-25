@@ -77,7 +77,7 @@ public class AeseStripHandler extends AeseHandler
                 JSONResponse markup = new JSONResponse(JSONResponse.STIL);
                 JSONResponse text = new JSONResponse(JSONResponse.TEXT);
                 AeseStripper stripper = new AeseStripper();
-                int res = stripper.strip(xml,recipe,format, style, 
+                int res = stripper.strip(xml,recipe,style, 
                     "en_GB", null, Utils.isHtml(xml), text, markup );
                 if ( res == 1 )
                 {

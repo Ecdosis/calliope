@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <jni.h>
 #include "attribute.h"
 #include "hashmap.h"
 #include "annotation.h"
@@ -10,23 +13,23 @@
 #include "hashset.h"
 #include "formatter.h"
 #include "master.h"
-#include "AESE/AESE.h"
 #include "STIL/STIL.h"
 #include "error.h"
+#include "utils.h"
 
 #include "memwatch.h"
-static format formats[]={{"AESE",load_aese_markup},{"STIL",load_stil_markup}};
-static int num_formats = sizeof(formats)/sizeof(format);
+static format stil_format;
+static UChar U_STIL[4] = {'S','T','I','L'};
 static char error_string[128] = "";
+static UChar u_error_string[128];
 struct master_struct
 {
-    char *text;
+    UChar *text;
     int tlen;
     int html_len;
     int has_css;
     int has_markup;
     int has_text;
-    int selected_format;
     formatter *f;
 };
 /**
@@ -35,11 +38,13 @@ struct master_struct
  * @param len the length of the text
  * @return an initialised master instance
  */
-master *master_create( char *text, int len )
+master *master_create( UChar *text, int len )
 {
     master *hf = calloc( 1, sizeof(master) );
     if ( hf != NULL )
     {
+        stil_format.lm = load_stil_markup;
+        stil_format.name = U_STIL;
         hf->has_text = 0;
         hf->has_css = 0;
         hf->has_markup = 0;
@@ -53,35 +58,19 @@ master *master_create( char *text, int len )
                 hf->has_text = 1;
             }
         }
-        
     }
     else
         error("master: failed to allocate instance\n");
     return hf;
 }
 /**
- * Dispose of a aese formatter
+ * Dispose of a formatter
  */
 void master_dispose( master *hf )
 {
     if ( hf->f != NULL )
         formatter_dispose( hf->f );
     free( hf );
-}
-/**
- * Look up a format in our list.
- * @param fmt_name the format's name
- * @return its index in the table or 0
- */
-static int master_lookup_format( const char *fmt_name )
-{
-    int i;
-    for ( i=0;i<num_formats;i++ )
-    {
-        if ( strcmp(formats[i].name,fmt_name)==0 )
-            return i;
-    }
-    return 0;
 }
 /**
  * Load the markup file (possibly one of several)
@@ -91,19 +80,13 @@ static int master_lookup_format( const char *fmt_name )
  * @param fmt the format
  * return 1 if successful, else 0
  */
-int master_load_markup( master *hf, const char *markup, int mlen, 
-    const char *fmt )
+int master_load_markup( master *hf, const UChar *markup, int mlen )
 {
     int res = 0;
-    //fprintf(stderr,"mlen=%d markup=%s\n",mlen,markup);
-    hf->selected_format = master_lookup_format( fmt );
-    if ( hf->selected_format >= 0 )
-    {
-        res = formatter_load_markup( hf->f, 
-            formats[hf->selected_format].lm, markup, mlen );
-        if ( res && !hf->has_markup )
-            hf->has_markup = 1;
-    }
+    res = formatter_load_markup( hf->f, 
+        stil_format.lm, markup, mlen );
+    if ( res && !hf->has_markup )
+        hf->has_markup = 1;
     return res;
 }
 /**
@@ -113,7 +96,7 @@ int master_load_markup( master *hf, const char *markup, int mlen,
  * @param len its length
  * return 1 if successful, else 0
  */
-int master_load_css( master *hf, const char *css, int len )
+int master_load_css( master *hf, const UChar *css, int len )
 {
     int res = formatter_css_parse( hf->f, css, len );
     if ( res && !hf->has_css )
@@ -125,9 +108,9 @@ int master_load_css( master *hf, const char *css, int len )
  * @param hf the master in question
  * @return a HTML string
  */
-char *master_convert( master *hf )
+UChar *master_convert( master *hf )
 {
-    char *str = NULL;
+    UChar *str = NULL;
     if ( hf->has_text && hf->has_css && hf->has_markup )
     {
         if ( formatter_cull_ranges(hf->f,hf->text,&hf->tlen) )
@@ -139,17 +122,16 @@ char *master_convert( master *hf )
             {
                 const char *error = "<html><body><p>Error: conversion "
                     "failed</p></body></html>";
-                strcpy( error_string, error );
-                str = error_string;
-                hf->html_len = strlen(error_string);
+                str2ustr( (char*)error, u_error_string, 128 );
+                hf->html_len = u_strlen(u_error_string);
+                str = u_error_string;
             }
         }
         else
         {
-            snprintf( error_string, 128,
-                "<html><body><p>Error: failed to remove ranges</p></body></html>"
-                );
-            str = error_string;
+            const char *error = "<html><body><p>Error: failed to remove ranges</p></body></html>";
+            str2ustr( (char*)error, u_error_string, 128 );
+            str = u_error_string;
         }
     }
     else
@@ -157,11 +139,11 @@ char *master_convert( master *hf )
         const char *hntext = (hf->has_text)?"":"no text ";
         const char *hnmarkup = (hf->has_markup)?"":"no markup ";
         const char *hncss = (hf->has_css)?"":"no css ";
-        snprintf(error_string,128,
-            "<html><body><p>Error: %s%s%s</p></body></html>",
+        snprintf( error_string,128,"<html><body><p>Error: %s%s%s</p></body></html>",
             hntext,hnmarkup,hncss );
-        hf->html_len = strlen( error_string );
-        str = error_string;
+        str2ustr( error_string, u_error_string, 128 );
+        hf->html_len = u_strlen( u_error_string );
+        str = u_error_string;
     }
     return str;
 }
@@ -174,22 +156,4 @@ int master_get_html_len( master *hf )
 {
     return hf->html_len;
 }
-/**
- * List the formats registered with the main program. If the user
- * defines another format he/she must call the register routine to
- * register it. Then this command returns a list of dynamically
- * registered formats.
- * @return the available format names
-*/
-char *master_list()
-{
-	int i;
-    error_string[0] = 0;
-	for ( i=0;i<num_formats;i++ )
-	{
-        int left = 128 - strlen(error_string)+2;
-        strncat( error_string, formats[i].name, left );
-        strncat( error_string, "\n", left );
-	}
-    return error_string;
-}
+

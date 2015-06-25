@@ -18,6 +18,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "attribute.h"
 #include "hashmap.h"
 #include "annotation.h"
@@ -28,6 +31,7 @@
 #include "matrix_queue.h"
 #include "HTML.h"
 #include "error.h"
+#include "utils.h"
 #include "memwatch.h"
 
 /** Record which properties may nest inside which other properties */
@@ -37,8 +41,8 @@ struct matrix_struct
     int inited;
     hashset *lookup;
     int *cells;
-    char **html_tags;
-    char **names;
+    UChar **html_tags;
+    UChar **names;
 };
 /**
  * 
@@ -46,23 +50,23 @@ struct matrix_struct
  * @param properties array of props and html tag names alternately
  * @return an initialised matrix
  */
-matrix *matrix_create( int n_props, char **properties )
+matrix *matrix_create( int n_props, UChar **properties )
 {
     matrix *m = calloc(1,sizeof(matrix) );
     if ( m != NULL )
     {
         m->n_props = n_props/2;
-        m->names = calloc( m->n_props, sizeof(char*) );
-        m->html_tags = calloc( m->n_props, sizeof(char*) );
+        m->names = calloc( m->n_props, sizeof(UChar*) );
+        m->html_tags = calloc( m->n_props, sizeof(UChar*) );
         if ( m->names != NULL && m->html_tags != NULL )
         {
             int i,j;
             for ( j=0,i=0;i<n_props-1;j++,i+=2 )
             {
-                m->names[j] = strdup(properties[i]);
+                m->names[j] = u_strdup(properties[i]);
                 //printf("%s\n",properties[i]);
                 m->html_tags[j] = (properties[i+1]==NULL)
-                    ?NULL:strdup(properties[i+1]);
+                    ?NULL:u_strdup(properties[i+1]);
             }
             m->cells = (int*)calloc( m->n_props*m->n_props, sizeof(int) );
             if ( m->cells == NULL )
@@ -153,7 +157,7 @@ hashset *matrix_get_lookup( matrix *m )
  * @param prop1 the property that is inside
  * @param prop2 the outer property
  */
-void matrix_record( matrix *m, char *prop1, char *prop2 )
+void matrix_record( matrix *m, UChar *prop1, UChar *prop2 )
 {
     int index1 = hashset_get( m->lookup, prop1 )-1;
     int index2 = hashset_get( m->lookup, prop2 )-1;
@@ -168,7 +172,7 @@ void matrix_record( matrix *m, char *prop1, char *prop2 )
  * @param prop1 this can't be inside prop2
  * @param prop2 the outer property that may NOT contain prop1
  */
-static void matrix_forbid( matrix *m, char *prop1, char *prop2 )
+static void matrix_forbid( matrix *m, UChar *prop1, UChar *prop2 )
 {
     if ( m->inited )
     {
@@ -186,7 +190,7 @@ static void matrix_forbid( matrix *m, char *prop1, char *prop2 )
  * @param prop1 this can be inside prop2
  * @param prop2 the outer property that may contain prop1
  */
-static void matrix_allow( matrix *m, char *prop1, char *prop2 )
+static void matrix_allow( matrix *m, UChar *prop1, UChar *prop2 )
 {
     if ( m->inited )
     {
@@ -206,7 +210,7 @@ static void matrix_allow( matrix *m, char *prop1, char *prop2 )
  * @param name2 the name that may be outside
  * @return the number of times name1 is inside
  */
-int matrix_inside( matrix *m, char *name1, char *name2 )
+int matrix_inside( matrix *m, UChar *name1, UChar *name2 )
 {
     int index1 = hashset_get(m->lookup, name1)-1;
     int index2 = hashset_get(m->lookup, name2)-1;
@@ -279,13 +283,13 @@ static void matrix_dump_row( matrix *m, int index1 )
     int llen,i;
     for ( llen=0,i=0;i<m->n_props;i++ )
     {
-        int j = strlen( m->names[i] );
+        int j = u_strlen( m->names[i] );
         if ( j > llen )
             llen = j;
     }
-    fprintf( stderr,"%s",m->names[index1] );
+    u_printf( "%S",m->names[index1] );
     // left-justify
-    for ( i=strlen(m->names[index1]);i<llen+1;i++ )
+    for ( i=u_strlen(m->names[index1]);i<llen+1;i++ )
         fprintf( stderr, " " );
     for ( i=0;i<m->n_props;i++ )
     {

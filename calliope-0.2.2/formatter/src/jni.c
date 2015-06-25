@@ -3,13 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "calliope_AeseFormatter.h"
 #include "master.h"
 #include "memwatch.h"
 
-
 static int set_string_field( JNIEnv *env, jobject obj, 
-    const char *field_name, char *value )
+    const char *field_name, UChar *value )
 {
     int res = 0;
     jfieldID fid;
@@ -19,7 +21,7 @@ static int set_string_field( JNIEnv *env, jobject obj,
     fid = (*env)->GetFieldID(env, cls, field_name, "Ljava/lang/String;");
     if (fid != NULL) 
     {
-        jstr = (*env)->NewStringUTF( env, value );
+        jstr = (*env)->NewString( env, value, u_strlen(value) );
         if (jstr != NULL) 
         {
             (*env)->SetObjectField(env, obj, fid, jstr);
@@ -34,62 +36,54 @@ static int set_string_field( JNIEnv *env, jobject obj,
 void jni_report( const char *fmt, ... )
 {
     va_list ap;
-    char message[128];
+    UChar message[128];
     va_start( ap, fmt );
-    vsnprintf( message, 128, fmt, ap );
-    FILE *db = fopen("/tmp/formatter-debug.txt","a+");
+    u_vsnprintf( message, 128, fmt, ap );
+    UFILE *db = u_fopen("/tmp/formatter-debug.txt","a+",NULL,NULL);
     if ( db != NULL )
     {
-        fprintf( db, "%s", message );
-        fclose( db );
+        u_fprintf( db, "%s", message );
+        u_fclose( db );
     }
     va_end( ap );
 }
-
 /*
  * Class:     calliope_AeseFormatter
  * Method:    format
- * Signature: ([B[Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;Lcalliope/json/JSONResponse;)I
+ * Signature: ([C[Ljava/lang/String;[Ljava/lang/String;Lcalliope/json/JSONResponse;)I
  */
 JNIEXPORT jint JNICALL Java_calliope_AeseFormatter_format
-  (JNIEnv *env, jobject obj, jbyteArray text, jobjectArray markup, 
-    jobjectArray css, jobjectArray formats, jobject jsonHtml)
+  (JNIEnv *env, jobject obj, jcharArray text, jobjectArray markup,
+    jobjectArray css, jobject jsonHtml)
 {
     int res=0;
-    jsize i,len,flen;
-    char *html;
+    jsize i,len;
+    UChar *html;
     jboolean isCopy=0;
     //jni_report("entered format\n");
-    jbyte *t_data = (*env)->GetByteArrayElements(env, text, &isCopy);
+    jchar *t_data = (*env)->GetCharArrayElements(env, text, &isCopy);
     int t_len = (*env)->GetArrayLength( env, text );
-    if ( t_data != NULL && markup != NULL && css != NULL && formats != NULL )
+    if ( t_data != NULL && markup != NULL && css != NULL  )
     {
-        jboolean isMarkupCopy,isFormatCopy;
-        master *hf = master_create( (char*)t_data, t_len );
+        jboolean isMarkupCopy;
+        master *hf = master_create( t_data, t_len );
         if ( hf != NULL )
         {
             len = (*env)->GetArrayLength(env, markup);
-            flen = (*env)->GetArrayLength(env, formats);
-            for ( i=0;i<len&&i<flen;i++ )
+            for ( i=0;i<len;i++ )
             {
                 res = 1;
                 jstring markup_str = (jstring)(*env)->GetObjectArrayElement(
                     env, markup, i );
-                jstring format_str = (jstring)(*env)->GetObjectArrayElement(
-                    env, formats, i );
-                const char *markup_data = (*env)->GetStringUTFChars(env, 
+                const jchar *markup_data = (*env)->GetStringChars(env,
                     markup_str, &isMarkupCopy);
-                const char *format_data = (*env)->GetStringUTFChars(env, 
-                    format_str, &isFormatCopy);
-                if ( markup_data != NULL && format_data != NULL )
+                if ( markup_data != NULL )
                 {
-                    res = master_load_markup( hf, markup_data, 
-                        (int)strlen(markup_data), format_data );
-                }    
+                    res = master_load_markup( hf, markup_data,
+                        (int)u_strlen(markup_data) );
+                }
                 if ( markup_data != NULL && isMarkupCopy==JNI_TRUE )
-                    (*env)->ReleaseStringUTFChars( env, markup_str, markup_data );
-                if ( format_data != NULL && isFormatCopy==JNI_TRUE )
-                    (*env)->ReleaseStringUTFChars( env, format_str, format_data );
+                    (*env)->ReleaseStringChars( env, markup_str, markup_data );
                 if ( !res )
                     break;
             }
@@ -101,13 +95,13 @@ JNIEXPORT jint JNICALL Java_calliope_AeseFormatter_format
                     jboolean isCssCopy;
                     jstring css_str = (jstring)(*env)->GetObjectArrayElement(
                         env, css, i);
-                    const char *css_data = (*env)->GetStringUTFChars(env, css_str, 
+                    const jchar *css_data = (*env)->GetStringChars(env, css_str,
                         &isCssCopy);
                     if ( css_data != NULL )
                     {
-                        res = master_load_css( hf, css_data, (int)strlen(css_data) );
+                        res = master_load_css( hf, css_data, (int)u_strlen(css_data) );
                         if ( isCssCopy==JNI_TRUE )
-                            (*env)->ReleaseStringUTFChars( env, css_str, css_data );
+                            (*env)->ReleaseStringChars( env, css_str, css_data );
                         if ( !res )
                             break;
                     }
@@ -125,7 +119,7 @@ JNIEXPORT jint JNICALL Java_calliope_AeseFormatter_format
         }
     }
     if ( t_data != NULL )
-        (*env)->ReleaseByteArrayElements( env, text, t_data, JNI_ABORT );
+        (*env)->ReleaseCharArrayElements( env, text, t_data, JNI_ABORT );
 #ifdef DEBUG_MEMORY
         memory_print();
 #endif

@@ -227,13 +227,11 @@ public class AeseListHandler extends AeseGetHandler
                 longNameId );
             String[] corcodes = new String[1];
             corcodes[0] = markup;
-            String[] formats = new String[1];
-            formats[0] = Formats.STIL;
             String[] css = fetchStyles( styles );
             JSONResponse html = new JSONResponse(JSONResponse.HTML );
             //System.out.println("about to format list");
-            int res = new AeseFormatter().format( table.getBytes("UTF-8"), 
-                corcodes, css, formats, html );
+            int res = new AeseFormatter().format( table, 
+                corcodes, css, html );
             if ( res == 0 )
                 throw new NativeException("formatting failed");
             else

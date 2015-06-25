@@ -18,8 +18,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "hashset.h"
 #include "error.h"
+#include "utils.h"
 #include "memwatch.h"
 #define MOD_ADLER 65521
 #define BLOCK_SIZE 24
@@ -36,7 +40,7 @@ struct hashset_struct
 };
 struct hs_bucket
 {
-    char *key;
+    UChar *key;
     int id;
     struct hs_bucket *next;
 };
@@ -45,7 +49,7 @@ struct hs_bucket
  * @param data the data to hash
  * @param len its length
  */
-static unsigned hash( unsigned char *data, int len )
+static unsigned hash( UChar *data, int len )
 {
     unsigned a = 1, b = 0;
     int index;
@@ -64,12 +68,12 @@ static unsigned hash( unsigned char *data, int len )
  * @param id its id
  * @return a finished bucket
  */
-static struct hs_bucket *hs_bucket_create( char *prop, int id )
+static struct hs_bucket *hs_bucket_create( UChar *prop, int id )
 {
     struct hs_bucket *b = calloc( 1, sizeof(struct hs_bucket) );
     if ( b != NULL )
     {
-        b->key = strdup( prop );
+        b->key = u_strdup( prop );
         b->id = id;
     }
     else
@@ -153,8 +157,7 @@ static int hashset_rehash( hashset *hs )
             struct hs_bucket *b = hs->buckets[i];		
             while ( b != NULL )
             {
-                unsigned slot = hash((unsigned char*)b->key,
-                    strlen(b->key))%new_size;
+                unsigned slot = hash(b->key,u_strlen(b->key))%new_size;
                 struct hs_bucket *d = hs_bucket_create(b->key,b->id);
                 if ( new_buckets[slot] == NULL )
                     new_buckets[slot] = d;
@@ -182,7 +185,7 @@ static int hashset_rehash( hashset *hs )
  * @param prop the property to add
  * @return 1 if successful, else 0
  */
-int hashset_put( hashset *hs, char *prop )
+int hashset_put( hashset *hs, UChar *prop )
 {
     unsigned slot;
     struct hs_bucket *b;
@@ -191,7 +194,7 @@ int hashset_put( hashset *hs, char *prop )
         if ( !hashset_rehash(hs) )
             return 0;
     }
-    slot = hash((unsigned char*)prop,strlen(prop))%hs->num_buckets;
+    slot = hash(prop,u_strlen(prop))%hs->num_buckets;
     b = hs->buckets[slot];
     if ( b == NULL )
     {
@@ -204,7 +207,7 @@ int hashset_put( hashset *hs, char *prop )
         do
         {
             // if key already present, just return
-            if ( strcmp(prop,b->key)==0 )
+            if ( u_strcmp(prop,b->key)==0 )
                 return 0;
             else if ( b->next != NULL )
                 b = b->next;
@@ -224,10 +227,10 @@ int hashset_put( hashset *hs, char *prop )
  * @param prop the property to find
  * @return id &gt; 0 if found, else 0
  */
-int hashset_get( hashset *hs, char *prop )
+int hashset_get( hashset *hs, UChar *prop )
 {
-    unsigned slot = hash((unsigned char*)prop,
-        strlen(prop))%(unsigned)hs->num_buckets;
+    unsigned slot = hash(prop,
+        u_strlen(prop))%(unsigned)hs->num_buckets;
     if ( hs->buckets[slot] == NULL )
         return 0;
     else
@@ -235,7 +238,7 @@ int hashset_get( hashset *hs, char *prop )
         struct hs_bucket *b = hs->buckets[slot];
         while ( b != NULL )
         {
-            if ( strcmp(b->key,prop)==0 )
+            if ( u_strcmp(b->key,prop)==0 )
                 return b->id;
             b = b->next;
         }
@@ -256,7 +259,7 @@ int hashset_size( hashset *hs )
  * @param hs the hashset in question
  * @param items an array of items big enough
  */
-void hashset_to_array( hashset *hs, char **items )
+void hashset_to_array( hashset *hs, UChar **items )
 {
     int i,j;
     for ( j=0,i=0;i<hs->num_buckets;i++ )
@@ -277,13 +280,13 @@ void hashset_to_array( hashset *hs, char **items )
  * @param key the key we seek
  * @return 1 if it was there else 0
  */
-int hashset_contains( hashset *hs, char *key )
+int hashset_contains( hashset *hs, UChar *key )
 {
-    unsigned slot = hash((unsigned char*)key,strlen(key))%hs->num_buckets;
+    unsigned slot = hash(key,u_strlen(key))%hs->num_buckets;
     struct hs_bucket *b = hs->buckets[slot];
     while ( b != NULL )
     {
-        if ( strcmp(b->key,key)==0 )
+        if ( u_strcmp(b->key,key)==0 )
             return 1;
         b = b->next;
     }
@@ -301,7 +304,7 @@ void hashset_print( hashset *hs )
         struct hs_bucket *b = hs->buckets[i];
         while ( b != NULL )
         {
-            warning( "%s: %d\n",b->key,b->id );
+            u_printf( "%s: %d\n",b->key,b->id );
             b = b->next;
         }
     }
@@ -312,43 +315,44 @@ int main( int argc, char **argv )
 	hashset *hs = hashset_create();
       if ( hs != NULL )
       {
-           hashset_put( hs, "banana" );
-           hashset_put( hs, "apple" );
-           hashset_put( hs, "pineapple" );
-           hashset_put( hs, "guava" );
-           hashset_put( hs, "watermelon" );
-           hashset_put( hs, "orange" );
-           hashset_put( hs, "starfruit" );
-           hashset_put( hs, "durian" );
-           hashset_put( hs, "cherry" );
-           hashset_put( hs, "apricot" );
-           hashset_put( hs, "peach" );
-           hashset_put( hs, "pear" );
-           hashset_put( hs, "nectarine" );
-           hashset_put( hs, "plum" );
-           hashset_put( hs, "grape" );
-           hashset_put( hs, "mandarin" );
-           hashset_put( hs, "lemon" );
-           hashset_put( hs, "clementine" );
-           hashset_put( hs, "cumquat" );
-           hashset_put( hs, "custard apple" );
-           hashset_put( hs, "asian pear" );
-           hashset_put( hs, "jakfruit" );
-           hashset_put( hs, "rambutan" );
-           hashset_put( hs, "lime" );
-           hashset_put( hs, "lychee" );
-           hashset_put( hs, "mango" );
-           hashset_put( hs, "mangosteen" );
-           hashset_put( hs, "avocado" );
-           hashset_put( hs, "grandilla" );
-           hashset_put( hs, "grumichama" );
-           hashset_put( hs, "breadfruit" );
+           UChar utmp[32];
+           hashset_put( hs, str2ustr("banana",utmp,32) );
+           hashset_put( hs, str2ustr("apple",utmp,32) );
+           hashset_put( hs, str2ustr("pineapple",utmp,32) );
+           hashset_put( hs, str2ustr("guava",utmp,32) );
+           hashset_put( hs, str2ustr("watermelon",utmp,32) );
+           hashset_put( hs, str2ustr("orange",utmp,32) );
+           hashset_put( hs, str2ustr("starfruit",utmp,32) );
+           hashset_put( hs, str2ustr("durian",utmp,32) );
+           hashset_put( hs, str2ustr("cherry",utmp,32) );
+           hashset_put( hs, str2ustr("apricot",utmp,32) );
+           hashset_put( hs, str2ustr("peach",utmp,32) );
+           hashset_put( hs, str2ustr("pear",utmp,32) );
+           hashset_put( hs, str2ustr("nectarine",utmp,32) );
+           hashset_put( hs, str2ustr("plum",utmp,32) );
+           hashset_put( hs, str2ustr("grape",utmp,32) );
+           hashset_put( hs, str2ustr("mandarin",utmp,32) );
+           hashset_put( hs, str2ustr("lemon",utmp,32) );
+           hashset_put( hs, str2ustr("clementine",utmp,32) );
+           hashset_put( hs, str2ustr("cumquat",utmp,32) );
+           hashset_put( hs, str2ustr("custard apple",utmp,32) );
+           hashset_put( hs, str2ustr("asian pear",utmp,32) );
+           hashset_put( hs, str2ustr("jakfruit",utmp,32) );
+           hashset_put( hs, str2ustr("rambutan",utmp,32) );
+           hashset_put( hs, str2ustr("lime",utmp,32) );
+           hashset_put( hs, str2ustr("lychee",utmp,32) );
+           hashset_put( hs, str2ustr("mango",utmp,32) );
+           hashset_put( hs, str2ustr("mangosteen",utmp,32) );
+           hashset_put( hs, str2ustr("avocado",utmp,32) );
+           hashset_put( hs, str2ustr("grandilla",utmp,32) );
+           hashset_put( hs, str2ustr("grumichama",utmp,32) );
+           hashset_put( hs, str2ustr("breadfruit",utmp,32) );
 		// repeats
-		hashset_put( hs, "banana" );
-           hashset_put( hs, "apple" );
-           hashset_put( hs, "pineapple" );
-           hashset_put( hs, "guava" );
-           hashset_put( hs, "watermelon" );
+		   hashset_put( hs, str2ustr("banana",utmp,32) );
+           hashset_put( hs, str2ustr("apple",utmp,32) );
+           hashset_put( hs, str2ustr("pineapple",utmp,32) );
+           hashset_put( hs, str2ustr("guava",utmp,32) );
+           hashset_put( hs, str2ustr("watermelon",utmp,32) );
            hashset_print( hs );
 		printf("number of elements in set=%d\n",hashset_size(hs));
       }

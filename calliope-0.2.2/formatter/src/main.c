@@ -23,6 +23,9 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/ustdio.h>
 #include "css_property.h"
 #include "css_selector.h"
 #include "hashmap.h"
@@ -60,7 +63,7 @@
 static file_list *css_files;
 static file_list *markup_files;
 static file_list *text_file;
-static char *format_name="STIL";
+static char format_name[]={'S','T','I','L'};
 static char html_file_name[FILE_NAME_LEN];
 
 /** if doing help or version info don't process anything */
@@ -81,7 +84,6 @@ static void print_help()
 		"Options are: \n"
 		"-h print this help message\n"
 		"-v print the version information\n"
-		"-f the markup format\n"
 		"-l list supported formats\n"
 		"-c colon-separated list of css files (required)\n"
 		"-m colon-separated list of markup file names (required)\n"
@@ -119,14 +121,8 @@ static int check_args( int argc, char **argv )
 						print_help();
 						doing_help = 1;
 						break;
-					case 'f':
-						if ( i < argc-1 )
-							format_name = argv[i+1];
-						else
-							sane = 0;
-						break;
 					case 'l':
-						printf("%s",master_list());
+						u_printf("%s",master_list());
 						doing_help = 1;
 						break;
 					case 'c':
@@ -182,7 +178,7 @@ static int check_args( int argc, char **argv )
  */
 static void usage()
 {
-	fprintf( stderr,"usage: formatter [-h] [-v] [-l] [-w] [-f format] -c css "
+	fprintf( stderr,"usage: formatter [-h] [-v] [-l] [-w] -c css "
 		"-m markup -t text-file [html-file]\n"
 		"type: \"formatter -h\" for help\n");
 }
@@ -197,7 +193,7 @@ int main( int argc, char **argv )
 	{
 		if ( !doing_help )
 		{
-            char *data,*text;
+            UChar *data,*text;
             int i,len;
             if ( file_list_load(text_file,0,&text,&len) )
             {

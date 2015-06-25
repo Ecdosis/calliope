@@ -20,8 +20,11 @@
 #include <stdio.h>
 #include <limits.h>
 #include <errno.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
 #include "file_list.h"
 #include "error.h"
+#include "encoding.h"
 #include "memwatch.h"
 #define BLOCK_SIZE 8
 /**
@@ -207,9 +210,10 @@ static int get_file_length( FILE *fp )
  * @param len VAR parameter for file length
  * @return 1 if successful, else 0
  */
-int file_list_load( file_list *fl, int index, char **data, int *len )
+int file_list_load( file_list *fl, int index, UChar **data, int *len )
 {
     int res = 0;
+    char *cdata;
     if ( index < fl->num_files )
     {
         if ( file_exists(fl->file_names[index]) )
@@ -220,24 +224,30 @@ int file_list_load( file_list *fl, int index, char **data, int *len )
                 int flen = get_file_length( fp );
                 if ( flen > 0 )
                 {
-                    *data = malloc( flen );
-                    if ( *data == NULL )
+                    cdata = malloc( flen );
+                    if ( cdata == NULL )
                         error( "file_list: no memory for markup\n" );
                     else
                     {
-                        int n = fread( *data, 1, flen, fp );
+                        int n = fread( cdata, 1, flen, fp );
                         if ( n != flen )
                         {
                             error( "file_list: failed to read %s\n",
                                 fl->file_names[index] );
-                            free( *data );
-                            *data = NULL;
+                            free( cdata );
+                            cdata = NULL;
                             *len = 0;
                         }
                         else
                         {
                             *len = n;
-                            res = 1;
+                            int needed = measure_from_encoding( cdata, n, "UTF-8" );
+                            *data = calloc( needed, sizeof(UChar) );
+                            if ( *data != NULL )
+                            {
+                                res = convert_from_encoding( cdata, n, *data,
+                                    needed, "UTF-8" );
+                            }
                         }
                     }
                 }

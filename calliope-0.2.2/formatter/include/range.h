@@ -24,23 +24,23 @@ extern "C" {
 #endif
 typedef struct range_struct range;
 int range_compare( void *key1, void *key2 );
-range *range_create_atts( const char **atts );
+range *range_create_atts( const UChar **atts );
 range *range_copy( range *r );
 range *range_create_empty();
-range *range_create( char *name, char *html_name, int start, int len );
+range *range_create( UChar *name, UChar *html_name, int start, int len );
 void range_dispose( range *r );
-range **range_randomise( int n, int t_len, const char *text, int n_tags, 
-    char **props, unsigned int seed );
+range **range_randomise( int n, int t_len, const UChar *text, int n_tags, 
+    UChar **props, unsigned int seed );
 int range_end( range *r );
 int range_start( range *r );
-char *range_name( range *r );
-char *range_html_name( range *r );
+UChar *range_name( range *r );
+UChar *range_html_name( range *r );
 int range_len( range *r );
 void range_set_reloff( range *r, int reloff );
 void range_set_len( range *r, int len );
 int range_inside( range *r1, range *r2 );
-int range_set_name( range *r, char *name );
-int range_set_html_name( range *r, char *html_name );
+int range_set_name( range *r, UChar *name );
+int range_set_html_name( range *r, UChar *html_name );
 int range_equals( range *r1, range *r2 );
 void range_set_absolute( range *r, int absolute );
 void range_set_rightmost( range *r, int rightmost );
