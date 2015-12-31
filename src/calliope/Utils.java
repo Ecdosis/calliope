@@ -226,7 +226,7 @@ public class Utils
         String urnUpper = urn.toUpperCase();
         return urnUpper.replace("%2F","/").toLowerCase();
     }
-     /**
+    /**
       * Get the display name for a language given its code+country
       * @param langCode e.g. "it" or "en_GB" etc
       */

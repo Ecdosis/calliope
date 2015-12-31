@@ -1,3 +1,12 @@
+calliope is now replaced by a suite of separate services.
+* MML
+* Formatter
+* Search
+* Importer
+* etc
+
+Old README follows:
+
 The folder calliope-0.1.3 (or whatever version it has now) is a 
 self-contained application suitable for installation. The supplied 
 scripts work on Mac-OSX and Linux. It is based on Jetty and 

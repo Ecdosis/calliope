@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 package calliope.handler.post.importer;
-import calliope.constants.JSONKeys;
+//import calliope.constants.JSONKeys;
 import org.json.simple.*;
 import java.util.Stack;
 import java.nio.charset.Charset;
 
 /**
- *
+ * A wrapper for a TEXT + STIL markup pair
  * @author desmond
  */
 public class StandoffPair {
@@ -33,7 +33,7 @@ public class StandoffPair {
         }
         this.sb = new StringBuilder();
         this.stack = new Stack<JSONObject>();
-        this.stil = byteToCharacterOffsets(stil);
+        this.stil = stil;
         this.vid = vid;  
     }
     /**
@@ -68,7 +68,7 @@ public class StandoffPair {
      * Convert the raw byte-offsets to character offsets for Java
      * @param stil the original stil markup from C stripper
      * @return the stil document with character offsets and lengths
-     */
+     * (not needed any more because stripper now uses character offsets)
     private String byteToCharacterOffsets( String stil )
     {
         try
@@ -132,5 +132,5 @@ public class StandoffPair {
         }
         return true;
     }
-   
+     */   
 }
